@@ -1,9 +1,12 @@
 #include "qmlplot.h"
 #include "qcustomplot.h"
 #include <QDebug>
-
+#define DATA1_GAIN 100
+#define DATA2_GAIN 400
+#define DATA3_GAIN 300
+#define DATA4_GAIN 200
 CustomPlotItem::CustomPlotItem( QQuickItem* parent ) : QQuickPaintedItem( parent )
-    , m_CustomPlot( nullptr ), m_timerId( 0 )
+                                                     , m_CustomPlot( nullptr ), m_timerId( 0 )
 {
     setFlag( QQuickItem::ItemHasContents, true );
     setAcceptedMouseButtons( Qt::AllButtons );
@@ -21,118 +24,145 @@ CustomPlotItem::~CustomPlotItem()
         killTimer(m_timerId);
     }
 }
+void CustomPlotItem::getRESPData()
+{
 
+    QFile file("resp.text");
+
+    if (file.open(QFile::ReadOnly | QIODevice::Text))
+    {
+        QTextStream in(&file);
+        QString strLine;
+        QStringList list;
+        while (!in.atEnd())
+        {
+            strLine = in.readLine();
+            strLine.remove("\r\n");
+            list = strLine.split("\t");
+
+            pleth_data.append(list[3].trimmed().toDouble()/8+DATA3_GAIN);
+            resp_data.append(list[4].trimmed().toDouble()/8+DATA4_GAIN);
+        }
+    }
+    else
+    {
+        qDebug() << "cannot open file resp.text!";
+    }
+
+}
 void CustomPlotItem::initCustomPlot()
 {
-#if 0 // original
     m_CustomPlot = new QCustomPlot();
 
     updateCustomPlotSize();
     m_CustomPlot->addGraph();
-    m_CustomPlot->graph( 0 )->setPen( QPen( Qt::red ) );
+    m_CustomPlot->addGraph();
+    m_CustomPlot->addGraph();
+    m_CustomPlot->addGraph();
+    m_CustomPlot->graph()->setPen(QPen(Qt::blue));;
     m_CustomPlot->xAxis->setLabel( "t" );
     m_CustomPlot->yAxis->setLabel( "S" );
-    m_CustomPlot->xAxis->setRange( 0, 10 );
-    m_CustomPlot->yAxis->setRange( 0, 5 );
+    m_CustomPlot->xAxis->setRange(0, 5, Qt::AlignLeading);
+    m_CustomPlot->yAxis->setRange(0, 1200, Qt::AlignLeading);
     m_CustomPlot ->setInteractions( QCP::iRangeDrag | QCP::iRangeZoom );
+    m_CustomPlot->yAxis->setVisible(false);
+    m_CustomPlot->xAxis->setVisible(false);
 
-    startTimer(500);
+    getECGData();
+    getRESPData();
+    timer_count = 0;
+    startTimer(5);
 
     connect( m_CustomPlot, &QCustomPlot::afterReplot, this, &CustomPlotItem::onCustomReplot );
 
     m_CustomPlot->replot();
-#else
-    m_CustomPlot = new QCustomPlot();
+}
+void CustomPlotItem::timerEvent(QTimerEvent *event)
+{
 
-    updateCustomPlotSize();
-
-    uchar *buffer;
-    int fs = 360;
-    QVector<double> t(650000), s1(650000), s2(650000);
-
-    // The following plot setup is mostly taken from the plot demos:
-    m_CustomPlot->addGraph();
-    m_CustomPlot->graph()->setPen(QPen(Qt::blue));
-    m_CustomPlot->addGraph();
-
-    QFile aFile(":/ecg/100.dat");  //以文件方式读出
-    if (!(aFile.open(QIODevice::ReadOnly)))
+    if (ecg_time[timer_count] > 5.0)
     {
-//        qDebug() << "cannot open file "<< endl;
-        return;
+        timer_count = 0;;
+        m_CustomPlot->graph(0)->data()->removeAfter(ecg_time[timer_count]);
+        m_CustomPlot->graph(1)->data()->removeAfter(ecg_time[timer_count]);
+        m_CustomPlot->graph(2)->data()->removeAfter(ecg_time[timer_count]);
+        m_CustomPlot->graph(3)->data()->removeAfter(ecg_time[timer_count]);
+
+    }
+    m_CustomPlot->graph(0)->addData(ecg_time[timer_count],ecg_data1[timer_count]);
+    m_CustomPlot->graph(1)->addData(ecg_time[timer_count],ecg_data2[timer_count]);
+    m_CustomPlot->graph(2)->addData(ecg_time[timer_count],pleth_data[timer_count+30]);
+    m_CustomPlot->graph(3)->addData(ecg_time[timer_count],resp_data[timer_count+30]);
+    m_CustomPlot->replot();
+
+    timer_count++;
+}
+void CustomPlotItem::getECGData()
+{
+    FILE *pFile;
+    uchar *buffer;
+    long lSize;
+    size_t result;
+    int fs = 360;
+    QVector<double> t(DATA_COUNT), s1(DATA_COUNT), s2(DATA_COUNT);
+
+    pFile = fopen("ecg.dat","rb");
+    if(pFile == NULL)
+    {
+        qDebug() << "cannot open file ecg.dat";
     }
 
-    QByteArray s = aFile.readAll();
-//    qDebug() << "size:" << s.size() << endl;
-
-    buffer =(uchar*)(s.data());
-    for (int i = 0; i < 650000; ++i)
+    for (int i = 0; i < DATA_COUNT; ++i)
     {
         s1[i] = 0.0;
         s2[i] = 0.0;
         t[i] = i/(1.0*fs);
     }
 
-   int k = 0;
-   for(int i = 0; i <650000; i++ )
-   {
-       //212->12bits.
 
-       s1[i] = (buffer[k+1] & 15) * pow(2,8) + buffer[k];
-       s2[i] = (buffer[k+1] & 240) * pow(2,4) + buffer[k+2] ;
-       k = k + 3;
+    fseek (pFile , 0 , SEEK_END);
+    lSize = ftell (pFile);
+    rewind (pFile);
 
-       //Signed.
-       if ( s1[i] >= 2048 )
-         s1[i] = ( 4096 - s1[i] ) * ( -1 );
 
-       if ( s2[i] >= 2048 )
-           s2[i] = ( 4096 - s2[i] ) * ( -1 );
-    }
-//    qDebug()<< "Signal 1 first Point Value :\t " << s1[0] << std::endl;
-//    qDebug()<< "Signal 2 first Point Value :\t " << s2[0] << std::endl;
+    buffer = (uchar*) malloc (sizeof(uchar)*lSize);
+    if (buffer == NULL) {fputs ("Memory error",stderr); exit (2);}
 
-    //add offset to the second signal to visually seperate both signals
-    for (int i = 0; i< 650000; i++)
+    result = fread (buffer, 1, lSize, pFile);
+    if ((long)result != lSize) {fputs ("Reading error",stderr); exit (3);}
+
+    fclose(pFile);
+
+    int k = 0;
+    for(int i = 0; i <DATA_COUNT; i++ )
     {
-        s2[i] -= 500;
+        //212->12bits.
+
+        s1[i] = (buffer[k+1] & 15) * pow(2,8) + buffer[k];
+        s2[i] = (buffer[k+1] & 240) * pow(2,4) + buffer[k+2] ;
+        k = k + 3;
+
+        //Signed.
+        if ( s1[i] >= 2048 )
+            s1[i] = ( 4096 - s1[i] ) * ( -1 );
+
+        if ( s2[i] >= 2048 )
+            s2[i] = ( 4096 - s2[i] ) * ( -1 );
     }
-
-    //plot data from .dat file
-    m_CustomPlot->graph(0)->setData(t,s1);
-    m_CustomPlot->graph(1)->setData(t, s2);
-
-    m_CustomPlot->axisRect()->setupFullAxesBox(true);
-    m_CustomPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-    m_CustomPlot->xAxis->setLabel("Time (s)");
-    m_CustomPlot->yAxis->setLabel("Amplitude");
-
-    //insert plot title
-    QCPPlotTitle *title = new QCPPlotTitle(m_CustomPlot);
-    title->setText("Patient 100.dat ECG Record");
-    m_CustomPlot->plotLayout()->insertRow(0); // insert an empty row above the axis rect
-    m_CustomPlot->plotLayout()->addElement(0, 0, title); // place the title in the empty cell we've just created
-    m_CustomPlot->xAxis->setRange(0, 5, Qt::AlignLeading); // display range is 5 seconds
-    m_CustomPlot->yAxis->setRange(300, 1000, Qt::AlignLeading);
+    qDebug() <<  "Signal 1 first Point Value :\t " << s1[0] ;
+    qDebug() <<  "Signal 2 first Point Value :\t " << s2[0] ;
 
 
-//    m_CustomPlot->addGraph();
-//    m_CustomPlot->graph( 0 )->setPen( QPen( Qt::red ) );
-//    m_CustomPlot->xAxis->setLabel( "t" );
-//    m_CustomPlot->yAxis->setLabel( "S" );
-//    m_CustomPlot->xAxis->setRange( 0, 10 );
-//    m_CustomPlot->yAxis->setRange( 0, 5 );
-    m_CustomPlot ->setInteractions( QCP::iRangeDrag | QCP::iRangeZoom );
+    for (int i = 0; i< DATA_COUNT; i++)
+    {
+        s1[i] -= DATA1_GAIN;
+        s2[i] -= DATA2_GAIN;
 
-//    startTimer(500);
-
-    connect( m_CustomPlot, &QCustomPlot::afterReplot, this, &CustomPlotItem::onCustomReplot );
-
-    m_CustomPlot->replot();
-#endif
+        ecg_data1.append(s1[i]);
+        ecg_data2.append(s2[i]);
+        ecg_time.append(t[i]);
+    }
 }
-
-
 void CustomPlotItem::paint( QPainter* painter )
 {
     if (m_CustomPlot)
@@ -146,66 +176,57 @@ void CustomPlotItem::paint( QPainter* painter )
     }
 }
 
-void CustomPlotItem::mousePressEvent( QMouseEvent* event )
-{
-    qDebug() << Q_FUNC_INFO;
-    routeMouseEvents( event );
-}
+//void CustomPlotItem::mousePressEvent( QMouseEvent* event )
+//{
+//    qDebug() << Q_FUNC_INFO;
+//    routeMouseEvents( event );
+//}
 
-void CustomPlotItem::mouseReleaseEvent( QMouseEvent* event )
-{
-    qDebug() << Q_FUNC_INFO;
-    routeMouseEvents( event );
-}
+//void CustomPlotItem::mouseReleaseEvent( QMouseEvent* event )
+//{
+//    qDebug() << Q_FUNC_INFO;
+//    routeMouseEvents( event );
+//}
 
-void CustomPlotItem::mouseMoveEvent( QMouseEvent* event )
-{
-    routeMouseEvents( event );
-}
+//void CustomPlotItem::mouseMoveEvent( QMouseEvent* event )
+//{
+//    routeMouseEvents( event );
+//}
 
-void CustomPlotItem::mouseDoubleClickEvent( QMouseEvent* event )
-{
-    qDebug() << Q_FUNC_INFO;
-    routeMouseEvents( event );
-}
+//void CustomPlotItem::mouseDoubleClickEvent( QMouseEvent* event )
+//{
+//    qDebug() << Q_FUNC_INFO;
+//    routeMouseEvents( event );
+//}
 
-void CustomPlotItem::wheelEvent( QWheelEvent *event )
-{
-    routeWheelEvents( event );
-}
+//void CustomPlotItem::wheelEvent( QWheelEvent *event )
+//{
+//    routeWheelEvents( event );
+//}
 
-void CustomPlotItem::timerEvent(QTimerEvent *event)
-{
-    static double t, U;
-    U = ((double)rand() / RAND_MAX) * 5;
-    m_CustomPlot->graph(0)->addData(t, U);
-    qDebug() << Q_FUNC_INFO << QString("Adding dot t = %1, S = %2").arg(t).arg(U);
-    t++;
-    m_CustomPlot->replot();
-}
 
 void CustomPlotItem::graphClicked( QCPAbstractPlottable* plottable )
 {
     qDebug() << Q_FUNC_INFO << QString( "Clicked on graph '%1 " ).arg( plottable->name() );
 }
 
-void CustomPlotItem::routeMouseEvents( QMouseEvent* event )
-{
-    if (m_CustomPlot)
-    {
-        QMouseEvent* newEvent = new QMouseEvent( event->type(), event->localPos(), event->button(), event->buttons(), event->modifiers() );
-        QCoreApplication::postEvent( m_CustomPlot, newEvent );
-    }
-}
+//void CustomPlotItem::routeMouseEvents( QMouseEvent* event )
+//{
+//    if (m_CustomPlot)
+//    {
+//        QMouseEvent* newEvent = new QMouseEvent( event->type(), event->localPos(), event->button(), event->buttons(), event->modifiers() );
+//        QCoreApplication::postEvent( m_CustomPlot, newEvent );
+//    }
+//}
 
-void CustomPlotItem::routeWheelEvents( QWheelEvent* event )
-{
-    if (m_CustomPlot)
-    {
-        QWheelEvent* newEvent = new QWheelEvent( event->pos(), event->delta(), event->buttons(), event->modifiers(), event->orientation() );
-        QCoreApplication::postEvent( m_CustomPlot, newEvent );
-    }
-}
+//void CustomPlotItem::routeWheelEvents( QWheelEvent* event )
+//{
+//    if (m_CustomPlot)
+//    {
+//        QWheelEvent* newEvent = new QWheelEvent( event->pos(), event->delta(), event->buttons(), event->modifiers(), event->orientation() );
+//        QCoreApplication::postEvent( m_CustomPlot, newEvent );
+//    }
+//}
 
 void CustomPlotItem::updateCustomPlotSize()
 {
@@ -218,6 +239,6 @@ void CustomPlotItem::updateCustomPlotSize()
 
 void CustomPlotItem::onCustomReplot()
 {
-    qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO;
     update();
 }

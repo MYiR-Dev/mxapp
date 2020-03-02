@@ -66,5 +66,9 @@
         <file>qcustomplot.h</file>
         <file>qmlplot.cpp</file>
         <file>qmlplot.h</file>
+        <file>images/wvga/ecg/ecg_background.jpeg</file>
+        <file>images/wvga/ecg/display_bg.png</file>
+        <file>images/wvga/ecg/ecg_pic_bg.jpg</file>
+        <file>ecg/resp.text</file>
     </qresource>
 </RCC>
