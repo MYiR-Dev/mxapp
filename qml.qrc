@@ -60,7 +60,6 @@
         <file>images/wvga/home/public_icon_ticket_nor.png</file>
         <file>images/wvga/home/media_icon_camera_nor.png</file>
         <file>PlotView.qml</file>
-        <file>ecg/100.dat</file>
         <file>main.cpp</file>
         <file>qcustomplot.cpp</file>
         <file>qcustomplot.h</file>
@@ -70,5 +69,8 @@
         <file>images/wvga/ecg/display_bg.png</file>
         <file>images/wvga/ecg/ecg_pic_bg.jpg</file>
         <file>ecg/resp.text</file>
+        <file>images/wvga/ecg/heart.png</file>
+        <file>images/wvga/ecg/health_off.png</file>
+        <file>ecg/ecg.dat</file>
     </qresource>
 </RCC>

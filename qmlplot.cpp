@@ -11,6 +11,9 @@ CustomPlotItem::CustomPlotItem( QQuickItem* parent ) : QQuickPaintedItem( parent
     setFlag( QQuickItem::ItemHasContents, true );
     setAcceptedMouseButtons( Qt::AllButtons );
 
+    QPalette backGround;
+    backGround.setColor(QPalette::Background, QColor(0,0,0,255));
+
     connect( this, &QQuickPaintedItem::widthChanged, this, &CustomPlotItem::updateCustomPlotSize );
     connect( this, &QQuickPaintedItem::heightChanged, this, &CustomPlotItem::updateCustomPlotSize );
 }
@@ -59,7 +62,10 @@ void CustomPlotItem::initCustomPlot()
     m_CustomPlot->addGraph();
     m_CustomPlot->addGraph();
     m_CustomPlot->addGraph();
-    m_CustomPlot->graph()->setPen(QPen(Qt::blue));;
+    m_CustomPlot->graph(0)->setPen(QPen(Qt::green));
+    m_CustomPlot->graph(1)->setPen(QPen(Qt::green));;
+    m_CustomPlot->graph(2)->setPen(QPen(Qt::red));;
+    m_CustomPlot->graph(3)->setPen(QPen(Qt::red));;
     m_CustomPlot->xAxis->setLabel( "t" );
     m_CustomPlot->yAxis->setLabel( "S" );
     m_CustomPlot->xAxis->setRange(0, 5, Qt::AlignLeading);
@@ -104,10 +110,12 @@ void CustomPlotItem::getECGData()
     long lSize;
     size_t result;
     int fs = 360;
+
     QVector<double> t(DATA_COUNT), s1(DATA_COUNT), s2(DATA_COUNT);
 
     pFile = fopen("ecg.dat","rb");
-    if(pFile == NULL)
+    if (pFile == NULL)
+
     {
         qDebug() << "cannot open file ecg.dat";
     }
@@ -118,12 +126,9 @@ void CustomPlotItem::getECGData()
         s2[i] = 0.0;
         t[i] = i/(1.0*fs);
     }
-
-
     fseek (pFile , 0 , SEEK_END);
     lSize = ftell (pFile);
     rewind (pFile);
-
 
     buffer = (uchar*) malloc (sizeof(uchar)*lSize);
     if (buffer == NULL) {fputs ("Memory error",stderr); exit (2);}
@@ -132,6 +137,7 @@ void CustomPlotItem::getECGData()
     if ((long)result != lSize) {fputs ("Reading error",stderr); exit (3);}
 
     fclose(pFile);
+
 
     int k = 0;
     for(int i = 0; i <DATA_COUNT; i++ )
@@ -149,6 +155,7 @@ void CustomPlotItem::getECGData()
         if ( s2[i] >= 2048 )
             s2[i] = ( 4096 - s2[i] ) * ( -1 );
     }
+
     qDebug() <<  "Signal 1 first Point Value :\t " << s1[0] ;
     qDebug() <<  "Signal 2 first Point Value :\t " << s2[0] ;
 
@@ -162,6 +169,8 @@ void CustomPlotItem::getECGData()
         ecg_data2.append(s2[i]);
         ecg_time.append(t[i]);
     }
+
+    free(buffer);
 }
 void CustomPlotItem::paint( QPainter* painter )
 {

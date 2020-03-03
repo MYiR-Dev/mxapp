@@ -16,6 +16,7 @@ Item {
     }
 
     CustomPlotItem {
+
         id: customPlot
         anchors.fill: parent
 
