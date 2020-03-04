@@ -72,5 +72,12 @@
         <file>images/wvga/ecg/heart.png</file>
         <file>images/wvga/ecg/health_off.png</file>
         <file>ecg/ecg.dat</file>
+        <file>images/wvga/ecg/health_off_bg.png</file>
+        <file>images/wvga/ecg/btn_bg.png</file>
+        <file>images/wvga/ecg/health_stop.png</file>
+        <file>images/wvga/ecg/health_prin.png</file>
+        <file>images/wvga/ecg/health_set.png</file>
+        <file>images/wvga/ecg/save.png</file>
+        <file>images/wvga/ecg/spinner.png</file>
     </qresource>
 </RCC>
