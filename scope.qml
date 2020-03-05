@@ -20,7 +20,7 @@ ApplicationWindow {
         id: rocket
         fillMode: Image.TileHorizontally
         smooth: true
-        source: 'images/wvga/ecg/ecg_pic_bg.jpg'
+        source: 'images/wvga/ecg/ecg_bg4.png'
     }
     Rectangle{
         x:0
@@ -79,18 +79,7 @@ ApplicationWindow {
             display: AbstractButton.TextBesideIcon
             icon.source:"images/wvga/ecg/health_off.png"
             text:"退出"
-            onClicked: {
-            }
 
-            onPressed: {
-
-              opacity = 0.5
-            }
-
-            onReleased: {
-              ecg_main.close()
-              opacity = 1.0
-            }
             background: Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 width: 65
@@ -109,7 +98,23 @@ ApplicationWindow {
                 verticalCenter: parent.verticalCenter
                 topMargin: 10
                 leftMargin: 430
+            }
+            MouseArea{
+                anchors.fill: parent
+                onExited:{
+                   close_button.opacity = 1.0
                 }
+                onPressed: {
+
+                   close_button.opacity = 0.5
+                }
+
+                onReleased: {
+                    ecg_main.close()
+                    close_button.opacity = 1.0
+
+                }
+            }
 
 
         }
@@ -185,7 +190,7 @@ ApplicationWindow {
     property var ecgArray:["60","59","61","62"]
     property var nibpArray:["120/80","119/79","121/81","118/78"]
     property var mmhgArray:["90","91","89","92"]
-    property var spo2Array:["98","99","97","100"]
+    property var spo2Array:["98","99","97","96"]
     property var prArray:["60","59","61","62"]
     property var respArray:["20","21","22","19"]
     property var temp1Array:["36.8","36.5","36.4","36.9"]
@@ -195,7 +200,7 @@ ApplicationWindow {
 
     Rectangle{
         x:0
-        y:33
+        y:30
         PlotView {
             opacity: 0.2
             width: 573
@@ -493,14 +498,21 @@ ApplicationWindow {
                         verticalCenter: parent.verticalCenter
                         leftMargin: 10
                     }
-                    onPressed: {
 
-                      opacity = 0.5
-                    }
+                    MouseArea{
+                        anchors.fill: parent
+                        onExited:{
+                          bt1.opacity = 1.0
+                        }
+                        onPressed: {
 
-                    onReleased: {
+                          bt1.opacity = 0.5
+                        }
 
-                      opacity = 1.0
+                        onReleased: {
+
+                          bt1.opacity = 1.0
+                        }
                     }
 
                 }
@@ -526,14 +538,21 @@ ApplicationWindow {
                         verticalCenter: parent.verticalCenter
                         leftMargin: 40
                     }
-                    onPressed: {
 
-                      opacity = 0.5
-                    }
+                    MouseArea{
+                        anchors.fill: parent
+                        onExited:{
+                           bt2.opacity = 1.0
+                        }
+                        onPressed: {
 
-                    onReleased: {
+                          bt2.opacity = 0.5
+                        }
 
-                      opacity = 1.0
+                        onReleased: {
+
+                          bt2.opacity = 1.0
+                        }
                     }
 
                 }
@@ -559,14 +578,21 @@ ApplicationWindow {
                         verticalCenter: parent.verticalCenter
                         leftMargin: 40
                     }
-                    onPressed: {
 
-                      opacity = 0.5
-                    }
+                    MouseArea{
+                        anchors.fill: parent
+                        onExited:{
+                           bt3.opacity = 1.0
+                        }
+                        onPressed: {
 
-                    onReleased: {
+                          bt3.opacity = 0.5
+                        }
 
-                      opacity = 1.0
+                        onReleased: {
+
+                          bt3.opacity = 1.0
+                        }
                     }
 
                 }
@@ -592,14 +618,24 @@ ApplicationWindow {
                         verticalCenter: parent.verticalCenter
                         leftMargin: 40
                     }
-                    onPressed: {
 
-                      opacity = 0.5
-                    }
 
-                    onReleased: {
+                    MouseArea{
+                        anchors.fill: parent
 
-                      opacity = 1.0
+                        onExited:{
+                           bt4.opacity = 1.0
+                        }
+                        onPressed: {
+
+                          bt4.opacity = 0.5
+                        }
+
+                        onReleased: {
+
+                          bt4.opacity = 1.0
+                        }
+
                     }
 
                 }
@@ -626,14 +662,21 @@ ApplicationWindow {
                         verticalCenter: parent.verticalCenter
                         leftMargin: 40
                     }
-                    onPressed: {
-                        console.log("press")
-                        opacity = 0.02
-                    }
 
-                    onReleased: {
-                        console.log("release")
-                        opacity = 1.0
+                    MouseArea{
+                        anchors.fill: parent
+                        onExited:{
+                           bt5.opacity = 1.0
+                        }
+                        onPressed: {
+
+                          bt5.opacity = 0.5
+                        }
+
+                        onReleased: {
+
+                          bt5.opacity = 1.0
+                        }
                     }
 
                 }

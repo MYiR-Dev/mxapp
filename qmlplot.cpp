@@ -1,9 +1,9 @@
 #include "qmlplot.h"
 #include "qcustomplot.h"
 #include <QDebug>
-#define DATA1_GAIN 100
-#define DATA2_GAIN 400
-#define DATA3_GAIN 300
+#define DATA1_GAIN 400
+#define DATA2_GAIN 350
+#define DATA3_GAIN 400
 #define DATA4_GAIN 200
 CustomPlotItem::CustomPlotItem( QQuickItem* parent ) : QQuickPaintedItem( parent )
                                                      , m_CustomPlot( nullptr ), m_timerId( 0 )
@@ -11,8 +11,8 @@ CustomPlotItem::CustomPlotItem( QQuickItem* parent ) : QQuickPaintedItem( parent
     setFlag( QQuickItem::ItemHasContents, true );
     setAcceptedMouseButtons( Qt::AllButtons );
 
-    QPalette backGround;
-    backGround.setColor(QPalette::Background, QColor(0,0,0,255));
+//    QPalette backGround;
+//    backGround.setColor(QPalette::Background, QColor(0,0,0,255));
 
     connect( this, &QQuickPaintedItem::widthChanged, this, &CustomPlotItem::updateCustomPlotSize );
     connect( this, &QQuickPaintedItem::heightChanged, this, &CustomPlotItem::updateCustomPlotSize );
@@ -43,7 +43,7 @@ void CustomPlotItem::getRESPData()
             strLine.remove("\r\n");
             list = strLine.split("\t");
 
-            pleth_data.append(list[3].trimmed().toDouble()/8+DATA3_GAIN);
+            pleth_data.append(list[3].trimmed().toDouble()/10+DATA3_GAIN);
             resp_data.append(list[4].trimmed().toDouble()/8+DATA4_GAIN);
         }
     }
@@ -162,10 +162,10 @@ void CustomPlotItem::getECGData()
 
     for (int i = 0; i< DATA_COUNT; i++)
     {
-        s1[i] -= DATA1_GAIN;
+        s1[i] += DATA1_GAIN;
         s2[i] -= DATA2_GAIN;
 
-        ecg_data1.append(s1[i]);
+        ecg_data1.append(s1[i]/1.5);
         ecg_data2.append(s2[i]);
         ecg_time.append(t[i]);
     }
@@ -183,6 +183,7 @@ void CustomPlotItem::paint( QPainter* painter )
 
         painter->drawPixmap( QPoint(), picture );
     }
+
 }
 
 //void CustomPlotItem::mousePressEvent( QMouseEvent* event )

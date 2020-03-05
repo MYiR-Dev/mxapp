@@ -79,5 +79,8 @@
         <file>images/wvga/ecg/health_set.png</file>
         <file>images/wvga/ecg/save.png</file>
         <file>images/wvga/ecg/spinner.png</file>
+        <file>images/wvga/ecg/ecg_bg2.png</file>
+        <file>images/wvga/ecg/ecg_bg3.png</file>
+        <file>images/wvga/ecg/ecg_bg4.png</file>
     </qresource>
 </RCC>
