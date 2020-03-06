@@ -72,35 +72,36 @@ ApplicationWindow {
                 }
         }
 
-        Button{
-
+        Rectangle{
             id:close_button
-
-            display: AbstractButton.TextBesideIcon
-            icon.source:"images/wvga/ecg/health_off.png"
-            text:"退出"
-
-            background: Rectangle {
-                anchors.verticalCenter: parent.verticalCenter
-                width: 65
-                height: 30
-                border.color: "transparent"
-                color:"transparent"
-                Image {
-                    id: bt_bg
-                    anchors.fill: parent
-                    source: "images/wvga/ecg/health_off_bg.png"
-                }
+            width: 65
+            height: 20
+            color:"transparent"
+            Image{
+                anchors.fill: parent
+                source: "images/wvga/ecg/health_off_bg.png"
             }
-
+            Image{
+                x:10
+                y:5
+                id:icon_image
+                source:"images/wvga/ecg/health_off.png"
+            }
+            Text{
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: icon_image.left
+                anchors.leftMargin: 15
+                text: "退出"
+                color: "white"
+            }
             anchors{
                 left: t3.left
                 verticalCenter: parent.verticalCenter
-                topMargin: 10
+                topMargin: 0
                 leftMargin: 430
             }
             MouseArea{
-                anchors.fill: parent
+               anchors.fill: parent
                 onExited:{
                    close_button.opacity = 1.0
                 }
@@ -115,10 +116,7 @@ ApplicationWindow {
 
                 }
             }
-
-
         }
-
         Rectangle{
             id: tt
             color:"transparent"

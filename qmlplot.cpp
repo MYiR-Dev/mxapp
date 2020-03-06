@@ -70,10 +70,15 @@ void CustomPlotItem::initCustomPlot()
     m_CustomPlot->yAxis->setLabel( "S" );
     m_CustomPlot->xAxis->setRange(0, 5, Qt::AlignLeading);
     m_CustomPlot->yAxis->setRange(0, 1200, Qt::AlignLeading);
-    m_CustomPlot ->setInteractions( QCP::iRangeDrag | QCP::iRangeZoom );
+    m_CustomPlot->setInteractions( QCP::iRangeDrag | QCP::iRangeZoom );
     m_CustomPlot->yAxis->setVisible(false);
     m_CustomPlot->xAxis->setVisible(false);
-
+//    m_CustomPlot->graph(0)->setLineStyle(QCPGraph::lsNone);
+//    m_CustomPlot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
+//    m_CustomPlot->setBackground(Qt :: transparent);
+//    m_CustomPlot->setAttribute(Qt::WA_OpaquePaintEvent);
+//    m_CustomPlot->setStyleSheet("background:hsva(255,255,255,0%);");
+//    m_CustomPlot->setBackground(QBrush(Qt::NoBrush));
     getECGData();
     getRESPData();
     timer_count = 0;
@@ -85,16 +90,22 @@ void CustomPlotItem::initCustomPlot()
 }
 void CustomPlotItem::timerEvent(QTimerEvent *event)
 {
-
+    int i = 0;
     if (ecg_time[timer_count] > 5.0)
     {
         timer_count = 0;;
-        m_CustomPlot->graph(0)->data()->removeAfter(ecg_time[timer_count]);
-        m_CustomPlot->graph(1)->data()->removeAfter(ecg_time[timer_count]);
-        m_CustomPlot->graph(2)->data()->removeAfter(ecg_time[timer_count]);
-        m_CustomPlot->graph(3)->data()->removeAfter(ecg_time[timer_count]);
+//        m_CustomPlot->graph(0)->data()->removeAfter(ecg_time[timer_count]);
+//        m_CustomPlot->graph(1)->data()->removeAfter(ecg_time[timer_count]);
+//        m_CustomPlot->graph(2)->data()->removeAfter(ecg_time[timer_count]);
+//        m_CustomPlot->graph(3)->data()->removeAfter(ecg_time[timer_count]);
 
     }
+
+    m_CustomPlot->graph(0)->data()->remove(ecg_time[timer_count+1],ecg_time[timer_count+20]);
+    m_CustomPlot->graph(1)->data()->remove(ecg_time[timer_count+1],ecg_time[timer_count+20]);
+    m_CustomPlot->graph(2)->data()->remove(ecg_time[timer_count+1],ecg_time[timer_count+20]);
+    m_CustomPlot->graph(3)->data()->remove(ecg_time[timer_count+1],ecg_time[timer_count+20]);
+
     m_CustomPlot->graph(0)->addData(ecg_time[timer_count],ecg_data1[timer_count]);
     m_CustomPlot->graph(1)->addData(ecg_time[timer_count],ecg_data2[timer_count]);
     m_CustomPlot->graph(2)->addData(ecg_time[timer_count],pleth_data[timer_count+30]);
@@ -174,6 +185,7 @@ void CustomPlotItem::getECGData()
 }
 void CustomPlotItem::paint( QPainter* painter )
 {
+
     if (m_CustomPlot)
     {
         QPixmap    picture( boundingRect().size().toSize() );
