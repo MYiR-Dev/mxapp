@@ -1,7 +1,7 @@
 import QtQuick 2.6
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.1
-
+import QtQuick.Layouts 1.12
 ApplicationWindow {
     id: mainWnd
     visible: true
@@ -9,10 +9,9 @@ ApplicationWindow {
     height: 480
     title: qsTr("Hello World")
 
-    Image{
-        source: "images/wvga/home/background-dark.png"
-    }
-
+    background: Image{
+            source: "images/wvga/home/background-dark.png"
+        }
 
     function  chooseWnd(str){
         console.log(str)
@@ -87,5 +86,50 @@ ApplicationWindow {
                 }
             }
         ]
+    }
+    Loader{
+        id:playerWnd;
+        anchors.centerIn: parent;
+        source: "PlayerWindow.qml";
+    }
+    Loader{
+        id:scopeWnd;
+        anchors.centerIn: parent;
+        source: "ScopeWindow.qml";
+    }
+    Loader{
+        id:ticketWnd;
+        anchors.centerIn: parent;
+        source: "TicketWindow.qml";
+    }
+    Loader{
+        id:cameraWnd;
+        anchors.centerIn: parent;
+        source: "CameraWindow.qml";
+    }
+    Loader{
+        id:infoWnd;
+        anchors.centerIn: parent;
+        source: "InfoWindow.qml";
+    }
+    Loader{
+        id:settingsWnd;
+        anchors.centerIn: parent;
+        source: "SettingsWindow.qml";
+    }
+    Loader{
+        id:pictureWnd;
+        anchors.centerIn: parent;
+        source: "PictureWindow.qml";
+    }
+    Loader{
+        id:washWnd;
+        anchors.centerIn: parent;
+        source: "WashWindow.qml";
+    }
+    Loader{
+        id:fileWnd;
+        anchors.centerIn: parent;
+        source: "FileWindow.qml";
     }
 }
