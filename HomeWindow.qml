@@ -1,4 +1,4 @@
-import QtQuick 2.12
+import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
@@ -103,19 +103,30 @@ Rectangle {
                 id:viewDelegate;
                 Item{
                     id:wrapper;
+                    property real iangle: PathView.iconAngle;
                     width: parent.width/2.5;
                     height: parent.height-20;
                     anchors.top: parent.top;
                     anchors.topMargin: 10;
                     z:PathView.zOrder;
                     scale: PathView.itemScale;
+
                     Image {
                         id:image;
                         width: 225;
                         height: parent.height-80;
                         anchors.horizontalCenter: parent.horizontalCenter
                         source: cimage;
+
+                        transform: Rotation{
+                            origin.x:image.width/2.0
+                            origin.y:image.height/2.0
+                            axis{x:0;y:1;z:0}
+                            angle:wrapper.iangle
+                        }
                     }
+
+
                     ShaderEffect {
                         anchors.top: image.bottom
                         width: image.width
@@ -184,42 +195,40 @@ Rectangle {
                 delegate: viewDelegate;
                 model: viewModel;
 
-//                transform: Rotation{
-//                    origin.x:image.width/2.0
-//                    origin.y:image.height/2.0
-//                    axis{x:0;y:1;z:0}
-//                    angle: PathView.iconAngle
-//                }
-
                 path:Path{
                     startX:50;
                     startY:0;
                     PathAttribute{name:"zOrder";value:0}
-                    PathAttribute{name:"itemScale";value:0.4}
+                    PathAttribute{name:"itemScale";value:0.45}
+                    PathAttribute{name:"iconAngle";value:-40}
                     PathLine{
                         x:pathView.width/4;
                         y:0;
                     }
                     PathAttribute{name:"zOrder";value:5}
                     PathAttribute{name:"itemScale";value:0.55}
+                    PathAttribute{name:"iconAngle";value:-20}
                     PathLine{
                         x:pathView.width/2;
                         y:0;
                     }
                     PathAttribute{name:"zOrder";value:10}
                     PathAttribute{name:"itemScale";value:1}
+                    PathAttribute{name:"iconAngle";value:0}
                     PathLine{
                         x:pathView.width*0.75;
                         y:0;
                     }
                     PathAttribute{name:"zOrder";value:5}
                     PathAttribute{name:"itemScale";value:0.55}
+                    PathAttribute{name:"iconAngle";value:20}
                     PathLine{
                         x:pathView.width-50;
                         y:0;
                     }
                     PathAttribute{name:"zOrder";value:0}
-                    PathAttribute{name:"itemScale";value:0.4}
+                    PathAttribute{name:"itemScale";value:0.45}
+                    PathAttribute{name:"iconAngle";value:40}
                 }
             }
 
@@ -248,6 +257,7 @@ Rectangle {
                     id: subMenuRow
                     width: 800
                     height: 55
+                    property bool isClickable: true
 
 //                    anchors{
 //                        fill:parent
@@ -322,15 +332,82 @@ Rectangle {
                                 }
 
                                 MouseArea{
+                                    id: homeMA
                                     anchors.fill: parent;
                                     hoverEnabled: true;
                                     cursorShape: Qt.PointingHandCursor;
 
                                     onClicked: {
-                                        console.log("clicked:"+model.aqml)
-                                        var obj = Qt.createComponent(model.aqml).createObject(mainWnd)
-                        //                        obj.z = 4;
-                                        obj.show()                                    }
+                                        console.log("clicked:"+model.aqml + " " + subMenuRow.isClickable)
+// 第一种方式加载
+//                                        timer.start()
+//                                        if(subMenuRow.isClickable === true){
+//                                            var componet = Qt.createComponent(model.aqml);
+//                                            if(componet.status === Component.Ready) {
+//                                                var obj = componet.createObject(mainWnd)
+//                                            }
+//                                            obj.show()
+
+//                                            isClickable.isSubShow = false;
+//                                        }
+
+// 第二种方式加载
+                                        if(model.aqml === "PlayerWindow.qml"){
+//                                            playerWnd.forceActiveFocus()
+//                                            playerWnd.z=4;
+                                            playerWnd.item.show()
+                                            playerWnd.item.requestActivate()
+                                        }else if(model.aqml === "CameraWindow.qml"){
+//                                            cameraWnd.forceActiveFocus()
+//                                            cameraWnd.z=4;
+                                              cameraWnd.item.show()
+                                              cameraWnd.item.requestActivate()
+                                        }else if(model.aqml === "PictureWindow.qml"){
+//                                            pictureWnd.forceActiveFocus()
+//                                            pictureWnd.z=4;
+                                              pictureWnd.item.show()
+                                              pictureWnd.item.requestActivate()
+                                        }else if(model.aqml === "TicketWindow.qml"){
+//                                            ticketWnd.forceActiveFocus()
+//                                            ticketWnd.z=4;
+                                              ticketWnd.item.show()
+                                              ticketWnd.item.requestActivate()
+                                        }else if(model.aqml === "ScopeWindow.qml"){
+//                                            scopeWnd.forceActiveFocus()
+//                                            scopeWnd.z=4;
+                                              scopeWnd.item.show()
+                                              scopeWnd.item.requestActivate()
+                                        }else if(model.aqml === "FileWindow.qml"){
+//                                            fileWnd.forceActiveFocus()
+//                                            fileWnd.z=4;
+                                              fileWnd.item.show()
+                                              fileWnd.item.requestActivate()
+                                        }else if(model.aqml === "WashWindow.qml"){
+//                                            washWnd.forceActiveFocus()
+//                                            washWnd.z=4;
+                                              washWnd.item.show()
+                                              washWnd.item.requestActivate()
+                                        }else if(model.aqml === "InfoWindow.qml"){
+//                                            infoWnd.forceActiveFocus()
+//                                            infoWnd.z=4;
+                                              infoWnd.item.show()
+                                              infoWnd.item.requestActivate()
+                                        }else if(model.aqml === "SettingsWindow.qml"){
+//                                            settingsWnd.forceActiveFocus()
+//                                            settingsWnd.z=4;
+                                              settingsWnd.item.show()
+                                              settingsWnd.item.requestActivate()
+                                        }
+                                    }
+
+                                    Timer{
+                                        id:timer
+                                        interval:1000;running:false;repeat: false
+                                        onTriggered: {
+                                            subMenuRow.isClickable = true;
+                                            console.log("timer isClickable: " + subMenuRow.isClickable)
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -480,7 +557,7 @@ Rectangle {
                     qsTr("多媒体"),
                     qsTr("摄像头"),
                     "qrc:/images/wvga/home/media_icon_camera_nor.png",
-                    "SystemWindow.qml",
+                    "CameraWindow.qml",
                     "#02b9db"
                     )
 //2
@@ -490,7 +567,7 @@ Rectangle {
                     qsTr("多媒体"),
                     qsTr("播放器"),
                     "qrc:/images/wvga/home/media_icon_video_nor.png",
-                    "SystemWindow.qml",
+                    "PlayerWindow.qml",
                     "#02b9db"
                     )
         //3
@@ -500,7 +577,7 @@ Rectangle {
                     qsTr("系统"),
                     qsTr("系统信息"),
                     "qrc:/images/wvga/home/system_icon_info_nor.png",
-                    "SystemWindow.qml",
+                    "InfoWindow.qml",
                     "#02b9db"
                     )
         //4
@@ -510,7 +587,7 @@ Rectangle {
                     qsTr("系统"),
                     qsTr("系统设置"),
                     "qrc:/images/wvga/home/system_icon_set_nor.png",
-                    "SystemWindow.qml",
+                    "SettingsWindow.qml",
                     "#02b9db"
                     )
         //5
@@ -520,7 +597,7 @@ Rectangle {
                     qsTr("智能家电"),
                     qsTr("洗衣机"),
                     "qrc:/images/wvga/home/smart_icon_washing_nor.png",
-                    "SystemWindow.qml",
+                    "WashWindow.qml",
                     "#02b9db"
                     )
         //6
@@ -530,7 +607,7 @@ Rectangle {
                     qsTr("卫生医疗"),
                     qsTr("心电仪"),
                     "qrc:/images/wvga/home/medical_icon_heart_nor.png",
-                    "scope.qml",
+                    "ScopeWindow.qml",
                     "#02b9db"
                     )
         //7
@@ -540,7 +617,7 @@ Rectangle {
                     qsTr("公共服务"),
                     qsTr("取票机"),
                     "qrc:/images/wvga/home/public_icon_ticket_nor.png",
-                    "SystemWindow.qml",
+                    "TicketWindow.qml",
                     "#02b9db"
                     )
         //8
@@ -550,7 +627,7 @@ Rectangle {
                     qsTr("系统"),
                     qsTr("文件管理器"),
                     "qrc:/images/wvga/home/media_icon_doc.png",
-                    "SystemWindow.qml",
+                    "FileWindow.qml",
                     "#02b9db"
                     )
         //9
@@ -560,7 +637,7 @@ Rectangle {
                     qsTr("多媒体"),
                     qsTr("图片"),
                     "qrc:/images/wvga/home/media_icon_img_nor.png",
-                    "SystemWindow.qml",
+                    "PictureWindow.qml",
                     "#02b9db"
                     )
     }

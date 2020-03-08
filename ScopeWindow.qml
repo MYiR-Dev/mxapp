@@ -2,13 +2,11 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 
-ApplicationWindow {
-    id:ecg_main
-    visible: true
-
-    width: 800
-    height: 480
+SystemWindow {
+    id:scopeWindow
     title: qsTr("Hello QCustomPlot in QML")
+
+    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
 
 //    Item {
 //        id: mainView
@@ -41,6 +39,7 @@ ApplicationWindow {
         Text {
             id: t1
             color: "#F5F5F5"
+//            font.family: "Microsoft YaHei"
             text: qsTr("BED")
             anchors{
                 left: logo.left
@@ -52,6 +51,7 @@ ApplicationWindow {
         Text {
             id :t2
             color: "#F5F5F5"
+//            font.family: "Microsoft YaHei"
             text: qsTr("NO:5")
             anchors{
                 left: t1.left
@@ -63,6 +63,7 @@ ApplicationWindow {
         Text {
             id: t3
             color: "#F5F5F5"
+//            font.family: "Microsoft YaHei"
             text: qsTr("ADULT")
             anchors{
                 left: t2.left
@@ -91,7 +92,8 @@ ApplicationWindow {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: icon_image.left
                 anchors.leftMargin: 15
-                text: "退出"
+//                font.family: "Microsoft YaHei"
+                text: qsTr("退出")
                 color: "white"
             }
             anchors{
@@ -111,7 +113,7 @@ ApplicationWindow {
                 }
 
                 onReleased: {
-                    ecg_main.close()
+                    scopeWindow.close()
                     close_button.opacity = 1.0
 
                 }
@@ -221,12 +223,14 @@ ApplicationWindow {
                 rows:3
 
                 Text {
+//                    font.family: "Microsoft YaHei"
                     text:"ECG"
                     color: "#F5F5F5"
                     Layout.row:0
                     Layout.column:0
                 }
                 Text {
+//                    font.family: "Microsoft YaHei"
                     text:"PACE"
                     color: "#F5F5F5"
                     Layout.row:0
@@ -240,6 +244,7 @@ ApplicationWindow {
                 }
                 Text {
                     id:ecg_value
+//                    font.family: "Microsoft YaHei"
                     text:"80"
                     color: "#00FF00"
                     Layout.row:1
@@ -265,6 +270,7 @@ ApplicationWindow {
                 columns:3
                 rows:3
                 Text {
+//                    font.family: "Microsoft YaHei"
                     text:"NIBP"
                     color: "#F5F5F5"
                     Layout.row:0
@@ -273,12 +279,14 @@ ApplicationWindow {
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
                     id: time1
+//                    font.family: "Microsoft YaHei"
                     text: "00:00:00"
                     color: "#F5F5F5"
                     Layout.row:0
                     Layout.column:1
                 }
                 Text {
+//                    font.family: "Microsoft YaHei"
                     text: "mmhg";
                     color: "#F5F5F5"
                     Layout.row:0
@@ -286,6 +294,7 @@ ApplicationWindow {
                 }
                 Text {
                     id:nibp_value
+//                    font.family: "Microsoft YaHei"
                     text: "120/80";
                     color: "#F5F5F5"
                     Layout.row:1
@@ -297,6 +306,7 @@ ApplicationWindow {
                 }
                 Text {
                     id:mmhg_value
+//                    font.family: "Microsoft YaHei"
                     text: "90";
                     color: "#F8F8FF"
                     Layout.row:1
@@ -320,12 +330,14 @@ ApplicationWindow {
                 columns:2
                 rows:3
                 Text {
+//                    font.family: "Microsoft YaHei"
                     text: "SPO2";
                     color: "#F5F5F5"
                     Layout.row:0
                     Layout.column:0
                 }
                 Text {
+//                    font.family: "Microsoft YaHei"
                     text: "PR";
                     color: "#F5F5F5"
                     Layout.row:0
@@ -333,6 +345,7 @@ ApplicationWindow {
                 }
                 Text {
                     id:spo2_value
+//                    font.family: "Microsoft YaHei"
                     text: "98";
                     color: "#FF6347"
                     Layout.row:1
@@ -345,6 +358,7 @@ ApplicationWindow {
                 Text {
                     id:pr_value
                     text: "60";
+//                    font.family: "Microsoft YaHei"
                     color: "#FF6347"
                     Layout.row:1
                     Layout.column:1
@@ -368,12 +382,14 @@ ApplicationWindow {
                 rows:3
                 Text {
                     text: "RESP";
+//                    font.family: "Microsoft YaHei"
                     color: "#F5F5F5"
                     Layout.row:0
                     Layout.column:0
                 }
                 Text {
                     id:resp_value
+//                    font.family: "Microsoft YaHei"
                     text: "20";
                     color: "yellow"
                     Layout.row:1
@@ -397,7 +413,8 @@ ApplicationWindow {
                 columns:3
                 rows:3
                 Text {
-                    text: "TEMP(℃)";
+//                    font.family: "Microsoft YaHei"
+                    text: qsTr("TEMP(℃)");
                     color: "#F5F5F5"
                     Layout.row:0
                     Layout.column:0
@@ -405,6 +422,7 @@ ApplicationWindow {
                 Text {
                     id: temp1
                     text: "T1";
+//                    font.family: "Microsoft YaHei"
                     color: "#F5F5F5"
                     Layout.row:1
                     Layout.column:0
@@ -412,12 +430,14 @@ ApplicationWindow {
                 Text {
                     id: temp2
                     text: "T2";
+//                    font.family: "Microsoft YaHei"
                     color: "#F5F5F5"
                     Layout.row:2
                     Layout.column:0
                 }
                 Text {
                     id:temp1_value
+//                    font.family: "Microsoft YaHei"
                     text: "37.7";
                     color: "#F5F5F5"
                     Layout.row:1
@@ -434,6 +454,7 @@ ApplicationWindow {
                 }
                 Text {
                     id:temp2_value
+//                    font.family: "Microsoft YaHei"
                     text: "37.2";
                     color: "#F5F5F5"
                     Layout.row:2
@@ -449,6 +470,7 @@ ApplicationWindow {
                     }
                 }
                 Text {
+//                    font.family: "Microsoft YaHei"
                     text: "TD";
                     color: "#F5F5F5"
                     Layout.row:1
@@ -456,6 +478,7 @@ ApplicationWindow {
                 }
                 Text {
                     id:td_value
+//                    font.family: "Microsoft YaHei"
                     text: "0.5";
                     color: "#F5F5F5"
                     Layout.row:2

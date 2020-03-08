@@ -146,6 +146,7 @@ Rectangle {
 //        }
 
         MouseArea{
+            id: homeMA
             anchors.fill: parent;
             hoverEnabled: true;
             cursorShape: Qt.PointingHandCursor;
@@ -166,13 +167,78 @@ Rectangle {
 //                numRect.visible=true;
 //                playLab.visible=false;
             }
+            property bool isClickable: true
 
             onClicked: {
-                // load new window
-                console.log(qurl)
-                var obj = Qt.createComponent(qurl).createObject(mainWnd)
-//                        obj.z = 4;
-                obj.show()
+                console.log("clicked:"+qurl + " " + isClickable)
+//                timer.start()
+//                if(isClickable === true){
+//                    var componet = Qt.createComponent(qurl);
+//                    if(componet.status === Component.Ready) {
+//                        var obj = componet.createObject(mainWnd)
+//                    }
+//                    obj.show()
+
+//                    isClickable = false;
+//                }
+
+// 第二种方式加载
+                  if(qurl === "PlayerWindow.qml"){
+//                      playerWnd.forceActiveFocus()
+//                      playerWnd.z=4;
+                        playerWnd.item.show()
+                        playerWnd.item.requestActivate()
+                   }else if(qurl === "CameraWindow.qml"){
+//                      cameraWnd.forceActiveFocus()
+//                      cameraWnd.z=4;
+                        cameraWnd.item.show()
+                        cameraWnd.item.requestActivate()
+                   }else if(qurl === "PictureWindow.qml"){
+//                      pictureWnd.forceActiveFocus()
+//                      pictureWnd.z=4;
+                        pictureWnd.item.show()
+                        pictureWnd.item.requestActivate()
+                   }else if(qurl === "TicketWindow.qml"){
+//                      ticketWnd.forceActiveFocus()
+//                      ticketWnd.z=4;
+                        ticketWnd.item.show()
+                        ticketWnd.item.requestActivate()
+                   }else if(qurl === "ScopeWindow.qml"){
+//                      scopeWnd.forceActiveFocus()
+//                      scopeWnd.z=4;
+                        scopeWnd.item.show()
+                        scopeWnd.item.requestActivate()
+                   }else if(qurl === "FileWindow.qml"){
+//                      fileWnd.forceActiveFocus()
+//                      fileWnd.z=4;
+                        fileWnd.item.show()
+                        fileWnd.item.requestActivate()
+                   }else if(qurl === "WashWindow.qml"){
+//                      washWnd.forceActiveFocus()
+//                      washWnd.z=4;
+                        washWnd.item.show()
+                        washWnd.item.requestActivate()
+                   }else if(qurl === "InfoWindow.qml"){
+//                      infoWnd.forceActiveFocus()
+//                      infoWnd.z=4;
+                        infoWnd.item.show()
+                        infoWnd.item.requestActivate()
+                   }else if(qurl === "SettingsWindow.qml"){
+//                      settingsWnd.forceActiveFocus()
+//                      settingsWnd.z=4;
+                        settingsWnd.item.show()
+                        settingsWnd.item.requestActivate()
+                   }
+            }
+
+
+            Timer{
+                id:timer
+                interval:1000;running:false;repeat: false
+                onTriggered: {
+                    homeMA.isClickable = true;
+                    console.log("timer isClickable: " + homeMA.isClickable)
+                }
             }
         }
     }
