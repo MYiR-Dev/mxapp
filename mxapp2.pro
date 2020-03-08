@@ -35,3 +35,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     qcustomplot.h \
     qmlplot.h
+
+DISTFILES +=

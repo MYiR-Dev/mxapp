@@ -90,7 +90,7 @@ Rectangle {
                         _text1: qsTr("心电仪演示")
                         _text2: qsTr("心电仪")
                         _num: "1"
-                        _qurl: "scope.qml"
+                        _qurl: "ScopeWindow.qml"
                     }
                 }
 

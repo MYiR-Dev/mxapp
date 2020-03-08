@@ -36,7 +36,6 @@
         <file>fonts/DIGITAL/DS-DIGIT.TTF</file>
         <file>fonts/Bahnschrift.ttf</file>
         <file>Loading.qml</file>
-        <file>scope.qml</file>
         <file>page2.qml</file>
         <file>SupportPop.qml</file>
         <file>MenuListItem.qml</file>
@@ -82,5 +81,6 @@
         <file>images/wvga/ecg/ecg_bg2.png</file>
         <file>images/wvga/ecg/ecg_bg3.png</file>
         <file>images/wvga/ecg/ecg_bg4.png</file>
+        <file>ScopeWindow.qml</file>
     </qresource>
 </RCC>

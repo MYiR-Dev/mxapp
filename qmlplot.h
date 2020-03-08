@@ -4,7 +4,7 @@
 #include <QtQuick>
 class QCustomPlot;
 class QCPAbstractPlottable;
-#define DATA_COUNT 65000
+#define DATA_COUNT 5000
 class CustomPlotItem : public QQuickPaintedItem
 {
     Q_OBJECT
@@ -24,6 +24,10 @@ public:
     QVector<double> ecg_data2;
     QVector<double> pleth_data;
     QVector<double> resp_data;
+    QVector<double> ecg_data1_backup;
+    QVector<double> ecg_data2_backup;
+    QVector<double> pleth_data_backup;
+    QVector<double> resp_data_backup;
     int timer_count;
 protected:
 //    void routeMouseEvents( QMouseEvent* event );

@@ -27,45 +27,31 @@ CustomPlotItem::~CustomPlotItem()
         killTimer(m_timerId);
     }
 }
-void CustomPlotItem::getRESPData()
-{
 
-    QFile file("resp.text");
-
-    if (file.open(QFile::ReadOnly | QIODevice::Text))
-    {
-        QTextStream in(&file);
-        QString strLine;
-        QStringList list;
-        while (!in.atEnd())
-        {
-            strLine = in.readLine();
-            strLine.remove("\r\n");
-            list = strLine.split("\t");
-
-            pleth_data.append(list[3].trimmed().toDouble()/10+DATA3_GAIN);
-            resp_data.append(list[4].trimmed().toDouble()/8+DATA4_GAIN);
-        }
-    }
-    else
-    {
-        qDebug() << "cannot open file resp.text!";
-    }
-
-}
 void CustomPlotItem::initCustomPlot()
 {
     m_CustomPlot = new QCustomPlot();
 
     updateCustomPlotSize();
+
     m_CustomPlot->addGraph();
     m_CustomPlot->addGraph();
     m_CustomPlot->addGraph();
     m_CustomPlot->addGraph();
+    m_CustomPlot->addGraph();
+    m_CustomPlot->addGraph();
+    m_CustomPlot->addGraph();
+    m_CustomPlot->addGraph();
+
     m_CustomPlot->graph(0)->setPen(QPen(Qt::green));
-    m_CustomPlot->graph(1)->setPen(QPen(Qt::green));;
-    m_CustomPlot->graph(2)->setPen(QPen(Qt::red));;
-    m_CustomPlot->graph(3)->setPen(QPen(Qt::red));;
+    m_CustomPlot->graph(1)->setPen(QPen(Qt::green));
+    m_CustomPlot->graph(2)->setPen(QPen(Qt::red));
+    m_CustomPlot->graph(3)->setPen(QPen(Qt::red));
+    m_CustomPlot->graph(4)->setPen(QPen(Qt::green));
+    m_CustomPlot->graph(5)->setPen(QPen(Qt::green));
+    m_CustomPlot->graph(6)->setPen(QPen(Qt::red));
+    m_CustomPlot->graph(7)->setPen(QPen(Qt::red));
+
     m_CustomPlot->xAxis->setLabel( "t" );
     m_CustomPlot->yAxis->setLabel( "S" );
     m_CustomPlot->xAxis->setRange(0, 5, Qt::AlignLeading);
@@ -73,16 +59,12 @@ void CustomPlotItem::initCustomPlot()
     m_CustomPlot->setInteractions( QCP::iRangeDrag | QCP::iRangeZoom );
     m_CustomPlot->yAxis->setVisible(false);
     m_CustomPlot->xAxis->setVisible(false);
-//    m_CustomPlot->graph(0)->setLineStyle(QCPGraph::lsNone);
-//    m_CustomPlot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
 //    m_CustomPlot->setBackground(Qt :: transparent);
-//    m_CustomPlot->setAttribute(Qt::WA_OpaquePaintEvent);
-//    m_CustomPlot->setStyleSheet("background:hsva(255,255,255,0%);");
-//    m_CustomPlot->setBackground(QBrush(Qt::NoBrush));
+
     getECGData();
     getRESPData();
     timer_count = 0;
-    startTimer(5);
+    startTimer(10);
 
     connect( m_CustomPlot, &QCustomPlot::afterReplot, this, &CustomPlotItem::onCustomReplot );
 
@@ -91,28 +73,70 @@ void CustomPlotItem::initCustomPlot()
 void CustomPlotItem::timerEvent(QTimerEvent *event)
 {
     int i = 0;
-    if (ecg_time[timer_count] > 5.0)
+    if (ecg_time[timer_count] > 5)
     {
+
         timer_count = 0;;
-//        m_CustomPlot->graph(0)->data()->removeAfter(ecg_time[timer_count]);
-//        m_CustomPlot->graph(1)->data()->removeAfter(ecg_time[timer_count]);
-//        m_CustomPlot->graph(2)->data()->removeAfter(ecg_time[timer_count]);
-//        m_CustomPlot->graph(3)->data()->removeAfter(ecg_time[timer_count]);
+
+        m_CustomPlot->graph(0)->data()->clear();
+        m_CustomPlot->graph(4)->setData(ecg_time,ecg_data1_backup);
+
+        m_CustomPlot->graph(1)->data()->clear();
+        m_CustomPlot->graph(5)->setData(ecg_time,ecg_data2_backup);
+
+        m_CustomPlot->graph(2)->data()->clear();
+        m_CustomPlot->graph(6)->setData(ecg_time,pleth_data_backup);
+
+        m_CustomPlot->graph(3)->data()->clear();
+        m_CustomPlot->graph(7)->setData(ecg_time,resp_data_backup);
 
     }
 
-    m_CustomPlot->graph(0)->data()->remove(ecg_time[timer_count+1],ecg_time[timer_count+20]);
-    m_CustomPlot->graph(1)->data()->remove(ecg_time[timer_count+1],ecg_time[timer_count+20]);
-    m_CustomPlot->graph(2)->data()->remove(ecg_time[timer_count+1],ecg_time[timer_count+20]);
-    m_CustomPlot->graph(3)->data()->remove(ecg_time[timer_count+1],ecg_time[timer_count+20]);
+    m_CustomPlot->graph(4)->data()->removeBefore(ecg_time[timer_count+50]);
+    m_CustomPlot->graph(5)->data()->removeBefore(ecg_time[timer_count+50]);
+    m_CustomPlot->graph(6)->data()->removeBefore(ecg_time[timer_count+50]);
+    m_CustomPlot->graph(7)->data()->removeBefore(ecg_time[timer_count+50]);
 
     m_CustomPlot->graph(0)->addData(ecg_time[timer_count],ecg_data1[timer_count]);
     m_CustomPlot->graph(1)->addData(ecg_time[timer_count],ecg_data2[timer_count]);
     m_CustomPlot->graph(2)->addData(ecg_time[timer_count],pleth_data[timer_count+30]);
     m_CustomPlot->graph(3)->addData(ecg_time[timer_count],resp_data[timer_count+30]);
+
     m_CustomPlot->replot();
 
     timer_count++;
+}
+void CustomPlotItem::getRESPData()
+{
+    int i = 0;
+    QFile file("resp.text");
+
+    if (file.open(QFile::ReadOnly | QIODevice::Text))
+    {
+        QTextStream in(&file);
+        QString strLine;
+        QStringList list;
+
+        for( i = 0; i < DATA_COUNT; i++)
+        {
+            if(!in.atEnd())
+            {
+                strLine = in.readLine();
+                strLine.remove("\r\n");
+                list = strLine.split("\t");
+
+                pleth_data.append(list[3].trimmed().toDouble()/10+DATA3_GAIN);
+                pleth_data_backup.append(list[3].trimmed().toDouble()/10+DATA3_GAIN);
+                resp_data.append(list[4].trimmed().toDouble()/8+DATA4_GAIN);
+                resp_data_backup.append(list[4].trimmed().toDouble()/8+DATA4_GAIN);
+            }
+        }
+    }
+    else
+    {
+        qDebug() << "cannot open file resp.text!";
+    }
+
 }
 void CustomPlotItem::getECGData()
 {
@@ -167,8 +191,8 @@ void CustomPlotItem::getECGData()
             s2[i] = ( 4096 - s2[i] ) * ( -1 );
     }
 
-    qDebug() <<  "Signal 1 first Point Value :\t " << s1[0] ;
-    qDebug() <<  "Signal 2 first Point Value :\t " << s2[0] ;
+//    qDebug() <<  "Signal 1 first Point Value :\t " << s1[0] ;
+//    qDebug() <<  "Signal 2 first Point Value :\t " << s2[0] ;
 
 
     for (int i = 0; i< DATA_COUNT; i++)
@@ -177,7 +201,9 @@ void CustomPlotItem::getECGData()
         s2[i] -= DATA2_GAIN;
 
         ecg_data1.append(s1[i]/1.5);
+        ecg_data1_backup.append(s1[i]/1.5);
         ecg_data2.append(s2[i]);
+        ecg_data2_backup.append(s2[i]);
         ecg_time.append(t[i]);
     }
 
@@ -198,57 +224,10 @@ void CustomPlotItem::paint( QPainter* painter )
 
 }
 
-//void CustomPlotItem::mousePressEvent( QMouseEvent* event )
-//{
-//    qDebug() << Q_FUNC_INFO;
-//    routeMouseEvents( event );
-//}
-
-//void CustomPlotItem::mouseReleaseEvent( QMouseEvent* event )
-//{
-//    qDebug() << Q_FUNC_INFO;
-//    routeMouseEvents( event );
-//}
-
-//void CustomPlotItem::mouseMoveEvent( QMouseEvent* event )
-//{
-//    routeMouseEvents( event );
-//}
-
-//void CustomPlotItem::mouseDoubleClickEvent( QMouseEvent* event )
-//{
-//    qDebug() << Q_FUNC_INFO;
-//    routeMouseEvents( event );
-//}
-
-//void CustomPlotItem::wheelEvent( QWheelEvent *event )
-//{
-//    routeWheelEvents( event );
-//}
-
-
 void CustomPlotItem::graphClicked( QCPAbstractPlottable* plottable )
 {
     qDebug() << Q_FUNC_INFO << QString( "Clicked on graph '%1 " ).arg( plottable->name() );
 }
-
-//void CustomPlotItem::routeMouseEvents( QMouseEvent* event )
-//{
-//    if (m_CustomPlot)
-//    {
-//        QMouseEvent* newEvent = new QMouseEvent( event->type(), event->localPos(), event->button(), event->buttons(), event->modifiers() );
-//        QCoreApplication::postEvent( m_CustomPlot, newEvent );
-//    }
-//}
-
-//void CustomPlotItem::routeWheelEvents( QWheelEvent* event )
-//{
-//    if (m_CustomPlot)
-//    {
-//        QWheelEvent* newEvent = new QWheelEvent( event->pos(), event->delta(), event->buttons(), event->modifiers(), event->orientation() );
-//        QCoreApplication::postEvent( m_CustomPlot, newEvent );
-//    }
-//}
 
 void CustomPlotItem::updateCustomPlotSize()
 {
