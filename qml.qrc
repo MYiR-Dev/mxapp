@@ -36,7 +36,7 @@
         <file>fonts/DIGITAL/DS-DIGIT.TTF</file>
         <file>fonts/Bahnschrift.ttf</file>
         <file>Loading.qml</file>
-        <file>scope.qml</file>
+        <file>ScopeWindow.qml</file>
         <file>page2.qml</file>
         <file>SupportPop.qml</file>
         <file>MenuListItem.qml</file>
@@ -81,6 +81,47 @@
         <file>images/wvga/ecg/spinner.png</file>
         <file>images/wvga/ecg/ecg_bg2.png</file>
         <file>images/wvga/ecg/ecg_bg3.png</file>
-        <file>images/wvga/ecg/ecg_bg4.png</file>
+        <file>images/wvga/ecg/ecg_bg4.png</file>	
+        <file>TicketWindow.qml</file>
+        <file>WashWindow.qml</file>
+        <file>InfoWindow.qml</file>
+        <file>SettingsWindow.qml</file>
+        <file>PictureWindow.qml</file>
+        <file>PlayerWindow.qml</file>
+        <file>CameraWindow.qml</file>
+        <file>FileWindow.qml</file>
+        <file>images/wvga/back_icon_nor.png</file>
+        <file>TitleRightBar.qml</file>
+        <file>TitleLeftBar.qml</file>
+        <file>images/LOGO.png</file>
+        <file>images/wvga/public/BANNER.png</file>
+        <file>images/wvga/public/nub_bg_down.png</file>
+        <file>images/wvga/public/num_bg_dn.png</file>
+        <file>images/wvga/public/number.png</file>
+        <file>images/wvga/public/numbg.png</file>
+        <file>images/wvga/public/ok_bg.png</file>
+        <file>images/wvga/public/ok_bg_dn.png</file>
+        <file>images/wvga/public/scanner.png</file>
+        <file>qmldir</file>
+        <file>images/wvga/public/pop_bg.png</file>
+        <file>images/wvga/public/public_icon_close_hover.png</file>
+        <file>images/wvga/public/public_icon_close_nor.png</file>
+        <file>images/wvga/public/public_icon_way1.png</file>
+        <file>images/wvga/public/public_icon_way2.png</file>
+        <file>images/wvga/public/public_pic_fail.png</file>
+        <file>images/wvga/public/public_pic_ticketing.png</file>
+        <file>images/wvga/public/ticket.png</file>
+        <file>images/wvga/public/ticket_box.png</file>
+        <file>images/wvga/public/top_box.png</file>
+        <file>images/wvga/home/myir_address.png</file>
+        <file>images/wvga/home/myir_fax.png</file>
+        <file>images/wvga/home/myir_line.png</file>
+        <file>images/wvga/home/myir_phone.png</file>
+        <file>images/wvga/home/myir_qrcode.png</file>
+        <file>images/wvga/home/myir_sales_mail.png</file>
+        <file>images/wvga/home/myir_support_mail.png</file>
+        <file>images/wvga/home/myir_support_phone.png</file>
+        <file>images/wvga/home/support_phone.png</file>
+        <file>images/wvga/back2.png</file>
     </qresource>
 </RCC>

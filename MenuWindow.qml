@@ -37,7 +37,7 @@ Rectangle {
             Rectangle{
                 id: recttop
                 width: 800
-                height: 2
+                height: 20
                 color: "transparent"
 
 //                MenuListItem {
@@ -55,42 +55,42 @@ Rectangle {
                         _text1: qsTr("视频和音乐播放器")
                         _text2: qsTr("播放器")
                         _num: "1"
-                        _qurl: "page1.qml"
+                        _qurl: "PlayerWindow.qml"
                     }
                     ListElement {
                         _imageSource: "images/wvga/home/camera.png"
                         _text1: qsTr("拍照和预览")
                         _text2: qsTr("摄像头")
                         _num: "1"
-                        _qurl: "page1.qml"
+                        _qurl: "CameraWindow.qml"
                     }
                     ListElement {
                         _imageSource: "images/wvga/home/picture.png"
                         _text1: qsTr("图片浏览")
                         _text2: qsTr("图片")
                         _num: "1"
-                        _qurl: "page1.qml"
+                        _qurl: "PictureWindow.qml"
                     }
                     ListElement {
                         _imageSource: "images/wvga/home/ticket.png"
                         _text1: qsTr("取票机演示")
                         _text2: qsTr("取票机")
                         _num: "1"
-                        _qurl: "page1.qml"
+                        _qurl: "TicketWindow.qml"
                     }
                     ListElement {
                         _imageSource: "images/wvga/home/wash.png"
                         _text1: qsTr("智能洗衣机演示")
                         _text2: qsTr("洗衣机")
                         _num: "1"
-                        _qurl: "page1.qml"
+                        _qurl: "WashWindow.qml"
                     }
                     ListElement {
                         _imageSource: "images/wvga/home/scope.png"
                         _text1: qsTr("心电仪演示")
                         _text2: qsTr("心电仪")
                         _num: "1"
-                        _qurl: "scope.qml"
+                        _qurl: "ScopeWindow.qml"
                     }
                 }
 
@@ -129,7 +129,7 @@ Rectangle {
             Rectangle{
                 id: recttop2
                 width: 800
-                height: 2
+                height: 20
                 color: "transparent"
 
 //                MenuListItem {
@@ -147,21 +147,21 @@ Rectangle {
                         _text1: qsTr("系统信息")
                         _text2: qsTr("系统信息")
                         _num: "1"
-                        _qurl: "SystemWindow.qml"
+                        _qurl: "InfoWindow.qml"
                     }
                     ListElement {
                         _imageSource: "images/wvga/home/settings.png"
                         _text1: qsTr("")
                         _text2: qsTr("系统设置")
                         _num: "1"
-                        _qurl: "page1.qml"
+                        _qurl: "SettingsWindow.qml"
                     }
                     ListElement {
                         _imageSource: "images/wvga/home/filemanager.png"
                         _text1: qsTr("")
                         _text2: qsTr("文件管理")
                         _num: "1"
-                        _qurl: "page1.qml"
+                        _qurl: "FileWindow.qml"
                     }
 //                    ListElement {
 //                        _imageSource: "images/wvga/home/cam.png"
