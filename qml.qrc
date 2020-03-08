@@ -60,11 +60,27 @@
         <file>images/wvga/home/public_icon_ticket_nor.png</file>
         <file>images/wvga/home/media_icon_camera_nor.png</file>
         <file>PlotView.qml</file>
-        <file>ecg/100.dat</file>
         <file>main.cpp</file>
         <file>qcustomplot.cpp</file>
         <file>qcustomplot.h</file>
         <file>qmlplot.cpp</file>
         <file>qmlplot.h</file>
+        <file>images/wvga/ecg/ecg_background.jpeg</file>
+        <file>images/wvga/ecg/display_bg.png</file>
+        <file>images/wvga/ecg/ecg_pic_bg.jpg</file>
+        <file>ecg/resp.text</file>
+        <file>images/wvga/ecg/heart.png</file>
+        <file>images/wvga/ecg/health_off.png</file>
+        <file>ecg/ecg.dat</file>
+        <file>images/wvga/ecg/health_off_bg.png</file>
+        <file>images/wvga/ecg/btn_bg.png</file>
+        <file>images/wvga/ecg/health_stop.png</file>
+        <file>images/wvga/ecg/health_prin.png</file>
+        <file>images/wvga/ecg/health_set.png</file>
+        <file>images/wvga/ecg/save.png</file>
+        <file>images/wvga/ecg/spinner.png</file>
+        <file>images/wvga/ecg/ecg_bg2.png</file>
+        <file>images/wvga/ecg/ecg_bg3.png</file>
+        <file>images/wvga/ecg/ecg_bg4.png</file>
     </qresource>
 </RCC>

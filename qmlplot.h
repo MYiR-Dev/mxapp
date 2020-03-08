@@ -4,7 +4,7 @@
 #include <QtQuick>
 class QCustomPlot;
 class QCPAbstractPlottable;
-
+#define DATA_COUNT 65000
 class CustomPlotItem : public QQuickPaintedItem
 {
     Q_OBJECT
@@ -17,15 +17,23 @@ public:
 
     Q_INVOKABLE void initCustomPlot();
 
+    void getECGData();
+    void getRESPData();
+    QVector<double> ecg_time;
+    QVector<double> ecg_data1;
+    QVector<double> ecg_data2;
+    QVector<double> pleth_data;
+    QVector<double> resp_data;
+    int timer_count;
 protected:
-    void routeMouseEvents( QMouseEvent* event );
-    void routeWheelEvents( QWheelEvent* event );
+//    void routeMouseEvents( QMouseEvent* event );
+//    void routeWheelEvents( QWheelEvent* event );
 
-    virtual void mousePressEvent( QMouseEvent* event );
-    virtual void mouseReleaseEvent( QMouseEvent* event );
-    virtual void mouseMoveEvent( QMouseEvent* event );
-    virtual void mouseDoubleClickEvent( QMouseEvent* event );
-    virtual void wheelEvent( QWheelEvent *event );
+//    virtual void mousePressEvent( QMouseEvent* event );
+//    virtual void mouseReleaseEvent( QMouseEvent* event );
+//    virtual void mouseMoveEvent( QMouseEvent* event );
+//    virtual void mouseDoubleClickEvent( QMouseEvent* event );
+//    virtual void wheelEvent( QWheelEvent *event );
 
     virtual void timerEvent(QTimerEvent *event);
 

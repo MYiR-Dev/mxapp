@@ -3,16 +3,15 @@ import CustomPlot 1.0
 
 Item {
     id: plotForm
+//    opacity: 0.2
 
-    Text {
-        id: text
-        text: qsTr("Plot form")
-    }
+
 
     CustomPlotItem {
+
+
         id: customPlot
         anchors.fill: parent
-
         Component.onCompleted: initCustomPlot()
     }
 }
