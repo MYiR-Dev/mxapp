@@ -80,11 +80,9 @@
         <file>images/wvga/ecg/spinner.png</file>
         <file>images/wvga/ecg/ecg_bg2.png</file>
         <file>images/wvga/ecg/ecg_bg3.png</file>
-
         <file>images/wvga/ecg/ecg_bg4.png</file>
         <file>ScopeWindow.qml</file>
-
-        <file>images/wvga/ecg/ecg_bg4.png</file>	
+        <file>images/wvga/ecg/ecg_bg4.png</file>
         <file>TicketWindow.qml</file>
         <file>WashWindow.qml</file>
         <file>InfoWindow.qml</file>
@@ -126,6 +124,12 @@
         <file>images/wvga/home/myir_support_phone.png</file>
         <file>images/wvga/home/support_phone.png</file>
         <file>images/wvga/back2.png</file>
-
+        <file>images/wvga/system/copyright.png</file>
+        <file>images/wvga/system/cpu.png</file>
+        <file>images/wvga/system/disk.png</file>
+        <file>images/wvga/system/net.png</file>
+        <file>images/wvga/system/system-info-bg.png</file>
+        <file>images/wvga/system/navigation.png</file>
+        <file>images/wvga/system/basic.png</file>
     </qresource>
 </RCC>
