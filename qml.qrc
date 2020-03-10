@@ -131,5 +131,10 @@
         <file>images/wvga/system/system-info-bg.png</file>
         <file>images/wvga/system/navigation.png</file>
         <file>images/wvga/system/basic.png</file>
+        <file>images/wvga/system/processbar.png</file>
+        <file>images/wvga/system/button-bg.png</file>
+        <file>images/wvga/system/copyright1.png</file>
+        <file>images/wvga/system/net1.png</file>
+        <file>images/wvga/system/basic1.png</file>
     </qresource>
 </RCC>

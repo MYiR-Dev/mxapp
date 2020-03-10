@@ -3,14 +3,14 @@
 #include <QQmlApplicationEngine>
 
 #include "qmlplot.h"
-
+#include "common.h"
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 //    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 //    QGuiApplication app(argc, argv);
 
-
+    qmlRegisterType<GetSystemInfo>("GetSystemInfoAPI", 1, 0, "GetSystemInfo");
     qmlRegisterType<CustomPlotItem>("CustomPlot", 1, 0, "CustomPlotItem");
 
     QQmlApplicationEngine engine;
