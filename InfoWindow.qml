@@ -16,6 +16,7 @@ SystemWindow {
         titleIconHeight: 30
         onLeftBarClicked: {
             infoWindow.close()
+            info_timer.stop()
         }
 
     }
@@ -85,7 +86,7 @@ SystemWindow {
                         }
                         Text{
                             id:memory_value
-                            text: "200MB"
+                            text: mem_free+"MB"
                             font.pointSize: 8;
                             color: "white"
                             Layout.row:1
@@ -105,7 +106,7 @@ SystemWindow {
                         }
                         Text{
                             id:ip_value
-                            text: "192.168.30.1"
+                            text: net_ip
                             font.pointSize: 8;
                             color: "white"
                             Layout.row:2
@@ -125,7 +126,7 @@ SystemWindow {
                         }
                         Text{
                             id:resolution_value
-                            text: "800*480"
+                            text: Screen.desktopAvailableWidth+"*"+Screen.desktopAvailableHeight
                             font.pointSize: 8;
                             color: "white"
                             Layout.row:3
@@ -145,7 +146,7 @@ SystemWindow {
                         }
                         Text{
                             id:op_value
-                            text: "Linux 4.1.18"
+                            text:getSyetemInfo.read_system_version()
                             font.pointSize: 8;
                             color: "white"
                             Layout.row:4
@@ -163,9 +164,11 @@ SystemWindow {
                             Layout.row:5
                             Layout.column:0
                         }
+
+
                         Text{
                             id:run_time_value
-                            text: "11分钟"
+                            text:day+qsTr("天")+hour+qsTr("时")+min+qsTr("分")
                             font.pointSize: 8;
                             color: "white"
                             Layout.row:5
@@ -186,7 +189,7 @@ SystemWindow {
                         }
                         Text{
                             id:total_run_time_value
-                            text: "2小时13分"
+                            text: day+qsTr("天")+hour+qsTr("时")+min+qsTr("分")
                             font.pointSize: 8;
                             color: "white"
                             Layout.row:6
@@ -206,7 +209,7 @@ SystemWindow {
                         }
                         Text{
                             id:battery_power_value
-                            text: "86%"
+                            text: "null"
                             font.pointSize: 8;
                             color: "white"
                             Layout.row:7
@@ -350,7 +353,7 @@ SystemWindow {
                             }
                             Text{
                                 id:disk_value
-                                text:qsTr("系统内存使用率: ")+"128MB/500MB"+"-"+"30%"
+                                text:qsTr("系统内存使用率: ")+mem_usage+"-"+mem_percent+"%"
                                 font.pointSize: 5;
                                 color: "white"
                                 Layout.row:9
@@ -376,7 +379,7 @@ SystemWindow {
                                     source: "images/wvga/system/processbar.png"
                                 }
                                 Rectangle {
-                                  width: parent.width * parent.value / 100
+                                  width: parent.width * mem_percent / 100
                                   height:parent.height // percentage
                                   color: "#0CAA00"
                                   radius:10
@@ -430,7 +433,7 @@ SystemWindow {
                         }
                         Text{
                             id:mac_value
-                            text: qsTr("30:4c:5d:22:4f:ef")
+                            text: net_mac
                             font.pointSize: 8;
                             color: "white"
                             Layout.row:1
@@ -450,7 +453,7 @@ SystemWindow {
                         }
                         Text{
                             id:ip_text_value
-                            text: qsTr("192.168.30.1")
+                            text: net_ip
                             font.pointSize: 8;
                             color: "white"
                             Layout.row:2
@@ -471,7 +474,7 @@ SystemWindow {
                         }
                         Text{
                             id:speed_value
-                            text: qsTr("100")+"MB/s"
+                            text: qsTr("1000")+"MB/s"
                             font.pointSize: 8;
                             color: "white"
                             Layout.row:3
@@ -491,7 +494,13 @@ SystemWindow {
                         }
                         Text{
                             id:net_connect_value
-                            text: qsTr("已联网")
+
+                            text:{
+                                if(net_ip==null)
+                                    qsTr("未联网")
+                                else
+                                    qsTr("已联网")
+                            }
                             font.pointSize: 8;
                             color: "green"
                             Layout.row:4
@@ -742,19 +751,36 @@ SystemWindow {
     }
     property int cpu_percent:50
     property int mem_percent:50
+    property int mem_free:50
     property string mem_usage:""
+    property int system_run_time : getSyetemInfo.read_system_runtime()
+
+    property int day: system_run_time/86400
+    property int hour:system_run_time/3600 % 24
+    property int min:system_run_time%3600/60
+    property int timer_count:0
+    property string net_ip:getSyetemInfo.read_net_ip()
+    property string net_mac:getSyetemInfo.read_net_mac()
     Timer{
-        id:countdown
+        id:info_timer
         interval:1000;running:true;repeat: true
 
         onTriggered: {
-            getSyetemInfo.get_cpu_info()
+            timer_count++
+            if((timer_count%60) == 0 )
+            {
+                system_run_time = getSyetemInfo.read_system_runtime()
+                day = system_run_time/86400
+                hour = system_run_time/3600 % 24
+                min = system_run_time%3600/60
+            }
             cpu_percent = getSyetemInfo.read_cpu_percent()
-            getSyetemInfo.get_memory_info()
             mem_percent = getSyetemInfo.read_memory_percent()
             mem_usage = getSyetemInfo.read_memory_usage()
-//            console.log(mem_percent)
+            mem_free = getSyetemInfo.read_memory_free()
+
         }
+//      Component.onCompleted:info_timer.start()
     }
 
 }
