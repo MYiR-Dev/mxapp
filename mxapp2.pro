@@ -38,4 +38,4 @@ HEADERS += \
     qmlplot.h \
     common.h
 
-DISTFILES +=
+

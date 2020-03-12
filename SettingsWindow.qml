@@ -1,7 +1,9 @@
 import QtQuick 2.5
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.1
 import QtQuick.Window 2.2
 import GetSystemInfoAPI 1.0
+
+import QtQuick.Layouts 1.0
 SystemWindow {
     id: settingsWindow
     title: "settings"
@@ -50,14 +52,359 @@ SystemWindow {
             }
             Item {
                 id: firstPage
+                Rectangle{
+                    width:630
+                    height:419
+                    color:"transparent"
+
+                    Text{
+                        id:title
+                        text: qsTr("时间")
+                        font.pointSize: 16;
+                        font.bold: true
+                        color: "white"
+                        anchors{
+                            left:    parent.left
+                            leftMargin: 30
+
+                        }
+                    }
+                    RowLayout{
+                        id:row_layout
+                        width:100
+                        height:30
+                        anchors{
+                            top:    title.bottom
+                            topMargin: 20
+                            left:    parent.left
+                            leftMargin: 30
+
+                        }
+                        Rectangle{
+                            width:47
+                            height:28
+                            color:"transparent"
+                            Image {
+
+                                source: "images/wvga/system/day-rec.png"
+                            }
+                            Image {
+                                id:hour_dw
+                                source: "images/wvga/system/drop-down.png"
+                                anchors{
+                                    right:    parent.right
+                                    verticalCenter:parent.verticalCenter
+                                    rightMargin: 5
+
+                                }
+                            }
+                            Text{
+
+                                text: "18"
+                                font.pointSize: 15;
+                                font.bold: true
+                                color: "white"
+                                anchors{
+                                    verticalCenter:parent.verticalCenter
+                                    right:hour_dw.left
+                                    rightMargin: 5
+
+
+                                }
+                            }
+
+                        }
+                        Text{
+
+                            text: ":"
+                            font.pointSize: 15;
+                            font.bold: true
+                            color: "white"
+                        }
+                        Rectangle{
+                            width:47
+                            height:28
+                            color:"transparent"
+                            Image {
+                                anchors.fill: parent
+                                source: "images/wvga/system/day-rec.png"
+                            }
+                            Image {
+                                id:min_dw
+                                source: "images/wvga/system/drop-down.png"
+                                anchors{
+                                    right:    parent.right
+                                    verticalCenter:parent.verticalCenter
+                                    rightMargin: 5
+
+                                }
+                            }
+                            Text{
+
+                                text: "18"
+                                font.pointSize: 15;
+                                font.bold: true
+                                color: "white"
+                                anchors{
+                                    verticalCenter:parent.verticalCenter
+                                    right:min_dw.left
+                                    rightMargin: 5
+
+
+                                }
+                            }
+
+                        }
+                        Text{
+
+                            text: ":"
+                            font.pointSize: 15;
+                            font.bold: true
+                            color: "white"
+                        }
+                        Rectangle{
+                            width:47
+                            height:28
+                            color:"transparent"
+                            Image {
+                                anchors.fill: parent
+                                source: "images/wvga/system/day-rec.png"
+                            }
+                            Image {
+                                id:sec_dw
+                                source: "images/wvga/system/drop-down.png"
+                                anchors{
+                                    right:    parent.right
+                                    verticalCenter:parent.verticalCenter
+                                    rightMargin: 5
+                                }
+                            }
+                            Text{
+
+                                text: "18"
+                                font.pointSize: 15;
+                                font.bold: true
+                                color: "white"
+                                anchors{
+                                    verticalCenter:parent.verticalCenter
+                                    right:sec_dw.left
+                                    rightMargin: 5
+                                }
+                            }
+
+                        }
+
+                    }
+                    Text{
+                        id:time_value
+                        text: qsTr("2020年2月2日，星期日")
+                        font.pointSize: 16;
+                        font.bold: true
+                        color: "blue"
+                        anchors{
+                            top:    row_layout.bottom
+                            topMargin: 10
+                            left:    parent.left
+                            leftMargin: 30
+
+                        }
+                       function get_time(){
+
+                       }
+
+                    }
+                    CustomCalendar{
+                        width:350
+                        height: 250
+                        color: "transparent"
+                        anchors{
+                            top:    time_value.bottom
+                            topMargin: 10
+                            left:    parent.left
+                            leftMargin: 30
+
+                        }
+                    }
+
+                }
 
 
             }
             Item {
                 id: secondPage
+                Rectangle{
+                    width:630
+                    height:419
+                    color:"transparent"
+                    Text{
+                        id:eth
+                        text: "以太网"
+                        font.pointSize: 15;
+                        font.bold: true
+                        color: "white"
+                        anchors{
+
+                            left: parent.left
+                            leftMargin: 30
+
+
+                        }
+                    }
+                    GridLayout{
+                        width:400
+                        height:100
+                        rows: 7
+                        columns:2
+                        anchors{
+
+                            top: eth.bottom
+                            topMargin: 30
+
+
+                        }
+                        Text{
+
+                            text: "以太网"
+                            font.pointSize: 10;
+
+                            color: "white"
+                            anchors{
+                                left: parent.left
+                                leftMargin: 30
+                            }
+                            Layout.row: 0
+                            Layout.column: 0
+                        }
+                        Text{
+
+                            text: "电缆已拔出"
+                            font.pointSize: 10;
+
+                            color: "white"
+//                            anchors{
+//                                left: parent.left
+//                                leftMargin: 30
+//                            }
+                            Layout.row: 0
+                            Layout.column: 1
+                        }
+                        Text{
+
+                            text: "配置IPv4"
+                            font.pointSize: 10;
+
+                            color: "white"
+                            anchors{
+                                left: parent.left
+                                leftMargin: 30
+                            }
+                            Layout.row: 1
+                            Layout.column: 0
+                        }
+                        Text{
+
+                            text: "xx"
+                            font.pointSize: 10;
+
+                            color: "white"
+
+                            Layout.row: 1
+                            Layout.column: 1
+                        }
+                        Text{
+
+                            text: "IP地址"
+                            font.pointSize: 10;
+
+                            color: "white"
+                            anchors{
+                                left: parent.left
+                                leftMargin: 30
+                            }
+                            Layout.row: 2
+                            Layout.column: 0
+                        }
+                        Text{
+
+                            text: "192.168.30.188"
+                            font.pointSize: 10;
+
+                            color: "white"
+
+                            Layout.row: 2
+                            Layout.column: 1
+                        }
+                        Text{
+
+                            text: "子网掩码"
+                            font.pointSize: 10;
+
+                            color: "white"
+                            anchors{
+                                left: parent.left
+                                leftMargin: 30
+                            }
+                            Layout.row: 3
+                            Layout.column: 0
+                        }
+                        Text{
+
+                            text: "255.255.255.0"
+                            font.pointSize: 10;
+
+                            color: "white"
+
+                            Layout.row: 3
+                            Layout.column: 1
+                        }
+                        Text{
+
+                            text: "路由器"
+                            font.pointSize: 10;
+
+                            color: "white"
+                            anchors{
+                                left: parent.left
+                                leftMargin: 30
+                            }
+                            Layout.row: 4
+                            Layout.column: 0
+                        }
+                        Text{
+
+                            text: "192.168.30.1"
+                            font.pointSize: 10;
+
+                            color: "white"
+
+                            Layout.row: 4
+                            Layout.column: 1
+                        }
+                    }
+
+                }
             }
             Item {
                 id: thirdPage
+                Rectangle{
+                    width:630
+                    height:419
+                    color:"transparent"
+                    Text{
+                        id:wifi
+                        text: "WIFI设置"
+                        font.pointSize: 15;
+                        font.bold: true
+                        color: "white"
+                        anchors{
+
+                            left: parent.left
+                            leftMargin: 30
+
+
+                        }
+                    }
+                }
             }
         }
         Rectangle{
