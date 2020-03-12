@@ -39,7 +39,7 @@ SystemWindow {
         Text {
             id: t1
             color: "#F5F5F5"
-            font.family: "Microsoft YaHei"
+//            font.family: "Microsoft YaHei"
             text: qsTr("BED")
             anchors{
                 left: logo.left
@@ -51,7 +51,7 @@ SystemWindow {
         Text {
             id :t2
             color: "#F5F5F5"
-            font.family: "Microsoft YaHei"
+//            font.family: "Microsoft YaHei"
             text: qsTr("NO:5")
             anchors{
                 left: t1.left
@@ -63,7 +63,7 @@ SystemWindow {
         Text {
             id: t3
             color: "#F5F5F5"
-            font.family: "Microsoft YaHei"
+//            font.family: "Microsoft YaHei"
             text: qsTr("ADULT")
             anchors{
                 left: t2.left
@@ -92,7 +92,7 @@ SystemWindow {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: icon_image.left
                 anchors.leftMargin: 15
-                font.family: "Microsoft YaHei"
+//                font.family: "Microsoft YaHei"
                 text: qsTr("退出")
                 color: "white"
             }
@@ -223,14 +223,14 @@ SystemWindow {
                 rows:3
 
                 Text {
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text:"ECG"
                     color: "#F5F5F5"
                     Layout.row:0
                     Layout.column:0
                 }
                 Text {
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text:"PACE"
                     color: "#F5F5F5"
                     Layout.row:0
@@ -244,7 +244,7 @@ SystemWindow {
                 }
                 Text {
                     id:ecg_value
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text:"80"
                     color: "#00FF00"
                     Layout.row:1
@@ -270,7 +270,7 @@ SystemWindow {
                 columns:3
                 rows:3
                 Text {
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text:"NIBP"
                     color: "#F5F5F5"
                     Layout.row:0
@@ -279,14 +279,14 @@ SystemWindow {
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
                     id: time1
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text: "00:00:00"
                     color: "#F5F5F5"
                     Layout.row:0
                     Layout.column:1
                 }
                 Text {
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text: "mmhg";
                     color: "#F5F5F5"
                     Layout.row:0
@@ -294,7 +294,7 @@ SystemWindow {
                 }
                 Text {
                     id:nibp_value
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text: "120/80";
                     color: "#F5F5F5"
                     Layout.row:1
@@ -306,7 +306,7 @@ SystemWindow {
                 }
                 Text {
                     id:mmhg_value
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text: "90";
                     color: "#F8F8FF"
                     Layout.row:1
@@ -330,14 +330,14 @@ SystemWindow {
                 columns:2
                 rows:3
                 Text {
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text: "SPO2";
                     color: "#F5F5F5"
                     Layout.row:0
                     Layout.column:0
                 }
                 Text {
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text: "PR";
                     color: "#F5F5F5"
                     Layout.row:0
@@ -345,7 +345,7 @@ SystemWindow {
                 }
                 Text {
                     id:spo2_value
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text: "98";
                     color: "#FF6347"
                     Layout.row:1
@@ -358,7 +358,7 @@ SystemWindow {
                 Text {
                     id:pr_value
                     text: "60";
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     color: "#FF6347"
                     Layout.row:1
                     Layout.column:1
@@ -382,14 +382,14 @@ SystemWindow {
                 rows:3
                 Text {
                     text: "RESP";
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     color: "#F5F5F5"
                     Layout.row:0
                     Layout.column:0
                 }
                 Text {
                     id:resp_value
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text: "20";
                     color: "yellow"
                     Layout.row:1
@@ -413,7 +413,7 @@ SystemWindow {
                 columns:3
                 rows:3
                 Text {
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text: qsTr("TEMP(℃)");
                     color: "#F5F5F5"
                     Layout.row:0
@@ -422,7 +422,7 @@ SystemWindow {
                 Text {
                     id: temp1
                     text: "T1";
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     color: "#F5F5F5"
                     Layout.row:1
                     Layout.column:0
@@ -430,14 +430,14 @@ SystemWindow {
                 Text {
                     id: temp2
                     text: "T2";
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     color: "#F5F5F5"
                     Layout.row:2
                     Layout.column:0
                 }
                 Text {
                     id:temp1_value
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text: "37.7";
                     color: "#F5F5F5"
                     Layout.row:1
@@ -454,7 +454,7 @@ SystemWindow {
                 }
                 Text {
                     id:temp2_value
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text: "37.2";
                     color: "#F5F5F5"
                     Layout.row:2
@@ -470,7 +470,7 @@ SystemWindow {
                     }
                 }
                 Text {
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text: "TD";
                     color: "#F5F5F5"
                     Layout.row:1
@@ -478,7 +478,7 @@ SystemWindow {
                 }
                 Text {
                     id:td_value
-                    font.family: "Microsoft YaHei"
+//                    font.family: "Microsoft YaHei"
                     text: "0.5";
                     color: "#F5F5F5"
                     Layout.row:2

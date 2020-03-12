@@ -17,7 +17,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     qcustomplot.cpp \
-    qmlplot.cpp
+    qmlplot.cpp \
+    common.cpp
 
 RESOURCES += qml.qrc
 
@@ -34,4 +35,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     qcustomplot.h \
-    qmlplot.h
+    qmlplot.h \
+    common.h
+
+DISTFILES +=
