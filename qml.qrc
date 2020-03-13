@@ -142,11 +142,20 @@
         <file>images/wvga/system/time1.png</file>
         <file>images/wvga/system/wifi.png</file>
         <file>images/wvga/system/wifi1.png</file>
-        <file>TitleLeftBar_copy.qml</file>
         <file>images/wvga/system/current-dat-bg.png</file>
         <file>images/wvga/system/day-rec.png</file>
         <file>images/wvga/system/drop-down.png</file>
         <file>images/wvga/system/save-button.png</file>
         <file>CustomCalendar.qml</file>
+        <file>CustomCombox.qml</file>
+        <file>images/wvga/system/input-bg.png</file>
+        <file>images/wvga/system/key.png</file>
+        <file>images/wvga/system/open-bg.png</file>
+        <file>images/wvga/system/open-icon.png</file>
+        <file>images/wvga/system/serch-bg.png</file>
+        <file>images/wvga/system/serch-icon.png</file>
+        <file>images/wvga/system/connect.png</file>
+        <file>images/wvga/system/connected.png</file>
+        <file>images/wvga/system/wifi-signal.png</file>
     </qresource>
 </RCC>

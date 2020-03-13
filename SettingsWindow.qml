@@ -1,8 +1,9 @@
-import QtQuick 2.5
+import QtQuick 2.6
 import QtQuick.Controls 2.1
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Window 2.2
 import GetSystemInfoAPI 1.0
-
+//import QtQuick.VirtualKeyboard 2.1
 import QtQuick.Layouts 1.0
 SystemWindow {
     id: settingsWindow
@@ -39,7 +40,7 @@ SystemWindow {
         }
         color:"transparent"
         width:750
-        height:430
+        height:480
         SwipeView {
             id: view
             orientation:Qt.Vertical
@@ -54,7 +55,7 @@ SystemWindow {
                 id: firstPage
                 Rectangle{
                     width:630
-                    height:419
+                    height:300
                     color:"transparent"
 
                     Text{
@@ -75,44 +76,16 @@ SystemWindow {
                         height:30
                         anchors{
                             top:    title.bottom
-                            topMargin: 20
+                            topMargin: 10
                             left:    parent.left
                             leftMargin: 30
 
                         }
-                        Rectangle{
-                            width:47
-                            height:28
-                            color:"transparent"
-                            Image {
 
-                                source: "images/wvga/system/day-rec.png"
-                            }
-                            Image {
-                                id:hour_dw
-                                source: "images/wvga/system/drop-down.png"
-                                anchors{
-                                    right:    parent.right
-                                    verticalCenter:parent.verticalCenter
-                                    rightMargin: 5
-
-                                }
-                            }
-                            Text{
-
-                                text: "18"
-                                font.pointSize: 15;
-                                font.bold: true
-                                color: "white"
-                                anchors{
-                                    verticalCenter:parent.verticalCenter
-                                    right:hour_dw.left
-                                    rightMargin: 5
-
-
-                                }
-                            }
-
+                        CustomCombox{
+                            id:combox_hour
+                            modeldata: ["1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12",
+                                "13", "14", "15","16", "17", "18","19", "20", "21","22", "23", "24"]
                         }
                         Text{
 
@@ -121,39 +94,14 @@ SystemWindow {
                             font.bold: true
                             color: "white"
                         }
-                        Rectangle{
-                            width:47
-                            height:28
-                            color:"transparent"
-                            Image {
-                                anchors.fill: parent
-                                source: "images/wvga/system/day-rec.png"
-                            }
-                            Image {
-                                id:min_dw
-                                source: "images/wvga/system/drop-down.png"
-                                anchors{
-                                    right:    parent.right
-                                    verticalCenter:parent.verticalCenter
-                                    rightMargin: 5
-
-                                }
-                            }
-                            Text{
-
-                                text: "18"
-                                font.pointSize: 15;
-                                font.bold: true
-                                color: "white"
-                                anchors{
-                                    verticalCenter:parent.verticalCenter
-                                    right:min_dw.left
-                                    rightMargin: 5
-
-
-                                }
-                            }
-
+                        CustomCombox{
+                            id:combox_min
+                            modeldata: ["1", "2", "3","4", "5", "6","7", "8", "9","10",
+                                        "11", "12", "13","14", "15", "16","17", "18", "19","20",
+                                        "21", "22", "23","24", "25", "26","27", "28", "29","30",
+                                        "31", "32", "33","34", "35", "36","37", "38", "39","40",
+                                        "41", "42", "43","44", "45", "46","47", "48", "49","50",
+                                        "51", "52", "53","54", "55", "56","57", "58", "59","60",]
                         }
                         Text{
 
@@ -162,37 +110,51 @@ SystemWindow {
                             font.bold: true
                             color: "white"
                         }
-                        Rectangle{
-                            width:47
-                            height:28
-                            color:"transparent"
-                            Image {
-                                anchors.fill: parent
-                                source: "images/wvga/system/day-rec.png"
-                            }
-                            Image {
-                                id:sec_dw
-                                source: "images/wvga/system/drop-down.png"
-                                anchors{
-                                    right:    parent.right
-                                    verticalCenter:parent.verticalCenter
-                                    rightMargin: 5
-                                }
-                            }
-                            Text{
-
-                                text: "18"
-                                font.pointSize: 15;
-                                font.bold: true
-                                color: "white"
-                                anchors{
-                                    verticalCenter:parent.verticalCenter
-                                    right:sec_dw.left
-                                    rightMargin: 5
-                                }
-                            }
-
+                        CustomCombox{
+                            id:combox_sec
+                            modeldata: ["1", "2", "3","4", "5", "6","7", "8", "9","10",
+                                        "11", "12", "13","14", "15", "16","17", "18", "19","20",
+                                        "21", "22", "23","24", "25", "26","27", "28", "29","30",
+                                        "31", "32", "33","34", "35", "36","37", "38", "39","40",
+                                        "41", "42", "43","44", "45", "46","47", "48", "49","50",
+                                        "51", "52", "53","54", "55", "56","57", "58", "59","60",]
                         }
+//                        Rectangle{
+//                            id: comboBox
+//                            width:47
+//                            height:28
+//                            color:"transparent"
+//                            Image {
+//                                anchors.fill: parent
+//                                source: "images/wvga/system/day-rec.png"
+//                            }
+//                            Image {
+//                                id:sec_dw
+//                                source: "images/wvga/system/drop-down.png"
+//                                anchors{
+//                                    right:    parent.right
+//                                    verticalCenter:parent.verticalCenter
+//                                    rightMargin: 5
+//                                }
+//                            }
+//                            Text{
+//                                property date currentTime: new Date()
+//                                text: {
+
+//                                    Qt.formatTime(currentTime,"ss")
+//                                }
+//                                font.pointSize: 15;
+//                                font.family:localFont.name
+
+//                                color: "white"
+//                                anchors{
+//                                    verticalCenter:parent.verticalCenter
+//                                    right:sec_dw.left
+//                                    rightMargin: 5
+//                                }
+//                            }
+//                        }
+
 
                     }
                     Text{
@@ -214,6 +176,7 @@ SystemWindow {
 
                     }
                     CustomCalendar{
+                        id:custom_calendar
                         width:350
                         height: 250
                         color: "transparent"
@@ -221,8 +184,51 @@ SystemWindow {
                             top:    time_value.bottom
                             topMargin: 10
                             left:    parent.left
+                            leftMargin: 20
+
+                        }
+                    }
+                    Rectangle{
+                        id:save_button_rec
+                        width: 106
+                        height: 31
+                        color: "transparent"
+                        anchors{
+                            top:    custom_calendar.bottom
+                            topMargin: 10
+                            left:    parent.left
                             leftMargin: 30
 
+                        }
+                        Image {
+                            id: name
+
+                            anchors.fill: parent
+                            source: "images/wvga/system/save-button.png"
+                        }
+                        Text{
+                            id:save_button
+                            text: qsTr("保存")
+                            font.pointSize: 10;
+                            font.bold: true
+                            color: "white"
+                            anchors{
+                                centerIn: parent
+                            }
+                        }
+                        MouseArea{
+                            anchors.fill: parent;
+                            onClicked: {
+                                save_button_rec.opacity = 0.5
+
+                            }
+                            onExited:{
+                               save_button_rec.opacity = 1.0
+                            }
+                            onPressed: {
+
+                               save_button_rec.opacity = 0.5
+                            }
                         }
                     }
 
@@ -301,16 +307,25 @@ SystemWindow {
                             Layout.row: 1
                             Layout.column: 0
                         }
-                        Text{
-
-                            text: "xx"
-                            font.pointSize: 10;
-
-                            color: "white"
+                        CustomCombox{
+                            id:combox_dhcp
+                            delegate_width:141
+                            combox_bg:"images/wvga/system/input-bg.png"
+                            modeldata: ["Manual", "DHCP"]
 
                             Layout.row: 1
                             Layout.column: 1
                         }
+//                        Text{
+
+//                            text: "xx"
+//                            font.pointSize: 10;
+
+//                            color: "white"
+
+//                            Layout.row: 1
+//                            Layout.column: 1
+//                        }
                         Text{
 
                             text: "IP地址"
@@ -321,15 +336,35 @@ SystemWindow {
                                 left: parent.left
                                 leftMargin: 30
                             }
+
                             Layout.row: 2
                             Layout.column: 0
                         }
-                        Text{
 
-                            text: "192.168.30.188"
-                            font.pointSize: 10;
+                        TextField {
 
-                            color: "white"
+                            id: digitsField
+                            width: 141
+                            height: 16
+                            placeholderText: "192.168.30.111" /* 输入为空时显示的提示文字 */
+
+//                            style:TextFieldStyle {
+//                                textColor: "white"
+//                                placeholderTextColor :"lightgrey"
+//                            }
+                            background: Rectangle{
+
+                                implicitWidth:141
+                                implicitHeight:16
+                                color: "transparent"
+                                Image {
+                                    id: dd
+                                    anchors.fill: parent
+                                    source: "images/wvga/system/input-bg.png"
+                                }
+                            }
+
+
 
                             Layout.row: 2
                             Layout.column: 1
@@ -391,7 +426,7 @@ SystemWindow {
                     height:419
                     color:"transparent"
                     Text{
-                        id:wifi
+                        id:wifi_set_title
                         text: "WIFI设置"
                         font.pointSize: 15;
                         font.bold: true
@@ -400,9 +435,186 @@ SystemWindow {
 
                             left: parent.left
                             leftMargin: 30
+                        }
 
+                    }
+                    Rectangle{
+                         width: 60
+                         height: 17
+                         color: "transparent"
+                         Image {
+                             id: open_gb
+                             anchors.fill: parent
+                             source: "images/wvga/system/open-bg.png"
+                         }
+                         Image {
+                             height: 20
+                             id: open
+                             source: "images/wvga/system/open-icon.png"
+                             anchors.right: parent.right
+                         }
+                        anchors{
+//                           left:wifi_set_title.right
+                           bottom: wifi_set_title.bottom
+                           right: parent.right
+                        }
+                    }
+                    Rectangle{
+                        id:serch_rec
+                        width: 548
+                        height: 32
+                        color: "transparent"
+                        Image {
+                            id: serch_gb
+                            anchors.fill: parent
+                            source: "images/wvga/system/serch-bg.png"
+                        }
+                        Image {
+                            id: serch_icon
+                            anchors.centerIn: parent
+                            source: "images/wvga/system/serch-icon.png"
+                        }
+                        Text{
+
+                            text: qsTr("扫描")
+                            font.pointSize: 12;
+                            font.bold: true
+                            color: "white"
+                            anchors{
+                                left: serch_icon.left
+                                leftMargin: 20
+                                verticalCenter: serch_icon.verticalCenter
+                            }
 
                         }
+                        MouseArea{
+                            anchors.fill: parent;
+                            onClicked: {
+                                serch_rec.opacity = 0.5
+
+                            }
+                            onExited:{
+                               serch_rec.opacity = 1.0
+                            }
+                            onPressed: {
+
+                               serch_rec.opacity = 0.5
+                            }
+                        }
+                        anchors{
+                            left: parent.left
+                            leftMargin: 30
+                            top: wifi_set_title.bottom
+                            topMargin: 10
+                        }
+                    }
+                    Rectangle{
+                        width: 548
+                        height: 32
+                        color: "transparent"
+                        anchors{
+                            left: parent.left
+                            leftMargin: 30
+                            top: serch_rec.bottom
+                            topMargin: 10
+                        }
+                        Text{
+
+                            text: qsTr("myir-wifi")
+                            font.pointSize: 8;
+                            font.bold: true
+                            color: "white"
+                            anchors{
+
+                                top:parent.top
+
+                            }
+
+                        }
+                        Text{
+
+                            text: qsTr("未启用")
+                            font.pointSize: 8;
+                            font.bold: true
+                            color: "white"
+                            anchors{
+
+                                bottom:parent.bottom
+
+                            }
+
+                        }
+                        Image {
+                            id: key_icon
+//                            anchors.centerIn: parent
+                            anchors{
+//                                center: content_rec.Center
+
+                                verticalCenter: content_rec.verticalCenter
+                                right: content_rec.left
+                                rightMargin: 150
+
+                            }
+                            source: "images/wvga/system/key.png"
+                        }
+                        Image {
+                            id: wifi_signal
+//                            anchors.centerIn: parent
+                            anchors{
+//                                horizontalCenter:content_rec
+//                                center: content_rec.Center
+                                  verticalCenter: content_rec.verticalCenter
+//                                topMargin: 2
+                                right: content_rec.left
+                                rightMargin: 100
+
+                            }
+                            source: "images/wvga/system/wifi-signal.png"
+                        }
+                        Rectangle{
+                            id:content_rec
+                            width: 105
+                            height: 31
+                            color: "transparent"
+                            anchors{
+                                right: parent.right
+                                rightMargin: 5
+                            }
+
+                            Image {
+                                id: connect
+                                anchors.fill: parent
+                                source: "images/wvga/system/connect.png"
+                            }
+                            Text{
+
+                                text: qsTr("连接")
+                                font.pointSize: 12;
+//                                font.bold: true
+                                color: "white"
+                                anchors{
+
+                                    centerIn:parent
+                                }
+
+                            }
+//                            MouseArea{
+//                                anchors.fill: parent;
+//                                onClicked: {
+//                                    content_rec.opacity = 0.5
+
+//                                }
+//                                onExited:{
+//                                   content_rec.opacity = 1.0
+//                                }
+//                                onPressed: {
+
+//                                  content_rec.opacity = 0.5
+//                                }
+//                            }
+
+                        }
+
                     }
                 }
             }

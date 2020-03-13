@@ -1,12 +1,11 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.0
 Rectangle {
     id:mx_calendar
     Calendar{
             id: m_calendar
-//            width: 300
-//            height: 200
             //anchors.centerIn: parent
             frameVisible: false
             navigationBarVisible: true
@@ -45,66 +44,80 @@ Rectangle {
                 }
 
                 navigationBar:
+
                     Rectangle {//导航控制栏，控制日期上下选择等
                         color: "transparent"
-                        height: dateText.height * 2
-                        /*
-                        Rectangle {//显示边框
-                            color: Qt.rgba(1, 1, 1, 0.6)
-                            height: 1
-                            width: parent.width
-                        }
-                        Rectangle {//显示边框
-                            anchors.bottom: parent.bottom
-                            height: 1
-                            width: parent.width
-                            color: "#ddd"
-                        }*/
+                        height: 40
 
-                        ToolButton {//按钮:显示上一个月
-                            id: previousMonth
-                            width: parent.height
-                            height: width-20
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.left: parent.left
-                            anchors.leftMargin: 40
-                            iconSource: "./image/back_icon_p.png"
-                            onClicked: control.showPreviousMonth()
-                        }
 
-                        Label {//显示年月
-                            id: dateText
-                            text: styleData.title
-                            font.pixelSize: 24
-                            font.bold: true
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            fontSizeMode: Text.Fit
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.left: previousMonth.right
-                            anchors.leftMargin: 2
-                            anchors.right: nextMonth.left
-                            anchors.rightMargin: 2
-                            color: "white"
+//                        ToolButton {//按钮:显示上一个月
+//                            id: previousMonth
+//                            width: parent.height
+//                            height: width-20
+//                            anchors.verticalCenter: parent.verticalCenter
+//                            anchors.left: parent.left
+//                            anchors.leftMargin: 40
+//                            iconSource: "./image/back_icon_p.png"
+//                            onClicked: control.showPreviousMonth()
+//                        }
+                        RowLayout{
+                            id:row_layout
+                            width:100
+                            height:30
+                            anchors{
+
+                                left:    parent.left
+                                leftMargin: 10
+
+                            }
+                            CustomCombox{
+                                id:combox_year
+                                delegate_width:60
+                                modeldata: ["1月", "2月", "3月","4月", "5月", "6月","7月", "8月", "9月","10月",
+                                            "11月", "12月"]
+                            }
+                            CustomCombox{
+                                id:combox_moth
+                                delegate_width:60
+                                modeldata: ["1日", "2日", "3日","4日", "5日", "6日","7日", "8日", "9日","10日",
+                                            "11日", "12日", "13日","14日", "15日", "16日","17日", "18日", "19日","20日",
+                                            "21日", "22日", "23日","24日", "25日", "26日","27日", "28日", "29日","30日"]
+                            }
                         }
 
-                        ToolButton {//按钮:显示下一个月
-                            id: nextMonth
-                            width: 60
-                            height: 53
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.right: parent.right
-                            anchors.rightMargin: 40
-                            iconSource: "./image/back_icon_p.png"
-                            onClicked: control.showNextMonth()
+//                        Label {//显示年月
+//                            id: dateText
+//                            text: styleData.title
+//                            font.pixelSize: 24
+//                            font.bold: true
+//                            horizontalAlignment: Text.AlignHCenter
+//                            verticalAlignment: Text.AlignVCenter
+//                            fontSizeMode: Text.Fit
+//                            anchors.verticalCenter: parent.verticalCenter
+//                            anchors.left: previousMonth.right
+//                            anchors.leftMargin: 2
+//                            anchors.right: nextMonth.left
+//                            anchors.rightMargin: 2
+//                            color: "white"
+//                        }
 
-                            style: ButtonStyle {
-                                    background: Item {
-                                        implicitWidth: 25
-                                        implicitHeight: 25
-                                    }
-                                }
-                        }
+//                        ToolButton {//按钮:显示下一个月
+//                            id: nextMonth
+//                            width: 60
+//                            height: 53
+//                            anchors.verticalCenter: parent.verticalCenter
+//                            anchors.right: parent.right
+//                            anchors.rightMargin: 40
+//                            iconSource: "./image/back_icon_p.png"
+//                            onClicked: control.showNextMonth()
+
+//                            style: ButtonStyle {
+//                                    background: Item {
+//                                        implicitWidth: 25
+//                                        implicitHeight: 25
+//                                    }
+//                                }
+//                        }
 
                     }
 
@@ -114,23 +127,12 @@ Rectangle {
                     Image
                     {
                         id: day_bg
-                        height: 5
-                        width: 5
-                        anchors.fill: parent
+                        height: 28
+                        width: 28
+                        anchors.centerIn: parent
     //                                        anchors.centerIn: parent
                         source: styleData.selected ? "images/wvga/system/current-dat-bg.png" : ""
                     }
-
-    //                                    Image
-    //                                    {
-    //                                        id: day_matter
-    //                                        height: 5
-    //                                        width: 5
-    //                                        anchors.horizontalCenter: parent.horizontalCenter
-    //                                        anchors.bottom: parent.bottom
-    //                                        anchors.bottomMargin: 5
-    //                                        source: MainWindow.matterFlag(styleData.index) ? "./image/smallCircle.png" : ""
-    //                                    }
 
                     Label {
                         id: m_label
