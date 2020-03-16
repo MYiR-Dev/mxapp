@@ -3,6 +3,7 @@ import QtQuick.Controls 2.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Window 2.2
 Rectangle {
+
     width: delegate_width
     height: 28
     color:"transparent"
@@ -11,10 +12,13 @@ Rectangle {
     property var verticalAlig:""
     property var combox_bg:"images/wvga/system/day-rec.png"
     property int delegate_width:47
+    property alias combox_control:control
     ComboBox {
         id: control
         model: modeldata
         width:delegate_width
+
+
         delegate: ItemDelegate {
             width: control.width
             contentItem: Text {

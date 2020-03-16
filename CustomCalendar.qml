@@ -2,15 +2,17 @@ import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.0
+
 Rectangle {
     id:mx_calendar
+    property alias calendar_control:m_calendar
     Calendar{
             id: m_calendar
             //anchors.centerIn: parent
             frameVisible: false
-            navigationBarVisible: true
+            navigationBarVisible: false
             weekNumbersVisible: false
-            minimumDate: new Date(2018, 0, 1);
+            minimumDate: new Date(2015, 0, 1);
             maximumDate: new Date(2025, 0, 1);
             anchors{
                 fill: parent
@@ -49,7 +51,6 @@ Rectangle {
                         color: "transparent"
                         height: 40
 
-
 //                        ToolButton {//按钮:显示上一个月
 //                            id: previousMonth
 //                            width: parent.height
@@ -60,30 +61,6 @@ Rectangle {
 //                            iconSource: "./image/back_icon_p.png"
 //                            onClicked: control.showPreviousMonth()
 //                        }
-                        RowLayout{
-                            id:row_layout
-                            width:100
-                            height:30
-                            anchors{
-
-                                left:    parent.left
-                                leftMargin: 10
-
-                            }
-                            CustomCombox{
-                                id:combox_year
-                                delegate_width:60
-                                modeldata: ["1月", "2月", "3月","4月", "5月", "6月","7月", "8月", "9月","10月",
-                                            "11月", "12月"]
-                            }
-                            CustomCombox{
-                                id:combox_moth
-                                delegate_width:60
-                                modeldata: ["1日", "2日", "3日","4日", "5日", "6日","7日", "8日", "9日","10日",
-                                            "11日", "12日", "13日","14日", "15日", "16日","17日", "18日", "19日","20日",
-                                            "21日", "22日", "23日","24日", "25日", "26日","27日", "28日", "29日","30日"]
-                            }
-                        }
 
 //                        Label {//显示年月
 //                            id: dateText

@@ -74,6 +74,42 @@ int GetSystemInfo::read_memory_free()
 {
     return memoryFree;
 }
+void GetSystemInfo::set_date(QString date)
+{
+    qDebug() << "date: " << date;
+    QString year,month,day,hour,minute,second,command;
+    int j = 0;
+
+    QStringList list = date.split(" ");
+
+    hour = list.at(0);
+    minute = list.at(1);
+    second = list.at(2);
+
+    for(j = 0; j < list.at(3).length(); j++)
+    {
+        if(list.at(3)[j] >= '0' && list.at(3)[j] <= '9')
+            year.append(list.at(3)[j]);
+    }
+
+    for( j = 0; j < list.at(4).length(); j++)
+    {
+        if(list.at(4)[j] >= '0' && list.at(4)[j] <= '9')
+            month.append(list.at(4)[j]);
+    }
+
+    for( j = 0; j < list.at(5).length(); j++)
+    {
+        if(list.at(5)[j] >= '0' && list.at(5)[j] <= '9')
+            day.append(list.at(5)[j]);
+    }
+
+
+    command ="date -s \""+year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second+"\"";
+    qDebug() << "command: " << command;
+    process->startDetached(command);
+
+}
 QString GetSystemInfo::read_system_version()
 {
 //    qDebug() << "WindowsVersion: " << QSysInfo::WindowsVersion;
