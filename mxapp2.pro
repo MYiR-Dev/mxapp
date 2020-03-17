@@ -21,6 +21,11 @@ SOURCES += \
     common.cpp
 
 RESOURCES += qml.qrc
+CONFIG += disable-desktop
+static {
+    QT += svg
+    QTPLUGIN += qtvirtualkeyboardplugin
+}
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

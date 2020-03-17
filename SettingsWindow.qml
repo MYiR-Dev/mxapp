@@ -3,9 +3,10 @@ import QtQuick.Controls 2.1
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Window 2.2
 import GetSystemInfoAPI 1.0
-//import QtQuick.VirtualKeyboard 2.1
+import QtQuick.VirtualKeyboard 2.2
+import QtQuick.VirtualKeyboard.Settings 2.2
 import QtQuick.Layouts 1.0
-
+import QtQuick.Controls 2.3 as Controls
 SystemWindow {
     id: settingsWindow
     title: "settings"
@@ -334,8 +335,8 @@ SystemWindow {
             Item {
                 id: secondPage
                 Rectangle{
-                    width:630
-                    height:419
+                    width:650
+                    height:430
                     color:"transparent"
                     Text{
                         id:eth
@@ -352,7 +353,7 @@ SystemWindow {
                         }
                     }
                     GridLayout{
-                        width:400
+                        width:600
                         height:100
                         rows: 7
                         columns:2
@@ -435,31 +436,66 @@ SystemWindow {
                             Layout.row: 2
                             Layout.column: 0
                         }
-
+//                        InputPanel {
+//                            id: inputPanel
+//                            x: 0
+//                            y: 430
+//                            anchors.left: parent.left
+//                            anchors.right: parent.right
+//                            states: State {
+//                                name: "visible"
+//                                /*  The visibility of the InputPanel can be bound to the Qt.inputMethod.visible property,
+//                                    but then the handwriting input panel and the keyboard input panel can be visible
+//                                    at the same time. Here the visibility is bound to InputPanel.active property instead,
+//                                    which allows the handwriting panel to control the visibility when necessary.
+//                                */
+//                                when: inputPanel.active
+//                                PropertyChanges {
+//                                    target: inputPanel
+//                                    y: 430 - inputPanel.height
+//                                }
+//                            }
+//                            transitions: Transition {
+//                                id: inputPanelTransition
+//                                from: ""
+//                                to: "visible"
+//                                reversible: true
+//                                enabled: !VirtualKeyboardSettings.fullScreenMode
+//                                ParallelAnimation {
+//                                    NumberAnimation {
+//                                        properties: "y"
+//                                        duration: 250
+//                                        easing.type: Easing.InOutQuad
+//                                    }
+//                                }
+//                            }
+//                            Binding {
+//                                target: InputContext
+//                                property: "animating"
+//                                value: inputPanelTransition.running
+//                            }
+////                            AutoScroller {}
+//                        }
                         TextField {
 
-                            id: digitsField
+                            id: ip_input
                             width: 141
                             height: 16
                             placeholderText: "192.168.30.111" /* 输入为空时显示的提示文字 */
-
-//                            style:TextFieldStyle {
-//                                textColor: "white"
-//                                placeholderTextColor :"lightgrey"
-//                            }
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
+                            onAccepted: digitsField.focus = true
+                            color: "white"
+                            validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
                             background: Rectangle{
 
                                 implicitWidth:141
                                 implicitHeight:16
                                 color: "transparent"
                                 Image {
-                                    id: dd
                                     anchors.fill: parent
                                     source: "images/wvga/system/input-bg.png"
                                 }
                             }
-
-
 
                             Layout.row: 2
                             Layout.column: 1
@@ -477,19 +513,33 @@ SystemWindow {
                             Layout.row: 3
                             Layout.column: 0
                         }
-                        Text{
+                        TextField{
 
-                            text: "255.255.255.0"
-                            font.pointSize: 10;
-
+                            id: netmask_input
+                            width: 141
+                            height: 16
+                            placeholderText: "255.255.255.0" /* 输入为空时显示的提示文字 */
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
+                            onAccepted: digitsField.focus = true
                             color: "white"
+                            validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
+                            background: Rectangle{
+
+                                implicitWidth:141
+                                implicitHeight:16
+                                color: "transparent"
+                                Image {
+                                    anchors.fill: parent
+                                    source: "images/wvga/system/input-bg.png"
+                                }
+                            }
 
                             Layout.row: 3
                             Layout.column: 1
                         }
                         Text{
 
-                            text: "路由器"
+                            text: qsTr("网关")
                             font.pointSize: 10;
 
                             color: "white"
@@ -500,16 +550,119 @@ SystemWindow {
                             Layout.row: 4
                             Layout.column: 0
                         }
-                        Text{
-
-                            text: "192.168.30.1"
-                            font.pointSize: 10;
-
+                        TextField{
+                            id: gw_input
+                            width: 141
+                            height: 16
+                            placeholderText: "192.168.30.1" /* 输入为空时显示的提示文字 */
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
+                            onAccepted: digitsField.focus = true
                             color: "white"
+                            validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
+                            background: Rectangle{
+
+                                implicitWidth:141
+                                implicitHeight:16
+                                color: "transparent"
+                                Image {
+                                    anchors.fill: parent
+                                    source: "images/wvga/system/input-bg.png"
+                                }
+                            }
+
 
                             Layout.row: 4
                             Layout.column: 1
                         }
+                        Text{
+
+                            text: qsTr("DNS")
+                            font.pointSize: 10;
+
+                            color: "white"
+                            anchors{
+                                left: parent.left
+                                leftMargin: 30
+                            }
+                            Layout.row: 5
+                            Layout.column: 0
+                        }
+                        TextField{
+                            id: dns_input
+                            width: 141
+                            height: 16
+                            placeholderText: "114.114.114.114" /* 输入为空时显示的提示文字 */
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
+                            onAccepted: digitsField.focus = true
+                            color: "white"
+                            validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
+                            background: Rectangle{
+
+                                implicitWidth:141
+                                implicitHeight:16
+                                color: "transparent"
+                                Image {
+                                    anchors.fill: parent
+                                    source: "images/wvga/system/input-bg.png"
+                                }
+                            }
+
+
+                            Layout.row: 5
+                            Layout.column: 1
+                        }
+                        Rectangle{
+                            id:net_save_button_rec
+                            width: 106
+                            height: 31
+                            color: "transparent"
+                            Layout.row: 6
+                            Layout.column: 0
+                            anchors{
+//                                top: custom_calendar.bottom
+//                                topMargin: 10
+                                left:    parent.left
+                                leftMargin: 30
+
+                            }
+                            Image {
+                                anchors.fill: parent
+                                source: "images/wvga/system/save-button.png"
+                            }
+                            Text{
+                                id:net_save_button
+                                text: qsTr("保存")
+                                font.pointSize: 10;
+                                font.bold: true
+                                color: "white"
+                                anchors{
+                                    centerIn: parent
+                                }
+                            }
+                            MouseArea{
+                                anchors.fill: parent;
+                                onClicked: {
+                                    net_save_button_rec.opacity = 0.5
+                                    console.log(combox_dhcp.combox_control.currentText)
+                                    console.log(ip_input.text)
+                                    console.log(netmask_input.text)
+                                    console.log(gw_input.text)
+                                    console.log(dns_input.text)
+                                    var net_info_string = combox_dhcp.combox_control.currentText + " " +ip_input.text + " " +
+                                            netmask_input.text + " " + gw_input.text + " " +dns_input.text
+                                    console.log(net_info_string)
+                                    getSyetemInfo.set_net_info(net_info_string)
+                                }
+                                onExited:{
+                                   net_save_button_rec.opacity = 1.0
+                                }
+                                onPressed: {
+
+                                   net_save_button_rec.opacity = 0.5
+                                }
+                            }
+                        }
+
                     }
 
                 }

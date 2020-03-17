@@ -4,6 +4,7 @@
 #include <QSysInfo>
 #define MB (1024 * 1024)
 #define KB (1024)
+
 GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent)
 {
     process = new QProcess(this);
@@ -39,6 +40,7 @@ void GetSystemInfo::Start(int interval)
 }
 void GetSystemInfo::get_cpu_info()
 {
+
     if (process->state() == QProcess::NotRunning) {
         totalNew = idleNew = 0;
         process->start("cat /proc/stat");
@@ -56,6 +58,88 @@ void GetSystemInfo::get_net_info()
 {
 
 
+}
+
+
+void GetSystemInfo::set_net_info(QString net_info)
+{
+
+    QString command;
+    qDebug() << "net_info:" <<net_info;
+    QStringList list = net_info.split(" ");
+
+    if(list.at(0) =="DHCP")
+    {
+        qDebug() << "DHCP";
+
+        QFile readFile("/etc/network/interfaces");
+        QString strAll;
+        if(readFile.open((QIODevice::ReadOnly|QIODevice::Text)))
+        {
+            QTextStream stream(&readFile);
+            strAll=stream.readAll();
+        }
+        readFile.close();
+        QStringList strList;
+        strList=strAll.split("\n");
+
+        for(int i=0;i<strList.size();i++)
+        {
+            if(strList.at(i).startsWith("iface eth0 inet"))
+            {
+                QString tempStr=strList.at(i);
+                 qDebug() << tempStr;
+                 tempStr.replace(0,tempStr.length(),"iface eth0 inet dhcp");
+                 qDebug() << tempStr;
+                 strList.replace(i,tempStr);
+                 qDebug() << strList.at(i);
+            }
+        }
+        QFile writeFile("/etc/network/interfaces");
+        if(writeFile.open((QIODevice::WriteOnly|QIODevice::Text)))
+        {
+             QTextStream stream(&writeFile);
+            for(int i=0;i<strList.size();i++)
+            {
+                  stream<<strList.at(i)<<'\n';
+            }
+
+        }
+        writeFile.close();
+    }
+    else {
+        if(!list.at(1).isEmpty()&& !list.at(2).isEmpty())
+        {
+            command ="ifconfig eth0 "+ list.at(1) +" netmask "+list.at(2);
+            qDebug() << "command: " << command;
+           process->startDetached(command);
+        }
+        else {
+
+            qDebug() << "ifconfig null";
+        }
+
+        if(!list.at(3).isEmpty() )
+        {
+            command ="route add default gw "+ list.at(3);
+            qDebug() << "command: " << command;
+            process->startDetached(command);
+        }
+        else{
+            qDebug() << "route null";
+        }
+        if(!list.at(4).isEmpty())
+        {
+            command ="echo \"nameserver "+ list.at(4)+ "\""+">> /etc/resolv.conf";
+            qDebug() << "command: " << command;
+            process->startDetached(command);
+        }
+        else {
+           qDebug() << "nameserver null";
+        }
+    }
+
+//    process->startDetached(command);
 }
 int GetSystemInfo::read_cpu_percent()
 {
