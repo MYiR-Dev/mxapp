@@ -157,5 +157,46 @@
         <file>images/wvga/system/connect.png</file>
         <file>images/wvga/system/connected.png</file>
         <file>images/wvga/system/wifi-signal.png</file>
+        <file>images/wvga/smart/smart_btn_quit_hover.png</file>
+        <file>images/wvga/smart/smart_btn_quit_nor.png</file>
+        <file>images/wvga/smart/smart_btn_start_nor.png</file>
+        <file>images/wvga/smart/smart_btn_suspend_nor.png</file>
+        <file>images/wvga/smart/smart_icon_arrange.png</file>
+        <file>images/wvga/smart/smart_icon_cal_nor.png</file>
+        <file>images/wvga/smart/smart_icon_dehydration.png</file>
+        <file>images/wvga/smart/smart_icon_dn_nor.png</file>
+        <file>images/wvga/smart/smart_icon_dry.png</file>
+        <file>images/wvga/smart/smart_icon_energy_nor.png</file>
+        <file>images/wvga/smart/smart_icon_enzyme_nor.png</file>
+        <file>images/wvga/smart/smart_icon_jackets_nor.png</file>
+        <file>images/wvga/smart/smart_icon_kid_nor.png</file>
+        <file>images/wvga/smart/smart_icon_large_nor.png</file>
+        <file>images/wvga/smart/smart_icon_lock_close_nor.png</file>
+        <file>images/wvga/smart/smart_icon_lock_open_nor.png</file>
+        <file>images/wvga/smart/smart_icon_mixdwash_nor.png</file>
+        <file>images/wvga/smart/smart_icon_quick15_nor.png</file>
+        <file>images/wvga/smart/smart_icon_quick30_nor.png</file>
+        <file>images/wvga/smart/smart_icon_quit_nor.png</file>
+        <file>images/wvga/smart/smart_icon_rd_nor.png</file>
+        <file>images/wvga/smart/smart_icon_rinse.png</file>
+        <file>images/wvga/smart/smart_icon_scale.png</file>
+        <file>images/wvga/smart/smart_icon_self-cleaning_nor.png</file>
+        <file>images/wvga/smart/smart_icon_shirt_nor.png</file>
+        <file>images/wvga/smart/smart_icon_singlede_nor.png</file>
+        <file>images/wvga/smart/smart_icon_smart_nor.png</file>
+        <file>images/wvga/smart/smart_icon_soak_nor.png</file>
+        <file>images/wvga/smart/smart_icon_temperature.png</file>
+        <file>images/wvga/smart/smart_icon_up_hover.png</file>
+        <file>images/wvga/smart/smart_icon_up_nor.png</file>
+        <file>images/wvga/smart/smart_icon_wash.png</file>
+        <file>images/wvga/smart/smart_icon_water.png</file>
+        <file>images/wvga/smart/smart_icon_wool_nor.png</file>
+        <file>images/wvga/smart/wash_bg.png</file>
+        <file>images/wvga/smart/water.png</file>
+        <file>images/wvga/smart/smart_icon_knob_nor.png</file>
+        <file>shader/wobble.frag</file>
+        <file>images/wvga/smart/door.png</file>
+        <file>images/wvga/smart/lighting.png</file>
+        <file>images/wvga/smart/smart_gif_progress_00000.png</file>
     </qresource>
 </RCC>
