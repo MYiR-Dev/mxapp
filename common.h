@@ -21,6 +21,7 @@ public:
     Q_INVOKABLE void get_net_info();
     Q_INVOKABLE QString read_net_ip();
     Q_INVOKABLE QString read_net_mac();
+    Q_INVOKABLE  void set_date(QString date);
     void Start(int interval);
     QProcess *process;
     int totalNew, idleNew, totalOld, idleOld;
