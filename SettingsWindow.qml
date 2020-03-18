@@ -45,7 +45,7 @@ SystemWindow {
         }
         color:"transparent"
         width:750
-        height:480
+        height:800
         SwipeView {
             id: view
             orientation:Qt.Vertical
@@ -336,8 +336,14 @@ SystemWindow {
                 id: secondPage
                 Rectangle{
                     width:650
-                    height:430
+                    height:800
                     color:"transparent"
+                    MouseArea  {
+                        id: content
+                        anchors.fill: parent
+
+                        onClicked: focus = true
+                    }
                     Text{
                         id:eth
                         text: "以太网"
@@ -351,6 +357,47 @@ SystemWindow {
 
 
                         }
+                    }
+                    InputPanel {
+                        id: inputPanel
+                        x: 100
+                        y: 450
+                        z:99
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        states: State {
+                            name: "visible"
+                            /*  The visibility of the InputPanel can be bound to the Qt.inputMethod.visible property,
+                                but then the handwriting input panel and the keyboard input panel can be visible
+                                at the same time. Here the visibility is bound to InputPanel.active property instead,
+                                which allows the handwriting panel to control the visibility when necessary.
+                            */
+                            when: inputPanel.active
+                            PropertyChanges {
+                                target: inputPanel
+                                y: 450 - inputPanel.height
+                            }
+                        }
+                        transitions: Transition {
+                            id: inputPanelTransition
+                            from: ""
+                            to: "visible"
+                            reversible: true
+                            enabled: !VirtualKeyboardSettings.fullScreenMode
+                            ParallelAnimation {
+                                NumberAnimation {
+                                    properties: "y"
+                                    duration: 250
+                                    easing.type: Easing.InOutQuad
+                                }
+                            }
+                        }
+                        Binding {
+                            target: InputContext
+                            property: "animating"
+                            value: inputPanelTransition.running
+                        }
+                            AutoScroller {}
                     }
                     GridLayout{
                         width:600
@@ -436,46 +483,7 @@ SystemWindow {
                             Layout.row: 2
                             Layout.column: 0
                         }
-//                        InputPanel {
-//                            id: inputPanel
-//                            x: 0
-//                            y: 430
-//                            anchors.left: parent.left
-//                            anchors.right: parent.right
-//                            states: State {
-//                                name: "visible"
-//                                /*  The visibility of the InputPanel can be bound to the Qt.inputMethod.visible property,
-//                                    but then the handwriting input panel and the keyboard input panel can be visible
-//                                    at the same time. Here the visibility is bound to InputPanel.active property instead,
-//                                    which allows the handwriting panel to control the visibility when necessary.
-//                                */
-//                                when: inputPanel.active
-//                                PropertyChanges {
-//                                    target: inputPanel
-//                                    y: 430 - inputPanel.height
-//                                }
-//                            }
-//                            transitions: Transition {
-//                                id: inputPanelTransition
-//                                from: ""
-//                                to: "visible"
-//                                reversible: true
-//                                enabled: !VirtualKeyboardSettings.fullScreenMode
-//                                ParallelAnimation {
-//                                    NumberAnimation {
-//                                        properties: "y"
-//                                        duration: 250
-//                                        easing.type: Easing.InOutQuad
-//                                    }
-//                                }
-//                            }
-//                            Binding {
-//                                target: InputContext
-//                                property: "animating"
-//                                value: inputPanelTransition.running
-//                            }
-////                            AutoScroller {}
-//                        }
+
                         TextField {
 
                             id: ip_input
