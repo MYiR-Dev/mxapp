@@ -23,10 +23,14 @@ public:
     Q_INVOKABLE QString read_net_ip();
     Q_INVOKABLE QString read_net_mac();
     Q_INVOKABLE  void set_date(QString date);
-
+    Q_INVOKABLE QString get_wifi_list();
+    QString getWirelessInterfaceStatus(QString interface);
+    void parseIwlist(QString buffer);
 
     void Start(int interval);
     QProcess *process;
+    QProcess *wifi_process;
+    QProcess *msic_process;
     int totalNew, idleNew, totalOld, idleOld;
     int cpuPercent;
     int memoryPercent;
@@ -42,6 +46,7 @@ public:
     QTimer *timerStorage;    //定时器获取存储信息
 public slots:
     void ReadData();
+    void Wifi_ReadData();
     void get_memory_info();
     void get_cpu_info();
 signals:

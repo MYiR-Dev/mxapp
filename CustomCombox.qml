@@ -1,7 +1,8 @@
 import QtQuick 2.0
-import QtQuick.Controls 2.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 2.2
+import QtQuick.Controls.Styles 1.3
 import QtQuick.Window 2.2
+import QtQuick.Layouts 1.1
 Rectangle {
 
     width: delegate_width
@@ -18,22 +19,25 @@ Rectangle {
         model: modeldata
         width:delegate_width
 
-
         delegate: ItemDelegate {
             width: control.width
+
             contentItem: Text {
                 text: modelData
                 color: "white"
                 font: control.font
+
                 elide: Text.ElideRight
 //                verticalAlignment: Text.AlignVCenter
             }
-//                                background: Rectangle {
-//                                    border.color: "#059EC9"
-//                                    color: "#003245"
-//                                    radius: 2
-//                                }
+            background: Rectangle {
+                border.color: "transparent"
+                color:control.pressed? "blue":"transparent"
+//                radius: 2
+            }
+
             highlighted:  control.highlightedIndex == index
+
 
         }
 
@@ -98,7 +102,7 @@ Rectangle {
                 clip: true
                 model: control.popup.visible ? control.delegateModel : null
                 currentIndex: control.highlightedIndex
-
+                highlight: Rectangle { color: "#059EC9" }
                 ScrollIndicator.vertical: ScrollIndicator { }
             }
 

@@ -9,7 +9,9 @@ GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent)
 {
     process = new QProcess(this);
     connect(process, SIGNAL(readyRead()), this, SLOT(ReadData()));
-
+    wifi_process = new QProcess(this);
+    connect(wifi_process, SIGNAL(finished(int)), this, SLOT(Wifi_ReadData()));
+    msic_process = new QProcess(this);
     timerCPU = new QTimer(this);
     connect(timerCPU, SIGNAL(timeout()), this, SLOT(get_cpu_info()));
 
@@ -59,8 +61,107 @@ void GetSystemInfo::get_net_info()
 
 
 }
+QString GetSystemInfo::get_wifi_list()
+{
+    QString wifi_interface = "wlan0";
+    QString wirelessInterfaceStatus = getWirelessInterfaceStatus(wifi_interface);
 
+    if(wirelessInterfaceStatus == "down")
+    {
+        msic_process->start("/sbin/ifconfig",QStringList() << wifi_interface << "up");
 
+    }
+    QString cmd="/sbin/iwlist";
+    QStringList opts;
+    wifi_process->start(cmd, opts << wifi_interface << "scan");
+
+    if(!wifi_process->waitForStarted())
+    {
+        qDebug() << "error starting iwlist process";
+
+    }
+    return "dd";
+}
+QString GetSystemInfo::getWirelessInterfaceStatus(QString interface)
+{
+    QString status = "";
+    QFile file("/sys/class/net/" + interface + "/operstate");
+    if (file.exists())
+    {
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            return status;
+        QByteArray line = file.readLine();
+        status = line.trimmed();
+    }
+    return status;
+}
+void GetSystemInfo::Wifi_ReadData()
+{
+    QTextStream stream(wifi_process->readAll().data());
+    QString buffer = "";
+    QString line;
+    int cellCount = 0;
+
+    do {
+
+        line = stream.readLine().trimmed();
+
+        if ( line.startsWith("Cell") )
+        {
+            if (cellCount > 0)
+                buffer = buffer + "<<#>>"; // cell change
+
+            cellCount ++;
+        }
+
+        if (line.size() > 0)
+            buffer = buffer + line + "<<>>"; // line change
+
+    } while (!line.isNull());
+//    qDebug() << buffer;
+    parseIwlist(buffer);
+}
+void GetSystemInfo::parseIwlist(QString buffer)
+{
+    QStringList bufferLines = buffer.split("<<#>>");
+    QString line;
+
+    if (bufferLines.size() > 0)
+    {
+        if ( bufferLines.at(0).contains("No scan results") )
+        {
+
+            qDebug() << "ssid";
+        }
+    }
+
+    for (int i=0 ; i < bufferLines.size() ; i++)
+    {
+        QStringList infoLines = bufferLines.at(i).split("<<>>");
+
+        QString toolTip;
+
+        for (int j=0 ; j < infoLines.size() ; j++)
+        {
+            line = infoLines.at(j);
+
+            if ( line.startsWith ( "Cell" ) && line.contains( "Address:" ) )
+            {
+                QStringList tmp = line.split("Address:");
+                toolTip.append("Address: " + tmp.at(tmp.size()-1).trimmed());
+            }
+            else if((!line.isEmpty()) && (!line.contains("completed")) && (!line.contains("IE: Unknown")))
+                toolTip.append("\n" + line);
+
+            if ( line.startsWith ( "ESSID:" ) )
+            {
+                QString ssid =line.mid ( line.indexOf ( "\"" ) + 1, line.lastIndexOf ( "\"" ) - line.indexOf ( "\"" ) - 1 );
+                qDebug() << ssid;
+
+            }
+        }
+    }
+}
 void GetSystemInfo::set_net_info(QString net_info)
 {
 

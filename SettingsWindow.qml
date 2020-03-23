@@ -677,13 +677,53 @@ SystemWindow {
             }
             Item {
                 id: thirdPage
+
                 Rectangle{
                     width:630
                     height:419
                     color:"transparent"
+//                    Popup{
+//                        id:myPopup
+////                        width: 548
+////                        height: 30
+//                        anchors{
+
+//                            centerIn:parent
+//                        }
+//                        modal: true
+//                        focus: true
+//                        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+//                        background: Rectangle{
+//                            width: 548
+//                            height: 30
+////                            color:"transparent"
+//                            Image {
+//                                id: serch_g
+//                                anchors.fill: parent
+//                                source: "images/wvga/system/serch-bg.png"
+//                            }
+//                        }
+//                        Rectangle
+//                        {
+//                            width: 548
+//                            height: 32
+//                            anchors.fill: parent
+//                            color:"transparent"
+
+//                            Text {
+//                                id: mytext
+//                                font.pixelSize: 24
+//                                text: qsTr("Popup 内容显示模块")
+//                                anchors.top:parent.top
+//                                anchors.left:parent.left
+//                            }
+//                        }
+//                    }
+
+
                     Text{
                         id:wifi_set_title
-                        text: "WIFI设置"
+                        text: "WiFi设置"
                         font.pointSize: 15;
                         font.bold: true
                         color: "white"
@@ -733,7 +773,7 @@ SystemWindow {
                         Text{
 
                             text: qsTr("扫描")
-                            font.pointSize: 12;
+                            font.pointSize: 10;
                             font.bold: true
                             color: "white"
                             anchors{
@@ -743,10 +783,14 @@ SystemWindow {
                             }
 
                         }
+                        Component.onCompleted:{
+                            getSyetemInfo.get_wifi_list()
+                        }
                         MouseArea{
                             anchors.fill: parent;
                             onClicked: {
                                 serch_rec.opacity = 0.5
+                                getSyetemInfo.get_wifi_list()
 
                             }
                             onExited:{
@@ -764,113 +808,198 @@ SystemWindow {
                             topMargin: 10
                         }
                     }
-                    Rectangle{
+                    ListModel {
+                        id: wifi_list_model
+                        ListElement {
+                            wifi_ssid: "myir1"
+                            wifi_connect_status: qsTr("已连接")
+                            key_image: "images/wvga/system/key.png"
+                            signal_iamge:"images/wvga/system/wifi-signal.png"
+
+                        }
+                        ListElement {
+                            wifi_ssid: "myir2"
+                            wifi_connect_status: qsTr("x")
+                            key_image: "images/wvga/system/key.png"
+                            signal_iamge:"images/wvga/system/wifi-signal.png"
+
+                        }
+                        ListElement {
+                            wifi_ssid: "myir3"
+                            wifi_connect_status: qsTr("已连接")
+                            key_image: "images/wvga/system/key.png"
+                            signal_iamge:"images/wvga/system/wifi-signal.png"
+
+                        }
+                        ListElement {
+                            wifi_ssid: "myir4"
+                            wifi_connect_status: qsTr("已连接")
+                            key_image: "images/wvga/system/key.png"
+                            signal_iamge:"images/wvga/system/wifi-signal.png"
+
+                        }
+
+                    }
+
+                    Component {
+                        id: listDelegate
+                        Item{
+                            id:itemDelegate
+
+                            clip: true
+                            width: 548
+                            height: 32
+//                            color: "transparent"
+
+//                            anchors{
+//                                left: parent.left
+//                                leftMargin: 30
+//                                top: serch_rec.bottom
+//                                topMargin: 10
+//                            }
+                            Text{
+
+                                text: wifi_ssid
+                                font.pointSize: 8;
+                                font.bold: true
+                                color: "white"
+                                anchors{
+
+                                    top:parent.top
+
+                                }
+
+                            }
+                            Text{
+
+                                text: wifi_connect_status
+                                font.pointSize: 6;
+                                font.bold: true
+                                color: "#A9A9A9"
+                                anchors{
+
+                                    bottom:parent.bottom
+
+                                }
+
+                            }
+                            TextField{
+                                id: passwd_input
+                                width: 141
+                                height: 32
+                                echoMode: TextInput.Password
+                                placeholderText: "Password field"
+                                inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText
+                                onAccepted: upperCaseField.focus = true
+                                color: "white"
+                                background: Rectangle{
+
+                                    implicitWidth:141
+                                    implicitHeight:32
+                                    color: "transparent"
+                                    Image {
+                                        anchors.fill: parent
+                                        source: "images/wvga/system/input-bg.png"
+                                    }
+                                }
+                                anchors{
+
+                                    left:parent.left
+                                    leftMargin: 80
+
+                                }
+
+                            }
+                            Image {
+                                id: key_icon
+    //                            anchors.centerIn: parent
+                                anchors{
+    //                                center: content_rec.Center
+
+                                    verticalCenter: content_rec.verticalCenter
+                                    right: content_rec.left
+                                    rightMargin: 150
+
+                                }
+    //                            source: "images/wvga/system/key.png"
+                                source: key_image
+                            }
+                            Image {
+                                id: wifi_signal
+    //                            anchors.centerIn: parent
+                                anchors{
+    //                                horizontalCenter:content_rec
+    //                                center: content_rec.Center
+                                      verticalCenter: content_rec.verticalCenter
+    //                                topMargin: 2
+                                    right: content_rec.left
+                                    rightMargin: 100
+
+                                }
+    //                            source: "images/wvga/system/wifi-signal.png"
+                                source:signal_iamge
+                            }
+                            Item{
+                                id:content_rec
+                                width: 105
+                                height: 31
+//                                color: "transparent"
+                                anchors{
+                                    right: parent.right
+                                    rightMargin: 5
+                                }
+
+                                Image {
+                                    id: connect
+                                    anchors.fill: parent
+                                    source: "images/wvga/system/connect.png"
+                                }
+                                Text{
+
+                                    text: qsTr("连接")
+                                    font.pointSize: 12;
+    //                                font.bold: true
+                                    color: "white"
+                                    anchors{
+
+                                        centerIn:parent
+                                    }
+
+                                }
+
+                                MouseArea{
+                                    anchors.fill: parent;
+                                    onClicked: {
+                                        content_rec.opacity = 0.5
+    //                                    myPopup.open()
+                                    }
+                                    onExited:{
+                                       content_rec.opacity = 1.0
+                                    }
+                                    onPressed: {
+
+                                      content_rec.opacity = 0.5
+                                    }
+                                }
+
+                            }
+
+                        }
+
+                    }
+                    ListView {
+                        id: listView
                         width: 548
-                        height: 32
-                        color: "transparent"
-                        anchors{
+                        height: 500
+                        anchors {
                             left: parent.left
                             leftMargin: 30
                             top: serch_rec.bottom
                             topMargin: 10
                         }
-                        Text{
-
-                            text: qsTr("myir-wifi")
-                            font.pointSize: 8;
-                            font.bold: true
-                            color: "white"
-                            anchors{
-
-                                top:parent.top
-
-                            }
-
-                        }
-                        Text{
-
-                            text: qsTr("未启用")
-                            font.pointSize: 8;
-                            font.bold: true
-                            color: "white"
-                            anchors{
-
-                                bottom:parent.bottom
-
-                            }
-
-                        }
-                        Image {
-                            id: key_icon
-//                            anchors.centerIn: parent
-                            anchors{
-//                                center: content_rec.Center
-
-                                verticalCenter: content_rec.verticalCenter
-                                right: content_rec.left
-                                rightMargin: 150
-
-                            }
-                            source: "images/wvga/system/key.png"
-                        }
-                        Image {
-                            id: wifi_signal
-//                            anchors.centerIn: parent
-                            anchors{
-//                                horizontalCenter:content_rec
-//                                center: content_rec.Center
-                                  verticalCenter: content_rec.verticalCenter
-//                                topMargin: 2
-                                right: content_rec.left
-                                rightMargin: 100
-
-                            }
-                            source: "images/wvga/system/wifi-signal.png"
-                        }
-                        Rectangle{
-                            id:content_rec
-                            width: 105
-                            height: 31
-                            color: "transparent"
-                            anchors{
-                                right: parent.right
-                                rightMargin: 5
-                            }
-
-                            Image {
-                                id: connect
-                                anchors.fill: parent
-                                source: "images/wvga/system/connect.png"
-                            }
-                            Text{
-
-                                text: qsTr("连接")
-                                font.pointSize: 12;
-//                                font.bold: true
-                                color: "white"
-                                anchors{
-
-                                    centerIn:parent
-                                }
-
-                            }
-//                            MouseArea{
-//                                anchors.fill: parent;
-//                                onClicked: {
-//                                    content_rec.opacity = 0.5
-
-//                                }
-//                                onExited:{
-//                                   content_rec.opacity = 1.0
-//                                }
-//                                onPressed: {
-
-//                                  content_rec.opacity = 0.5
-//                                }
-//                            }
-
-                        }
-
+                        spacing: 20
+                        model: wifi_list_model
+                        delegate: listDelegate
                     }
                 }
             }
