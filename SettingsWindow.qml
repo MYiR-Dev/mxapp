@@ -783,9 +783,10 @@ SystemWindow {
                             }
 
                         }
-                        Component.onCompleted:{
-                            getSyetemInfo.get_wifi_list()
-                        }
+//                        Component.onCompleted:{
+//                            getSyetemInfo.get_wifi_list()
+//                        }
+
                         MouseArea{
                             anchors.fill: parent;
                             onClicked: {
@@ -811,28 +812,28 @@ SystemWindow {
                     ListModel {
                         id: wifi_list_model
                         ListElement {
-                            wifi_ssid: "myir1"
+                            wifi_essid: "myir1"
                             wifi_connect_status: qsTr("已连接")
                             key_image: "images/wvga/system/key.png"
                             signal_iamge:"images/wvga/system/wifi-signal.png"
 
                         }
                         ListElement {
-                            wifi_ssid: "myir2"
+                            wifi_essid: "myir2"
                             wifi_connect_status: qsTr("x")
                             key_image: "images/wvga/system/key.png"
                             signal_iamge:"images/wvga/system/wifi-signal.png"
 
                         }
                         ListElement {
-                            wifi_ssid: "myir3"
+                            wifi_essid: "myir3"
                             wifi_connect_status: qsTr("已连接")
                             key_image: "images/wvga/system/key.png"
                             signal_iamge:"images/wvga/system/wifi-signal.png"
 
                         }
                         ListElement {
-                            wifi_ssid: "myir4"
+                            wifi_essid: "myir4"
                             wifi_connect_status: qsTr("已连接")
                             key_image: "images/wvga/system/key.png"
                             signal_iamge:"images/wvga/system/wifi-signal.png"
@@ -840,7 +841,48 @@ SystemWindow {
                         }
 
                     }
+                    Connections {
+                        target: getSyetemInfo
+                        onWifiReady: {
+                             var image
+                             wifi_list_model.clear()
+                             console.log(wifi_data.length/3)
+                             for(var j=0;j<wifi_data.length/3;j++)
+                             {
+                                 if (wifi_data[j*3+1] === "on")
+                                      image= "images/wvga/system/key.png"
+                                 else
+                                      image=""
+                                console.log("Received ++: " +wifi_data[j*3+2])
+                                 wifi_list_model.append({
+                                     "wifi_essid": wifi_data[j*3+2],
+                                     "wifi_connect_status": qsTr("未启用"),
+                                     "key_image":image,
+                                     "signal_iamge":"images/wvga/system/wifi-signal.png"
+                                 })
 
+                             }
+                             for(var i=0 ; i<wifi_data.length/3;i++ )
+                             {
+                                 console.log("Received ++: " +wifi_list_model.get(i).wifi_essid)
+                                 console.log("Received ++: " +wifi_list_model.get(i).wifi_connect_status)
+                                 console.log("Received ++: " +wifi_list_model.get(i).key_image)
+                                 console.log("Received ++: " +wifi_list_model.get(i).signal_iamge)
+                             }
+                        }
+                        onWifiConnected:{
+                            for(var k=0; k < wifi_list_model.count; k++)
+                            {
+                                if(wifi_list_model.get(k).wifi_essid===wifi_essid_info)
+                                {
+                                    wifi_list_model.setProperty(k, "wifi_connect_status", qsTr("已连接"))
+//                                   wifi_list_model.set(k).wifi_connect_status = "ddd"
+                                   console.log("Received ++: " +wifi_list_model.get(k).wifi_connect_status)
+                                }
+                            }
+                            console.log("Received ++: " +wifi_essid_info)
+                        }
+                    }
                     Component {
                         id: listDelegate
                         Item{
@@ -858,8 +900,8 @@ SystemWindow {
 //                                topMargin: 10
 //                            }
                             Text{
-
-                                text: wifi_ssid
+                                id:wifi_essid_text
+                                text: wifi_essid
                                 font.pointSize: 8;
                                 font.bold: true
                                 color: "white"
@@ -943,6 +985,7 @@ SystemWindow {
                                 id:content_rec
                                 width: 105
                                 height: 31
+
 //                                color: "transparent"
                                 anchors{
                                     right: parent.right
@@ -971,6 +1014,13 @@ SystemWindow {
                                     anchors.fill: parent;
                                     onClicked: {
                                         content_rec.opacity = 0.5
+                                        focus = true
+                                        listView.currentIndex = index;
+                                        console.log(wifi_essid_text.text)
+                                        console.log(passwd_input.text)
+                                        console.log(listView.currentIndex)
+                                        var essid_passwd = wifi_essid_text.text+"+"+passwd_input.text
+                                        getSyetemInfo.connect_wifi(essid_passwd)
     //                                    myPopup.open()
                                     }
                                     onExited:{

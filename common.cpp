@@ -11,13 +11,18 @@ GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent)
     connect(process, SIGNAL(readyRead()), this, SLOT(ReadData()));
     wifi_process = new QProcess(this);
     connect(wifi_process, SIGNAL(finished(int)), this, SLOT(Wifi_ReadData()));
+
     msic_process = new QProcess(this);
+    connect(msic_process, SIGNAL(finished(int)), this, SLOT(msic_ReadData()));
+
     timerCPU = new QTimer(this);
     connect(timerCPU, SIGNAL(timeout()), this, SLOT(get_cpu_info()));
 
     timerMemory = new QTimer(this);
     connect(timerMemory, SIGNAL(timeout()), this, SLOT(get_memory_info()));
 
+    timerWifi = new QTimer(this);
+    connect(timerWifi, SIGNAL(timeout()), this, SLOT(get_wifi_info()));
 
 
     this->Start(100);
@@ -28,17 +33,23 @@ GetSystemInfo::~GetSystemInfo()
 
     timerCPU->stop();
     timerMemory->stop();
+    timerWifi->stop();
     process->close();
+    wifi_process->close();
+    msic_process->close();
     delete timerCPU;
     delete timerMemory;
-    delete timerStorage;
+    delete timerWifi;
     delete process;
+    delete wifi_process;
+    delete msic_process;
 }
 
 void GetSystemInfo::Start(int interval)
 {
     timerCPU->start(interval);
     timerMemory->start(interval + 200);
+    timerWifi->start(1000);
 }
 void GetSystemInfo::get_cpu_info()
 {
@@ -56,10 +67,43 @@ void GetSystemInfo::get_memory_info()
         process->start("cat /proc/meminfo");
     }
 }
-void GetSystemInfo::get_net_info()
+void GetSystemInfo::get_wifi_info()
 {
+    if (msic_process->state() == QProcess::NotRunning) {
+        msic_process->start("iwconfig wlan0");
+    }
+
+}
+void GetSystemInfo::connect_wifi(QString essid_passwd)
+{
+    QStringList tmp= essid_passwd.split("+");
+    qDebug() << tmp[0] << tmp[1];
+}
+void GetSystemInfo::msic_ReadData()
+{
+    QTextStream stream(msic_process->readAll().data());
+    QString wifi_connect_status;
+    QString line;
 
 
+    do {
+
+        line = stream.readLine().trimmed();
+
+        if ( line.startsWith("wlan0") )
+        {
+            QStringList tmp = line.split("ESSID:");
+            QString temp = tmp[1];
+            if(tmp[1] != "on/off")
+            {
+
+                wifi_connect_status =temp.mid ( temp.indexOf ( "\"" ) + 1, temp.lastIndexOf ( "\"" ) - temp.indexOf ( "\"" ) - 1 );
+
+                emit wifiConnected(wifi_connect_status);
+            }
+        }
+
+    } while (!line.isNull());
 }
 QString GetSystemInfo::get_wifi_list()
 {
@@ -95,6 +139,7 @@ QString GetSystemInfo::getWirelessInterfaceStatus(QString interface)
     }
     return status;
 }
+
 void GetSystemInfo::Wifi_ReadData()
 {
     QTextStream stream(wifi_process->readAll().data());
@@ -125,7 +170,8 @@ void GetSystemInfo::parseIwlist(QString buffer)
 {
     QStringList bufferLines = buffer.split("<<#>>");
     QString line;
-
+    QVector<QStringList> wifi_info_list;
+    QVariantList  wifi_info;
     if (bufferLines.size() > 0)
     {
         if ( bufferLines.at(0).contains("No scan results") )
@@ -156,11 +202,34 @@ void GetSystemInfo::parseIwlist(QString buffer)
             if ( line.startsWith ( "ESSID:" ) )
             {
                 QString ssid =line.mid ( line.indexOf ( "\"" ) + 1, line.lastIndexOf ( "\"" ) - line.indexOf ( "\"" ) - 1 );
-                qDebug() << ssid;
+                wifi_info.append(ssid);
 
             }
+            if ( line.startsWith ( "Encryption key:on" ) )
+                wifi_info.append("on");
+            if ( line.startsWith ( "Encryption key:off" ) )
+                wifi_info.append("off");
+            if ( line.startsWith ( "Quality=" ) )
+                wifi_info.append(line.mid (line.indexOf ("=") + 1, line.indexOf ("/") - line.indexOf ("=") - 1 ));
         }
+//        for(int i = 0; i< wifi_info.size();++i)
+//        {
+//            QString tmp = wifi_info.at(i);
+//            qDebug()<<"tmp ="<< i<<tmp;
+//        }
+//        wifi_info_list.append(wifi_info);
     }
+//    for(int i = 0; i< wifi_info_list.size();++i)
+//    {
+//        QStringList ifno = wifi_info_list.at(i);
+//        qDebug()<<"ifno =";
+//        for(int i = 0; i< ifno.size();++i)
+//        {
+//            QString tmp = ifno.at(i);
+//            qDebug()<<"tmp ="<< i<<tmp;
+//        }
+//    }
+    emit wifiReady(wifi_info);
 }
 void GetSystemInfo::set_net_info(QString net_info)
 {
