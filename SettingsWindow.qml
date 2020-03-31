@@ -7,6 +7,7 @@ import QtQuick.VirtualKeyboard 2.2
 import QtQuick.VirtualKeyboard.Settings 2.2
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.3 as Controls
+import QtWebEngine 1.2
 SystemWindow {
     id: settingsWindow
     title: "settings"
@@ -783,15 +784,19 @@ SystemWindow {
                             }
 
                         }
-//                        Component.onCompleted:{
+                        Component.onCompleted:{
 //                            getSyetemInfo.get_wifi_list()
-//                        }
+                            getSyetemInfo.wifi_close()
+                            getSyetemInfo.wifi_open()
+                            getSyetemInfo.connect_wifi("long+6032509792+qrc:/images/wvga/system/key.png")
+                        }
 
                         MouseArea{
                             anchors.fill: parent;
                             onClicked: {
                                 serch_rec.opacity = 0.5
-                                getSyetemInfo.get_wifi_list()
+
+                               getSyetemInfo.get_wifi_list()
 
                             }
                             onExited:{
@@ -879,6 +884,8 @@ SystemWindow {
 //                                   wifi_list_model.set(k).wifi_connect_status = "ddd"
                                    console.log("Received ++: " +wifi_list_model.get(k).wifi_connect_status)
                                 }
+                                else
+                                    wifi_list_model.setProperty(k, "wifi_connect_status", qsTr("未启用"))
                             }
                             console.log("Received ++: " +wifi_essid_info)
                         }
@@ -1019,7 +1026,7 @@ SystemWindow {
                                         console.log(wifi_essid_text.text)
                                         console.log(passwd_input.text)
                                         console.log(listView.currentIndex)
-                                        var essid_passwd = wifi_essid_text.text+"+"+passwd_input.text
+                                        var essid_passwd = wifi_essid_text.text+"+"+passwd_input.text+"+"+key_icon.source
                                         getSyetemInfo.connect_wifi(essid_passwd)
     //                                    myPopup.open()
                                     }

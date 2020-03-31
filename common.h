@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QProcess>
 #include <QtQuick>
+#include <QtCore/QFileInfo>
+#include <QtCore/QUrl>
 class GetSystemInfo: public QObject
 {
     Q_OBJECT
@@ -23,11 +25,15 @@ public:
     Q_INVOKABLE QString read_net_ip();
     Q_INVOKABLE QString read_net_mac();
     Q_INVOKABLE  void set_date(QString date);
+    Q_INVOKABLE void wifi_open();
+    Q_INVOKABLE void wifi_close();
     Q_INVOKABLE QString get_wifi_list();
     Q_INVOKABLE void connect_wifi(QString essid_passwd);
+    Q_INVOKABLE QUrl fromUserInput(const QString& userInput);
 //    Q_INVOKABLE void wifiReady();
     QString getWirelessInterfaceStatus(QString interface);
     void parseIwlist(QString buffer);
+
 
     void Start(int interval);
     QProcess *process;
@@ -42,6 +48,8 @@ public:
     QString memUsed;
     QString memFree;
     QString memTotal;
+    QString wifi_id;
+    QString wifi_status;
 
     QTimer *timerCPU;       //定时器获取CPU信息
     QTimer *timerMemory;    //定时器获取内存信息

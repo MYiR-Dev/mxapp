@@ -1,4 +1,4 @@
-QT += qml quick core gui printsupport
+QT += qml quick core gui printsupport testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++11
@@ -42,6 +42,8 @@ HEADERS += \
     qcustomplot.h \
     qmlplot.h \
     common.h
+
+DISTFILES +=
 
 
 

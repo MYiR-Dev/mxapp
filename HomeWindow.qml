@@ -377,7 +377,7 @@ Rectangle {
 //                                            scopeWnd.z=4;
                                               scopeWnd.item.show()
                                               scopeWnd.item.requestActivate()
-                                        }else if(model.aqml === "FileWindow.qml"){
+                                        }else if(model.aqml === "BrowserWindow.qml"){
 //                                            fileWnd.forceActiveFocus()
 //                                            fileWnd.z=4;
                                               fileWnd.item.show()
@@ -627,7 +627,7 @@ Rectangle {
                     qsTr("系统"),
                     qsTr("文件管理器"),
                     "qrc:/images/wvga/home/media_icon_doc.png",
-                    "FileWindow.qml",
+                    "BrowserWindow.qml",
                     "#02b9db"
                     )
         //9
