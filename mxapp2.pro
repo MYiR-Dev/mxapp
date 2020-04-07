@@ -18,7 +18,8 @@ SOURCES += \
         main.cpp \
     qcustomplot.cpp \
     qmlplot.cpp \
-    common.cpp
+    common.cpp \
+    myfunction.cpp
 
 RESOURCES += qml.qrc
 CONFIG += disable-desktop
@@ -41,8 +42,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     qcustomplot.h \
     qmlplot.h \
-    common.h
-
+    common.h \
+    myfunction.h
 DISTFILES +=
 
 

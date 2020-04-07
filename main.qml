@@ -118,6 +118,11 @@ ApplicationWindow {
         source: "SettingsWindow.qml";
     }
     Loader{
+        id:musicWnd;
+        anchors.centerIn: parent;
+        source: "MusicWindow.qml";
+    }
+    Loader{
         id:pictureWnd;
         anchors.centerIn: parent;
         source: "PictureWindow.qml";

@@ -2,18 +2,39 @@ import QtQuick 2.6
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.1
 
-ApplicationWindow {
+Popup {
     id: systemWindow
-    width:800
-    height:480
+    padding: 0
+    margins: 0
+    modal: false
+    focus: true
+    closePolicy: Popup.NoAutoClose
+    width: 800
+    height: 480
     opacity: 0
-    title: qsTr("SystemWindow")
+    visible: false
 
     property bool isdump: false
+    property bool showFlag: false
 
-    background: Image{
-            source: "images/wvga/home/background-dark.png"
-        }
+    property string title: qsTr("BaseWindow")
+
+    Image{
+        source: "images/wvga/home/background-dark.png"
+    }
+
+    function show(){
+        open()
+    }
+
+    function showNormal(){
+        open()
+    }
+
+    function requestActivate()
+    {
+        forceActiveFocus()
+    }
 
 //    Loader{
 //        id:loader;
@@ -91,54 +112,59 @@ ApplicationWindow {
 //        wininani.start();
     }
 
-    onClosing: {
+    onAboutToHide: {
 //        close.accepted = false;
         console.log("closing window")
+        showFlag = false
         winoutani.start()
     }
 
-    onActiveChanged: {
-        if(isdump){console.log("onActiveChanged")}
+    onAboutToShow: {
+        wininani.start();
     }
-    onActiveFocusControlChanged: {
-        if(isdump){console.log("onActiveFocusControlChanged")}
-    }
-    onActiveFocusItemChanged: {
-        if(isdump){console.log("onActiveFocusItemChanged")}
-    }
-    onAfterAnimating: {
-        if(isdump){console.log("onAfterAnimating")}
-    }
-    onAfterRendering: {
-        if(isdump){console.log("onAfterRendering")}
-    }
-    onAfterSynchronizing: {
-        if(isdump){console.log("onAfterSynchronizing")}
-    }
-    onBackgroundChanged: {
-        if(isdump){console.log("onBackgroundChanged")}
-    }
-    onBeforeRendering: {
-        if(isdump){console.log("onBeforeRendering")}
-    }
-    onBeforeSynchronizing: {
-        if(isdump){console.log("onBeforeSynchronizing")}
-    }
+
+//    onActiveChanged: {
+//        if(isdump){console.log("onActiveChanged")}
+//    }
+//    onActiveFocusControlChanged: {
+//        if(isdump){console.log("onActiveFocusControlChanged")}
+//    }
+//    onActiveFocusItemChanged: {
+//        if(isdump){console.log("onActiveFocusItemChanged")}
+//    }
+//    onAfterAnimating: {
+//        if(isdump){console.log("onAfterAnimating")}
+//    }
+//    onAfterRendering: {
+//        if(isdump){console.log("onAfterRendering")}
+//    }
+//    onAfterSynchronizing: {
+//        if(isdump){console.log("onAfterSynchronizing")}
+//    }
+//    onBackgroundChanged: {
+//        if(isdump){console.log("onBackgroundChanged")}
+//    }
+//    onBeforeRendering: {
+//        if(isdump){console.log("onBeforeRendering")}
+//    }
+//    onBeforeSynchronizing: {
+//        if(isdump){console.log("onBeforeSynchronizing")}
+//    }
 //    onClosing: {
 
 //    }
-    onColorChanged: {
-        if(isdump){console.log("onColorChanged")}
-    }
+//    onColorChanged: {
+//        if(isdump){console.log("onColorChanged")}
+//    }
 //    onContentDataChanged: {
 //        console.log("onContentDataChanged")
 //    }
 //    onContentItemChanged: {
 //        console.log("onContentItemChanged")
 //    }
-    onContentOrientationChanged: {
-        if(isdump){console.log("onContentOrientationChanged")}
-    }
+//    onContentOrientationChanged: {
+//        if(isdump){console.log("onContentOrientationChanged")}
+//    }
 //    onDataChanged: {
 //        console.log("onDataChanged")
 //    }
@@ -148,86 +174,83 @@ ApplicationWindow {
 //    onFlagsChanged: {
 //        console.log("onFlagsChanged")
 //    }
-    onFocusObjectChanged: {
-        if(isdump){console.log("onFocusObjectChanged")}
-    }
-    onFontChanged: {
-        if(isdump){console.log("onFontChanged")}
-    }
-    onFooterChanged: {
-        if(isdump){console.log("onFooterChanged")}
-    }
-    onFrameSwapped: {
-        if(isdump){console.log("onFrameSwapped")}
-    }
-    onHeaderChanged: {
-        if(isdump){console.log("onHeaderChanged")}
-    }
-    onHeightChanged: {
-        if(isdump){console.log("onHeightChanged")}
-    }
-    onLocaleChanged: {
-        if(isdump){console.log("onLocaleChanged")}
-    }
-    onMaximumHeightChanged: {
-        if(isdump){console.log("onMaximumHeightChanged")}
-    }
-    onMaximumWidthChanged: {
-        if(isdump){console.log("onMaximumWidthChanged")}
-    }
-    onMenuBarChanged: {
-        if(isdump){console.log("onMenuBarChanged")}
-    }
-    onMinimumHeightChanged: {
-        if(isdump){console.log("onMinimumHeightChanged")}
-    }
-    onMinimumWidthChanged: {
-        if(isdump){console.log("onMinimumWidthChanged")}
-    }
-    onModalityChanged: {
-        if(isdump){console.log("onModalityChanged")}
-    }
-    onObjectNameChanged: {
-        if(isdump){console.log("onObjectNameChanged")}
-    }
-    onOpacityChanged: {
-        if(isdump){console.log("onOpacityChanged")}
-    }
-    onOpenglContextCreated: {
-        if(isdump){console.log("onOpenglContextCreated")}
-    }
-//    onOverlayChanged: {
-//        console.log("onOverlayChanged")
+//    onFocusObjectChanged: {
+//        if(isdump){console.log("onFocusObjectChanged")}
 //    }
-    onPaletteChanged: {
-        if(isdump){console.log("onPaletteChanged")}
-    }
-    onSceneGraphAboutToStop: {
-        if(isdump){console.log("onSceneGraphAboutToStop")}
-    }
-    onSceneGraphError: {
-        if(isdump){console.log("onSceneGraphError")}
-    }
-    onSceneGraphInitialized: {
-        if(isdump){console.log("onSceneGraphInitialized")}
-    }
-    onSceneGraphInvalidated: {
-        if(isdump){console.log("onSceneGraphInvalidated")}
-    }
-    onScreenChanged: {
-        if(isdump){console.log("onScreenChanged")}
-    }
-    onTitleChanged: {
-        if(isdump){console.log("onTitleChanged")}
-    }
-    onVisibilityChanged: {
-        if(isdump){console.log("onVisibilityChanged: visible= "+ systemWindow.visible +" visibility=" +systemWindow.visibility)}
-    }
+//    onFontChanged: {
+//        if(isdump){console.log("onFontChanged")}
+//    }
+//    onFooterChanged: {
+//        if(isdump){console.log("onFooterChanged")}
+//    }
+//    onFrameSwapped: {
+//        if(isdump){console.log("onFrameSwapped")}
+//    }
+//    onHeaderChanged: {
+//        if(isdump){console.log("onHeaderChanged")}
+//    }
+//    onHeightChanged: {
+//        if(isdump){console.log("onHeightChanged")}
+//    }
+//    onLocaleChanged: {
+//        if(isdump){console.log("onLocaleChanged")}
+//    }
+//    onMaximumHeightChanged: {
+//        if(isdump){console.log("onMaximumHeightChanged")}
+//    }
+//    onMaximumWidthChanged: {
+//        if(isdump){console.log("onMaximumWidthChanged")}
+//    }
+//    onMenuBarChanged: {
+//        if(isdump){console.log("onMenuBarChanged")}
+//    }
+//    onMinimumHeightChanged: {
+//        if(isdump){console.log("onMinimumHeightChanged")}
+//    }
+//    onMinimumWidthChanged: {
+//        if(isdump){console.log("onMinimumWidthChanged")}
+//    }
+//    onModalityChanged: {
+//        if(isdump){console.log("onModalityChanged")}
+//    }
+//    onObjectNameChanged: {
+//        if(isdump){console.log("onObjectNameChanged")}
+//    }
+//    onOpacityChanged: {
+//        if(isdump){console.log("onOpacityChanged")}
+//    }
+//    onOpenglContextCreated: {
+//        if(isdump){console.log("onOpenglContextCreated")}
+//    }
+////    onOverlayChanged: {
+////        console.log("onOverlayChanged")
+////    }
+//    onPaletteChanged: {
+//        if(isdump){console.log("onPaletteChanged")}
+//    }
+//    onSceneGraphAboutToStop: {
+//        if(isdump){console.log("onSceneGraphAboutToStop")}
+//    }
+//    onSceneGraphError: {
+//        if(isdump){console.log("onSceneGraphError")}
+//    }
+//    onSceneGraphInitialized: {
+//        if(isdump){console.log("onSceneGraphInitialized")}
+//    }
+//    onSceneGraphInvalidated: {
+//        if(isdump){console.log("onSceneGraphInvalidated")}
+//    }
+//    onScreenChanged: {
+//        if(isdump){console.log("onScreenChanged")}
+//    }
+//    onTitleChanged: {
+//        if(isdump){console.log("onTitleChanged")}
+//    }
+//    onVisibilityChanged: {
+//        if(isdump){console.log("onVisibilityChanged: visible= "+ systemWindow.visible +" visibility=" +systemWindow.visibility)}
+//    }
     onVisibleChanged: {
         if(isdump){console.log("onVisibleChanged: visible= "+ systemWindow.visible +" visibility=" +systemWindow.visibility)}
-        if(systemWindow.visible){
-            wininani.start();
-        }
     }
     onWidthChanged: {
         if(isdump){console.log("onWidthChanged")}
@@ -235,12 +258,12 @@ ApplicationWindow {
 //    onWindowChanged: {
 //        console.log("onWindowChanged")
 //    }
-    onWindowStateChanged: {
-        if(isdump){console.log("onWindowStateChanged")}
-    }
-    onWindowTitleChanged: {
-        if(isdump){console.log("onWindowTitleChanged")}
-    }
+//    onWindowStateChanged: {
+//        if(isdump){console.log("onWindowStateChanged")}
+//    }
+//    onWindowTitleChanged: {
+//        if(isdump){console.log("onWindowTitleChanged")}
+//    }
     onXChanged: {
         if(isdump){console.log("onXChanged")}
     }

@@ -82,7 +82,6 @@
         <file>images/wvga/ecg/ecg_bg3.png</file>
         <file>images/wvga/ecg/ecg_bg4.png</file>
         <file>ScopeWindow.qml</file>
-        <file>images/wvga/ecg/ecg_bg4.png</file>
         <file>TicketWindow.qml</file>
         <file>WashWindow.qml</file>
         <file>InfoWindow.qml</file>
@@ -204,5 +203,39 @@
         <file>FileBrowser.qml</file>
         <file>images/wvga/filebrowser/icon_BackArrow.png</file>
         <file>images/wvga/filebrowser/icon_Folder.png</file>
+        <file>images/wvga/multimedia/img_audio_wave.png</file>
+        <file>images/wvga/multimedia/img_black_transparent.png</file>
+        <file>images/wvga/multimedia/img_fixdot.png</file>
+        <file>images/wvga/multimedia/img_preview.jpg</file>
+        <file>images/wvga/multimedia/img_preview_mini.jpg</file>
+        <file>images/wvga/multimedia/img_record.png</file>
+        <file>images/wvga/multimedia/img_stylus.png</file>
+        <file>images/wvga/multimedia/slider-background-horizontal.9.png</file>
+        <file>images/wvga/multimedia/slider-background-vertical.9.png</file>
+        <file>images/wvga/multimedia/slider-handle-disabled.png</file>
+        <file>images/wvga/multimedia/slider-handle-disabled@2x.png</file>
+        <file>images/wvga/multimedia/slider-handle-hovered.png</file>
+        <file>images/wvga/multimedia/slider-handle-hovered@2x.png</file>
+        <file>images/wvga/multimedia/slider-handle.png</file>
+        <file>images/wvga/multimedia/slider-handle@2x.png</file>
+        <file>images/wvga/multimedia/slider-progress-horizontal.9.png</file>
+        <file>images/wvga/multimedia/slider-progress-vertical.9.png</file>
+        <file>images/wvga/home/icon_music.png</file>
+        <file>images/wvga/home/music.png</file>
+        <file>fonts/fontawesome-webfont.ttf</file>
+        <file>Album.qml</file>
+        <file>AlbumPreview.qml</file>
+        <file>CaptureBar.qml</file>
+        <file>CaptureButton.qml</file>
+        <file>CircularImage.qml</file>
+        <file>Define.qml</file>
+        <file>DeleteDialog.qml</file>
+        <file>FileList.qml</file>
+        <file>MusicWindow.qml</file>
+        <file>MyIconButton.qml</file>
+        <file>MyImgButton.qml</file>
+        <file>MyToolButton.qml</file>
+        <file>PlayerControlBar.qml</file>
+        <file>ShotButton.qml</file>
     </qresource>
 </RCC>

@@ -7,7 +7,7 @@ import QtQuick.VirtualKeyboard 2.2
 import QtQuick.VirtualKeyboard.Settings 2.2
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.3 as Controls
-import QtWebEngine 1.2
+//import QtWebEngine 1.2
 SystemWindow {
     id: settingsWindow
     title: "settings"

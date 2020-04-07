@@ -1,109 +1,150 @@
 import QtQuick 2.5
-import QtQuick.Controls 1.4
-import QtQuick.Window 2.2
-
+import QtMultimedia 5.6
+import QtQuick.Window 2.12
+import QtQuick.Controls 2.3
+import QtQuick.Layouts 1.3
 SystemWindow {
-    id: cameraWindow
-    title: "camera"
+    id: root
+//    width: def.win_width
+//    height: def.win_height
+////    color: "black"
+////    title: qsTr("相机")
+////    flags: Qt.Dialog        //Dialog,没有最大最小化按钮
 
+//    property bool showFlag: false
 
-    // Button to open the main application window
-    Button {
-        text: qsTr("Camera window")
-        width: 180
-        height: 50
-        anchors.centerIn: parent
-        onClicked: {
-            cameraWindow.close() // invoke signal
+//    function show(){
+//        open()
+//    }
+//    function showNormal(){
+//        open()
+//    }
+    onVisibleChanged: {
+        if(showFlag == false)
+        {
+            showFlag = true;
+            camera.start()
+            console.log("相机窗口被激活")
         }
     }
+    onAboutToHide: {
+        showFlag = false
+        camera.stop()
+    }
 
-    Rectangle {
-        id: rect
-        width: 100; height: 100
-        color: "red"
+    Component.onCompleted: camera.stop()
 
-        PropertyAnimation on x { to: 100
+    Define {id: def}
+    Album {id: w_album}
 
+    Camera {
+        id: camera
+        //相机模式
+//        captureMode: Camera.CaptureStillImage       //静态照片捕捉模式
+        captureMode: Camera.CaptureVideo
+        //白平衡
+        imageProcessing.whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
+        //分辨率
+        viewfinder.resolution: "640x480"
+        flash.mode: Camera.FlashRedEyeReduction
+        //曝光
+        exposure {
+            exposureCompensation: +1.0
+            exposureMode: Camera.ExposurePortrait
         }
-//        onXChanaged: {
 
+        //拍照模式配置
+        imageCapture {
+            onImageSaved: console.log("save path:" + path);
+            onImageCaptured: bar.img_src = preview
+            onCaptureFailed: console.log("capture failed:" + message)
+        }
+
+        //录像模式配置
+        videoRecorder {
+             resolution: "640x480"
+             frameRate: 30              //帧率
+//             audioEncodingMode: CameraRecorder.ConstantBitrateEncoding;
+             audioBitRate: 128000       //视频比特率
+             mediaContainer: "mp4"      //视频录制格式
+//             outputLocation: "D:\MYIR\Capture\video_test"        //保存地址
+             onRecorderStateChanged: console.log("state changed")
+             onRecorderStatusChanged: console.log("status changed")
+        }
+        //对焦模式
+//        focus {
+//            focusMode: Camera.FocusAuto
+//            focusPointMode: Camera.FocusPointCenter
 //        }
-        PropertyAnimation {target: rect; to: 100
-//            onYChanged:{
 
-//            }
+        onError: console.log("camera err: " + errorCode + errorString);
+    }
+
+    VideoOutput {
+        anchors.fill: parent
+        source: camera
+    }
+
+    ListModel {id: imagePaths}
+
+    //相机界面，左上角返回按钮
+    MyIconButton {
+        id: backButton
+        icon_code: def.iconCode_back
+        button_text: camera.displayName
+        button_color: "white"
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.margins: 10
+        onClicked: {
+            camera.stop()
+            root.close()
         }
     }
 
-
-    Rectangle {
-        width: 75; height: 75; radius: width
-        id: ball
-        color: "salmon"
-
-        Behavior on x {
-            NumberAnimation {
-                id: bouncebehavior
-                easing {
-                    type: Easing.OutElastic
-                    amplitude: 1.0
-                    period: 0.5
-                }
-            }
+    //右上角跳转到图库按钮
+    MyIconButton {
+        id: albumButton
+        icon_code: def.iconCode_album
+        button_text: qsTr("所有图片")
+        button_color: "white"
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.margins: 10
+        onClicked: {
+            w_album.setImageFolder(def.imageDefaultLocation)
+            w_album.showNormal()
         }
-        Behavior on y {
-            animation: bouncebehavior
-        }
-        Behavior {
-            ColorAnimation { target: ball; duration: 3000 }
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            onPressed: {
-                y=10
-                x=10
-        }
-        }
-
     }
 
-    Rectangle {
-        id: banner
-        anchors.top: ball.bottom
-        width: 150; height: 100; border.color: "black"
-
-        Column {
-            anchors.centerIn: parent
-            Text {
-                id: code
-                text: "Code less."
-                opacity: 0.01
-            }
-            Text {
-                id: create
-                text: "Create more."
-                opacity: 0.01
-            }
-            Text {
-                id: deploy
-                text: "Deploy everywhere."
-                opacity: 0.01
-            }
+    //底部拍照功能区域：预览图片+矩形+按钮
+    CaptureBar {
+        id: bar
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        onCaptureImage: {
+            //保存照片到指定位置
+            var savePath = def.captureSavePath + def.captureSaveHead + def.getCurrentTime();
+            camera.imageCapture.captureToLocation(savePath);
         }
 
-        MouseArea {
-            anchors.fill: parent
-            onPressed: playbanner.start()
+        //以下为小视频录制功能
+        onCaptureVideoStart: {
+            console.log("capture video start")
+            /*
+            camera.captureMode = Camera.CaptureVideo
+            var savePath = def.captureSavePath + "video_" + def.getCurrentTime();
+            camera.videoRecorder.setOutputLocation(savePath)
+            camera.videoRecorder.record()
+            */
         }
-
-        SequentialAnimation {
-            id: playbanner
-            running: false
-            NumberAnimation { target: code; property: "opacity"; to: 1.0; duration: 200}
-            NumberAnimation { target: create; property: "opacity"; to: 1.0; duration: 200}
-            NumberAnimation { target: deploy; property: "opacity"; to: 1.0; duration: 200}
+        onCaptureVideoStop: {
+            console.log("capture video stop")
+            /*
+            camera.videoRecorder.stop()
+            camera.captureMode = Camera.CaptureStillImage
+            camera.start()
+            */
         }
     }
 }
