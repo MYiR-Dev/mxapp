@@ -377,7 +377,7 @@ Rectangle {
 //                                            scopeWnd.z=4;
                                               scopeWnd.item.show()
                                               scopeWnd.item.requestActivate()
-                                        }else if(model.aqml === "BrowserWindow.qml"){
+                                        }else if(model.aqml === "FileWindow.qml"){
 //                                            fileWnd.forceActiveFocus()
 //                                            fileWnd.z=4;
                                               fileWnd.item.show()
@@ -397,7 +397,13 @@ Rectangle {
 //                                            settingsWnd.z=4;
                                               settingsWnd.item.show()
                                               settingsWnd.item.requestActivate()
-                                        }
+                                        }/*else if(model.aqml === "BrowserWindow.qml"){
+//                                              browserWnd.forceActiveFocus()
+//                                              browserWnd.z=4;
+                                              browserWnd.item.show()
+                                              browserWnd.item.requestActivate()
+                                        }*/
+
                                     }
 
                                     Timer{
@@ -627,7 +633,7 @@ Rectangle {
                     qsTr("系统"),
                     qsTr("文件管理器"),
                     "qrc:/images/wvga/home/media_icon_doc.png",
-                    "BrowserWindow.qml",
+                    "FileWindow.qml",
                     "#02b9db"
                     )
         //9
@@ -640,6 +646,15 @@ Rectangle {
                     "PictureWindow.qml",
                     "#02b9db"
                     )
+//        addModelData(
+//                    "browser",
+//                    "qrc:/images/wvga/home/homepage_media_nor.png",
+//                    qsTr("网络应用"),
+//                    qsTr("浏览器"),
+//                    "qrc:/images/wvga/home/media_icon_img_nor.png",
+//                    "BrowserWindow.qml",
+//                    "#02b9db"
+//                    )
     }
     }
 }

@@ -200,5 +200,9 @@
         <file>images/wvga/smart/smart_gif_progress_00000.png</file>
         <file>AutoScroller.qml</file>
         <file>BrowserWindow.qml</file>
+        <file>images/wvga/home/browser.png</file>
+        <file>FileBrowser.qml</file>
+        <file>images/wvga/filebrowser/icon_BackArrow.png</file>
+        <file>images/wvga/filebrowser/icon_Folder.png</file>
     </qresource>
 </RCC>
