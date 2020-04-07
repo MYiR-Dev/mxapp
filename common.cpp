@@ -2,12 +2,20 @@
 #include <QProcess>
 #include <QObject>
 #include <QSysInfo>
+#include <QThread>
+#include <QTest>
 #define MB (1024 * 1024)
 #define KB (1024)
+
 GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent)
 {
     process = new QProcess(this);
     connect(process, SIGNAL(readyRead()), this, SLOT(ReadData()));
+    wifi_process = new QProcess(this);
+    connect(wifi_process, SIGNAL(finished(int)), this, SLOT(Wifi_ReadData()));
+
+    msic_process = new QProcess(this);
+    connect(msic_process, SIGNAL(finished(int)), this, SLOT(msic_ReadData()));
 
     timerCPU = new QTimer(this);
     connect(timerCPU, SIGNAL(timeout()), this, SLOT(get_cpu_info()));
@@ -15,7 +23,9 @@ GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent)
     timerMemory = new QTimer(this);
     connect(timerMemory, SIGNAL(timeout()), this, SLOT(get_memory_info()));
 
-
+    timerWifi = new QTimer(this);
+    connect(timerWifi, SIGNAL(timeout()), this, SLOT(get_wifi_info()));
+    wifi_id = "0";
 
     this->Start(100);
 }
@@ -25,20 +35,34 @@ GetSystemInfo::~GetSystemInfo()
 
     timerCPU->stop();
     timerMemory->stop();
+    timerWifi->stop();
     process->close();
+    wifi_process->close();
+    msic_process->close();
     delete timerCPU;
     delete timerMemory;
-    delete timerStorage;
+    delete timerWifi;
     delete process;
+    delete wifi_process;
+    delete msic_process;
 }
+QUrl GetSystemInfo::fromUserInput(const QString& userInput)
+{
 
+    QFileInfo fileInfo(userInput);
+    if (fileInfo.exists())
+        return QUrl::fromLocalFile(fileInfo.absoluteFilePath());
+    return QUrl::fromUserInput(userInput);
+}
 void GetSystemInfo::Start(int interval)
 {
     timerCPU->start(interval);
     timerMemory->start(interval + 200);
+    timerWifi->start(1000);
 }
 void GetSystemInfo::get_cpu_info()
 {
+
     if (process->state() == QProcess::NotRunning) {
         totalNew = idleNew = 0;
         process->start("cat /proc/stat");
@@ -52,10 +76,326 @@ void GetSystemInfo::get_memory_info()
         process->start("cat /proc/meminfo");
     }
 }
-void GetSystemInfo::get_net_info()
+void GetSystemInfo::get_wifi_info()
+{
+    if (msic_process->state() == QProcess::NotRunning) {
+        msic_process->start("iwconfig wlan0");
+    }
+
+}
+void GetSystemInfo::wifi_open()
+{
+    QString command;
+    command = "killall wpa_supplicant";
+//    QThread::msleep(2000);
+    msic_process->start(command);
+    msic_process->waitForFinished();
+    command = "ifconfig wlan0 up";
+    msic_process->start(command);
+    msic_process->waitForFinished();
+    QTest::qSleep(1000);
+    command = "iwlist wlan0 scan";
+    wifi_process->start(command);
+
+    command = "wpa_supplicant -i wlan0 -c /etc/wpa_supplicant.conf -B";
+    msic_process->start(command);
+    msic_process->waitForFinished();
+    QTest::qSleep(1000);
+}
+void GetSystemInfo::wifi_close()
+{
+    QString command;
+    command = "killall udhcpc";
+    msic_process->start(command);
+    msic_process->waitForFinished();
+    command = "wpa_cli -i wlan0 disconnect";
+    msic_process->start(command);
+    msic_process->waitForFinished();
+    command = "killall wpa_supplicant";
+    msic_process->start(command);
+    msic_process->waitForFinished();
+    command = "ifconfig wlan0 down";
+    msic_process->start(command);
+    msic_process->waitForFinished();
+
+}
+void GetSystemInfo::connect_wifi(QString essid_passwd)
+{
+    QStringList tmp= essid_passwd.split("+");
+    QString command;
+
+    qDebug() << tmp[0] << tmp[1]<<tmp[2];
+    QFile file("/usr/share/connect_wifi.sh");
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+
+    if(tmp[2] == "qrc:/images/wvga/system/key.png")
+    {
+        out << "#!/bin/bash\n";
+        out << "wpa_cli -i wlan0 add_network\n";
+        out << "wpa_cli -i wlan0 set_network " + wifi_id + " ssid " + "\'\""+tmp[0]+"\"\'"+"\n";
+        out << "wpa_cli -i wlan0 set_network "+ wifi_id + " psk "+ "\'\""+tmp[1]+"\"\'"+"\n";
+        out <<  "wpa_cli -i wlan0 select_network "+wifi_id+"\n";
+
+    }
+    else {
+
+        out << "#!/bin/bash\n";
+        out << "wpa_cli -i wlan0 add_network\n";
+        out << "wpa_cli -i wlan0 set_network " + wifi_id + " ssid " + "\'\""+tmp[0]+"\"\'"+"\n";
+        out << "wpa_cli -i wlan0 set_network "+ wifi_id +" key_mgmt NONE"+"\n";
+        out <<  "wpa_cli -i wlan0 select_network "+wifi_id+"\n";
+
+    }
+    file.close();
+    msic_process->execute("chmod +x /usr/share/connect_wifi.sh");
+    msic_process->execute("/usr/share/connect_wifi.sh");
+
+}
+void GetSystemInfo::msic_ReadData()
+{
+    QTextStream stream(msic_process->readAll().data());
+    QString wifi_connect_status;
+    QString line,command;
+
+
+    do {
+
+        line = stream.readLine().trimmed();
+//        qDebug() << line;
+        if ( line.startsWith("wlan0") )
+        {
+            QStringList tmp = line.split("ESSID:");
+            QString temp = tmp[1];
+            if(tmp[1] != "on/off")
+            {
+
+                wifi_connect_status =temp.mid ( temp.indexOf ( "\"" ) + 1, temp.lastIndexOf ( "\"" ) - temp.indexOf ( "\"" ) - 1 );
+                if(wifi_status != wifi_connect_status && wifi_status != NULL)
+                {
+                    emit wifiConnected(wifi_connect_status);
+                    command = "udhcpc -i wlan0 -b";
+                    msic_process->start(command);
+                }
+
+            }
+        }
+        if ( line.length() == 1 )
+        {
+            qDebug() << line << line.length();
+            wifi_id = line;
+//            QString temp = tmp[1];
+
+        }
+
+    } while (!line.isNull());
+    wifi_status = wifi_connect_status;
+}
+QString GetSystemInfo::get_wifi_list()
+{
+    QString wifi_interface = "wlan0";
+    QString wirelessInterfaceStatus = getWirelessInterfaceStatus(wifi_interface);
+
+    if(wirelessInterfaceStatus == "down")
+    {
+        msic_process->start("/sbin/ifconfig",QStringList() << wifi_interface << "up");
+
+    }
+    QString cmd="/sbin/iwlist";
+    QStringList opts;
+    wifi_process->start(cmd, opts << wifi_interface << "scan");
+
+    if(!wifi_process->waitForStarted())
+    {
+        qDebug() << "error starting iwlist process";
+
+    }
+    return "dd";
+}
+QString GetSystemInfo::getWirelessInterfaceStatus(QString interface)
+{
+    QString status = "";
+    QFile file("/sys/class/net/" + interface + "/operstate");
+    if (file.exists())
+    {
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            return status;
+        QByteArray line = file.readLine();
+        status = line.trimmed();
+    }
+    return status;
+}
+
+void GetSystemInfo::Wifi_ReadData()
+{
+    QTextStream stream(wifi_process->readAll().data());
+    QString buffer = "";
+    QString line;
+    int cellCount = 0;
+
+    do {
+
+        line = stream.readLine().trimmed();
+
+        if ( line.startsWith("Cell") )
+        {
+            if (cellCount > 0)
+                buffer = buffer + "<<#>>"; // cell change
+
+            cellCount ++;
+        }
+
+        if (line.size() > 0)
+            buffer = buffer + line + "<<>>"; // line change
+
+    } while (!line.isNull());
+//    qDebug() << buffer;
+    parseIwlist(buffer);
+}
+void GetSystemInfo::parseIwlist(QString buffer)
+{
+    QStringList bufferLines = buffer.split("<<#>>");
+    QString line;
+    QVector<QStringList> wifi_info_list;
+    QVariantList  wifi_info;
+    if (bufferLines.size() > 0)
+    {
+        if ( bufferLines.at(0).contains("No scan results") )
+        {
+
+            qDebug() << "ssid";
+        }
+    }
+
+    for (int i=0 ; i < bufferLines.size() ; i++)
+    {
+        QStringList infoLines = bufferLines.at(i).split("<<>>");
+
+        QString toolTip;
+
+        for (int j=0 ; j < infoLines.size() ; j++)
+        {
+            line = infoLines.at(j);
+
+            if ( line.startsWith ( "Cell" ) && line.contains( "Address:" ) )
+            {
+                QStringList tmp = line.split("Address:");
+                toolTip.append("Address: " + tmp.at(tmp.size()-1).trimmed());
+            }
+            else if((!line.isEmpty()) && (!line.contains("completed")) && (!line.contains("IE: Unknown")))
+                toolTip.append("\n" + line);
+
+            if ( line.startsWith ( "ESSID:" ) )
+            {
+                QString ssid =line.mid ( line.indexOf ( "\"" ) + 1, line.lastIndexOf ( "\"" ) - line.indexOf ( "\"" ) - 1 );
+                wifi_info.append(ssid);
+
+            }
+            if ( line.startsWith ( "Encryption key:on" ) )
+                wifi_info.append("on");
+            if ( line.startsWith ( "Encryption key:off" ) )
+                wifi_info.append("off");
+            if ( line.startsWith ( "Quality=" ) )
+                wifi_info.append(line.mid (line.indexOf ("=") + 1, line.indexOf ("/") - line.indexOf ("=") - 1 ));
+        }
+//        for(int i = 0; i< wifi_info.size();++i)
+//        {
+//            QString tmp = wifi_info.at(i);
+//            qDebug()<<"tmp ="<< i<<tmp;
+//        }
+//        wifi_info_list.append(wifi_info);
+    }
+//    for(int i = 0; i< wifi_info_list.size();++i)
+//    {
+//        QStringList ifno = wifi_info_list.at(i);
+//        qDebug()<<"ifno =";
+//        for(int i = 0; i< ifno.size();++i)
+//        {
+//            QString tmp = ifno.at(i);
+//            qDebug()<<"tmp ="<< i<<tmp;
+//        }
+//    }
+    emit wifiReady(wifi_info);
+}
+void GetSystemInfo::set_net_info(QString net_info)
 {
 
+    QString command;
+    qDebug() << "net_info:" <<net_info;
+    QStringList list = net_info.split(" ");
 
+    if(list.at(0) =="DHCP")
+    {
+        qDebug() << "DHCP";
+
+        QFile readFile("/etc/network/interfaces");
+        QString strAll;
+        if(readFile.open((QIODevice::ReadOnly|QIODevice::Text)))
+        {
+            QTextStream stream(&readFile);
+            strAll=stream.readAll();
+        }
+        readFile.close();
+        QStringList strList;
+        strList=strAll.split("\n");
+
+        for(int i=0;i<strList.size();i++)
+        {
+            if(strList.at(i).startsWith("iface eth0 inet"))
+            {
+                QString tempStr=strList.at(i);
+                 qDebug() << tempStr;
+                 tempStr.replace(0,tempStr.length(),"iface eth0 inet dhcp");
+                 qDebug() << tempStr;
+                 strList.replace(i,tempStr);
+                 qDebug() << strList.at(i);
+            }
+        }
+        QFile writeFile("/etc/network/interfaces");
+        if(writeFile.open((QIODevice::WriteOnly|QIODevice::Text)))
+        {
+             QTextStream stream(&writeFile);
+            for(int i=0;i<strList.size();i++)
+            {
+                  stream<<strList.at(i)<<'\n';
+            }
+
+        }
+        writeFile.close();
+    }
+    else {
+        if(!list.at(1).isEmpty()&& !list.at(2).isEmpty())
+        {
+            command ="ifconfig eth0 "+ list.at(1) +" netmask "+list.at(2);
+            qDebug() << "command: " << command;
+           process->startDetached(command);
+        }
+        else {
+
+            qDebug() << "ifconfig null";
+        }
+
+        if(!list.at(3).isEmpty() )
+        {
+            command ="route add default gw "+ list.at(3);
+            qDebug() << "command: " << command;
+            process->startDetached(command);
+        }
+        else{
+            qDebug() << "route null";
+        }
+        if(!list.at(4).isEmpty())
+        {
+            command ="echo \"nameserver "+ list.at(4)+ "\""+">> /etc/resolv.conf";
+            qDebug() << "command: " << command;
+            process->startDetached(command);
+        }
+        else {
+           qDebug() << "nameserver null";
+        }
+    }
+
+//    process->startDetached(command);
 }
 int GetSystemInfo::read_cpu_percent()
 {

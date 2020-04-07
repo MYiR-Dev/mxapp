@@ -3,9 +3,11 @@ import QtQuick.Controls 2.1
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Window 2.2
 import GetSystemInfoAPI 1.0
-//import QtQuick.VirtualKeyboard 2.1
+import QtQuick.VirtualKeyboard 2.2
+import QtQuick.VirtualKeyboard.Settings 2.2
 import QtQuick.Layouts 1.0
-
+import QtQuick.Controls 2.3 as Controls
+import QtWebEngine 1.2
 SystemWindow {
     id: settingsWindow
     title: "settings"
@@ -44,7 +46,7 @@ SystemWindow {
         }
         color:"transparent"
         width:750
-        height:480
+        height:800
         SwipeView {
             id: view
             orientation:Qt.Vertical
@@ -334,9 +336,15 @@ SystemWindow {
             Item {
                 id: secondPage
                 Rectangle{
-                    width:630
-                    height:419
+                    width:650
+                    height:800
                     color:"transparent"
+                    MouseArea  {
+                        id: content
+                        anchors.fill: parent
+
+                        onClicked: focus = true
+                    }
                     Text{
                         id:eth
                         text: "以太网"
@@ -351,8 +359,49 @@ SystemWindow {
 
                         }
                     }
+                    InputPanel {
+                        id: inputPanel
+                        x: 100
+                        y: 450
+                        z:99
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        states: State {
+                            name: "visible"
+                            /*  The visibility of the InputPanel can be bound to the Qt.inputMethod.visible property,
+                                but then the handwriting input panel and the keyboard input panel can be visible
+                                at the same time. Here the visibility is bound to InputPanel.active property instead,
+                                which allows the handwriting panel to control the visibility when necessary.
+                            */
+                            when: inputPanel.active
+                            PropertyChanges {
+                                target: inputPanel
+                                y: 450 - inputPanel.height
+                            }
+                        }
+                        transitions: Transition {
+                            id: inputPanelTransition
+                            from: ""
+                            to: "visible"
+                            reversible: true
+                            enabled: !VirtualKeyboardSettings.fullScreenMode
+                            ParallelAnimation {
+                                NumberAnimation {
+                                    properties: "y"
+                                    duration: 250
+                                    easing.type: Easing.InOutQuad
+                                }
+                            }
+                        }
+                        Binding {
+                            target: InputContext
+                            property: "animating"
+                            value: inputPanelTransition.running
+                        }
+                            AutoScroller {}
+                    }
                     GridLayout{
-                        width:400
+                        width:600
                         height:100
                         rows: 7
                         columns:2
@@ -438,28 +487,24 @@ SystemWindow {
 
                         TextField {
 
-                            id: digitsField
+                            id: ip_input
                             width: 141
                             height: 16
                             placeholderText: "192.168.30.111" /* 输入为空时显示的提示文字 */
-
-//                            style:TextFieldStyle {
-//                                textColor: "white"
-//                                placeholderTextColor :"lightgrey"
-//                            }
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
+                            onAccepted: digitsField.focus = true
+                            color: "white"
+                            validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
                             background: Rectangle{
 
                                 implicitWidth:141
                                 implicitHeight:16
                                 color: "transparent"
                                 Image {
-                                    id: dd
                                     anchors.fill: parent
                                     source: "images/wvga/system/input-bg.png"
                                 }
                             }
-
-
 
                             Layout.row: 2
                             Layout.column: 1
@@ -477,19 +522,33 @@ SystemWindow {
                             Layout.row: 3
                             Layout.column: 0
                         }
-                        Text{
+                        TextField{
 
-                            text: "255.255.255.0"
-                            font.pointSize: 10;
-
+                            id: netmask_input
+                            width: 141
+                            height: 16
+                            placeholderText: "255.255.255.0" /* 输入为空时显示的提示文字 */
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
+                            onAccepted: digitsField.focus = true
                             color: "white"
+                            validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
+                            background: Rectangle{
+
+                                implicitWidth:141
+                                implicitHeight:16
+                                color: "transparent"
+                                Image {
+                                    anchors.fill: parent
+                                    source: "images/wvga/system/input-bg.png"
+                                }
+                            }
 
                             Layout.row: 3
                             Layout.column: 1
                         }
                         Text{
 
-                            text: "路由器"
+                            text: qsTr("网关")
                             font.pointSize: 10;
 
                             color: "white"
@@ -500,29 +559,172 @@ SystemWindow {
                             Layout.row: 4
                             Layout.column: 0
                         }
-                        Text{
-
-                            text: "192.168.30.1"
-                            font.pointSize: 10;
-
+                        TextField{
+                            id: gw_input
+                            width: 141
+                            height: 16
+                            placeholderText: "192.168.30.1" /* 输入为空时显示的提示文字 */
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
+                            onAccepted: digitsField.focus = true
                             color: "white"
+                            validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
+                            background: Rectangle{
+
+                                implicitWidth:141
+                                implicitHeight:16
+                                color: "transparent"
+                                Image {
+                                    anchors.fill: parent
+                                    source: "images/wvga/system/input-bg.png"
+                                }
+                            }
+
 
                             Layout.row: 4
                             Layout.column: 1
                         }
+                        Text{
+
+                            text: qsTr("DNS")
+                            font.pointSize: 10;
+
+                            color: "white"
+                            anchors{
+                                left: parent.left
+                                leftMargin: 30
+                            }
+                            Layout.row: 5
+                            Layout.column: 0
+                        }
+                        TextField{
+                            id: dns_input
+                            width: 141
+                            height: 16
+                            placeholderText: "114.114.114.114" /* 输入为空时显示的提示文字 */
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
+                            onAccepted: digitsField.focus = true
+                            color: "white"
+                            validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
+                            background: Rectangle{
+
+                                implicitWidth:141
+                                implicitHeight:16
+                                color: "transparent"
+                                Image {
+                                    anchors.fill: parent
+                                    source: "images/wvga/system/input-bg.png"
+                                }
+                            }
+
+
+                            Layout.row: 5
+                            Layout.column: 1
+                        }
+                        Rectangle{
+                            id:net_save_button_rec
+                            width: 106
+                            height: 31
+                            color: "transparent"
+                            Layout.row: 6
+                            Layout.column: 0
+                            anchors{
+//                                top: custom_calendar.bottom
+//                                topMargin: 10
+                                left:    parent.left
+                                leftMargin: 30
+
+                            }
+                            Image {
+                                anchors.fill: parent
+                                source: "images/wvga/system/save-button.png"
+                            }
+                            Text{
+                                id:net_save_button
+                                text: qsTr("保存")
+                                font.pointSize: 10;
+                                font.bold: true
+                                color: "white"
+                                anchors{
+                                    centerIn: parent
+                                }
+                            }
+                            MouseArea{
+                                anchors.fill: parent;
+                                onClicked: {
+                                    net_save_button_rec.opacity = 0.5
+                                    console.log(combox_dhcp.combox_control.currentText)
+                                    console.log(ip_input.text)
+                                    console.log(netmask_input.text)
+                                    console.log(gw_input.text)
+                                    console.log(dns_input.text)
+                                    var net_info_string = combox_dhcp.combox_control.currentText + " " +ip_input.text + " " +
+                                            netmask_input.text + " " + gw_input.text + " " +dns_input.text
+                                    console.log(net_info_string)
+                                    getSyetemInfo.set_net_info(net_info_string)
+                                }
+                                onExited:{
+                                   net_save_button_rec.opacity = 1.0
+                                }
+                                onPressed: {
+
+                                   net_save_button_rec.opacity = 0.5
+                                }
+                            }
+                        }
+
                     }
 
                 }
             }
             Item {
                 id: thirdPage
+
                 Rectangle{
                     width:630
                     height:419
                     color:"transparent"
+//                    Popup{
+//                        id:myPopup
+////                        width: 548
+////                        height: 30
+//                        anchors{
+
+//                            centerIn:parent
+//                        }
+//                        modal: true
+//                        focus: true
+//                        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+//                        background: Rectangle{
+//                            width: 548
+//                            height: 30
+////                            color:"transparent"
+//                            Image {
+//                                id: serch_g
+//                                anchors.fill: parent
+//                                source: "images/wvga/system/serch-bg.png"
+//                            }
+//                        }
+//                        Rectangle
+//                        {
+//                            width: 548
+//                            height: 32
+//                            anchors.fill: parent
+//                            color:"transparent"
+
+//                            Text {
+//                                id: mytext
+//                                font.pixelSize: 24
+//                                text: qsTr("Popup 内容显示模块")
+//                                anchors.top:parent.top
+//                                anchors.left:parent.left
+//                            }
+//                        }
+//                    }
+
+
                     Text{
                         id:wifi_set_title
-                        text: "WIFI设置"
+                        text: "WiFi设置"
                         font.pointSize: 15;
                         font.bold: true
                         color: "white"
@@ -572,7 +774,7 @@ SystemWindow {
                         Text{
 
                             text: qsTr("扫描")
-                            font.pointSize: 12;
+                            font.pointSize: 10;
                             font.bold: true
                             color: "white"
                             anchors{
@@ -582,10 +784,19 @@ SystemWindow {
                             }
 
                         }
+                        Component.onCompleted:{
+//                            getSyetemInfo.get_wifi_list()
+                            getSyetemInfo.wifi_close()
+                            getSyetemInfo.wifi_open()
+                            getSyetemInfo.connect_wifi("long+6032509792+qrc:/images/wvga/system/key.png")
+                        }
+
                         MouseArea{
                             anchors.fill: parent;
                             onClicked: {
                                 serch_rec.opacity = 0.5
+
+                               getSyetemInfo.get_wifi_list()
 
                             }
                             onExited:{
@@ -603,113 +814,249 @@ SystemWindow {
                             topMargin: 10
                         }
                     }
-                    Rectangle{
+                    ListModel {
+                        id: wifi_list_model
+                        ListElement {
+                            wifi_essid: "myir1"
+                            wifi_connect_status: qsTr("已连接")
+                            key_image: "images/wvga/system/key.png"
+                            signal_iamge:"images/wvga/system/wifi-signal.png"
+
+                        }
+                        ListElement {
+                            wifi_essid: "myir2"
+                            wifi_connect_status: qsTr("x")
+                            key_image: "images/wvga/system/key.png"
+                            signal_iamge:"images/wvga/system/wifi-signal.png"
+
+                        }
+                        ListElement {
+                            wifi_essid: "myir3"
+                            wifi_connect_status: qsTr("已连接")
+                            key_image: "images/wvga/system/key.png"
+                            signal_iamge:"images/wvga/system/wifi-signal.png"
+
+                        }
+                        ListElement {
+                            wifi_essid: "myir4"
+                            wifi_connect_status: qsTr("已连接")
+                            key_image: "images/wvga/system/key.png"
+                            signal_iamge:"images/wvga/system/wifi-signal.png"
+
+                        }
+
+                    }
+                    Connections {
+                        target: getSyetemInfo
+                        onWifiReady: {
+                             var image
+                             wifi_list_model.clear()
+                             console.log(wifi_data.length/3)
+                             for(var j=0;j<wifi_data.length/3;j++)
+                             {
+                                 if (wifi_data[j*3+1] === "on")
+                                      image= "images/wvga/system/key.png"
+                                 else
+                                      image=""
+                                console.log("Received ++: " +wifi_data[j*3+2])
+                                 wifi_list_model.append({
+                                     "wifi_essid": wifi_data[j*3+2],
+                                     "wifi_connect_status": qsTr("未启用"),
+                                     "key_image":image,
+                                     "signal_iamge":"images/wvga/system/wifi-signal.png"
+                                 })
+
+                             }
+                             for(var i=0 ; i<wifi_data.length/3;i++ )
+                             {
+                                 console.log("Received ++: " +wifi_list_model.get(i).wifi_essid)
+                                 console.log("Received ++: " +wifi_list_model.get(i).wifi_connect_status)
+                                 console.log("Received ++: " +wifi_list_model.get(i).key_image)
+                                 console.log("Received ++: " +wifi_list_model.get(i).signal_iamge)
+                             }
+                        }
+                        onWifiConnected:{
+                            for(var k=0; k < wifi_list_model.count; k++)
+                            {
+                                if(wifi_list_model.get(k).wifi_essid===wifi_essid_info)
+                                {
+                                    wifi_list_model.setProperty(k, "wifi_connect_status", qsTr("已连接"))
+//                                   wifi_list_model.set(k).wifi_connect_status = "ddd"
+                                   console.log("Received ++: " +wifi_list_model.get(k).wifi_connect_status)
+                                }
+                                else
+                                    wifi_list_model.setProperty(k, "wifi_connect_status", qsTr("未启用"))
+                            }
+                            console.log("Received ++: " +wifi_essid_info)
+                        }
+                    }
+                    Component {
+                        id: listDelegate
+                        Item{
+                            id:itemDelegate
+
+                            clip: true
+                            width: 548
+                            height: 32
+//                            color: "transparent"
+
+//                            anchors{
+//                                left: parent.left
+//                                leftMargin: 30
+//                                top: serch_rec.bottom
+//                                topMargin: 10
+//                            }
+                            Text{
+                                id:wifi_essid_text
+                                text: wifi_essid
+                                font.pointSize: 8;
+                                font.bold: true
+                                color: "white"
+                                anchors{
+
+                                    top:parent.top
+
+                                }
+
+                            }
+                            Text{
+
+                                text: wifi_connect_status
+                                font.pointSize: 6;
+                                font.bold: true
+                                color: "#A9A9A9"
+                                anchors{
+
+                                    bottom:parent.bottom
+
+                                }
+
+                            }
+                            TextField{
+                                id: passwd_input
+                                width: 141
+                                height: 32
+                                echoMode: TextInput.Password
+                                placeholderText: "Password field"
+                                inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText
+                                onAccepted: upperCaseField.focus = true
+                                color: "white"
+                                background: Rectangle{
+
+                                    implicitWidth:141
+                                    implicitHeight:32
+                                    color: "transparent"
+                                    Image {
+                                        anchors.fill: parent
+                                        source: "images/wvga/system/input-bg.png"
+                                    }
+                                }
+                                anchors{
+
+                                    left:parent.left
+                                    leftMargin: 80
+
+                                }
+
+                            }
+                            Image {
+                                id: key_icon
+    //                            anchors.centerIn: parent
+                                anchors{
+    //                                center: content_rec.Center
+
+                                    verticalCenter: content_rec.verticalCenter
+                                    right: content_rec.left
+                                    rightMargin: 150
+
+                                }
+    //                            source: "images/wvga/system/key.png"
+                                source: key_image
+                            }
+                            Image {
+                                id: wifi_signal
+    //                            anchors.centerIn: parent
+                                anchors{
+    //                                horizontalCenter:content_rec
+    //                                center: content_rec.Center
+                                      verticalCenter: content_rec.verticalCenter
+    //                                topMargin: 2
+                                    right: content_rec.left
+                                    rightMargin: 100
+
+                                }
+    //                            source: "images/wvga/system/wifi-signal.png"
+                                source:signal_iamge
+                            }
+                            Item{
+                                id:content_rec
+                                width: 105
+                                height: 31
+
+//                                color: "transparent"
+                                anchors{
+                                    right: parent.right
+                                    rightMargin: 5
+                                }
+
+                                Image {
+                                    id: connect
+                                    anchors.fill: parent
+                                    source: "images/wvga/system/connect.png"
+                                }
+                                Text{
+
+                                    text: qsTr("连接")
+                                    font.pointSize: 12;
+    //                                font.bold: true
+                                    color: "white"
+                                    anchors{
+
+                                        centerIn:parent
+                                    }
+
+                                }
+
+                                MouseArea{
+                                    anchors.fill: parent;
+                                    onClicked: {
+                                        content_rec.opacity = 0.5
+                                        focus = true
+                                        listView.currentIndex = index;
+                                        console.log(wifi_essid_text.text)
+                                        console.log(passwd_input.text)
+                                        console.log(listView.currentIndex)
+                                        var essid_passwd = wifi_essid_text.text+"+"+passwd_input.text+"+"+key_icon.source
+                                        getSyetemInfo.connect_wifi(essid_passwd)
+    //                                    myPopup.open()
+                                    }
+                                    onExited:{
+                                       content_rec.opacity = 1.0
+                                    }
+                                    onPressed: {
+
+                                      content_rec.opacity = 0.5
+                                    }
+                                }
+
+                            }
+
+                        }
+
+                    }
+                    ListView {
+                        id: listView
                         width: 548
-                        height: 32
-                        color: "transparent"
-                        anchors{
+                        height: 500
+                        anchors {
                             left: parent.left
                             leftMargin: 30
                             top: serch_rec.bottom
                             topMargin: 10
                         }
-                        Text{
-
-                            text: qsTr("myir-wifi")
-                            font.pointSize: 8;
-                            font.bold: true
-                            color: "white"
-                            anchors{
-
-                                top:parent.top
-
-                            }
-
-                        }
-                        Text{
-
-                            text: qsTr("未启用")
-                            font.pointSize: 8;
-                            font.bold: true
-                            color: "white"
-                            anchors{
-
-                                bottom:parent.bottom
-
-                            }
-
-                        }
-                        Image {
-                            id: key_icon
-//                            anchors.centerIn: parent
-                            anchors{
-//                                center: content_rec.Center
-
-                                verticalCenter: content_rec.verticalCenter
-                                right: content_rec.left
-                                rightMargin: 150
-
-                            }
-                            source: "images/wvga/system/key.png"
-                        }
-                        Image {
-                            id: wifi_signal
-//                            anchors.centerIn: parent
-                            anchors{
-//                                horizontalCenter:content_rec
-//                                center: content_rec.Center
-                                  verticalCenter: content_rec.verticalCenter
-//                                topMargin: 2
-                                right: content_rec.left
-                                rightMargin: 100
-
-                            }
-                            source: "images/wvga/system/wifi-signal.png"
-                        }
-                        Rectangle{
-                            id:content_rec
-                            width: 105
-                            height: 31
-                            color: "transparent"
-                            anchors{
-                                right: parent.right
-                                rightMargin: 5
-                            }
-
-                            Image {
-                                id: connect
-                                anchors.fill: parent
-                                source: "images/wvga/system/connect.png"
-                            }
-                            Text{
-
-                                text: qsTr("连接")
-                                font.pointSize: 12;
-//                                font.bold: true
-                                color: "white"
-                                anchors{
-
-                                    centerIn:parent
-                                }
-
-                            }
-//                            MouseArea{
-//                                anchors.fill: parent;
-//                                onClicked: {
-//                                    content_rec.opacity = 0.5
-
-//                                }
-//                                onExited:{
-//                                   content_rec.opacity = 1.0
-//                                }
-//                                onPressed: {
-
-//                                  content_rec.opacity = 0.5
-//                                }
-//                            }
-
-                        }
-
+                        spacing: 20
+                        model: wifi_list_model
+                        delegate: listDelegate
                     }
                 }
             }

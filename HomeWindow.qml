@@ -2,7 +2,7 @@ import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.0
+//import QtGraphicalEffects 1.0
 //import QtQml.Models 2.1
 
 //#02b9db home界面小图片背景色
@@ -377,7 +377,7 @@ Rectangle {
 //                                            scopeWnd.z=4;
                                               scopeWnd.item.show()
                                               scopeWnd.item.requestActivate()
-                                        }else if(model.aqml === "FileWindow.qml"){
+                                        }else if(model.aqml === "BrowserWindow.qml"){
 //                                            fileWnd.forceActiveFocus()
 //                                            fileWnd.z=4;
                                               fileWnd.item.show()
@@ -627,7 +627,7 @@ Rectangle {
                     qsTr("系统"),
                     qsTr("文件管理器"),
                     "qrc:/images/wvga/home/media_icon_doc.png",
-                    "FileWindow.qml",
+                    "BrowserWindow.qml",
                     "#02b9db"
                     )
         //9

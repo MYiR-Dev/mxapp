@@ -198,5 +198,7 @@
         <file>images/wvga/smart/door.png</file>
         <file>images/wvga/smart/lighting.png</file>
         <file>images/wvga/smart/smart_gif_progress_00000.png</file>
+        <file>AutoScroller.qml</file>
+        <file>BrowserWindow.qml</file>
     </qresource>
 </RCC>

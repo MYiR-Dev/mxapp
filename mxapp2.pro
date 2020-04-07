@@ -1,4 +1,4 @@
-QT += qml quick core gui printsupport
+QT += qml quick core gui printsupport testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++11
@@ -21,6 +21,11 @@ SOURCES += \
     common.cpp
 
 RESOURCES += qml.qrc
+CONFIG += disable-desktop
+static {
+    QT += svg
+    QTPLUGIN += qtvirtualkeyboardplugin
+}
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -37,6 +42,8 @@ HEADERS += \
     qcustomplot.h \
     qmlplot.h \
     common.h
+
+DISTFILES +=
 
 
 

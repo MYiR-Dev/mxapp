@@ -130,6 +130,6 @@ ApplicationWindow {
     Loader{
         id:fileWnd;
         anchors.centerIn: parent;
-        source: "FileWindow.qml";
+        source: "BrowserWindow.qml";
     }
 }

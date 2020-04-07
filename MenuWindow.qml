@@ -161,7 +161,7 @@ Rectangle {
                         _text1: qsTr("")
                         _text2: qsTr("文件管理")
                         _num: "1"
-                        _qurl: "FileWindow.qml"
+                        _qurl: "BrowserWindow.qml"
                     }
 //                    ListElement {
 //                        _imageSource: "images/wvga/home/cam.png"
