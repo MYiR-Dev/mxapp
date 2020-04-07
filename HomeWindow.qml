@@ -646,7 +646,7 @@ Rectangle {
                     "qrc:/images/wvga/home/homepage_media_nor.png",
                     qsTr("多媒体"),
                     qsTr("Music"),
-                    "qrc:/images/wvga/home/music.png",
+                    "qrc:/images/wvga/home/icon_music.png",
                     "MusicWindow.qml",
                     "#02b9db"
                     )
