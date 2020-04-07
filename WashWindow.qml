@@ -5,8 +5,8 @@ import QtQuick.Layouts 1.3
 
 SystemWindow {
     id: washWindow
-    title: "Wash"
-    flags:Qt.FramelessWindowHint
+//    title: "Wash"
+//    flags:Qt.FramelessWindowHint
 
     property int mode: -1; // 当前洗涤模式
 
@@ -229,7 +229,8 @@ SystemWindow {
         return totaltime;
     }
 
-    background: Image {
+//  background:
+        Image {
         id: washbg
         source: "qrc:/images/wvga/smart/wash_bg.png"
     }

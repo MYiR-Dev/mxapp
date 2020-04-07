@@ -52,10 +52,17 @@ Rectangle {
                     id: menuListModel1
                     ListElement {
                         _imageSource: "images/wvga/home/player.png"
-                        _text1: qsTr("视频和音乐播放器")
+                        _text1: qsTr("视频播放器")
                         _text2: qsTr("播放器")
                         _num: "1"
                         _qurl: "PlayerWindow.qml"
+                    }
+                    ListElement {
+                        _imageSource: "images/wvga/home/music.png"
+                        _text1: qsTr("音乐播放器")
+                        _text2: qsTr("Music")
+                        _num: "1"
+                        _qurl: "MusicWindow.qml"
                     }
                     ListElement {
                         _imageSource: "images/wvga/home/camera.png"

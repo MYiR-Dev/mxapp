@@ -397,13 +397,17 @@ Rectangle {
 //                                            settingsWnd.z=4;
                                               settingsWnd.item.show()
                                               settingsWnd.item.requestActivate()
+                                        }else if(model.aqml === "MusicWindow.qml"){
+//                                            settingsWnd.forceActiveFocus()
+//                                            settingsWnd.z=4;
+                                              musicWnd.item.show()
+                                              musicWnd.item.requestActivate()
                                         }/*else if(model.aqml === "BrowserWindow.qml"){
 //                                              browserWnd.forceActiveFocus()
 //                                              browserWnd.z=4;
                                               browserWnd.item.show()
                                               browserWnd.item.requestActivate()
                                         }*/
-
                                     }
 
                                     Timer{
@@ -637,6 +641,16 @@ Rectangle {
                     "#02b9db"
                     )
         //9
+        addModelData(
+                    "multimedia",
+                    "qrc:/images/wvga/home/homepage_media_nor.png",
+                    qsTr("多媒体"),
+                    qsTr("Music"),
+                    "qrc:/images/wvga/home/music.png",
+                    "MusicWindow.qml",
+                    "#02b9db"
+                    )
+        //10
         addModelData(
                     "multimedia",
                     "qrc:/images/wvga/home/homepage_media_nor.png",
