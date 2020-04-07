@@ -92,6 +92,7 @@ Rectangle {
                         _num: "1"
                         _qurl: "ScopeWindow.qml"
                     }
+
                 }
 
                 Grid{
@@ -160,6 +161,13 @@ Rectangle {
                         _imageSource: "images/wvga/home/filemanager.png"
                         _text1: qsTr("")
                         _text2: qsTr("文件管理")
+                        _num: "1"
+                        _qurl: "FileWindow.qml"
+                    }
+                    ListElement {
+                        _imageSource: "images/wvga/home/browser.png"
+                        _text1: qsTr("浏览器演示")
+                        _text2: qsTr("浏览器")
                         _num: "1"
                         _qurl: "BrowserWindow.qml"
                     }

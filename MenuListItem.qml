@@ -229,6 +229,12 @@ Rectangle {
                         settingsWnd.item.show()
                         settingsWnd.item.requestActivate()
                    }
+                  else if(qurl === "BrowserWindow.qml"){
+//                      browserWnd.forceActiveFocus()
+//                      browserWnd.z=4;
+                      browserWnd.item.show()
+                      browserWnd.item.requestActivate()
+                 }
             }
 
 

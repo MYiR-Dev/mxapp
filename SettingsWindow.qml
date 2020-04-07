@@ -682,6 +682,7 @@ SystemWindow {
                 Rectangle{
                     width:630
                     height:419
+
                     color:"transparent"
 //                    Popup{
 //                        id:myPopup
@@ -720,6 +721,47 @@ SystemWindow {
 //                            }
 //                        }
 //                    }
+                    InputPanel {
+                        id: inputPanel_passwd
+                        x: 100
+                        y: 450
+                        z:99
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        states: State {
+                            name: "visible"
+                            /*  The visibility of the InputPanel can be bound to the Qt.inputMethod.visible property,
+                                but then the handwriting input panel and the keyboard input panel can be visible
+                                at the same time. Here the visibility is bound to InputPanel.active property instead,
+                                which allows the handwriting panel to control the visibility when necessary.
+                            */
+                            when: inputPanel_passwd.active
+                            PropertyChanges {
+                                target: inputPanel_passwd
+                                y: 450 - inputPanel_passwd.height
+                            }
+                        }
+                        transitions: Transition {
+                            id: inputPanelTransition_passwd
+                            from: ""
+                            to: "visible"
+                            reversible: true
+                            enabled: !VirtualKeyboardSettings.fullScreenMode
+                            ParallelAnimation {
+                                NumberAnimation {
+                                    properties: "y"
+                                    duration: 250
+                                    easing.type: Easing.InOutQuad
+                                }
+                            }
+                        }
+                        Binding {
+                            target: InputContext
+                            property: "animating"
+                            value: inputPanelTransition_passwd.running
+                        }
+                            AutoScroller {}
+                    }
 
 
                     Text{
@@ -735,27 +777,101 @@ SystemWindow {
                         }
 
                     }
-                    Rectangle{
-                         width: 60
-                         height: 17
-                         color: "transparent"
-                         Image {
-                             id: open_gb
-                             anchors.fill: parent
-                             source: "images/wvga/system/open-bg.png"
-                         }
-                         Image {
-                             height: 20
-                             id: open
-                             source: "images/wvga/system/open-icon.png"
-                             anchors.right: parent.right
-                         }
+                    function toggle() {
+                        if (toggleswitch.state == "on")
+                            toggleswitch.state = "off";
+                        else
+                            toggleswitch.state = "on";
+                    }
+
+                    function releaseSwitch() {
+                        if (knob.x == 1) {
+                            if (toggleswitch.state == "off") return;
+                        }
+                        if (knob.x == 78) {
+                            if (toggleswitch.state == "on") return;
+                        }
+                        toggle();
+                    }
+
+                    Item {
+                        id: toggleswitch
+                        width: 60; height: 17
+
+                        property bool on: false
+
+
+                        Image {
+                            id: background
+                            anchors.fill: parent
+                            source: "images/wvga/system/open-bg.png"
+                            MouseArea {
+                                anchors.fill: parent;
+                                onClicked: {
+                                    if (toggleswitch.state == "on")
+                                        toggleswitch.state = "off";
+                                    else
+                                        toggleswitch.state = "on";
+                                }
+                            }
+                        }
+
+                        Image {
+                            id: knob
+                            x: 1; y: 2
+                            source: "images/wvga/system/open-icon.png"
+
+                            MouseArea {
+                                anchors.fill: parent
+                                drag.target: knob; drag.axis: Drag.XAxis; drag.minimumX: 1; drag.maximumX: 78
+                                onClicked: toggle()
+                                onReleased: releaseSwitch()
+                            }
+                        }
+
+                        states: [
+                            State {
+                                name: "on"
+                                PropertyChanges { target: knob; x: 78 }
+                                PropertyChanges { target: toggleswitch; on: true }
+                            },
+                            State {
+                                name: "off"
+                                PropertyChanges { target: knob; x: 1 }
+                                PropertyChanges { target: toggleswitch; on: false }
+                            }
+                        ]
+
+                        transitions: Transition {
+                            NumberAnimation { properties: "x"; easing.type: Easing.InOutQuad; duration: 200 }
+                        }
                         anchors{
 //                           left:wifi_set_title.right
                            bottom: wifi_set_title.bottom
                            right: parent.right
                         }
                     }
+//                    Switch{
+//                         width: 60
+//                         height: 17
+////                         color: "transparent"
+//                         Image {
+//                             id: open_gb
+//                             anchors.fill: parent
+//                             source: "images/wvga/system/open-bg.png"
+//                         }
+//                         Image {
+//                             height: 20
+//                             id: open
+//                             source: "images/wvga/system/open-icon.png"
+//                             anchors.right: parent.right
+//                         }
+//                        anchors{
+////                           left:wifi_set_title.right
+//                           bottom: wifi_set_title.bottom
+//                           right: parent.right
+//                        }
+//                    }
                     Rectangle{
                         id:serch_rec
                         width: 548
@@ -816,6 +932,7 @@ SystemWindow {
                     }
                     ListModel {
                         id: wifi_list_model
+
                         ListElement {
                             wifi_essid: "myir1"
                             wifi_connect_status: qsTr("已连接")
@@ -850,7 +967,7 @@ SystemWindow {
                         target: getSyetemInfo
                         onWifiReady: {
                              var image
-                             wifi_list_model.clear()
+//                             wifi_list_model.clear()
                              console.log(wifi_data.length/3)
                              for(var j=0;j<wifi_data.length/3;j++)
                              {
@@ -892,9 +1009,10 @@ SystemWindow {
                     }
                     Component {
                         id: listDelegate
+
                         Item{
                             id:itemDelegate
-
+                            focus:ture
                             clip: true
                             width: 548
                             height: 32
@@ -1048,6 +1166,7 @@ SystemWindow {
                         id: listView
                         width: 548
                         height: 500
+                        focus:ture
                         anchors {
                             left: parent.left
                             leftMargin: 30
