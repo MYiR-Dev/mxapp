@@ -142,4 +142,9 @@ ApplicationWindow {
         anchors.centerIn: parent;
         source: "BrowserWindow.qml";
     }
+    Loader{
+        id:supportWnd;
+        anchors.centerIn: parent;
+        source: "SupportWindow.qml";
+    }
 }

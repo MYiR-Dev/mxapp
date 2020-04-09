@@ -240,6 +240,10 @@ Rectangle {
                       browserWnd.item.show()
                       browserWnd.item.requestActivate()
                  }
+                  else if(qurl === "SupportWindow.qml"){
+                      supportWnd.item.show()
+                      supportWnd.item.requestActivate()
+                 }
             }
 
 

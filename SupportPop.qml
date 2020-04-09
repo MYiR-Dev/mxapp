@@ -22,6 +22,19 @@ Popup {
 
     anchors.centerIn: parent
 
+    function show(){
+        open()
+    }
+
+    function showNormal(){
+        open()
+    }
+
+    function requestActivate()
+    {
+        forceActiveFocus()
+    }
+
     onClosed: {
         console.log("supportpop closed")
     }

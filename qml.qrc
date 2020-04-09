@@ -237,5 +237,7 @@
         <file>MyToolButton.qml</file>
         <file>PlayerControlBar.qml</file>
         <file>ShotButton.qml</file>
+        <file>images/wvga/home/contact.png</file>
+        <file>SupportWindow.qml</file>
     </qresource>
 </RCC>
