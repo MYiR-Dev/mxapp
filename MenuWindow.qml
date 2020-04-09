@@ -86,13 +86,6 @@ Rectangle {
                         _qurl: "TicketWindow.qml"
                     }
                     ListElement {
-                        _imageSource: "images/wvga/home/wash.png"
-                        _text1: qsTr("智能洗衣机演示")
-                        _text2: qsTr("洗衣机")
-                        _num: "1"
-                        _qurl: "WashWindow.qml"
-                    }
-                    ListElement {
                         _imageSource: "images/wvga/home/scope.png"
                         _text1: qsTr("心电仪演示")
                         _text2: qsTr("心电仪")
@@ -151,6 +144,13 @@ Rectangle {
                 ListModel{
                     id: menuListModel2
                     ListElement {
+                        _imageSource: "images/wvga/home/wash.png"
+                        _text1: qsTr("智能洗衣机演示")
+                        _text2: qsTr("洗衣机")
+                        _num: "1"
+                        _qurl: "WashWindow.qml"
+                    }
+                    ListElement {
                         _imageSource: "images/wvga/home/information.png"
                         _text1: qsTr("系统信息")
                         _text2: qsTr("系统信息")
@@ -178,12 +178,13 @@ Rectangle {
                         _num: "1"
                         _qurl: "BrowserWindow.qml"
                     }
-//                    ListElement {
-//                        _imageSource: "images/wvga/home/cam.png"
-//                        _text: "2.45"
-//                        _num: "1"
-
-//                    }
+                    ListElement {
+                        _imageSource: "images/wvga/home/contact.png"
+                        _text1: qsTr("联系我们")
+                        _text2: qsTr("联系我们")
+                        _num: "1"
+                        _qurl: "SupportWindow.qml"
+                    }
 //                    ListElement {
 //                        _imageSource: "images/wvga/home/cam.png"
 //                        _text: "2.45"
