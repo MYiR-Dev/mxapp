@@ -11,8 +11,8 @@ Rectangle {
     id:root
     color: "#00000000"
 
-    FontLoader { id: fixedFont; name: "Courier" }
-    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
+//    FontLoader { id: fixedFont; name: "Courier" }
+//    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
 //    FontLoader { id: webFont; source: "http://www.princexml.com/fonts/steffmann/Starburst.ttf" }
     function fitWidth(text){
            return  fontMetrics.advanceWidth(text);
@@ -114,7 +114,7 @@ Rectangle {
                     Image {
                         id:image;
                         width: 225;
-                        height: parent.height-80;
+                        height: 318;
                         anchors.horizontalCenter: parent.horizontalCenter
                         source: cimage;
 

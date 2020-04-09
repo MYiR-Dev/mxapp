@@ -6,7 +6,7 @@ SystemWindow {
     id:scopeWindow
     title: qsTr("Hello QCustomPlot in QML")
 
-    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
+//    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
 
 //    Item {
 //        id: mainView
@@ -135,7 +135,7 @@ SystemWindow {
                 //anchors.leftMargin: 20
 //                anchors.horizontalCenter: parent.horizontalCenter
                 font{
-                    family: localFont.name
+                    family: "DS-Digital"
                     pointSize:14
                 }
                 text: "00:00:00";color: "white";// style: Text.Outline;
@@ -150,7 +150,7 @@ SystemWindow {
                 //anchors.horizontalCenter: parent.horizontalCenter
 
                 font{
-                    family: localFont.name
+                    family:"DS-Digital"
                     pointSize:8
                 }
         //        style: Text.Outline;

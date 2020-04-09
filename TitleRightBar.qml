@@ -11,7 +11,7 @@ Rectangle {
 
     property real icongap: 16
 
-    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
+//    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
 
 //    HomeButton{
 //        id: logo
@@ -96,7 +96,7 @@ Rectangle {
         anchors.leftMargin: icongap
         anchors.horizontalCenter: parent.horizontalCenter
         font{
-            family: localFont.name
+            family:"DS-Digital"
             pointSize:14
         }
         text: "00:00:00";color: "white";// style: Text.Outline;
@@ -109,7 +109,7 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
 //        font.pointSize:8; text: qsTr("2020年2月25日");style: Text.Outline;styleColor: "white"
         font{
-            family: localFont.name
+            family: "DS-Digital"
             pointSize:8
         }
 //        style: Text.Outline;

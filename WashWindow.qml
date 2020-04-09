@@ -235,7 +235,7 @@ SystemWindow {
         source: "qrc:/images/wvga/smart/wash_bg.png"
     }
 
-    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
+//    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
 
     Rectangle {
         id:tBar
@@ -315,7 +315,7 @@ SystemWindow {
             anchors.leftMargin: 15
             anchors.horizontalCenter: parent.horizontalCenter
             font{
-                family: localFont.name
+                family:"DS-Digital"
                 pointSize:14
             }
             text: "00:00:00";color: "white";// style: Text.Outline;
@@ -328,7 +328,7 @@ SystemWindow {
             anchors.horizontalCenter: parent.horizontalCenter
     //        font.pointSize:8; text: qsTr("2020年2月25日");style: Text.Outline;styleColor: "white"
             font{
-                family: localFont.name
+                family: "DS-Digital"
                 pointSize:8
             }
     //        style: Text.Outline;
@@ -1833,7 +1833,7 @@ SystemWindow {
             }
             font{
                 bold: true
-                family: localFont.name
+                family:"DS-Digital"
                 pixelSize: 48
             }
             color: "white"

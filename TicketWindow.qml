@@ -12,7 +12,7 @@ SystemWindow {
 //    opacity: 0
     title: qsTr("Ticket")
 
-    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
+//    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
 
     InputPanel {
         id: inputPanel
@@ -693,7 +693,7 @@ SystemWindow {
                  text: "10"
                  color: "white"
                  font{
-                     family: localFont.name
+                     family: "DS-Digital"
                      pointSize: 20
                  }
 

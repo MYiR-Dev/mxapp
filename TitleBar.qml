@@ -16,7 +16,7 @@ Item {
         titleName: "Make Your Ideal Real!"
 
         onLeftBarClicked: {
-            popupFrame1.open()
+            supportWnd.item.open()
         }
 
     }
@@ -30,7 +30,7 @@ Item {
         }
     }
 
-    SupportPop {
-        id:popupFrame1
-    }
+//    SupportPop {
+//        id:popupFrame1
+//    }
 }
