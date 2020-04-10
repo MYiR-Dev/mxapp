@@ -7,7 +7,8 @@ import QtQuick.VirtualKeyboard 2.2
 import QtQuick.VirtualKeyboard.Settings 2.2
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.3 as Controls
-import QtWebEngine 1.2
+
+
 SystemWindow {
     id: settingsWindow
     title: "settings"
@@ -38,6 +39,20 @@ SystemWindow {
     }
     GetSystemInfo{
         id:getSystemInfo
+    }
+    function openwifi(checked) {
+
+        if(checked)
+        {
+            getSyetemInfo.wifi_open()
+            getSyetemInfo.get_wifi_list()
+        }
+        else
+        {
+            wifi_list_model.clear()
+
+            getSyetemInfo.wifi_close()
+        }
     }
     Rectangle{
         anchors{
@@ -427,7 +442,7 @@ SystemWindow {
                         }
                         Text{
 
-                            text: "电缆已拔出"
+                            text: getSyetemInfo.get_net_status() ? "电缆已接入" : "电缆已拔出"
                             font.pointSize: 10;
 
                             color: "white"
@@ -490,7 +505,7 @@ SystemWindow {
                             id: ip_input
                             width: 141
                             height: 16
-                            placeholderText: "192.168.30.111" /* 输入为空时显示的提示文字 */
+                            placeholderText: "192.168.xx.xx" /* 输入为空时显示的提示文字 */
                             inputMethodHints: Qt.ImhFormattedNumbersOnly
                             onAccepted: digitsField.focus = true
                             color: "white"
@@ -527,7 +542,7 @@ SystemWindow {
                             id: netmask_input
                             width: 141
                             height: 16
-                            placeholderText: "255.255.255.0" /* 输入为空时显示的提示文字 */
+                            placeholderText: "255.255.xx.xx" /* 输入为空时显示的提示文字 */
                             inputMethodHints: Qt.ImhFormattedNumbersOnly
                             onAccepted: digitsField.focus = true
                             color: "white"
@@ -563,7 +578,7 @@ SystemWindow {
                             id: gw_input
                             width: 141
                             height: 16
-                            placeholderText: "192.168.30.1" /* 输入为空时显示的提示文字 */
+                            placeholderText: "192.168.xx.xx" /* 输入为空时显示的提示文字 */
                             inputMethodHints: Qt.ImhFormattedNumbersOnly
                             onAccepted: digitsField.focus = true
                             color: "white"
@@ -684,43 +699,7 @@ SystemWindow {
                     height:419
 
                     color:"transparent"
-//                    Popup{
-//                        id:myPopup
-////                        width: 548
-////                        height: 30
-//                        anchors{
 
-//                            centerIn:parent
-//                        }
-//                        modal: true
-//                        focus: true
-//                        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
-//                        background: Rectangle{
-//                            width: 548
-//                            height: 30
-////                            color:"transparent"
-//                            Image {
-//                                id: serch_g
-//                                anchors.fill: parent
-//                                source: "images/wvga/system/serch-bg.png"
-//                            }
-//                        }
-//                        Rectangle
-//                        {
-//                            width: 548
-//                            height: 32
-//                            anchors.fill: parent
-//                            color:"transparent"
-
-//                            Text {
-//                                id: mytext
-//                                font.pixelSize: 24
-//                                text: qsTr("Popup 内容显示模块")
-//                                anchors.top:parent.top
-//                                anchors.left:parent.left
-//                            }
-//                        }
-//                    }
                     InputPanel {
                         id: inputPanel_passwd
                         x: 100
@@ -777,101 +756,23 @@ SystemWindow {
                         }
 
                     }
-                    function toggle() {
-                        if (toggleswitch.state == "on")
-                            toggleswitch.state = "off";
-                        else
-                            toggleswitch.state = "on";
-                    }
 
-                    function releaseSwitch() {
-                        if (knob.x == 1) {
-                            if (toggleswitch.state == "off") return;
-                        }
-                        if (knob.x == 78) {
-                            if (toggleswitch.state == "on") return;
-                        }
-                        toggle();
-                    }
-
-                    Item {
-                        id: toggleswitch
-                        width: 60; height: 17
-
-                        property bool on: false
-
-
-                        Image {
-                            id: background
-                            anchors.fill: parent
-                            source: "images/wvga/system/open-bg.png"
-                            MouseArea {
-                                anchors.fill: parent;
-                                onClicked: {
-                                    if (toggleswitch.state == "on")
-                                        toggleswitch.state = "off";
-                                    else
-                                        toggleswitch.state = "on";
-                                }
-                            }
-                        }
-
-                        Image {
-                            id: knob
-                            x: 1; y: 2
-                            source: "images/wvga/system/open-icon.png"
-
-                            MouseArea {
-                                anchors.fill: parent
-                                drag.target: knob; drag.axis: Drag.XAxis; drag.minimumX: 1; drag.maximumX: 78
-                                onClicked: toggle()
-                                onReleased: releaseSwitch()
-                            }
-                        }
-
-                        states: [
-                            State {
-                                name: "on"
-                                PropertyChanges { target: knob; x: 78 }
-                                PropertyChanges { target: toggleswitch; on: true }
-                            },
-                            State {
-                                name: "off"
-                                PropertyChanges { target: knob; x: 1 }
-                                PropertyChanges { target: toggleswitch; on: false }
-                            }
-                        ]
-
-                        transitions: Transition {
-                            NumberAnimation { properties: "x"; easing.type: Easing.InOutQuad; duration: 200 }
-                        }
+                    Switch {
+                        id:wifi_switch
                         anchors{
 //                           left:wifi_set_title.right
                            bottom: wifi_set_title.bottom
                            right: parent.right
                         }
+                        property bool backend: false
+
+                        checked:   backend
+
+                        onClicked: backend = checked
+                        Component.onCompleted: clicked.connect(openwifi)
                     }
-//                    Switch{
-//                         width: 60
-//                         height: 17
-////                         color: "transparent"
-//                         Image {
-//                             id: open_gb
-//                             anchors.fill: parent
-//                             source: "images/wvga/system/open-bg.png"
-//                         }
-//                         Image {
-//                             height: 20
-//                             id: open
-//                             source: "images/wvga/system/open-icon.png"
-//                             anchors.right: parent.right
-//                         }
-//                        anchors{
-////                           left:wifi_set_title.right
-//                           bottom: wifi_set_title.bottom
-//                           right: parent.right
-//                        }
-//                    }
+
+
                     Rectangle{
                         id:serch_rec
                         width: 548
@@ -902,9 +803,9 @@ SystemWindow {
                         }
                         Component.onCompleted:{
 //                            getSyetemInfo.get_wifi_list()
-                            getSyetemInfo.wifi_close()
-                            getSyetemInfo.wifi_open()
-                            getSyetemInfo.connect_wifi("long+6032509792+qrc:/images/wvga/system/key.png")
+//                            getSyetemInfo.wifi_close()
+//                            getSyetemInfo.wifi_open()
+//                            getSyetemInfo.connect_wifi("long+6032509792+qrc:/images/wvga/system/key.png")
                         }
 
                         MouseArea{
@@ -933,41 +834,19 @@ SystemWindow {
                     ListModel {
                         id: wifi_list_model
 
-                        ListElement {
-                            wifi_essid: "myir1"
-                            wifi_connect_status: qsTr("已连接")
-                            key_image: "images/wvga/system/key.png"
-                            signal_iamge:"images/wvga/system/wifi-signal.png"
+//                        ListElement {
+//                            wifi_essid: "myir1"
+//                            wifi_connect_status: qsTr("已连接")
+//                            key_image: "images/wvga/system/key.png"
+//                            signal_iamge:"images/wvga/system/wifi-signal.png"
 
-                        }
-                        ListElement {
-                            wifi_essid: "myir2"
-                            wifi_connect_status: qsTr("x")
-                            key_image: "images/wvga/system/key.png"
-                            signal_iamge:"images/wvga/system/wifi-signal.png"
-
-                        }
-                        ListElement {
-                            wifi_essid: "myir3"
-                            wifi_connect_status: qsTr("已连接")
-                            key_image: "images/wvga/system/key.png"
-                            signal_iamge:"images/wvga/system/wifi-signal.png"
-
-                        }
-                        ListElement {
-                            wifi_essid: "myir4"
-                            wifi_connect_status: qsTr("已连接")
-                            key_image: "images/wvga/system/key.png"
-                            signal_iamge:"images/wvga/system/wifi-signal.png"
-
-                        }
-
+//                        }
                     }
                     Connections {
                         target: getSyetemInfo
                         onWifiReady: {
                              var image
-//                             wifi_list_model.clear()
+                             wifi_list_model.clear()
                              console.log(wifi_data.length/3)
                              for(var j=0;j<wifi_data.length/3;j++)
                              {
@@ -975,7 +854,7 @@ SystemWindow {
                                       image= "images/wvga/system/key.png"
                                  else
                                       image=""
-                                console.log("Received ++: " +wifi_data[j*3+2])
+//                                 console.log("Received ++: " +wifi_data[j*3+2])
                                  wifi_list_model.append({
                                      "wifi_essid": wifi_data[j*3+2],
                                      "wifi_connect_status": qsTr("未启用"),
@@ -984,13 +863,13 @@ SystemWindow {
                                  })
 
                              }
-                             for(var i=0 ; i<wifi_data.length/3;i++ )
-                             {
-                                 console.log("Received ++: " +wifi_list_model.get(i).wifi_essid)
-                                 console.log("Received ++: " +wifi_list_model.get(i).wifi_connect_status)
-                                 console.log("Received ++: " +wifi_list_model.get(i).key_image)
-                                 console.log("Received ++: " +wifi_list_model.get(i).signal_iamge)
-                             }
+//                             for(var i=0 ; i<wifi_data.length/3;i++ )
+//                             {
+//                                 console.log("Received ++: " +wifi_list_model.get(i).wifi_essid)
+//                                 console.log("Received ++: " +wifi_list_model.get(i).wifi_connect_status)
+//                                 console.log("Received ++: " +wifi_list_model.get(i).key_image)
+//                                 console.log("Received ++: " +wifi_list_model.get(i).signal_iamge)
+//                             }
                         }
                         onWifiConnected:{
                             for(var k=0; k < wifi_list_model.count; k++)
@@ -999,12 +878,12 @@ SystemWindow {
                                 {
                                     wifi_list_model.setProperty(k, "wifi_connect_status", qsTr("已连接"))
 //                                   wifi_list_model.set(k).wifi_connect_status = "ddd"
-                                   console.log("Received ++: " +wifi_list_model.get(k).wifi_connect_status)
+//                                   console.log("Received ++: " +wifi_list_model.get(k).wifi_connect_status)
                                 }
                                 else
                                     wifi_list_model.setProperty(k, "wifi_connect_status", qsTr("未启用"))
                             }
-                            console.log("Received ++: " +wifi_essid_info)
+//                            console.log("Received ++: " +wifi_essid_info)
                         }
                     }
                     Component {
@@ -1012,7 +891,7 @@ SystemWindow {
 
                         Item{
                             id:itemDelegate
-                            focus:ture
+                            focus:true
                             clip: true
                             width: 548
                             height: 32
@@ -1141,9 +1020,8 @@ SystemWindow {
                                         content_rec.opacity = 0.5
                                         focus = true
                                         listView.currentIndex = index;
-                                        console.log(wifi_essid_text.text)
-                                        console.log(passwd_input.text)
-                                        console.log(listView.currentIndex)
+
+                                        getSyetemInfo.disconnect_wifi()
                                         var essid_passwd = wifi_essid_text.text+"+"+passwd_input.text+"+"+key_icon.source
                                         getSyetemInfo.connect_wifi(essid_passwd)
     //                                    myPopup.open()

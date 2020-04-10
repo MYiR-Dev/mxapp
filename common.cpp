@@ -152,6 +152,13 @@ void GetSystemInfo::connect_wifi(QString essid_passwd)
     msic_process->execute("/usr/share/connect_wifi.sh");
 
 }
+void GetSystemInfo::disconnect_wifi()
+{
+    QString command;
+    command = "wpa_cli -i wlan0 disconnect";
+    msic_process->start(command);
+    msic_process->waitForFinished();
+}
 void GetSystemInfo::msic_ReadData()
 {
     QTextStream stream(msic_process->readAll().data());
@@ -362,6 +369,9 @@ void GetSystemInfo::set_net_info(QString net_info)
 
         }
         writeFile.close();
+        command ="udhcpc -i eth0 -t 3 -n";
+        qDebug() << "command: " << command;
+        process->startDetached(command);
     }
     else {
         if(!list.at(1).isEmpty()&& !list.at(2).isEmpty())
@@ -465,6 +475,27 @@ QString GetSystemInfo::read_system_version()
 //    qDebug() << "Windows Version: " << QSysInfo::windowsVersion();
     return  QSysInfo::kernelType()+" "+ QSysInfo::kernelVersion();
 
+}
+int GetSystemInfo::get_net_status()
+{
+    QFile file("/sys/class/net/eth0/carrier");
+    int net_status = 0;
+    int m_info[4] = {0};
+    if (file.exists() && file.open(QIODevice::ReadOnly))
+    {
+        QTextStream stream(&file);
+        QString line;
+
+        do
+        {
+            line = stream.readLine();
+            if (!line.isEmpty())
+                net_status = line.toInt();
+        }
+        while (!line.isNull());
+    }
+    qDebug() << "net_status" << net_status;
+    return net_status;
 }
 QString GetSystemInfo::read_net_ip()
 {

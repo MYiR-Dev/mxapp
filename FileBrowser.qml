@@ -69,7 +69,7 @@ Rectangle {
     function selectFile(file) {
         if (file !== "") {
             folder = loader.item.folders.folder
-            fileBrowser.fileSelected(file)
+//            fileBrowser.fileSelected(file)
         }
         loader.sourceComponent = undefined
     }
@@ -100,11 +100,13 @@ Rectangle {
             FolderListModel {
                 id: folders1
                 folder: folder
+                sortField:FolderListModel.Type
             }
 
             FolderListModel {
                 id: folders2
                 folder: folder
+                sortField:FolderListModel.Type
             }
 
             SystemPalette {
@@ -123,10 +125,10 @@ Rectangle {
                         path += filePath;
                         if (folders.isFolder(index))
                             down(path);
-                        else
-                            fileBrowser.selectFile(path)
+//                        else
+//                            fileBrowser.selectFile(path)
                     }
-                    width: 100
+                    width: 200
                     height: itemHeight
                     color: "transparent"
 
@@ -143,11 +145,11 @@ Rectangle {
                     Item {
                         width: itemHeight; height: itemHeight
                         Image {
-                            source: "qrc:/images/wvga/filebrowser/icon_Folder.png"
+                            source: folders.isFolder(index)?"qrc:/images/wvga/filebrowser/icon_Folder.png":"qrc:/images/wvga/filebrowser/icon_file.png"
                             fillMode: Image.PreserveAspectFit
                             anchors.fill: parent
                             anchors.margins: scaledMargin
-                            visible: folders.isFolder(index)
+//                            visible: folders.isFolder(index)
                         }
                     }
 

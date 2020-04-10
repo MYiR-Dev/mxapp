@@ -24,11 +24,14 @@ public:
     Q_INVOKABLE void set_net_info(QString net_info);
     Q_INVOKABLE QString read_net_ip();
     Q_INVOKABLE QString read_net_mac();
+    Q_INVOKABLE int get_net_status();
     Q_INVOKABLE  void set_date(QString date);
     Q_INVOKABLE void wifi_open();
     Q_INVOKABLE void wifi_close();
     Q_INVOKABLE QString get_wifi_list();
     Q_INVOKABLE void connect_wifi(QString essid_passwd);
+    Q_INVOKABLE void disconnect_wifi();
+
     Q_INVOKABLE QUrl fromUserInput(const QString& userInput);
 //    Q_INVOKABLE void wifiReady();
     QString getWirelessInterfaceStatus(QString interface);

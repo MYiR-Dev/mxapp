@@ -7,7 +7,7 @@ import QtQuick.Controls.Styles 1.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.1
-import QtWebEngine 1.7
+import QtWebKit 3.0
 import GetSystemInfoAPI 1.0
 import QtQuick.VirtualKeyboard 2.2
 import QtQuick.VirtualKeyboard.Settings 2.2
@@ -217,7 +217,7 @@ SystemWindow {
 
 
         }
-        WebEngineView {
+        WebView {
             id: webView
             anchors{
                 top: dddd.bottom
@@ -226,12 +226,6 @@ SystemWindow {
             }
 
             url: "http://www.myir-tech.com/"
-            onGeometryChangeRequested: function(geometry) {
-                window.x = geometry.x
-                window.y = geometry.y
-                window.width = geometry.width
-                window.height = geometry.height
-            }
         }
 
 

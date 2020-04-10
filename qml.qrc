@@ -204,5 +204,7 @@
         <file>FileBrowser.qml</file>
         <file>images/wvga/filebrowser/icon_BackArrow.png</file>
         <file>images/wvga/filebrowser/icon_Folder.png</file>
+        <file>images/wvga/filebrowser/icon_file.png</file>
+        <file>Switch.qml</file>
     </qresource>
 </RCC>
