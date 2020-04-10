@@ -1,4 +1,4 @@
-import QtQuick 2.5
+﻿import QtQuick 2.5
 import QtMultimedia 5.6
 import QtQuick.Window 2.12
 import QtQuick.Dialogs 1.0
@@ -88,7 +88,7 @@ SystemWindow {
                 height: width
                 color: "transparent"
                 //圆角矩形
-                CircularImage{
+                CircularImage {
                     id: image
                     width: parent.width
                     height: parent.height
@@ -164,7 +164,7 @@ SystemWindow {
         }
     }
 
-    AlbumPreview{
+    AlbumPreview {
         id: w_preview
         onClicked_next: nextImage()
         onClicked_previous: previousImage()

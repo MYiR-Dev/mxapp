@@ -193,6 +193,11 @@ Rectangle {
 //                      cameraWnd.z=4;
                         cameraWnd.item.show()
                         cameraWnd.item.requestActivate()
+                  }else if(qurl === "MusicWindow.qml"){
+//                      cameraWnd.forceActiveFocus()
+//                      cameraWnd.z=4;
+                       musicWnd.item.show()
+                       musicWnd.item.requestActivate()
                    }else if(qurl === "PictureWindow.qml"){
 //                      pictureWnd.forceActiveFocus()
 //                      pictureWnd.z=4;
@@ -234,6 +239,10 @@ Rectangle {
 //                      browserWnd.z=4;
                       browserWnd.item.show()
                       browserWnd.item.requestActivate()
+                 }
+                  else if(qurl === "SupportWindow.qml"){
+                      supportWnd.item.show()
+                      supportWnd.item.requestActivate()
                  }
             }
 

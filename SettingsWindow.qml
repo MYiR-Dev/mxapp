@@ -8,7 +8,6 @@ import QtQuick.VirtualKeyboard.Settings 2.2
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.3 as Controls
 
-
 SystemWindow {
     id: settingsWindow
     title: "settings"

@@ -118,6 +118,11 @@ ApplicationWindow {
         source: "SettingsWindow.qml";
     }
     Loader{
+        id:musicWnd;
+        anchors.centerIn: parent;
+        source: "MusicWindow.qml";
+    }
+    Loader{
         id:pictureWnd;
         anchors.centerIn: parent;
         source: "PictureWindow.qml";
@@ -136,5 +141,10 @@ ApplicationWindow {
         id:browserWnd;
         anchors.centerIn: parent;
         source: "BrowserWindow.qml";
+    }
+    Loader{
+        id:supportWnd;
+        anchors.centerIn: parent;
+        source: "SupportWindow.qml";
     }
 }
