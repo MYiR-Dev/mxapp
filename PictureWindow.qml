@@ -1,6 +1,5 @@
 import QtQuick 2.5
 import QtMultimedia 5.6
-import QtQuick.Window 2.12
 import QtQuick.Dialogs 1.0
 import Qt.labs.folderlistmodel 2.12
 import MyFunction.module 1.0
@@ -33,16 +32,16 @@ SystemWindow {
     }
     MyFunction {id: myFunction}
 
-    //最底层背景图片
-    Image {
-        id: img_background
-        anchors.fill: parent
-        width: parent.width
-        height: parent.height
-        source: def.url_music_background
-        fillMode: Image.PreserveAspectFit
-        clip: true
-    }
+//    //最底层背景图片
+//    Image {
+//        id: img_background
+//        anchors.fill: parent
+//        width: parent.width
+//        height: parent.height
+//        source: def.url_music_background
+//        fillMode: Image.PreserveAspectFit
+//        clip: true
+//    }
 
     //左上角返回按钮
     MyIconButton {

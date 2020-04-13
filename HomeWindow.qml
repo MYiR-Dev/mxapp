@@ -11,8 +11,8 @@ Rectangle {
     id:root
     color: "#00000000"
 
-    FontLoader { id: fixedFont; name: "Courier" }
-    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
+//    FontLoader { id: fixedFont; name: "Courier" }
+//    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
 //    FontLoader { id: webFont; source: "http://www.princexml.com/fonts/steffmann/Starburst.ttf" }
     function fitWidth(text){
            return  fontMetrics.advanceWidth(text);
@@ -114,7 +114,7 @@ Rectangle {
                     Image {
                         id:image;
                         width: 225;
-                        height: parent.height-80;
+                        height: 318;
                         anchors.horizontalCenter: parent.horizontalCenter
                         source: cimage;
 
@@ -564,8 +564,7 @@ Rectangle {
         addModelData(
                     "multimedia",
                     "qrc:/images/wvga/home/homepage_media_nor.png",
-                    qsTr("多媒体"),
-                    qsTr("摄像头"),
+                    qsTr("多媒体"),qsTr("摄像头"),
                     "qrc:/images/wvga/home/media_icon_camera_nor.png",
                     "CameraWindow.qml",
                     "#02b9db"
@@ -574,8 +573,7 @@ Rectangle {
         addModelData(
                     "multimedia",
                     "qrc:/images/wvga/home/homepage_media_nor.png",
-                    qsTr("多媒体"),
-                    qsTr("播放器"),
+                    qsTr("多媒体"),qsTr("播放器"),
                     "qrc:/images/wvga/home/media_icon_video_nor.png",
                     "PlayerWindow.qml",
                     "#02b9db"

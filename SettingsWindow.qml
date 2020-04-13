@@ -1,7 +1,6 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.1
 import QtQuick.Controls.Styles 1.4
-import QtQuick.Window 2.2
 import GetSystemInfoAPI 1.0
 import QtQuick.VirtualKeyboard 2.2
 import QtQuick.VirtualKeyboard.Settings 2.2
