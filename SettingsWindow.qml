@@ -464,7 +464,7 @@ SystemWindow {
 
                         anchors{
                             top:t1.top
-                            topMargin: 35
+                            topMargin: 32
                             left: t2.left
                             leftMargin: 250
                         }
@@ -517,7 +517,7 @@ SystemWindow {
 
                         anchors{
                             top:t2.top
-                            topMargin: 35
+                            topMargin: 32
                             left: t3.left
                             leftMargin: 250
                         }
@@ -559,7 +559,7 @@ SystemWindow {
 
                         anchors{
                             top:t3.top
-                            topMargin: 35
+                            topMargin: 32
                             left: t4.left
                             leftMargin: 250
                         }
@@ -601,7 +601,7 @@ SystemWindow {
 
                         anchors{
                             top:t4.top
-                            topMargin: 35
+                            topMargin: 32
                             left: t5.left
                             leftMargin: 250
                         }
@@ -643,7 +643,7 @@ SystemWindow {
 
                         anchors{
                             top:t5.top
-                            topMargin: 35
+                            topMargin: 32
                             left: t6.left
                             leftMargin: 250
 
