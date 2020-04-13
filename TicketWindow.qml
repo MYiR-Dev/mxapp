@@ -18,6 +18,11 @@ SystemWindow {
         visible: false
     }
 
+    InputPanel {
+        id: inputPanel
+        visible: false
+    }
+
     function doOp(op){
         console.log("OP:"+op)
         if (op.toString().length===1) {
