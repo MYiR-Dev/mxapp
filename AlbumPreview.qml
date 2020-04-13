@@ -1,6 +1,5 @@
 ﻿import QtQuick 2.5
 //import QtMultimedia 5.6
-import QtQuick.Window 2.12
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
@@ -11,7 +10,7 @@ SystemWindow {
 //    title: qsTr("相册")
 
     property string imageName: qsTr("返回")
-    property alias imageUrl: backgroundImage.source
+//    property alias imageUrl: backgroundImage.source
 
 //    function show(){
 //        open()
@@ -53,16 +52,16 @@ SystemWindow {
         }
     }
 
-    //最底层背景图片
-    Image {
-        id: backgroundImage
-        anchors.fill: parent
-        width: parent.width
-        height: parent.height
-        source: def.url_img_preview
-        fillMode: Image.PreserveAspectFit
-        clip: true
-    }
+//    //最底层背景图片
+//    Image {
+//        id: backgroundImage
+//        anchors.fill: parent
+//        width: parent.width
+//        height: parent.height
+//        source: def.url_img_preview
+//        fillMode: Image.PreserveAspectFit
+//        clip: true
+//    }
 
     //删除图片时上层灰色阴影
     Rectangle {

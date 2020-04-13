@@ -1,5 +1,4 @@
 import QtQuick 2.0
-import QtQuick.Window 2.12
 import QtMultimedia 5.9
 import QtQuick.Dialogs 1.3
 import Qt.labs.folderlistmodel 2.12
@@ -33,16 +32,16 @@ SystemWindow {
         id: def
         source_url: video.source
     }
-    //最底层背景图片
-    Image {
-        id: backgroundImage
-        anchors.fill: parent
-        width: parent.width
-        height: parent.height
-        source: def.url_video_background
-        fillMode: Image.PreserveAspectFit
-        clip: true
-    }
+//    //最底层背景图片
+//    Image {
+//        id: backgroundImage
+//        anchors.fill: parent
+//        width: parent.width
+//        height: parent.height
+//        source: def.url_video_background
+//        fillMode: Image.PreserveAspectFit
+//        clip: true
+//    }
 
     //视频输出到背景
     VideoOutput {

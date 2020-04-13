@@ -33,16 +33,16 @@ SystemWindow {
         source_url: music.source
     }
 
-    //最底层背景图片
-    Image {
-        id: img_background
-        anchors.fill: parent
-        width: parent.width
-        height: parent.height
-        source: def.url_music_background
-        fillMode: Image.PreserveAspectFit
-        clip: true
-    }
+//    //最底层背景图片
+//    Image {
+//        id: img_background
+//        anchors.fill: parent
+//        width: parent.width
+//        height: parent.height
+//        source: def.url_music_background
+//        fillMode: Image.PreserveAspectFit
+//        clip: true
+//    }
 
     //上层音乐波形图片
     Image {

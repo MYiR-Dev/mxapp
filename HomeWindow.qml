@@ -564,8 +564,7 @@ Rectangle {
         addModelData(
                     "multimedia",
                     "qrc:/images/wvga/home/homepage_media_nor.png",
-                    qsTr("多媒体"),
-                    qsTr("摄像头"),
+                    qsTr("多媒体"),qsTr("摄像头"),
                     "qrc:/images/wvga/home/media_icon_camera_nor.png",
                     "CameraWindow.qml",
                     "#02b9db"
@@ -574,8 +573,7 @@ Rectangle {
         addModelData(
                     "multimedia",
                     "qrc:/images/wvga/home/homepage_media_nor.png",
-                    qsTr("多媒体"),
-                    qsTr("播放器"),
+                    qsTr("多媒体"),qsTr("播放器"),
                     "qrc:/images/wvga/home/media_icon_video_nor.png",
                     "PlayerWindow.qml",
                     "#02b9db"

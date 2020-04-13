@@ -52,9 +52,7 @@
         <file>qcustomplot.h</file>
         <file>qmlplot.cpp</file>
         <file>qmlplot.h</file>
-        <file>images/wvga/ecg/ecg_background.jpeg</file>
         <file>images/wvga/ecg/display_bg.png</file>
-        <file>images/wvga/ecg/ecg_pic_bg.jpg</file>
         <file>ecg/resp.text</file>
         <file>images/wvga/ecg/heart.png</file>
         <file>images/wvga/ecg/health_off.png</file>
@@ -66,8 +64,6 @@
         <file>images/wvga/ecg/health_set.png</file>
         <file>images/wvga/ecg/save.png</file>
         <file>images/wvga/ecg/spinner.png</file>
-        <file>images/wvga/ecg/ecg_bg2.png</file>
-        <file>images/wvga/ecg/ecg_bg3.png</file>
         <file>images/wvga/ecg/ecg_bg4.png</file>
         <file>ScopeWindow.qml</file>
         <file>TicketWindow.qml</file>
