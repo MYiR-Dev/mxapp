@@ -36,16 +36,16 @@ SystemWindow {
     Define {
         id: def
     }
-    //最底层背景图片
-    Image {
-        id: img_background
-        anchors.fill: parent
-        width: parent.width
-        height: parent.height
-        source: def.url_music_background
-        fillMode: Image.PreserveAspectFit
-        clip: true
-    }
+//    //最底层背景图片
+//    Image {
+//        id: img_background
+//        anchors.fill: parent
+//        width: parent.width
+//        height: parent.height
+//        source: def.url_music_background
+//        fillMode: Image.PreserveAspectFit
+//        clip: true
+//    }
 
     //左上角返回按钮
     MyIconButton {

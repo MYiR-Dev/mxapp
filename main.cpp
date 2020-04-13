@@ -12,6 +12,7 @@ void iconFontInit()
     //加载fontawesome-webfont.ttf字体图标库
     //官网:www.fontawesome.com.cn
     int fontId_fws = QFontDatabase::addApplicationFont(":/fonts/fontawesome-webfont.ttf");  //加入字体，并获取字体ID
+    int fontId_digital = QFontDatabase::addApplicationFont(":/fonts/DIGITAL/DS-DIGIB.TTF");
     QString fontName_fws = QFontDatabase::applicationFontFamilies(fontId_fws).at(0);    //获取字体名称
     QFont iconFont_fws = QFont(fontName_fws);
     iconFont_fws.setPixelSize(20);     //设置字体大小

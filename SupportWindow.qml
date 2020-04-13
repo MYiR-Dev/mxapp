@@ -12,7 +12,7 @@ Popup {
     width: 800
     height: 480
 
-    FontLoader { id: bahnschriftFont; source: "qrc:/fonts/Bahnschrift.ttf" }
+//    FontLoader { id: bahnschriftFont; source: "qrc:/fonts/Bahnschrift.ttf" }
 
     background:Rectangle{
         anchors.fill:parent

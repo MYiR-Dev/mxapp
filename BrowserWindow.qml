@@ -6,7 +6,6 @@ import QtQuick.Controls.Private 1.0 as QQCPrivate
 import QtQuick.Controls.Styles 1.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.0
-import QtQuick.Window 2.1
 import QtWebEngine 1.7
 import GetSystemInfoAPI 1.0
 import QtQuick.VirtualKeyboard 2.2

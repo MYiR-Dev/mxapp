@@ -1,6 +1,5 @@
 import QtQuick 2.5
 import QtMultimedia 5.6
-import QtQuick.Window 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 SystemWindow {

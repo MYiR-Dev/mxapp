@@ -1,7 +1,7 @@
 import QtQuick 2.6
-import QtQuick.Window 2.2
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.12
+import QtQuick.VirtualKeyboard 2.1
 
 SystemWindow {
     id: tickWnd
@@ -11,7 +11,12 @@ SystemWindow {
 //    opacity: 0
     title: qsTr("Ticket")
 
-    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
+//    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
+
+    InputPanel {
+        id: inputPanel
+        visible: false
+    }
 
     function doOp(op){
         console.log("OP:"+op)
@@ -491,6 +496,7 @@ SystemWindow {
             opacity: 0
             width: 398
             height: 32
+            visible: false
 
             anchors{
                 top:m2l.bottom
@@ -542,6 +548,7 @@ SystemWindow {
                     color: "white"
                     clip: true
                     focus: true
+//                    inputMethodComposing: false
 //                    readOnly:true
 //                    activeFocusOnPress:false
 
@@ -549,6 +556,8 @@ SystemWindow {
 //                        input2.selectAll();
                         input2.remove(0,input2.displayText.length);
                         input2.forceActiveFocus();
+//                        InputMethod.hide()
+//                        InputContext.priv.hideInputPanel()
                     }
 
                     onAccepted: {
@@ -683,7 +692,7 @@ SystemWindow {
                  text: "10"
                  color: "white"
                  font{
-                     family: localFont.name
+                     family: "DS-Digital"
                      pointSize: 20
                  }
 
