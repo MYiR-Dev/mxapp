@@ -212,48 +212,137 @@ SystemWindow {
         y:33
 
         Rectangle {
+            id:rec1
+            color: "transparent"
+            width: 227
+            height: 64
+
+
+            Text {
+//                    font.family: "Microsoft YaHei"
+                text:"ECG"
+                color: "#F5F5F5"
+                anchors{
+                    top: parent.top
+                    topMargin: 5
+                    left: parent.left
+                    leftMargin: 5
+                }
+            }
+            Text {
+//                    font.family: "Microsoft YaHei"
+                id:pace_text
+                text:"PACE"
+                color: "#F5F5F5"
+                anchors{
+                    top: parent.top
+                    topMargin: 5
+                    left: parent.left
+                    leftMargin: 80
+                }
+            }
+            Image {
+                id: name
+                source: "images/wvga/ecg/heart.png"
+                anchors{
+//                    top: parent.top
+//                    topMargin: 5
+                    left: parent.left
+                    leftMargin: 160
+                    verticalCenter:pace_text.verticalCenter
+                }
+            }
+            Text {
+                id:ecg_value
+//                    font.family: "Microsoft YaHei"
+                text:"80"
+                color: "#00FF00"
+                anchors{
+                    top: parent.top
+                    topMargin: 25
+                    left: parent.left
+                    leftMargin: 5
+                }
+                font{
+                    capitalization: Font.Capitalize
+                    pointSize:20
+                }
+
+            }
+
+
+
+        }
+        Rectangle {
             color: "transparent"
             width: 227
             height: 74
-            GridLayout {
-                anchors.fill: parent
-                anchors.margins: 10
-                //anchors.left: 20
-                columns:3
-                rows:3
 
-                Text {
+            Text {
 //                    font.family: "Microsoft YaHei"
-                    text:"ECG"
-                    color: "#F5F5F5"
-                    Layout.row:0
-                    Layout.column:0
+                text:"NIBP"
+                color: "#F5F5F5"
+                anchors{
+                    top: parent.top
+                    topMargin: 5
+                    left: parent.left
+                    leftMargin: 5
                 }
-                Text {
+            }
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                id: time1
 //                    font.family: "Microsoft YaHei"
-                    text:"PACE"
-                    color: "#F5F5F5"
-                    Layout.row:0
-                    Layout.column:1
+                text: "00:00:00"
+                color: "#F5F5F5"
+                anchors{
+                    top: parent.top
+                    topMargin: 5
+                    left: parent.left
+                    leftMargin: 80
                 }
-                Image {
-                    id: name
-                    source: "images/wvga/ecg/heart.png"
-                    Layout.row:0
-                    Layout.column:2
-                }
-                Text {
-                    id:ecg_value
+            }
+            Text {
 //                    font.family: "Microsoft YaHei"
-                    text:"80"
-                    color: "#00FF00"
-                    Layout.row:1
-                    Layout.column:0
-                    font{
-                        capitalization: Font.Capitalize
-                        pointSize:20
-                    }
-
+                text: "mmhg";
+                color: "#F5F5F5"
+                anchors{
+                    top: parent.top
+                    topMargin: 5
+                    left: parent.left
+                    leftMargin: 160
+                }
+            }
+            Text {
+                id:nibp_value
+//                    font.family: "Microsoft YaHei"
+                text: "120/80";
+                color: "#F5F5F5"
+                anchors{
+                    top: parent.top
+                    topMargin: 35
+                    left: parent.left
+                    leftMargin: 5
+                }
+                font{
+                    capitalization: Font.Capitalize
+                    pointSize:20
+                }
+            }
+            Text {
+                id:mmhg_value
+//                    font.family: "Microsoft YaHei"
+                text: "90";
+                color: "#F8F8FF"
+                anchors{
+                    top: parent.top
+                    topMargin: 35
+                    left: parent.left
+                    leftMargin: 160
+                }
+                font{
+                    capitalization: Font.Capitalize
+                    pointSize:20
                 }
             }
 
@@ -263,238 +352,207 @@ SystemWindow {
             color: "transparent"
             width: 227
             height: 74
-            GridLayout {
-                anchors.fill: parent
-                anchors.margins: 10
-                //anchors.left: 20
-                columns:3
-                rows:3
-                Text {
-//                    font.family: "Microsoft YaHei"
-                    text:"NIBP"
-                    color: "#F5F5F5"
-                    Layout.row:0
-                    Layout.column:0
-                }
-                Text {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    id: time1
-//                    font.family: "Microsoft YaHei"
-                    text: "00:00:00"
-                    color: "#F5F5F5"
-                    Layout.row:0
-                    Layout.column:1
-                }
-                Text {
-//                    font.family: "Microsoft YaHei"
-                    text: "mmhg";
-                    color: "#F5F5F5"
-                    Layout.row:0
-                    Layout.column:2
-                }
-                Text {
-                    id:nibp_value
-//                    font.family: "Microsoft YaHei"
-                    text: "120/80";
-                    color: "#F5F5F5"
-                    Layout.row:1
-                    Layout.column:0
-                    font{
-                        capitalization: Font.Capitalize
-                        pointSize:20
-                    }
-                }
-                Text {
-                    id:mmhg_value
-//                    font.family: "Microsoft YaHei"
-                    text: "90";
-                    color: "#F8F8FF"
-                    Layout.row:1
-                    Layout.column:2
-                    font{
-                        capitalization: Font.Capitalize
-                        pointSize:20
-                    }
-                }
 
-            }
-        }
-        Rectangle {
-            color: "transparent"
-            width: 227
-            height: 74
-            GridLayout {
-                anchors.fill: parent
-                anchors.margins: 10
-                //anchors.left: 20
-                columns:2
-                rows:3
-                Text {
+            Text {
 //                    font.family: "Microsoft YaHei"
-                    text: "SPO2";
-                    color: "#F5F5F5"
-                    Layout.row:0
-                    Layout.column:0
-                }
-                Text {
-//                    font.family: "Microsoft YaHei"
-                    text: "PR";
-                    color: "#F5F5F5"
-                    Layout.row:0
-                    Layout.column:1
-                }
-                Text {
-                    id:spo2_value
-//                    font.family: "Microsoft YaHei"
-                    text: "98";
-                    color: "#FF6347"
-                    Layout.row:1
-                    Layout.column:0
-                    font{
-                        capitalization: Font.Capitalize
-                        pointSize:20
-                    }
-                }
-                Text {
-                    id:pr_value
-                    text: "60";
-//                    font.family: "Microsoft YaHei"
-                    color: "#FF6347"
-                    Layout.row:1
-                    Layout.column:1
-                    font{
-                        capitalization: Font.Capitalize
-                        pointSize:20
-                    }
+                text: "SPO2";
+                color: "#F5F5F5"
+                anchors{
+                    top: parent.top
+                    topMargin: 5
+                    left: parent.left
+                    leftMargin: 5
                 }
             }
+            Text {
+//                    font.family: "Microsoft YaHei"
+                text: "PR";
+                color: "#F5F5F5"
+                anchors{
+                    top: parent.top
+                    topMargin: 5
+                    left: parent.left
+                    leftMargin: 130
+                }
+            }
+            Text {
+                id:spo2_value
+//                    font.family: "Microsoft YaHei"
+                text: "98";
+                color: "#FF6347"
+                anchors{
+                    top: parent.top
+                    topMargin: 35
+                    left: parent.left
+                    leftMargin: 5
+                }
+                font{
+                    capitalization: Font.Capitalize
+                    pointSize:20
+                }
+            }
+            Text {
+                id:pr_value
+                text: "60";
+//                    font.family: "Microsoft YaHei"
+                color: "#FF6347"
+                anchors{
+                    top: parent.top
+                    topMargin: 35
+                    left: parent.left
+                    leftMargin: 130
+                }
+                font{
+                    capitalization: Font.Capitalize
+                    pointSize:20
+                }
+            }
+
         }
 
         Rectangle {
             color: "transparent"
             width: 227
             height: 74
-            GridLayout {
-                anchors.fill: parent
-                anchors.margins: 10
-                //anchors.left: 20
-                columns:2
-                rows:3
-                Text {
-                    text: "RESP";
+
+            Text {
+                text: "RESP";
 //                    font.family: "Microsoft YaHei"
-                    color: "#F5F5F5"
-                    Layout.row:0
-                    Layout.column:0
-                }
-                Text {
-                    id:resp_value
-//                    font.family: "Microsoft YaHei"
-                    text: "20";
-                    color: "yellow"
-                    Layout.row:1
-                    Layout.column:0
-                    font{
-                        capitalization: Font.Capitalize
-                        pointSize:20
-                    }
+                color: "#F5F5F5"
+                anchors{
+                    top: parent.top
+                    topMargin: 5
+                    left: parent.left
+                    leftMargin: 5
                 }
             }
+            Text {
+                id:resp_value
+//                    font.family: "Microsoft YaHei"
+                text: "20";
+                color: "yellow"
+                anchors{
+                    top: parent.top
+                    topMargin: 35
+                    left: parent.left
+                    leftMargin: 5
+                }
+                font{
+                    capitalization: Font.Capitalize
+                    pointSize:20
+                }
+            }
+
 
         }
         Rectangle {
             color: "transparent"
             width: 227
             height: 74
-            GridLayout {
-                anchors.fill: parent
-                anchors.topMargin: 5
-                anchors.leftMargin: 10
-                columns:3
-                rows:3
-                Text {
+
+            Text {
 //                    font.family: "Microsoft YaHei"
-                    text: qsTr("TEMP(℃)");
-                    color: "#F5F5F5"
-                    Layout.row:0
-                    Layout.column:0
-                }
-                Text {
-                    id: temp1
-                    text: "T1";
-//                    font.family: "Microsoft YaHei"
-                    color: "#F5F5F5"
-                    Layout.row:1
-                    Layout.column:0
-                }
-                Text {
-                    id: temp2
-                    text: "T2";
-//                    font.family: "Microsoft YaHei"
-                    color: "#F5F5F5"
-                    Layout.row:2
-                    Layout.column:0
-                }
-                Text {
-                    id:temp1_value
-//                    font.family: "Microsoft YaHei"
-                    text: "37.7";
-                    color: "#F5F5F5"
-                    Layout.row:1
-                    Layout.column:1
-                    anchors{
-                        left: temp1.left
-                        //topMargin: 10
-                        leftMargin: 50
-                    }
-                    font{
-                        capitalization: Font.Capitalize
-                        pointSize:12
-                    }
-                }
-                Text {
-                    id:temp2_value
-//                    font.family: "Microsoft YaHei"
-                    text: "37.2";
-                    color: "#F5F5F5"
-                    Layout.row:2
-                    Layout.column:1
-                    anchors{
-                        left: temp2.left
-                        //topMargin: 10
-                        leftMargin: 50
-                    }
-                    font{
-                        capitalization: Font.Capitalize
-                        pointSize:12
-                    }
-                }
-                Text {
-//                    font.family: "Microsoft YaHei"
-                    text: "TD";
-                    color: "#F5F5F5"
-                    Layout.row:1
-                    Layout.column:3
-                }
-                Text {
-                    id:td_value
-//                    font.family: "Microsoft YaHei"
-                    text: "0.5";
-                    color: "#F5F5F5"
-                    Layout.row:2
-                    Layout.column:3
-                    font{
-                        capitalization: Font.Capitalize
-                        pointSize:12
-                    }
+                text: qsTr("TEMP(℃)");
+                color: "#F5F5F5"
+                anchors{
+                    top: parent.top
+                    topMargin: 8
+                    left: parent.left
+                    leftMargin: 5
                 }
             }
+            Text {
+                id: temp1
+                text: "T1";
+//                    font.family: "Microsoft YaHei"
+                color: "#F5F5F5"
+                anchors{
+                    top: parent.top
+                    topMargin: 30
+                    left: parent.left
+                    leftMargin: 5
+                }
+            }
+            Text {
+                id: temp2
+                text: "T2";
+//                    font.family: "Microsoft YaHei"
+                color: "#F5F5F5"
+                anchors{
+                    top: parent.top
+                    topMargin: 55
+                    left: parent.left
+                    leftMargin: 5
+                }
+            }
+            Text {
+                id:temp1_value
+//                    font.family: "Microsoft YaHei"
+                text: "37.7";
+                color: "#F5F5F5"
+
+                anchors{
+                    left: temp1.left
+                    top: parent.top
+                    topMargin: 30
+                    leftMargin: 50
+                }
+                font{
+                    capitalization: Font.Capitalize
+                    pointSize:12
+                }
+            }
+            Text {
+                id:temp2_value
+//                    font.family: "Microsoft YaHei"
+                text: "37.2";
+                color: "#F5F5F5"
+
+                anchors{
+                    left: temp2.left
+                    top: parent.top
+                    topMargin: 55
+                    leftMargin: 50
+                }
+                font{
+                    capitalization: Font.Capitalize
+                    pointSize:12
+                }
+            }
+            Text {
+//                    font.family: "Microsoft YaHei"
+                text: "TD";
+                color: "#F5F5F5"
+                anchors{
+                    top: parent.top
+                    topMargin: 30
+                    left: parent.left
+                    leftMargin: 180
+                }
+            }
+            Text {
+                id:td_value
+//                    font.family: "Microsoft YaHei"
+                text: "0.5";
+                color: "#F5F5F5"
+                anchors{
+                    top: parent.top
+                    topMargin: 55
+                    left: parent.left
+                    leftMargin: 180
+                }
+                font{
+                    capitalization: Font.Capitalize
+                    pointSize:12
+                }
+            }
+
         }
         Rectangle {
             id: btrec
             color: "transparent"
             width: 227
-            height: 74
+            height: 85
 
                 Button{
                     id: bt1

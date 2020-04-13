@@ -57,344 +57,374 @@ SystemWindow {
                     height:419
                     color:"transparent"
 
-                    GridLayout {
-                        width:630
-                        height:300
-                        columns:5
-                        rows:18
-                        columnSpacing:10
+
+                    Text{
+                        text: "基本信息"
+                        font.pointSize: 15;
+                        color: "white"
+                        Layout.row:0
+                        Layout.column:0
                         anchors{
                             top: parent.top
                             left: parent.left
                             leftMargin: 30
                         }
-                        Text{
-                            text: "基本信息"
-                            font.pointSize: 15;
-                            color: "white"
-                            Layout.row:0
-                            Layout.column:0
+                    }
+
+                    Text{
+                        id:memory
+                        text: "可用内存"
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: parent.top
+                            topMargin: 30
+                            left: parent.left
+                            leftMargin: 30
+                        }
+                    }
+                    Text{
+                        id:memory_value
+                        text: mem_free+"MB"
+                        font.pointSize: 8;
+                        color: "white"
+
+                        anchors{
+                            top: parent.top
+                            topMargin: 30
+                            left: memory.left
+                            leftMargin: 120
+                        }
+                    }
+                    Text{
+                        id:ip
+                        text: "IP 地址"
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: memory.top
+                            topMargin: 20
+                            left: parent.left
+                            leftMargin: 30
+                        }
+                    }
+                    Text{
+                        id:ip_value
+                        text: net_ip
+                        font.pointSize: 8;
+                        color: "white"
+                        Layout.row:2
+                        Layout.column:1
+                        anchors{
+                            top: memory.top
+                            topMargin: 20
+                            left: ip.left
+                            leftMargin: 120
+                        }
+                    }
+                    Text{
+                        id:resolution
+                        text: "屏幕分辨率"
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: ip_value.top
+                            topMargin: 20
+                            left: parent.left
+                            leftMargin: 30
+                        }
+                    }
+                    Text{
+                        id:resolution_value
+                        text: Screen.desktopAvailableWidth+"*"+Screen.desktopAvailableHeight
+                        font.pointSize: 8;
+                        color: "white"
+
+                        anchors{
+                            top: ip_value.top
+                            topMargin: 20
+                            left: resolution.left
+                            leftMargin: 120
+                        }
+                    }
+                    Text{
+                        id:op
+                        text: "操作系统"
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: resolution.top
+                            topMargin: 20
+                            left: parent.left
+                            leftMargin: 30
+                        }
+                    }
+                    Text{
+                        id:op_value
+                        text:getSyetemInfo.read_system_version()
+                        font.pointSize: 8;
+                        color: "white"
+
+                        anchors{
+                            top: resolution.top
+                            topMargin: 20
+                            left: op.left
+                            leftMargin: 120
+                        }
+                    }
+                    Text{
+                        id:run_time
+                        text: "系统运行时间"
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: op.top
+                            topMargin: 20
+                            left: parent.left
+                            leftMargin: 30
+                        }
+                    }
+
+
+                    Text{
+                        id:run_time_value
+                        text:day+qsTr("天")+hour+qsTr("时")+min+qsTr("分")
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: op.top
+                            topMargin: 20
+                            left: run_time.left
+                            leftMargin: 120
                         }
 
-                        Text{
-                            id:memory
-                            text: "可用内存"
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:1
-                            Layout.column:0
+                    }
+                    Text{
+                        id:total_run_time
+                        text: "总运行时间"
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: run_time.top
+                            topMargin: 20
+                            left: parent.left
+                            leftMargin: 30
                         }
-                        Text{
-                            id:memory_value
-                            text: mem_free+"MB"
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:1
-                            Layout.column:1
-                            anchors{
-                                left: memory.left
-                                leftMargin: 120
-                            }
+                    }
+                    Text{
+                        id:total_run_time_value
+                        text: day+qsTr("天")+hour+qsTr("时")+min+qsTr("分")
+                        font.pointSize: 8;
+                        color: "white"
+
+                        anchors{
+                            top: run_time.top
+                            topMargin: 20
+                            left: total_run_time.left
+                            leftMargin: 120
                         }
-                        Text{
-                            id:ip
-                            text: "IP 地址"
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:2
-                            Layout.column:0
+                    }
+                    Text{
+                        id:battery_power
+                        text: "电池电量"
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: total_run_time.top
+                            topMargin: 20
+                            left: parent.left
+                            leftMargin: 30
                         }
-                        Text{
-                            id:ip_value
-                            text: net_ip
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:2
-                            Layout.column:1
-                            anchors{
-                                left: ip.left
-                                leftMargin: 120
-                            }
+                    }
+                    Text{
+                        id:battery_power_value
+                        text: "null"
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: total_run_time.top
+                            topMargin: 20
+                            left: battery_power.left
+                            leftMargin: 120
                         }
-                        Text{
-                            id:resolution
-                            text: "屏幕分辨率"
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:3
-                            Layout.column:0
-                        }
-                        Text{
-                            id:resolution_value
-                            text: Screen.desktopAvailableWidth+"*"+Screen.desktopAvailableHeight
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:3
-                            Layout.column:1
-                            anchors{
-                                left: resolution.left
-                                leftMargin: 120
-                            }
-                        }
-                        Text{
-                            id:op
-                            text: "操作系统"
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:4
-                            Layout.column:0
-                        }
-                        Text{
-                            id:op_value
-                            text:getSyetemInfo.read_system_version()
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:4
-                            Layout.column:1
-                            anchors{
-                                left: op.left
-                                leftMargin: 120
-                            }
-                        }
-                        Text{
-                            id:run_time
-                            text: "系统运行时间"
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:5
-                            Layout.column:0
+                    }
+                    Text{
+                        id:create
+                        text: "创建"
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: battery_power.top
+                            topMargin: 20
+                            left: parent.left
+                            leftMargin: 30
                         }
 
+                    }
+                    Text{
+                        id:create_value
+                        text: "Buildroot "
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: battery_power.top
+                            topMargin: 20
+                            left: create.left
+                            leftMargin: 120
+                        }
+                    }
+                    Text{
+                        id:compile_time
+                        text: "编译"
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: create.top
+                            topMargin: 20
+                            left: parent.left
+                            leftMargin: 30
+                        }
+                    }
+                    Text{
+                        id:compile_time_value
+                        text: "2020-09-15 "
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: create.top
+                            topMargin: 20
+                            left: compile_time.left
+                            leftMargin: 120
+                        }
+                    }
+                    Image{
+                        id:cpu_icon
+                        source: "images/wvga/system/cpu.png"
 
-                        Text{
-                            id:run_time_value
-                            text:day+qsTr("天")+hour+qsTr("时")+min+qsTr("分")
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:5
-                            Layout.column:1
-                            anchors{
-                                left: run_time.left
-                                leftMargin: 120
-                            }
+                        anchors{
 
+                            top: compile_time.bottom
+                            topMargin: 40
+                            left: parent.left
+                            leftMargin: 30
                         }
-                        Text{
-                            id:total_run_time
-                            text: "总运行时间"
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:6
-                            Layout.column:0
-                        }
-                        Text{
-                            id:total_run_time_value
-                            text: day+qsTr("天")+hour+qsTr("时")+min+qsTr("分")
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:6
-                            Layout.column:1
-                            anchors{
-                                left: total_run_time.left
-                                leftMargin: 120
-                            }
-                        }
-                        Text{
-                            id:battery_power
-                            text: "电池电量"
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:7
-                            Layout.column:0
-                        }
-                        Text{
-                            id:battery_power_value
-                            text: "null"
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:7
-                            Layout.column:1
-                            anchors{
-                                left: battery_power.left
-                                leftMargin: 120
-                            }
-                        }
-                        Text{
-                            id:create
-                            text: "创建"
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:8
-                            Layout.column:0
+                    }
+                    Rectangle{
+                        id:cpu_processbar_ectangle
+                        width: 430
+                        height: 25
+                        color: "transparent"
+                        anchors{
+                            top: compile_time_value.bottom
+                            topMargin: 40
+
+                            left: cpu_icon.left
+                            leftMargin: 50
 
                         }
                         Text{
-                            id:create_value
-                            text: "Buildroot "
-                            font.pointSize: 8;
+                            id:cpu_value
+                            text:qsTr("系统CPU使用率: ")+cpu_percent+"%"
+                            font.pointSize: 5;
                             color: "white"
-                            Layout.row:8
-                            Layout.column:1
+
                             anchors{
-                                left: create.left
-                                leftMargin: 120
+                                top: parent.top
+                                left:parent.top
                             }
                         }
-                        Text{
-                            id:compile_time
-                            text: "编译"
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:9
-                            Layout.column:0
-                        }
-                        Text{
-                            id:compile_time_value
-                            text: "2020-09-15 "
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:9
-                            Layout.column:1
-                            anchors{
-                                left: compile_time.left
-                                leftMargin: 120
-                            }
-                        }
-                        Image{
-                            id:cpu_icon
-                            source: "images/wvga/system/cpu.png"
-                            Layout.row:11
-                            Layout.rowSpan: 3
-                            Layout.column:0
-                            anchors{
-                                top: compile_time.bottom
-                                topMargin: 40
-                            }
-                        }
-                        Rectangle{
-                            id:cpu_processbar_ectangle
-                            width: 430
-                            height: 25
+                        Rectangle {
+                            id:cpu_processbar
+                            width: 402
+                            height: 8
+                            radius:10           //圆角角度
                             color: "transparent"
-                            anchors{
-                                top: compile_time_value.bottom
-                                topMargin: 40
+                            border.color: "transparent"
+                            property int value: 80
 
-                                left: cpu_icon.left
-                                leftMargin: 50
-
-                            }
-                            Text{
-                                id:cpu_value
-                                text:qsTr("系统CPU使用率: ")+cpu_percent+"%"
-                                font.pointSize: 5;
-                                color: "white"
-                                Layout.row:9
-                                Layout.column:1
-                                anchors{
-                                    top: parent.top
-                                    left:parent.top
-                                }
+                            Image {
+                                id: processbar
+                                source: "images/wvga/system/processbar.png"
                             }
                             Rectangle {
-                                id:cpu_processbar
-                                width: 402
-                                height: 8
-                                radius:10           //圆角角度
-                                color: "transparent"
-                                border.color: "transparent"
-                                property int value: 80
-                                Layout.row:11
-                                Layout.rowSpan: 3
-                                Layout.column:1
-                                Image {
-                                    id: processbar
-                                    source: "images/wvga/system/processbar.png"
-                                }
-                                Rectangle {
-                                  width: parent.width * cpu_percent / 100
-                                  height:parent.height // percentage
-                                  color: "#0CAA00"
-                                  radius:10
-    //                              anchors.bottom: parent.bottom
-                                }
-                                anchors{
-                                    bottom: parent.bottom
-
-                                }
-
+                              width: parent.width * cpu_percent / 100
+                              height:parent.height // percentage
+                              color: "#0CAA00"
+                              radius:10
+//                              anchors.bottom: parent.bottom
                             }
-
-                        }
-
-
-                        Image{
-                            id:disk_icon
-                            source: "images/wvga/system/disk.png"
-                            Layout.row:14
-                            Layout.rowSpan: 3
-                            Layout.column:0
                             anchors{
-                                top: cpu_icon.bottom
-                                topMargin: 30
-                            }
-                        }
-                        Rectangle{
-                            width: 430
-                            height: 25
-                            color: "transparent"
-                            anchors{
-                                top: cpu_icon.bottom
-                                topMargin: 30
-
-                                left: disk_icon.left
-                                leftMargin: 50
-
-                            }
-                            Text{
-                                id:disk_value
-                                text:qsTr("系统内存使用率: ")+mem_usage+"-"+mem_percent+"%"
-                                font.pointSize: 5;
-                                color: "white"
-                                Layout.row:9
-                                Layout.column:1
-                                anchors{
-                                    top: parent.top
-                                    left:parent.top
-                                }
-                            }
-                            Rectangle {
-                                id:disk_processbar
-                                width: 402
-                                height: 8
-                                radius:10           //圆角角度
-                                color: "transparent"
-                                border.color: "transparent"
-                                property int value: 40
-                                Layout.row:11
-                                Layout.rowSpan: 3
-                                Layout.column:1
-                                Image {
-                                    id: processbar_bg
-                                    source: "images/wvga/system/processbar.png"
-                                }
-                                Rectangle {
-                                  width: parent.width * mem_percent / 100
-                                  height:parent.height // percentage
-                                  color: "#0CAA00"
-                                  radius:10
-    //                              anchors.bottom: parent.bottom
-                                }
-                                anchors{
-                                    bottom: parent.bottom
-
-                                }
+                                bottom: parent.bottom
 
                             }
 
                         }
 
                     }
+
+
+                    Image{
+                        id:disk_icon
+                        source: "images/wvga/system/disk.png"
+
+                        anchors{
+                            left: parent.left
+                            leftMargin: 30
+                            top: cpu_icon.bottom
+                            topMargin: 30
+                        }
+                    }
+                    Rectangle{
+                        width: 430
+                        height: 25
+                        color: "transparent"
+                        anchors{
+                            top: cpu_icon.bottom
+                            topMargin: 30
+
+                            left: disk_icon.left
+                            leftMargin: 50
+
+                        }
+                        Text{
+                            id:disk_value
+                            text:qsTr("系统内存使用率: ")+mem_usage+"-"+mem_percent+"%"
+                            font.pointSize: 5;
+                            color: "white"
+                            anchors{
+                                top: parent.top
+                                left:parent.top
+                            }
+                        }
+                        Rectangle {
+                            id:disk_processbar
+                            width: 402
+                            height: 8
+                            radius:10           //圆角角度
+                            color: "transparent"
+                            border.color: "transparent"
+                            property int value: 40
+                            Image {
+                                id: processbar_bg
+                                source: "images/wvga/system/processbar.png"
+                            }
+                            Rectangle {
+                              width: parent.width * mem_percent / 100
+                              height:parent.height // percentage
+                              color: "#0CAA00"
+                              radius:10
+//                              anchors.bottom: parent.bottom
+                            }
+                            anchors{
+                                bottom: parent.bottom
+
+                            }
+
+                        }
+
+                    }
+
+
                 }
 
             }
@@ -404,113 +434,123 @@ SystemWindow {
                     width:630
                     height:419
                     color:"transparent"
-                    anchors{
-                        top: parent.top
-                        left: parent.left
-                        leftMargin: 30
+
+                    Text{
+                        text: qsTr("网络信息")
+                        font.pointSize: 15;
+                        color: "white"
+                        anchors{
+                            top: parent.top
+                            left: parent.left
+                            leftMargin: 30
+                        }
+
                     }
-                    GridLayout {
-                        width:630
-                        height:150
-                        columns:5
-                        rows:5
-                        columnSpacing:10
-                        Text{
-                            text: qsTr("网络信息")
-                            font.pointSize: 15;
-                            color: "white"
-                            Layout.row:0
-                            Layout.column:0
-                        }
 
-                        Text{
-                            id:mac
-                            text: qsTr("网卡MAC地址")
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:1
-                            Layout.column:0
-                        }
-                        Text{
-                            id:mac_value
-                            text: net_mac
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:1
-                            Layout.column:1
-                            anchors{
-                                left: mac.left
-                                leftMargin: 120
-                            }
-                        }
-                        Text{
-                            id:ip_text
-                            text: qsTr("IP地址")
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:2
-                            Layout.column:0
-                        }
-                        Text{
-                            id:ip_text_value
-                            text: net_ip
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:2
-                            Layout.column:1
-                            anchors{
-                                left: ip_text.left
-                                leftMargin: 120
-                            }
-                        }
-
-                        Text{
-                            id:speed
-                            text: qsTr("速率 ")
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:3
-                            Layout.column:0
-                        }
-                        Text{
-                            id:speed_value
-                            text: qsTr("1000")+"MB/s"
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:3
-                            Layout.column:1
-                            anchors{
-                                left: speed.left
-                                leftMargin: 120
-                            }
-                        }
-                        Text{
-                            id:net_connect
-                            text: qsTr("是否联网")
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:4
-                            Layout.column:0
-                        }
-                        Text{
-                            id:net_connect_value
-
-                            text:{
-                                if(net_ip==null)
-                                    qsTr("未联网")
-                                else
-                                    qsTr("已联网")
-                            }
-                            font.pointSize: 8;
-                            color: "green"
-                            Layout.row:4
-                            Layout.column:1
-                            anchors{
-                                left: net_connect.left
-                                leftMargin: 120
-                            }
+                    Text{
+                        id:mac
+                        text: qsTr("网卡MAC地址")
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: parent.top
+                            topMargin: 40
+                            left: parent.left
+                            leftMargin: 30
                         }
                     }
+                    Text{
+                        id:mac_value
+                        text: net_mac
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: parent.top
+                            topMargin: 40
+                            left: mac.left
+                            leftMargin: 120
+                        }
+                    }
+                    Text{
+                        id:ip_text
+                        text: qsTr("IP地址")
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: mac.top
+                            topMargin: 25
+                            left: parent.left
+                            leftMargin: 30
+                        }
+                    }
+                    Text{
+                        id:ip_text_value
+                        text: net_ip
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: mac.top
+                            topMargin: 25
+                            left: ip_text.left
+                            leftMargin: 120
+                        }
+                    }
+
+                    Text{
+                        id:speed
+                        text: qsTr("速率 ")
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: ip_text.top
+                            topMargin: 25
+                            left: parent.left
+                            leftMargin: 30
+                        }
+                    }
+                    Text{
+                        id:speed_value
+                        text: qsTr("1000")+"MB/s"
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: ip_text.top
+                            topMargin: 25
+                            left: speed.left
+                            leftMargin: 120
+                        }
+                    }
+                    Text{
+                        id:net_connect
+                        text: qsTr("是否联网")
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: speed.top
+                            topMargin: 25
+                            left: parent.left
+                            leftMargin: 30
+                        }
+                    }
+                    Text{
+                        id:net_connect_value
+
+                        text:{
+                            if(net_ip==null)
+                                qsTr("未联网")
+                            else
+                                qsTr("已联网")
+                        }
+                        font.pointSize: 8;
+                        color: "green"
+                        anchors{
+                            top: speed.top
+                            topMargin: 25
+                            left: net_connect.left
+                            leftMargin: 120
+                        }
+                    }
+
                 }
             }
             Item {
@@ -519,86 +559,92 @@ SystemWindow {
                     width:630
                     height:419
                     color:"transparent"
-                    anchors{
-                        top: parent.top
-                        left: parent.left
-                        leftMargin: 30
-                    }
-                    GridLayout {
-                        width:630
-                        height:100
-                        columns:5
-                        rows:5
-                        columnSpacing:10
-                        Text{
-                            text: qsTr("版权信息")
-                            font.pointSize: 15;
-                            color: "white"
-                            Layout.row:0
-                            Layout.column:0
-                        }
 
-                        Text{
-                            id:copyright
-                            text: qsTr("版权声明")
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:1
-                            Layout.column:0
-                        }
-                        Text{
-                            id:copyright_value
-                            text: qsTr("Copyright © 2020 MYIR Electronics Limited. All rights reserved.")
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:1
-                            Layout.column:1
-                            anchors{
-                                left: copyright.left
-                                leftMargin: 120
-                            }
-                        }
-                        Text{
-                            id:qt_version
-                            text: qsTr("QT版本")
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:2
-                            Layout.column:0
-                        }
-                        Text{
-                            id:qt_version_value
-                            text: qsTr("5.12.0")
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:2
-                            Layout.column:1
-                            anchors{
-                                left: qt_version.left
-                                leftMargin: 120
-                            }
-                        }
-                        Text{
-                            id:thirdpart_copyright
-                            text: qsTr("第三方版权声明")
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:3
-                            Layout.column:0
-                        }
-                        Text{
-                            id:thirdpart_copyright_value
-                            text: qsTr("Copyright ©2020 [xxxxx] Powered By [xxxxx] Version 1.0.0 ")
-                            font.pointSize: 8;
-                            color: "white"
-                            Layout.row:3
-                            Layout.column:1
-                            anchors{
-                                left: thirdpart_copyright.left
-                                leftMargin: 120
-                            }
+
+                    Text{
+                        text: qsTr("版权信息")
+                        font.pointSize: 15;
+                        color: "white"
+                        anchors{
+                            top: parent.top
+                            left: parent.left
+                            leftMargin: 30
                         }
                     }
+
+                    Text{
+                        id:copyright
+                        text: qsTr("版权声明")
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: parent.top
+                            topMargin: 40
+                            left: parent.left
+                            leftMargin: 30
+                        }
+                    }
+                    Text{
+                        id:copyright_value
+                        text: qsTr("Copyright © 2020 MYIR Electronics Limited. All rights reserved.")
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: parent.top
+                            topMargin: 40
+                            left: copyright.left
+                            leftMargin: 120
+                        }
+                    }
+                    Text{
+                        id:qt_version
+                        text: qsTr("QT版本")
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: copyright.top
+                            topMargin: 25
+                            left: parent.left
+                            leftMargin: 30
+                        }
+                    }
+                    Text{
+                        id:qt_version_value
+                        text: qsTr("5.12.0")
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: copyright.top
+                            topMargin: 25
+                            left: qt_version.left
+                            leftMargin: 120
+                        }
+                    }
+                    Text{
+                        id:thirdpart_copyright
+                        text: qsTr("第三方版权声明")
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: qt_version.top
+                            topMargin: 25
+                            left: parent.left
+                            leftMargin: 30
+                        }
+                    }
+                    Text{
+                        id:thirdpart_copyright_value
+                        text: qsTr("Copyright ©2020 [xxxxx] Powered By [xxxxx] Version 1.0.0 ")
+                        font.pointSize: 8;
+                        color: "white"
+                        anchors{
+                            top: qt_version.top
+                            topMargin: 25
+                            left: thirdpart_copyright.left
+                            leftMargin: 120
+                        }
+                    }
+
 
                 }
             }

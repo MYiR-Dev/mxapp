@@ -30,14 +30,14 @@ SystemWindow {
     FileBrowser {
         id: imageFileBrowser
         folder:"file:///"
-        anchors.fill: root
+        anchors.fill: parent
         width: 800
         height: 430
         anchors{
             top: parent.top
             topMargin: 50
         }
-        Component.onCompleted: fileSelected.connect(content.openImage)
+//        Component.onCompleted: fileSelected.connect(content.openImage)
     }
 //    MouseArea {
 //        anchors.fill: parent

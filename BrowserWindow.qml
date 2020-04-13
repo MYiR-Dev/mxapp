@@ -164,7 +164,7 @@ SystemWindow {
                         addressInput.focus= false
                         goButton.opacity = 0.5
                         webView.url = getSyetemInfo.fromUserInput(addressInput.text)
-                        webView.loading;
+                        webView.reload;
                     }
                     onExited:{
                        goButton.opacity = 1.0

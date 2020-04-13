@@ -414,66 +414,61 @@ SystemWindow {
                         }
                             AutoScroller {}
                     }
-                    GridLayout{
-                        width:600
-                        height:100
-                        rows: 7
-                        columns:2
-                        anchors{
 
+                    Text{
+                        id:t1
+                        text: "以太网"
+                        font.pointSize: 10;
+
+                        color: "white"
+                        anchors{
                             top: eth.bottom
                             topMargin: 30
-
-
+                            left: parent.left
+                            leftMargin: 30
                         }
-                        Text{
+                    }
+                    Text{
 
-                            text: "以太网"
-                            font.pointSize: 10;
+                        text: getSyetemInfo.get_net_status() ? "电缆已接入" : "电缆已拔出"
+                        font.pointSize: 10;
 
-                            color: "white"
-                            anchors{
-                                left: parent.left
-                                leftMargin: 30
-                            }
-                            Layout.row: 0
-                            Layout.column: 0
+                        color: "white"
+                        anchors{
+                            top: eth.bottom
+                            topMargin: 30
+                            left: t1.left
+                            leftMargin: 250
                         }
-                        Text{
 
-                            text: getSyetemInfo.get_net_status() ? "电缆已接入" : "电缆已拔出"
-                            font.pointSize: 10;
+                    }
+                    Text{
+                        id:t2
+                        text: "配置IPv4"
+                        font.pointSize: 10;
 
-                            color: "white"
-//                            anchors{
-//                                left: parent.left
-//                                leftMargin: 30
-//                            }
-                            Layout.row: 0
-                            Layout.column: 1
+                        color: "white"
+                        anchors{
+                            top:t1.top
+                            topMargin: 35
+                            left: parent.left
+                            leftMargin: 30
                         }
-                        Text{
 
-                            text: "配置IPv4"
-                            font.pointSize: 10;
+                    }
+                    CustomCombox{
+                        id:combox_dhcp
+                        delegate_width:141
+                        combox_bg:"images/wvga/system/input-bg.png"
+                        modeldata: ["Manual", "DHCP"]
 
-                            color: "white"
-                            anchors{
-                                left: parent.left
-                                leftMargin: 30
-                            }
-                            Layout.row: 1
-                            Layout.column: 0
+                        anchors{
+                            top:t1.top
+                            topMargin: 35
+                            left: t2.left
+                            leftMargin: 250
                         }
-                        CustomCombox{
-                            id:combox_dhcp
-                            delegate_width:141
-                            combox_bg:"images/wvga/system/input-bg.png"
-                            modeldata: ["Manual", "DHCP"]
-
-                            Layout.row: 1
-                            Layout.column: 1
-                        }
+                    }
 //                        Text{
 
 //                            text: "xx"
@@ -484,208 +479,225 @@ SystemWindow {
 //                            Layout.row: 1
 //                            Layout.column: 1
 //                        }
-                        Text{
+                    Text{
+                        id:t3
+                        text: "IP地址"
+                        font.pointSize: 10;
 
-                            text: "IP地址"
-                            font.pointSize: 10;
-
-                            color: "white"
-                            anchors{
-                                left: parent.left
-                                leftMargin: 30
-                            }
-
-                            Layout.row: 2
-                            Layout.column: 0
+                        color: "white"
+                        anchors{
+                            top:t2.top
+                            topMargin: 35
+                            left: parent.left
+                            leftMargin: 30
                         }
 
-                        TextField {
+                    }
 
-                            id: ip_input
-                            width: 141
-                            height: 16
-                            placeholderText: "192.168.xx.xx" /* 输入为空时显示的提示文字 */
-                            inputMethodHints: Qt.ImhFormattedNumbersOnly
-                            onAccepted: digitsField.focus = true
-                            color: "white"
-                            validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
-                            background: Rectangle{
+                    TextField {
 
-                                implicitWidth:141
-                                implicitHeight:16
-                                color: "transparent"
-                                Image {
-                                    anchors.fill: parent
-                                    source: "images/wvga/system/input-bg.png"
-                                }
-                            }
+                        id: ip_input
+//                        width: 141
+//                        height: 16
+                        placeholderText: "192.168.xx.xx" /* 输入为空时显示的提示文字 */
+                        inputMethodHints: Qt.ImhFormattedNumbersOnly
+                        onAccepted: digitsField.focus = true
+                        color: "white"
+                        validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
+                        background: Rectangle{
 
-                            Layout.row: 2
-                            Layout.column: 1
-                        }
-                        Text{
-
-                            text: "子网掩码"
-                            font.pointSize: 10;
-
-                            color: "white"
-                            anchors{
-                                left: parent.left
-                                leftMargin: 30
-                            }
-                            Layout.row: 3
-                            Layout.column: 0
-                        }
-                        TextField{
-
-                            id: netmask_input
-                            width: 141
-                            height: 16
-                            placeholderText: "255.255.xx.xx" /* 输入为空时显示的提示文字 */
-                            inputMethodHints: Qt.ImhFormattedNumbersOnly
-                            onAccepted: digitsField.focus = true
-                            color: "white"
-                            validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
-                            background: Rectangle{
-
-                                implicitWidth:141
-                                implicitHeight:16
-                                color: "transparent"
-                                Image {
-                                    anchors.fill: parent
-                                    source: "images/wvga/system/input-bg.png"
-                                }
-                            }
-
-                            Layout.row: 3
-                            Layout.column: 1
-                        }
-                        Text{
-
-                            text: qsTr("网关")
-                            font.pointSize: 10;
-
-                            color: "white"
-                            anchors{
-                                left: parent.left
-                                leftMargin: 30
-                            }
-                            Layout.row: 4
-                            Layout.column: 0
-                        }
-                        TextField{
-                            id: gw_input
-                            width: 141
-                            height: 16
-                            placeholderText: "192.168.xx.xx" /* 输入为空时显示的提示文字 */
-                            inputMethodHints: Qt.ImhFormattedNumbersOnly
-                            onAccepted: digitsField.focus = true
-                            color: "white"
-                            validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
-                            background: Rectangle{
-
-                                implicitWidth:141
-                                implicitHeight:16
-                                color: "transparent"
-                                Image {
-                                    anchors.fill: parent
-                                    source: "images/wvga/system/input-bg.png"
-                                }
-                            }
-
-
-                            Layout.row: 4
-                            Layout.column: 1
-                        }
-                        Text{
-
-                            text: qsTr("DNS")
-                            font.pointSize: 10;
-
-                            color: "white"
-                            anchors{
-                                left: parent.left
-                                leftMargin: 30
-                            }
-                            Layout.row: 5
-                            Layout.column: 0
-                        }
-                        TextField{
-                            id: dns_input
-                            width: 141
-                            height: 16
-                            placeholderText: "114.114.114.114" /* 输入为空时显示的提示文字 */
-                            inputMethodHints: Qt.ImhFormattedNumbersOnly
-                            onAccepted: digitsField.focus = true
-                            color: "white"
-                            validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
-                            background: Rectangle{
-
-                                implicitWidth:141
-                                implicitHeight:16
-                                color: "transparent"
-                                Image {
-                                    anchors.fill: parent
-                                    source: "images/wvga/system/input-bg.png"
-                                }
-                            }
-
-
-                            Layout.row: 5
-                            Layout.column: 1
-                        }
-                        Rectangle{
-                            id:net_save_button_rec
-                            width: 106
-                            height: 31
+                            implicitWidth:141
+                            implicitHeight:25
                             color: "transparent"
-                            Layout.row: 6
-                            Layout.column: 0
-                            anchors{
-//                                top: custom_calendar.bottom
-//                                topMargin: 10
-                                left:    parent.left
-                                leftMargin: 30
-
-                            }
                             Image {
                                 anchors.fill: parent
-                                source: "images/wvga/system/save-button.png"
-                            }
-                            Text{
-                                id:net_save_button
-                                text: qsTr("保存")
-                                font.pointSize: 10;
-                                font.bold: true
-                                color: "white"
-                                anchors{
-                                    centerIn: parent
-                                }
-                            }
-                            MouseArea{
-                                anchors.fill: parent;
-                                onClicked: {
-                                    net_save_button_rec.opacity = 0.5
-                                    console.log(combox_dhcp.combox_control.currentText)
-                                    console.log(ip_input.text)
-                                    console.log(netmask_input.text)
-                                    console.log(gw_input.text)
-                                    console.log(dns_input.text)
-                                    var net_info_string = combox_dhcp.combox_control.currentText + " " +ip_input.text + " " +
-                                            netmask_input.text + " " + gw_input.text + " " +dns_input.text
-                                    console.log(net_info_string)
-                                    getSyetemInfo.set_net_info(net_info_string)
-                                }
-                                onExited:{
-                                   net_save_button_rec.opacity = 1.0
-                                }
-                                onPressed: {
-
-                                   net_save_button_rec.opacity = 0.5
-                                }
+                                source: "images/wvga/system/input-bg.png"
                             }
                         }
 
+                        anchors{
+                            top:t2.top
+                            topMargin: 35
+                            left: t3.left
+                            leftMargin: 250
+                        }
+                    }
+                    Text{
+                        id:t4
+                        text: "子网掩码"
+                        font.pointSize: 10;
+
+                        color: "white"
+                        anchors{
+                            top:t3.top
+                            topMargin: 35
+                            left: parent.left
+                            leftMargin: 30
+                        }
+
+                    }
+                    TextField{
+
+                        id: netmask_input
+//                        width: 141
+//                        height: 16
+                        placeholderText: "255.255.xx.xx" /* 输入为空时显示的提示文字 */
+                        inputMethodHints: Qt.ImhFormattedNumbersOnly
+                        onAccepted: digitsField.focus = true
+                        color: "white"
+                        validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
+                        background: Rectangle{
+
+                            implicitWidth:141
+                            implicitHeight:25
+                            color: "transparent"
+                            Image {
+                                anchors.fill: parent
+                                source: "images/wvga/system/input-bg.png"
+                            }
+                        }
+
+                        anchors{
+                            top:t3.top
+                            topMargin: 35
+                            left: t4.left
+                            leftMargin: 250
+                        }
+                    }
+                    Text{
+                        id:t5
+                        text: qsTr("网关")
+                        font.pointSize: 10;
+
+                        color: "white"
+                        anchors{
+                            top:t4.top
+                            topMargin: 35
+                            left: parent.left
+                            leftMargin: 30
+                        }
+
+                    }
+                    TextField{
+                        id: gw_input
+//                        width: 141
+//                        height: 16
+                        placeholderText: "192.168.xx.xx" /* 输入为空时显示的提示文字 */
+                        inputMethodHints: Qt.ImhFormattedNumbersOnly
+                        onAccepted: digitsField.focus = true
+                        color: "white"
+                        validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
+                        background: Rectangle{
+
+                            implicitWidth:141
+                            implicitHeight:25
+                            color: "transparent"
+                            Image {
+                                anchors.fill: parent
+                                source: "images/wvga/system/input-bg.png"
+                            }
+                        }
+
+
+                        anchors{
+                            top:t4.top
+                            topMargin: 35
+                            left: t5.left
+                            leftMargin: 250
+                        }
+                    }
+                    Text{
+                        id:t6
+                        text: qsTr("DNS")
+                        font.pointSize: 10;
+
+                        color: "white"
+                        anchors{
+                            top:t5.top
+                            topMargin: 35
+                            left: parent.left
+                            leftMargin: 30
+                        }
+
+                    }
+                    TextField{
+                        id: dns_input
+//                        width: 141
+//                        height: 16
+                        placeholderText: "114.114.114.114" /* 输入为空时显示的提示文字 */
+                        inputMethodHints: Qt.ImhFormattedNumbersOnly
+                        onAccepted: digitsField.focus = true
+                        color: "white"
+                        validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
+                        background: Rectangle{
+
+                            implicitWidth:141
+                            implicitHeight:25
+                            color: "transparent"
+                            Image {
+                                anchors.fill: parent
+                                source: "images/wvga/system/input-bg.png"
+                            }
+                        }
+
+
+                        anchors{
+                            top:t5.top
+                            topMargin: 35
+                            left: t6.left
+                            leftMargin: 250
+
+                        }
+                    }
+                    Rectangle{
+                        id:net_save_button_rec
+                        width: 106
+                        height: 31
+                        color: "transparent"
+
+                        anchors{
+                            top:t6.top
+                            topMargin: 35
+                            left:    parent.left
+                            leftMargin: 30
+
+                        }
+                        Image {
+                            anchors.fill: parent
+                            source: "images/wvga/system/save-button.png"
+                        }
+                        Text{
+                            id:net_save_button
+                            text: qsTr("保存")
+                            font.pointSize: 10;
+                            font.bold: true
+                            color: "white"
+                            anchors{
+                                centerIn: parent
+                            }
+                        }
+                        MouseArea{
+                            anchors.fill: parent;
+                            onClicked: {
+                                net_save_button_rec.opacity = 0.5
+                                console.log(combox_dhcp.combox_control.currentText)
+                                console.log(ip_input.text)
+                                console.log(netmask_input.text)
+                                console.log(gw_input.text)
+                                console.log(dns_input.text)
+                                var net_info_string = combox_dhcp.combox_control.currentText + " " +ip_input.text + " " +
+                                        netmask_input.text + " " + gw_input.text + " " +dns_input.text
+                                console.log(net_info_string)
+                                getSyetemInfo.set_net_info(net_info_string)
+                            }
+                            onExited:{
+                               net_save_button_rec.opacity = 1.0
+                            }
+                            onPressed: {
+
+                               net_save_button_rec.opacity = 0.5
+                            }
+                        }
                     }
 
                 }
@@ -1043,7 +1055,7 @@ SystemWindow {
                         id: listView
                         width: 548
                         height: 500
-                        focus:ture
+                        focus:true
                         anchors {
                             left: parent.left
                             leftMargin: 30

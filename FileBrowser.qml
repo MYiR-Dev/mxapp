@@ -187,7 +187,7 @@ Rectangle {
             ListView {
                 id: view1
                 anchors.top: titleBar.bottom
-                anchors.bottom: cancelButton.top
+//                anchors.bottom: cancelButton.top
                 x: 0
                 width: 800
                 height: 300
