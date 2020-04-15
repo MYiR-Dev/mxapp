@@ -18,7 +18,7 @@ Rectangle {
         id: control
         model: modeldata
         width:delegate_width
-
+        font.family: "Microsoft YaHei"
         delegate: ItemDelegate {
             width: control.width
 

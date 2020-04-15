@@ -93,21 +93,21 @@ void GetSystemInfo::wifi_open()
     command = "ifconfig wlan0 up";
     msic_process->start(command);
     msic_process->waitForFinished();
-    QTest::qSleep(1000);
+//    QTest::qSleep(1000);
     command = "iwlist wlan0 scan";
     wifi_process->start(command);
 
     command = "wpa_supplicant -i wlan0 -c /etc/wpa_supplicant.conf -B";
     msic_process->start(command);
     msic_process->waitForFinished();
-    QTest::qSleep(1000);
+//    QTest::qSleep(1000);
 }
 void GetSystemInfo::wifi_close()
 {
     QString command;
-    command = "killall udhcpc";
-    msic_process->start(command);
-    msic_process->waitForFinished();
+//    command = "killall udhcpc";
+//    msic_process->start(command);
+//    msic_process->waitForFinished();
     command = "wpa_cli -i wlan0 disconnect";
     msic_process->start(command);
     msic_process->waitForFinished();
@@ -181,7 +181,7 @@ void GetSystemInfo::msic_ReadData()
                 if(wifi_status != wifi_connect_status && wifi_status != NULL)
                 {
                     emit wifiConnected(wifi_connect_status);
-                    command = "udhcpc -i wlan0 -b";
+                    command = "udhcpc -i wlan0 -t 3 -n -q -b";
                     msic_process->start(command);
                 }
 
@@ -351,11 +351,11 @@ void GetSystemInfo::set_net_info(QString net_info)
             if(strList.at(i).startsWith("iface eth0 inet"))
             {
                 QString tempStr=strList.at(i);
-                 qDebug() << tempStr;
+//                 qDebug() << tempStr;
                  tempStr.replace(0,tempStr.length(),"iface eth0 inet dhcp");
-                 qDebug() << tempStr;
+//                 qDebug() << tempStr;
                  strList.replace(i,tempStr);
-                 qDebug() << strList.at(i);
+//                 qDebug() << strList.at(i);
             }
         }
         QFile writeFile("/etc/network/interfaces");
@@ -369,8 +369,8 @@ void GetSystemInfo::set_net_info(QString net_info)
 
         }
         writeFile.close();
-        command ="udhcpc -i eth0 -t 3 -n";
-        qDebug() << "command: " << command;
+        command ="udhcpc -i eth0 -t 3 -n -q -b";
+//        qDebug() << "command: " << command;
         process->startDetached(command);
     }
     else {

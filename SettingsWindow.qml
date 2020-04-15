@@ -4,13 +4,14 @@ import QtQuick.Controls.Styles 1.4
 import GetSystemInfoAPI 1.0
 import QtQuick.VirtualKeyboard 2.2
 import QtQuick.VirtualKeyboard.Settings 2.2
+import QtQuick.VirtualKeyboard.Styles 2.2
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.3 as Controls
 
 SystemWindow {
     id: settingsWindow
     title: "settings"
-
+    visible: false
     TitleLeftBar{
         id: leftBar
         titleIcon: "images/wvga/back_icon_nor.png"
@@ -35,15 +36,13 @@ SystemWindow {
             rightMargin: 10
         }
     }
-    GetSystemInfo{
-        id:getSystemInfo
-    }
+
     function openwifi(checked) {
 
         if(checked)
         {
             getSyetemInfo.wifi_open()
-            getSyetemInfo.get_wifi_list()
+//            getSyetemInfo.get_wifi_list()
         }
         else
         {
@@ -80,6 +79,7 @@ SystemWindow {
                     Text{
                         id:title
                         text: qsTr("时间")
+                        font.family: "Microsoft YaHei"
                         font.pointSize: 16;
                         font.bold: true
                         color: "white"
@@ -121,6 +121,7 @@ SystemWindow {
                         Text{
 
                             text: ":"
+                            font.family: "Microsoft YaHei"
                             font.pointSize: 15;
                             font.bold: true
                             color: "white"
@@ -145,6 +146,7 @@ SystemWindow {
                         Text{
 
                             text: ":"
+                            font.family: "Microsoft YaHei"
                             font.pointSize: 15;
                             font.bold: true
                             color: "white"
@@ -207,6 +209,7 @@ SystemWindow {
                         id:time_value
                         text: get_time()
                         font.pointSize: 12;
+                        font.family: "Microsoft YaHei"
                         font.bold: true
                         color: "#059EC9"
                         anchors{
@@ -285,6 +288,7 @@ SystemWindow {
                         width:350
                         height: 210
                         color: "transparent"
+
                         anchors{
                             top:    row_layout1.bottom
                             topMargin: 10
@@ -315,6 +319,7 @@ SystemWindow {
                             id:save_button
                             text: qsTr("保存")
                             font.pointSize: 10;
+                            font.family: "Microsoft YaHei"
                             font.bold: true
                             color: "white"
                             anchors{
@@ -362,6 +367,7 @@ SystemWindow {
                         id:eth
                         text: "以太网"
                         font.pointSize: 15;
+                        font.family: "Microsoft YaHei"
                         font.bold: true
                         color: "white"
                         anchors{
@@ -372,13 +378,17 @@ SystemWindow {
 
                         }
                     }
+
+
                     InputPanel {
                         id: inputPanel
                         x: 100
                         y: 450
                         z:99
+
                         anchors.left: parent.left
                         anchors.right: parent.right
+
                         states: State {
                             name: "visible"
                             /*  The visibility of the InputPanel can be bound to the Qt.inputMethod.visible property,
@@ -418,7 +428,7 @@ SystemWindow {
                         id:t1
                         text: "以太网"
                         font.pointSize: 10;
-
+                        font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
                             top: eth.bottom
@@ -431,7 +441,7 @@ SystemWindow {
 
                         text: getSyetemInfo.get_net_status() ? "电缆已接入" : "电缆已拔出"
                         font.pointSize: 10;
-
+                        font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
                             top: eth.bottom
@@ -445,7 +455,7 @@ SystemWindow {
                         id:t2
                         text: "配置IPv4"
                         font.pointSize: 10;
-
+                        font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
                             top:t1.top
@@ -482,7 +492,7 @@ SystemWindow {
                         id:t3
                         text: "IP地址"
                         font.pointSize: 10;
-
+                        font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
                             top:t2.top
@@ -501,6 +511,7 @@ SystemWindow {
                         placeholderText: "192.168.xx.xx" /* 输入为空时显示的提示文字 */
                         inputMethodHints: Qt.ImhFormattedNumbersOnly
                         onAccepted: digitsField.focus = true
+                        font.family: "Microsoft YaHei"
                         color: "white"
                         validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
                         background: Rectangle{
@@ -525,7 +536,7 @@ SystemWindow {
                         id:t4
                         text: "子网掩码"
                         font.pointSize: 10;
-
+                        font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
                             top:t3.top
@@ -543,6 +554,7 @@ SystemWindow {
                         placeholderText: "255.255.xx.xx" /* 输入为空时显示的提示文字 */
                         inputMethodHints: Qt.ImhFormattedNumbersOnly
                         onAccepted: digitsField.focus = true
+                        font.family: "Microsoft YaHei"
                         color: "white"
                         validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
                         background: Rectangle{
@@ -567,7 +579,7 @@ SystemWindow {
                         id:t5
                         text: qsTr("网关")
                         font.pointSize: 10;
-
+                        font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
                             top:t4.top
@@ -584,6 +596,7 @@ SystemWindow {
                         placeholderText: "192.168.xx.xx" /* 输入为空时显示的提示文字 */
                         inputMethodHints: Qt.ImhFormattedNumbersOnly
                         onAccepted: digitsField.focus = true
+                        font.family: "Microsoft YaHei"
                         color: "white"
                         validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
                         background: Rectangle{
@@ -609,7 +622,7 @@ SystemWindow {
                         id:t6
                         text: qsTr("DNS")
                         font.pointSize: 10;
-
+                        font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
                             top:t5.top
@@ -626,6 +639,7 @@ SystemWindow {
                         placeholderText: "114.114.114.114" /* 输入为空时显示的提示文字 */
                         inputMethodHints: Qt.ImhFormattedNumbersOnly
                         onAccepted: digitsField.focus = true
+                        font.family: "Microsoft YaHei"
                         color: "white"
                         validator: RegExpValidator{regExp:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
                         background: Rectangle{
@@ -669,6 +683,7 @@ SystemWindow {
                             id:net_save_button
                             text: qsTr("保存")
                             font.pointSize: 10;
+                            font.family: "Microsoft YaHei"
                             font.bold: true
                             color: "white"
                             anchors{
@@ -679,11 +694,11 @@ SystemWindow {
                             anchors.fill: parent;
                             onClicked: {
                                 net_save_button_rec.opacity = 0.5
-                                console.log(combox_dhcp.combox_control.currentText)
-                                console.log(ip_input.text)
-                                console.log(netmask_input.text)
-                                console.log(gw_input.text)
-                                console.log(dns_input.text)
+//                                console.log(combox_dhcp.combox_control.currentText)
+//                                console.log(ip_input.text)
+//                                console.log(netmask_input.text)
+//                                console.log(gw_input.text)
+//                                console.log(dns_input.text)
                                 var net_info_string = combox_dhcp.combox_control.currentText + " " +ip_input.text + " " +
                                         netmask_input.text + " " + gw_input.text + " " +dns_input.text
                                 console.log(net_info_string)
@@ -757,6 +772,7 @@ SystemWindow {
                         id:wifi_set_title
                         text: "WiFi设置"
                         font.pointSize: 15;
+                        font.family: "Microsoft YaHei"
                         font.bold: true
                         color: "white"
                         anchors{
@@ -802,6 +818,7 @@ SystemWindow {
 
                             text: qsTr("扫描")
                             font.pointSize: 10;
+                            font.family: "Microsoft YaHei"
                             font.bold: true
                             color: "white"
                             anchors{
@@ -917,6 +934,7 @@ SystemWindow {
                                 id:wifi_essid_text
                                 text: wifi_essid
                                 font.pointSize: 8;
+                                font.family: "Microsoft YaHei"
                                 font.bold: true
                                 color: "white"
                                 anchors{
@@ -930,6 +948,7 @@ SystemWindow {
 
                                 text: wifi_connect_status
                                 font.pointSize: 6;
+                                font.family: "Microsoft YaHei"
                                 font.bold: true
                                 color: "#A9A9A9"
                                 anchors{
@@ -945,6 +964,7 @@ SystemWindow {
                                 height: 32
                                 echoMode: TextInput.Password
                                 placeholderText: "Password field"
+                                font.family: "Microsoft YaHei"
                                 inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText
                                 onAccepted: upperCaseField.focus = true
                                 color: "white"
@@ -1015,6 +1035,7 @@ SystemWindow {
 
                                     text: qsTr("连接")
                                     font.pointSize: 12;
+                                    font.family: "Microsoft YaHei"
     //                                font.bold: true
                                     color: "white"
                                     anchors{
@@ -1104,6 +1125,7 @@ SystemWindow {
                     Text{
                         id:cake
                         text: qsTr("时间设置")
+                        font.family: "Microsoft YaHei"
                         font.pointSize: 6;
                         color: "white"
                         anchors{
@@ -1147,6 +1169,7 @@ SystemWindow {
                         id:ethernet
                         text: qsTr("以太网设置")
                         font.pointSize: 6;
+                        font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
                             horizontalCenter:    parent.horizontalCenter
@@ -1187,6 +1210,7 @@ SystemWindow {
                     Text{
                         text: qsTr("WiFi设置")
                         font.pointSize: 6;
+                        font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
                             horizontalCenter:    parent.horizontalCenter

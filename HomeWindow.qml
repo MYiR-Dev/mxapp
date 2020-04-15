@@ -355,53 +355,63 @@ Rectangle {
                                         if(model.aqml === "PlayerWindow.qml"){
 //                                            playerWnd.forceActiveFocus()
 //                                            playerWnd.z=4;
-                                            playerWnd.item.show()
-                                            playerWnd.item.requestActivate()
+                                            mainloader.source = "PlayerWindow.qml"
+                                            mainloader.item.show()
+                                            mainloader.item.requestActivate()
                                         }else if(model.aqml === "CameraWindow.qml"){
 //                                            cameraWnd.forceActiveFocus()
 //                                            cameraWnd.z=4;
-                                              cameraWnd.item.show()
-                                              cameraWnd.item.requestActivate()
+                                            mainloader.source = "CameraWindow.qml"
+                                            mainloader.item.show()
+                                            mainloader.item.requestActivate()
                                         }else if(model.aqml === "PictureWindow.qml"){
 //                                            pictureWnd.forceActiveFocus()
 //                                            pictureWnd.z=4;
-                                              pictureWnd.item.show()
-                                              pictureWnd.item.requestActivate()
+                                            mainloader.source = "PictureWindow.qml"
+                                            mainloader.item.show()
+                                            mainloader.item.requestActivate()
                                         }else if(model.aqml === "TicketWindow.qml"){
 //                                            ticketWnd.forceActiveFocus()
 //                                            ticketWnd.z=4;
-                                              ticketWnd.item.show()
-                                              ticketWnd.item.requestActivate()
+                                            mainloader.source = "TicketWindow.qml"
+                                            mainloader.item.show()
+                                            mainloader.item.requestActivate()
                                         }else if(model.aqml === "ScopeWindow.qml"){
 //                                            scopeWnd.forceActiveFocus()
 //                                            scopeWnd.z=4;
-                                              scopeWnd.item.show()
-                                              scopeWnd.item.requestActivate()
+                                            mainloader.source = "ScopeWindow.qml"
+                                            mainloader.item.show()
+                                            mainloader.item.requestActivate()
                                         }else if(model.aqml === "FileWindow.qml"){
 //                                            fileWnd.forceActiveFocus()
 //                                            fileWnd.z=4;
-                                              fileWnd.item.show()
-                                              fileWnd.item.requestActivate()
+                                            mainloader.source = "FileWindow.qml"
+                                            mainloader.item.show()
+                                            mainloader.item.requestActivate()
                                         }else if(model.aqml === "WashWindow.qml"){
 //                                            washWnd.forceActiveFocus()
 //                                            washWnd.z=4;
-                                              washWnd.item.show()
-                                              washWnd.item.requestActivate()
+                                            mainloader.source = "WashWindow.qml"
+                                            mainloader.item.show()
+                                            mainloader.item.requestActivate()
                                         }else if(model.aqml === "InfoWindow.qml"){
 //                                            infoWnd.forceActiveFocus()
 //                                            infoWnd.z=4;
-                                              infoWnd.item.show()
-                                              infoWnd.item.requestActivate()
+                                            mainloader.source = "InfoWindow.qml"
+                                            mainloader.item.show()
+                                            mainloader.item.requestActivate()
                                         }else if(model.aqml === "SettingsWindow.qml"){
 //                                            settingsWnd.forceActiveFocus()
 //                                            settingsWnd.z=4;
-                                              settingsWnd.item.show()
-                                              settingsWnd.item.requestActivate()
+                                            mainloader.source = "SettingsWindow.qml"
+                                            mainloader.item.show()
+                                            mainloader.item.requestActivate()
                                         }else if(model.aqml === "MusicWindow.qml"){
 //                                            settingsWnd.forceActiveFocus()
 //                                            settingsWnd.z=4;
-                                              musicWnd.item.show()
-                                              musicWnd.item.requestActivate()
+                                            mainloader.source = "MusicWindow.qml"
+                                            mainloader.item.show()
+                                            mainloader.item.requestActivate()
                                         }/*else if(model.aqml === "BrowserWindow.qml"){
 //                                              browserWnd.forceActiveFocus()
 //                                              browserWnd.z=4;

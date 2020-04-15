@@ -157,6 +157,7 @@ Rectangle {
                         id: nameText
                         anchors.fill: parent; verticalAlignment: Text.AlignVCenter
                         text: fileName
+                        font.family: "Microsoft YaHei"
                         anchors.leftMargin: itemHeight + scaledMargin
                         font.pixelSize: fontSize
                         color: (wrapper.ListView.isCurrentItem && root.showFocusHighlight) ? palette.highlightedText : textColor
@@ -335,6 +336,7 @@ Rectangle {
                     anchors.left: upButton.right; anchors.right: parent.right; height: parent.height
                     anchors.leftMargin: 10; anchors.rightMargin: 4
                     text: folders.folder
+                    font.family: "Microsoft YaHei"
                     color: "white"
                     elide: Text.ElideLeft; horizontalAlignment: Text.AlignLeft; verticalAlignment: Text.AlignVCenter
                     font.pixelSize: fontSize

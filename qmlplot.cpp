@@ -64,7 +64,7 @@ void CustomPlotItem::initCustomPlot()
     getECGData();
     getRESPData();
     timer_count = 0;
-//    startTimer(100);
+    startTimer(50);
 
     connect( m_CustomPlot, &QCustomPlot::afterReplot, this, &CustomPlotItem::onCustomReplot );
 
@@ -109,7 +109,7 @@ void CustomPlotItem::timerEvent(QTimerEvent *event)
 void CustomPlotItem::getRESPData()
 {
     int i = 0;
-    QFile file("resp.text");
+    QFile file("/usr/share/myir/resp.text");
 
     if (file.open(QFile::ReadOnly | QIODevice::Text))
     {
@@ -148,7 +148,7 @@ void CustomPlotItem::getECGData()
 
     QVector<double> t(DATA_COUNT), s1(DATA_COUNT), s2(DATA_COUNT);
 
-    pFile = fopen("ecg.dat","rb");
+    pFile = fopen("/usr/share/myir/ecg.dat","rb");
     if (pFile == NULL)
 
     {

@@ -131,6 +131,7 @@ SystemWindow {
                 focus: true
                 Layout.fillWidth: true
                 text: webView && webView.url
+                font.family: "Microsoft YaHei"
                 onAccepted: {
                     webView.url = getSyetemInfo.fromUserInput(text)
                 }
