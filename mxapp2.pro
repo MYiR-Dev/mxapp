@@ -1,4 +1,4 @@
-QT += qml quick core gui printsupport testlib
+QT += qml quick core gui printsupport testlib quickcontrols2
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++11

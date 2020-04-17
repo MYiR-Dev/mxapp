@@ -6,13 +6,14 @@ import QtQuick.Layouts 1.1
 Rectangle {
 
     width: delegate_width
-    height: 28
+    height: delegate_height
     color:"transparent"
     property var modeldata: ["1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12",
                        "13", "14", "15","16", "17", "18","19", "20", "21","22", "23", "24"]
     property var verticalAlig:""
     property var combox_bg:"images/wvga/system/day-rec.png"
     property int delegate_width:47
+    property int delegate_height:28
     property alias combox_control:control
     ComboBox {
         id: control
@@ -80,7 +81,7 @@ Rectangle {
 
         background: Rectangle {
             implicitWidth: delegate_width
-            implicitHeight: 28
+            implicitHeight: delegate_height
 //                                border.color: control.pressed ? "#17a81a" : "#21be2b"
 //                                border.width: control.visualFocus ? 2 : 1
             color:"transparent"

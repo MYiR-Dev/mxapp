@@ -2,22 +2,23 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QFontDatabase>
-
 #include "qmlplot.h"
 #include "common.h"
 #include "myfunction.h"
 
 void iconFontInit()
 {
-    //加载fontawesome-webfont.ttf字体图标库
-    //官网:www.fontawesome.com.cn
+    //����fontawesome-webfont.ttf����ͼ����
+    //����:www.fontawesome.com.cn
 //
-    int fontId_fws = QFontDatabase::addApplicationFont(":/fonts/fontawesome-webfont.ttf");  //加入字体，并获取字体ID
     int fontId_digital = QFontDatabase::addApplicationFont(":/fonts/DIGITAL/DS-DIGIB.TTF");
-    QString fontName_fws = QFontDatabase::applicationFontFamilies(fontId_fws).at(0);    //获取字体名称
-    QFont iconFont_fws = QFont(fontName_fws);
+    int fontId_fws = QFontDatabase::addApplicationFont(":/fonts/fontawesome-webfont.ttf");  //�������壬����ȡ����ID
 
-    iconFont_fws.setPixelSize(20);     //设置字体大小
+    QString fontName_fws = QFontDatabase::applicationFontFamilies(fontId_fws).at(0);    //��ȡ��������
+    QFont iconFont_fws;
+    iconFont_fws.setFamily(fontName_fws);
+    QApplication::setFont(iconFont_fws);
+    iconFont_fws.setPixelSize(20);     //����������С
 }
 
 int main(int argc, char *argv[])
@@ -33,6 +34,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<CustomPlotItem>("CustomPlot", 1, 0, "CustomPlotItem");
     qmlRegisterType<MyFunction>("MyFunction.module", 1, 0, "MyFunction");
     //font icon init
+
     iconFontInit();
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

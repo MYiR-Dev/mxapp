@@ -385,7 +385,6 @@ SystemWindow {
                         x: 100
                         y: 450
                         z:99
-
                         anchors.left: parent.left
                         anchors.right: parent.right
 
@@ -468,6 +467,7 @@ SystemWindow {
                     CustomCombox{
                         id:combox_dhcp
                         delegate_width:141
+                        delegate_height:34
                         combox_bg:"images/wvga/system/input-bg.png"
                         modeldata: ["Manual", "DHCP"]
 
@@ -886,17 +886,30 @@ SystemWindow {
                                      "wifi_essid": wifi_data[j*3+2],
                                      "wifi_connect_status": qsTr("未启用"),
                                      "key_image":image,
-                                     "signal_iamge":"images/wvga/system/wifi-signal.png"
+                                     "signal_iamge":"images/wvga/system/wifi-signal.png",
+                                     "signal":wifi_data[j*3+0]
                                  })
 
                              }
-//                             for(var i=0 ; i<wifi_data.length/3;i++ )
-//                             {
-//                                 console.log("Received ++: " +wifi_list_model.get(i).wifi_essid)
+
+
+                                   for(var m=0; m<wifi_list_model.count; m++)
+                                   {
+                                       for(var n=0; n<m; n++)
+                                       {
+                                           if(wifi_list_model.get(m).signal > wifi_list_model.get(n).signal)
+                                               wifi_list_model.move(m,n,1)
+//                                           break
+                                       }
+                                   }
+
+                             for(var i=0 ; i<wifi_data.length/3;i++ )
+                             {
+                                 console.log("Received ++: " +wifi_list_model.get(i).wifi_essid)
 //                                 console.log("Received ++: " +wifi_list_model.get(i).wifi_connect_status)
 //                                 console.log("Received ++: " +wifi_list_model.get(i).key_image)
 //                                 console.log("Received ++: " +wifi_list_model.get(i).signal_iamge)
-//                             }
+                             }
                         }
                         onWifiConnected:{
                             for(var k=0; k < wifi_list_model.count; k++)
@@ -1074,13 +1087,16 @@ SystemWindow {
                     ListView {
                         id: listView
                         width: 548
-                        height: 500
+                        height: 340
                         focus:true
                         anchors {
                             left: parent.left
                             leftMargin: 30
                             top: serch_rec.bottom
                             topMargin: 10
+                        }
+                        ScrollBar.vertical: ScrollBar {
+                            active: true
                         }
                         spacing: 20
                         model: wifi_list_model

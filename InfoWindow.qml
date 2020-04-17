@@ -563,10 +563,10 @@ SystemWindow {
                         id:net_connect_value
 
                         text:{
-                            if(net_ip==null)
-                                qsTr("未联网")
-                            else
+                            if(getSyetemInfo.get_net_status())
                                 qsTr("已联网")
+                            else
+                                qsTr("未联网")
                         }
                         font.pointSize: 8;
                         font.family: "Microsoft YaHei"

@@ -64,7 +64,7 @@ void CustomPlotItem::initCustomPlot()
     getECGData();
     getRESPData();
     timer_count = 0;
-    startTimer(50);
+    startTimer(20);
 
     connect( m_CustomPlot, &QCustomPlot::afterReplot, this, &CustomPlotItem::onCustomReplot );
 

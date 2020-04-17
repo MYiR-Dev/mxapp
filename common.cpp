@@ -295,6 +295,14 @@ void GetSystemInfo::parseIwlist(QString buffer)
             if ( line.startsWith ( "ESSID:" ) )
             {
                 QString ssid =line.mid ( line.indexOf ( "\"" ) + 1, line.lastIndexOf ( "\"" ) - line.indexOf ( "\"" ) - 1 );
+                if(ssid.contains("\\"))
+                {
+                    ssid = " ";
+                    qDebug() << ssid << j;
+//                    QString wifi_name =QString::fromUtf8("\xE8\xBD\xAF\xE5\xB8\x9D\xE7\xA7\x91\xE6\x8A");
+                }
+
+
                 wifi_info.append(ssid);
 
             }
@@ -328,12 +336,12 @@ void GetSystemInfo::set_net_info(QString net_info)
 {
 
     QString command;
-    qDebug() << "net_info:" <<net_info;
+//    qDebug() << "net_info:" <<net_info;
     QStringList list = net_info.split(" ");
 
     if(list.at(0) =="DHCP")
     {
-        qDebug() << "DHCP";
+//        qDebug() << "DHCP";
 
         QFile readFile("/etc/network/interfaces");
         QString strAll;
@@ -377,7 +385,7 @@ void GetSystemInfo::set_net_info(QString net_info)
         if(!list.at(1).isEmpty()&& !list.at(2).isEmpty())
         {
             command ="ifconfig eth0 "+ list.at(1) +" netmask "+list.at(2);
-            qDebug() << "command: " << command;
+//            qDebug() << "command: " << command;
            process->startDetached(command);
         }
         else {
@@ -388,7 +396,7 @@ void GetSystemInfo::set_net_info(QString net_info)
         if(!list.at(3).isEmpty() )
         {
             command ="route add default gw "+ list.at(3);
-            qDebug() << "command: " << command;
+//            qDebug() << "command: " << command;
             process->startDetached(command);
         }
         else{
@@ -397,7 +405,7 @@ void GetSystemInfo::set_net_info(QString net_info)
         if(!list.at(4).isEmpty())
         {
             command ="echo \"nameserver "+ list.at(4)+ "\""+">> /etc/resolv.conf";
-            qDebug() << "command: " << command;
+//            qDebug() << "command: " << command;
             process->startDetached(command);
         }
         else {
@@ -426,7 +434,7 @@ int GetSystemInfo::read_memory_free()
 }
 void GetSystemInfo::set_date(QString date)
 {
-    qDebug() << "date: " << date;
+//    qDebug() << "date: " << date;
     QString year,month,day,hour,minute,second,command;
     int j = 0;
 
@@ -456,7 +464,7 @@ void GetSystemInfo::set_date(QString date)
 
 
     command ="date -s \""+year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second+"\"";
-    qDebug() << "command: " << command;
+//    qDebug() << "command: " << command;
     process->startDetached(command);
 
 }
