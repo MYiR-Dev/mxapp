@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
     qmlRegisterType<CustomPlotItem>("CustomPlot", 1, 0, "CustomPlotItem");
     qmlRegisterType<MyFunction>("MyFunction.module", 1, 0, "MyFunction");
     //font icon init
-
     iconFontInit();
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

@@ -31,7 +31,7 @@ public:
     Q_INVOKABLE QString get_wifi_list();
     Q_INVOKABLE void connect_wifi(QString essid_passwd);
     Q_INVOKABLE void disconnect_wifi();
-
+    Q_INVOKABLE void shootScreenWindow(QQuickWindow *rootWindow);
     Q_INVOKABLE QUrl fromUserInput(const QString& userInput);
 //    Q_INVOKABLE void wifiReady();
     QString getWirelessInterfaceStatus(QString interface);

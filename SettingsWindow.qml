@@ -29,6 +29,7 @@ SystemWindow {
         id:getSyetemInfo
 
     }
+
     TitleRightBar{
         anchors{
             top: parent.top

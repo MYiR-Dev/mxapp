@@ -132,6 +132,7 @@ void GetSystemInfo::connect_wifi(QString essid_passwd)
     if(tmp[2] == "qrc:/images/wvga/system/key.png")
     {
         out << "#!/bin/bash\n";
+        out << "wpa_cli -i wlan0 remove_network 0\n";
         out << "wpa_cli -i wlan0 add_network\n";
         out << "wpa_cli -i wlan0 set_network " + wifi_id + " ssid " + "\'\""+tmp[0]+"\"\'"+"\n";
         out << "wpa_cli -i wlan0 set_network "+ wifi_id + " psk "+ "\'\""+tmp[1]+"\"\'"+"\n";
@@ -141,6 +142,7 @@ void GetSystemInfo::connect_wifi(QString essid_passwd)
     else {
 
         out << "#!/bin/bash\n";
+        out << "wpa_cli -i wlan0 remove_network 0\n";
         out << "wpa_cli -i wlan0 add_network\n";
         out << "wpa_cli -i wlan0 set_network " + wifi_id + " ssid " + "\'\""+tmp[0]+"\"\'"+"\n";
         out << "wpa_cli -i wlan0 set_network "+ wifi_id +" key_mgmt NONE"+"\n";
@@ -169,7 +171,7 @@ void GetSystemInfo::msic_ReadData()
     do {
 
         line = stream.readLine().trimmed();
-//        qDebug() << line;
+//        qDebug() <<"msic_ReadData"<< line;
         if ( line.startsWith("wlan0") )
         {
             QStringList tmp = line.split("ESSID:");
@@ -187,13 +189,7 @@ void GetSystemInfo::msic_ReadData()
 
             }
         }
-        if ( line.length() == 1 )
-        {
-            qDebug() << line << line.length();
-            wifi_id = line;
-//            QString temp = tmp[1];
 
-        }
 
     } while (!line.isNull());
     wifi_status = wifi_connect_status;
@@ -219,6 +215,16 @@ QString GetSystemInfo::get_wifi_list()
     }
     return "dd";
 }
+void GetSystemInfo::shootScreenWindow(QQuickWindow *rootWindow)
+{
+//    QImage image = rootWindow->grabWindow();
+    QString filePathName = "/root/";
+    filePathName += QDateTime::currentDateTime().toString("yyyy-MM-dd hh-mm-ss-zzz");
+    filePathName += QString(".jpg");
+    QImage p = rootWindow->grabWindow();
+    p.save(filePathName, "jpg");
+}
+
 QString GetSystemInfo::getWirelessInterfaceStatus(QString interface)
 {
     QString status = "";

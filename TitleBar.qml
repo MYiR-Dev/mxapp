@@ -16,7 +16,10 @@ Item {
         titleName: "Make Your Ideal Real!"
 
         onLeftBarClicked: {
-            supportWnd.item.open()
+            mainloader.source = "SupportWindow.qml"
+//            mainloader.item.show()
+//            mainloader.item.requestActivate()
+            mainloader.item.open()
         }
 
     }

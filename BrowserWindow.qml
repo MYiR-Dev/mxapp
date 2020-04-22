@@ -135,8 +135,7 @@ SystemWindow {
                 onAccepted: {
                     webView.url = getSyetemInfo.fromUserInput(text)
                 }
-            }
-            Rectangle{
+            }            Rectangle{
                 id:goButton
                 anchors{
                     left: addressInput.right
@@ -165,7 +164,7 @@ SystemWindow {
                         addressInput.focus= false
                         goButton.opacity = 0.5
                         webView.url = getSyetemInfo.fromUserInput(addressInput.text)
-                        webView.reload;
+//                        webView.load;
                     }
                     onExited:{
                        goButton.opacity = 1.0
@@ -218,15 +217,33 @@ SystemWindow {
 
 
         }
-        WebView {
-            id: webView
+        ScrollView {
+            width: 1280
+            height: 720
             anchors{
                 top: dddd.bottom
                 topMargin: 35
                 fill: parent
             }
+            WebView {
+                id: webView
+                url: "http://www.myir-tech.com/"
+                onNavigationRequested: {
+                    // detect URL scheme prefix, most likely an external link
+                    var schemaRE = /^\w+:/;
+                    if (schemaRE.test(request.url)) {
+                        request.action = WebView.AcceptRequest;
 
-            url: "http://www.myir-tech.com/"
+                    } else {
+                        request.action = WebView.IgnoreRequest;
+
+//                         delegate request.url here
+                    }
+                }
+
+
+            }
+
         }
 
 
