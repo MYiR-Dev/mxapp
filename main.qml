@@ -6,8 +6,8 @@ import GetSystemInfoAPI 1.0
 ApplicationWindow {
     id: mainWnd
     visible: true
-    width: 800
-    height: 480
+    width: 1920
+    height: 1080
     title: qsTr("Hello World")
 
     background: Image{
@@ -26,8 +26,8 @@ ApplicationWindow {
 
     TitleBar {
         id:tBar
-        width:800
-        height:32
+        width:1920
+        height:76.8
     }
 
 //    HomeButton{
@@ -45,16 +45,16 @@ ApplicationWindow {
         id:homeWnd
         anchors.top: tBar.bottom
         visible: true
-        width: 800
-        height: 480-tBar.height
+        width: 1920
+        height: 1080-tBar.height
     }
 
     MenuWindow{
         id:menuWnd
         anchors.top: tBar.bottom
         visible: false
-        width: 800
-        height: 480-tBar.height
+        width: 1920
+        height: 1080-tBar.height
     }
 
     StateGroup{

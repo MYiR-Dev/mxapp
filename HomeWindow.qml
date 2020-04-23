@@ -49,8 +49,8 @@ Rectangle {
         //个性推荐的顶部，使用pathView
         Rectangle{
             id:pathViewRect;
-            width: 720;
-            height: 400;
+            width: 1745;
+            height: 900;
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top;
             anchors.topMargin: 20
@@ -113,8 +113,8 @@ Rectangle {
 
                     Image {
                         id:image;
-                        width: 225;
-                        height: 318;
+                        width: 436;
+                        height: 618;
                         anchors.horizontalCenter: parent.horizontalCenter
                         source: cimage;
 
@@ -243,8 +243,8 @@ Rectangle {
             }
             Rectangle{
                 id: subMenu
-                width: 800
-                height: 55
+                width: 1920
+                height: 124
 //                radius: 20
                 color: Qt.rgba(0,0xff,0xff,0.1)
                 anchors{
@@ -255,8 +255,8 @@ Rectangle {
 
                 RowLayout{
                     id: subMenuRow
-                    width: 800
-                    height: 55
+                    width: 1920
+                    height: 124
                     property bool isClickable: true
 
 //                    anchors{
@@ -573,7 +573,7 @@ Rectangle {
 //1
         addModelData(
                     "multimedia",
-                    "qrc:/images/wvga/home/homepage_media_nor.png",
+                    "qrc:/images/fhd/home/homepage_media_nor.png",
                     qsTr("多媒体"),qsTr("摄像头"),
                     "qrc:/images/wvga/home/media_icon_camera_nor.png",
                     "CameraWindow.qml",
@@ -582,7 +582,7 @@ Rectangle {
 //2
         addModelData(
                     "multimedia",
-                    "qrc:/images/wvga/home/homepage_media_nor.png",
+                    "qrc:/images/fhd/home/homepage_media_nor.png",
                     qsTr("多媒体"),qsTr("播放器"),
                     "qrc:/images/wvga/home/media_icon_video_nor.png",
                     "PlayerWindow.qml",
@@ -591,7 +591,7 @@ Rectangle {
         //3
         addModelData(
                     "system",
-                    "qrc:/images/wvga/home/homepage_system_nor.png",
+                    "qrc:/images/fhd/home/homepage_system_nor.png",
                     qsTr("系统"),
                     qsTr("系统信息"),
                     "qrc:/images/wvga/home/system_icon_info_nor.png",
@@ -601,7 +601,7 @@ Rectangle {
         //4
         addModelData(
                     "system",
-                    "qrc:/images/wvga/home/homepage_system_nor.png",
+                    "qrc:/images/fhd/home/homepage_system_nor.png",
                     qsTr("系统"),
                     qsTr("系统设置"),
                     "qrc:/images/wvga/home/system_icon_set_nor.png",
@@ -611,7 +611,7 @@ Rectangle {
         //5
         addModelData(
                     "machine",
-                    "qrc:/images/wvga/home/homepage_machine_nor.png",
+                    "qrc:/images/fhd/home/homepage_machine_nor.png",
                     qsTr("智能家电"),
                     qsTr("洗衣机"),
                     "qrc:/images/wvga/home/smart_icon_washing_nor.png",
@@ -621,7 +621,7 @@ Rectangle {
         //6
         addModelData(
                     "health",
-                    "qrc:/images/wvga/home/homepage_medical_nor.png",
+                    "qrc:/images/fhd/home/homepage_medical_nor.png",
                     qsTr("卫生医疗"),
                     qsTr("心电仪"),
                     "qrc:/images/wvga/home/medical_icon_heart_nor.png",
@@ -631,7 +631,7 @@ Rectangle {
         //7
         addModelData(
                     "public",
-                    "qrc:/images/wvga/home/homepage_public_nor.png",
+                    "qrc:/images/fhd/home/homepage_public_nor.png",
                     qsTr("公共服务"),
                     qsTr("取票机"),
                     "qrc:/images/wvga/home/public_icon_ticket_nor.png",
@@ -641,7 +641,7 @@ Rectangle {
         //8
         addModelData(
                     "system",
-                    "qrc:/images/wvga/home/homepage_system_nor.png",
+                    "qrc:/images/fhd/home/homepage_system_nor.png",
                     qsTr("系统"),
                     qsTr("文件管理器"),
                     "qrc:/images/wvga/home/media_icon_doc.png",
@@ -651,7 +651,7 @@ Rectangle {
         //9
         addModelData(
                     "multimedia",
-                    "qrc:/images/wvga/home/homepage_media_nor.png",
+                    "qrc:/images/fhd/home/homepage_media_nor.png",
                     qsTr("多媒体"),
                     qsTr("Music"),
                     "qrc:/images/wvga/home/icon_music.png",
@@ -661,7 +661,7 @@ Rectangle {
         //10
         addModelData(
                     "multimedia",
-                    "qrc:/images/wvga/home/homepage_media_nor.png",
+                    "qrc:/images/fhd/home/homepage_media_nor.png",
                     qsTr("多媒体"),
                     qsTr("图片"),
                     "qrc:/images/wvga/home/media_icon_img_nor.png",
