@@ -6,7 +6,11 @@ import GetSystemInfoAPI 1.0
 SystemWindow {
     id: infoWindow
     title: "info"
-
+    focus: true
+    property int adaptive_width: Screen.desktopAvailableWidth
+    property int adaptive_height: Screen.desktopAvailableHeight
+    width: adaptive_width
+    height: adaptive_height
     TitleLeftBar{
         id: leftBar
         titleIcon: "images/wvga/back_icon_nor.png"
@@ -37,8 +41,8 @@ SystemWindow {
             topMargin: 50
         }
         color:"transparent"
-        width:750
-        height:430
+        width:adaptive_width/1.06
+        height:adaptive_height*2
         SwipeView {
             id: view
             orientation:Qt.Vertical
@@ -47,14 +51,14 @@ SystemWindow {
             anchors{
                 top: parent.top
                 left: navigationbar.left
-                leftMargin: 150
+                leftMargin: adaptive_width/5.3
             }
             Item {
                 id: firstPage
 
                 Rectangle{
-                    width:630
-                    height:419
+                    width:adaptive_width/1.26
+                    height:adaptive_height*2
                     color:"transparent"
 
 
@@ -316,6 +320,8 @@ SystemWindow {
                     }
                     Image{
                         id:cpu_icon
+                        width: adaptive_width/33.3
+                        height: adaptive_height/19.2
                         source: "images/wvga/system/cpu.png"
 
                         anchors{
@@ -328,21 +334,21 @@ SystemWindow {
                     }
                     Rectangle{
                         id:cpu_processbar_ectangle
-                        width: 430
-                        height: 25
+                        width: adaptive_width/1.8
+                        height: adaptive_height/19.2
                         color: "transparent"
                         anchors{
                             top: compile_time_value.bottom
                             topMargin: 40
 
-                            left: cpu_icon.left
-                            leftMargin: 50
+                            left: cpu_icon.right
+                            leftMargin: 20
 
                         }
                         Text{
                             id:cpu_value
                             text:qsTr("系统CPU使用率: ")+cpu_percent+"%"
-                            font.pointSize: 5;
+                            font.pointSize: 8;
                             font.family: "Microsoft YaHei"
                             color: "white"
 
@@ -384,7 +390,8 @@ SystemWindow {
                     Image{
                         id:disk_icon
                         source: "images/wvga/system/disk.png"
-
+                        width: adaptive_width/33.3
+                        height: adaptive_height/19.2
                         anchors{
                             left: parent.left
                             leftMargin: 30
@@ -393,21 +400,21 @@ SystemWindow {
                         }
                     }
                     Rectangle{
-                        width: 430
-                        height: 25
+                        width: adaptive_width/1.8
+                        height: adaptive_height/19.2
                         color: "transparent"
                         anchors{
                             top: cpu_icon.bottom
                             topMargin: 30
 
-                            left: disk_icon.left
-                            leftMargin: 50
+                            left: disk_icon.right
+                            leftMargin: 20
 
                         }
                         Text{
                             id:disk_value
                             text:qsTr("系统内存使用率: ")+mem_usage+"-"+mem_percent+"%"
-                            font.pointSize: 5;
+                            font.pointSize: 8;
                             font.family: "Microsoft YaHei"
                             color: "white"
                             anchors{
@@ -450,8 +457,8 @@ SystemWindow {
             Item {
                 id: secondPage
                 Rectangle{
-                    width:630
-                    height:419
+                    width:adaptive_width/1.26
+                    height:adaptive_height*2
                     color:"transparent"
 
                     Text{
@@ -584,8 +591,8 @@ SystemWindow {
             Item {
                 id: thirdPage
                 Rectangle{
-                    width:630
-                    height:419
+                    width:adaptive_width/1.26
+                    height:adaptive_height*2
                     color:"transparent"
 
 
@@ -686,15 +693,17 @@ SystemWindow {
         }
         Rectangle{
             id:navigationbar
-            width: 122;
-            height: 419;
+            width:adaptive_width/6.55
+            height:adaptive_height/1.14
             anchors{
                 top: parent.top
                 left: parent.left
                 leftMargin: 20
             }
             Image{
-                anchors.fill: parent
+//                anchors.fill: parent
+                width:adaptive_width/7.00
+                height:adaptive_height/1.2
                 source: "images/wvga/system/navigation.png"
             }
             color:"transparent"
@@ -702,12 +711,15 @@ SystemWindow {
                 id:coloumn;
                 Rectangle{
                     id:basicinfo
-                    width: 122;
-                    height: 64;
+                    width:adaptive_width/6.55
+                    height:adaptive_height/7.5
+
                     color:"transparent"
                     Image{
                         id: basicinfo_icon_bg
 //                        anchors.fill: parent
+                        width:adaptive_width/6.7
+                        height:adaptive_height/7.5
                         source: 'images/wvga/system/button-bg.png'
                     }
                     Image{
@@ -720,7 +732,7 @@ SystemWindow {
                     Text{
                         id:cake
                         text: qsTr("基本信息")
-                        font.pointSize: 6;
+                        font.pointSize: 8;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -746,11 +758,13 @@ SystemWindow {
                     }
                 }
                 Rectangle{
-                    width: 122;
-                    height: 64;
+                    width:adaptive_width/6.55
+                    height:adaptive_height/7.5
                     color:"transparent"
                     Image{
                         id: netinfo_icon_bg
+                        width:adaptive_width/6.7
+                        height:adaptive_height/7.5
 //                        anchors.fill: parent
                         source: ''
                     }
@@ -763,7 +777,7 @@ SystemWindow {
                     Text{
                         id:netinfo
                         text: qsTr("网络信息")
-                        font.pointSize: 6;
+                        font.pointSize:8;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -788,11 +802,13 @@ SystemWindow {
                     }
                 }
                 Rectangle{
-                    width: 122;
-                    height: 64;
+                    width:adaptive_width/6.55
+                    height:adaptive_height/7.5
                     color:"transparent"
                     Image{
                         id: copyright_icon_bg
+                        width:adaptive_width/6.7
+                        height:adaptive_height/7.5
 //                        anchors.fill: parent
                         source: ''
                     }
@@ -805,7 +821,7 @@ SystemWindow {
                     Text{
                         id:copyright_button
                         text: qsTr("版权信息")
-                        font.pointSize: 6;
+                        font.pointSize: 8;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{

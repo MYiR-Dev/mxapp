@@ -7,11 +7,15 @@ import QtQuick.VirtualKeyboard.Settings 2.2
 import QtQuick.VirtualKeyboard.Styles 2.2
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.3 as Controls
-
+import QtQuick.Window 2.2
 SystemWindow {
     id: settingsWindow
     title: "settings"
-    visible: false
+
+    property int adaptive_width: Screen.desktopAvailableWidth
+    property int adaptive_height: Screen.desktopAvailableHeight
+    width: adaptive_width
+    height: adaptive_height
     TitleLeftBar{
         id: leftBar
         titleIcon: "images/wvga/back_icon_nor.png"
@@ -58,8 +62,8 @@ SystemWindow {
             topMargin: 50
         }
         color:"transparent"
-        width:750
-        height:800
+        width:adaptive_width/1.06
+        height:adaptive_height*2
         SwipeView {
             id: view
             orientation:Qt.Vertical
@@ -68,13 +72,13 @@ SystemWindow {
             anchors{
                 top: parent.top
                 left: navigationbar.left
-                leftMargin: 150
+                leftMargin: adaptive_width/5.3
             }
             Item {
                 id: firstPage
                 Rectangle{
-                    width:630
-                    height:300
+                    width:adaptive_width/1.26
+                    height:adaptive_height*2
                     color:"transparent"
 
                     Text{
@@ -383,8 +387,8 @@ SystemWindow {
 
                     InputPanel {
                         id: inputPanel
-                        x: 100
-                        y: 450
+                        x: adaptive_width/8
+                        y: adaptive_height/1.06
                         z:99
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -399,7 +403,7 @@ SystemWindow {
                             when: inputPanel.active
                             PropertyChanges {
                                 target: inputPanel
-                                y: 450 - inputPanel.height
+                                y: adaptive_height/1.06 - inputPanel.height
                             }
                         }
                         transitions: Transition {
@@ -721,15 +725,14 @@ SystemWindow {
                 id: thirdPage
 
                 Rectangle{
-                    width:630
-                    height:419
-
+                    width:adaptive_width/1.26
+                    height:adaptive_height*2
                     color:"transparent"
 
                     InputPanel {
                         id: inputPanel_passwd
-                        x: 100
-                        y: 450
+                        x: adaptive_width/8
+                        y: adaptive_height/1.06
                         z:99
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -743,7 +746,7 @@ SystemWindow {
                             when: inputPanel_passwd.active
                             PropertyChanges {
                                 target: inputPanel_passwd
-                                y: 450 - inputPanel_passwd.height
+                                y: adaptive_height/1.06 - inputPanel_passwd.height
                             }
                         }
                         transitions: Transition {
@@ -784,7 +787,7 @@ SystemWindow {
 
                     }
 
-                    Switch {
+                    CustomSwitch {
                         id:wifi_switch
                         anchors{
 //                           left:wifi_set_title.right
@@ -802,8 +805,8 @@ SystemWindow {
 
                     Rectangle{
                         id:serch_rec
-                        width: 548
-                        height: 32
+                        width: adaptive_width/1.45
+                        height: adaptive_height/15
                         color: "transparent"
                         Image {
                             id: serch_gb
@@ -862,13 +865,13 @@ SystemWindow {
                     ListModel {
                         id: wifi_list_model
 
-//                        ListElement {
-//                            wifi_essid: "myir1"
-//                            wifi_connect_status: qsTr("已连接")
-//                            key_image: "images/wvga/system/key.png"
-//                            signal_iamge:"images/wvga/system/wifi-signal.png"
+                        ListElement {
+                            wifi_essid: "myir1"
+                            wifi_connect_status: qsTr("已连接")
+                            key_image: "images/wvga/system/key.png"
+                            signal_iamge:"images/wvga/system/wifi-signal.png"
 
-//                        }
+                        }
                     }
                     Connections {
                         target: getSyetemInfo
@@ -933,9 +936,10 @@ SystemWindow {
                         Item{
                             id:itemDelegate
                             focus:true
-                            clip: true
-                            width: 548
+                            width: adaptive_width/1.45
                             height: 32
+                            clip: true
+
 //                            color: "transparent"
 
 //                            anchors{
@@ -947,7 +951,7 @@ SystemWindow {
                             Text{
                                 id:wifi_essid_text
                                 text: wifi_essid
-                                font.pointSize: 8;
+                                font.pixelSize: 8;
                                 font.family: "Microsoft YaHei"
                                 font.bold: true
                                 color: "white"
@@ -961,7 +965,7 @@ SystemWindow {
                             Text{
 
                                 text: wifi_connect_status
-                                font.pointSize: 6;
+                                font.pixelSize: 6;
                                 font.family: "Microsoft YaHei"
                                 font.bold: true
                                 color: "#A9A9A9"
@@ -1108,15 +1112,17 @@ SystemWindow {
         }
         Rectangle{
             id:navigationbar
-            width: 122;
-            height: 419;
+            width:adaptive_width/6.55
+            height:adaptive_height/1.14
             anchors{
                 top: parent.top
                 left: parent.left
                 leftMargin: 20
             }
             Image{
-                anchors.fill: parent
+//                anchors.fill: parent
+                width:adaptive_width/7.00
+                height:adaptive_height/1.2
                 source: "images/wvga/system/navigation.png"
             }
             color:"transparent"
@@ -1124,12 +1130,15 @@ SystemWindow {
                 id:coloumn;
                 Rectangle{
                     id:time_rec
-                    width: 122;
-                    height: 64;
+                    width:adaptive_width/6.55
+                    height:adaptive_height/7.5
+
                     color:"transparent"
                     Image{
                         id: time_icon_bg
 //                        anchors.fill: parent
+                        width:adaptive_width/6.7
+                        height:adaptive_height/7.5
                         source: 'images/wvga/system/button-bg.png'
                     }
                     Image{
@@ -1143,7 +1152,7 @@ SystemWindow {
                         id:cake
                         text: qsTr("时间设置")
                         font.family: "Microsoft YaHei"
-                        font.pointSize: 6;
+                        font.pointSize: 8;
                         color: "white"
                         anchors{
                             horizontalCenter:    parent.horizontalCenter
@@ -1168,11 +1177,13 @@ SystemWindow {
                     }
                 }
                 Rectangle{
-                    width: 122;
-                    height: 64;
+                    width:adaptive_width/6.55
+                    height:adaptive_height/7.5
                     color:"transparent"
                     Image{
                         id: ethernet_icon_bg
+		        width:adaptive_width/6.7
+                        height:adaptive_height/7.5
 //                        anchors.fill: parent
                         source: ''
                     }
@@ -1185,7 +1196,7 @@ SystemWindow {
                     Text{
                         id:ethernet
                         text: qsTr("以太网设置")
-                        font.pointSize: 6;
+                        font.pointSize: 8;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -1210,11 +1221,13 @@ SystemWindow {
                     }
                 }
                 Rectangle{
-                    width: 122;
-                    height: 64;
+                    width:adaptive_width/6.55
+                    height:adaptive_height/7.5
                     color:"transparent"
                     Image{
                         id: wifi_icon_bg
+                        width:adaptive_width/6.7
+                        height:adaptive_height/7.5
 //                        anchors.fill: parent
                         source: ''
                     }
@@ -1226,7 +1239,7 @@ SystemWindow {
                     }
                     Text{
                         text: qsTr("WiFi设置")
-                        font.pointSize: 6;
+                        font.pointSize: 8;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{

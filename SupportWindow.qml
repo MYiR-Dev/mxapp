@@ -1,7 +1,7 @@
 import QtQuick 2.0
-import QtQuick.Controls 2.3
+import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
-
+import QtQuick.Window 2.2
 Popup {
     id:supportpop
     padding: 0
@@ -9,8 +9,8 @@ Popup {
     modal: false
     focus: true
     closePolicy: Popup.NoAutoClose
-    width: 800
-    height: 480
+    width: Screen.desktopAvailableWidth
+    height: Screen.desktopAvailableHeight
 
 //    FontLoader { id: bahnschriftFont; source: "qrc:/fonts/Bahnschrift.ttf" }
 
@@ -20,7 +20,7 @@ Popup {
         opacity: 0.3
     }
 
-    anchors.centerIn: parent
+//    anchors.centerIn: parent
 
     function show(){
         open()

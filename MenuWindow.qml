@@ -1,17 +1,18 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
-
+import QtQuick.Window 2.2
 Rectangle {
     id:root
 //    width: 800
 //    height: 480-tBar.height
 //    color: "green"
     color: "#00000000"
-
+    property int adaptive_width: Screen.desktopAvailableWidth
+    property int adaptive_height: Screen.desktopAvailableHeight
     SwipeView{
         id:menuSwpView
-        width: 800
-        height: 400
+        width: adaptive_width
+        height: adaptive_height/1.2
 
 //        Loader{
 //            id:page1
@@ -26,8 +27,8 @@ Rectangle {
 //        }
 
         Page{
-            width: 800
-            height: 400
+            width: adaptive_width
+            height: adaptive_height/1.2
             background: Rectangle {
                 anchors.fill: parent
                       opacity: 0
@@ -35,8 +36,8 @@ Rectangle {
                   }
             Rectangle{
                 id: recttop
-                width: 800
-                height: 20
+                width: adaptive_width
+                height: adaptive_height/24
                 color: "transparent"
 
 //                MenuListItem {
@@ -97,12 +98,12 @@ Rectangle {
                 Grid{
                     id: menuListGrid1
                     anchors.top: recttop.bottom
-                    anchors.topMargin: 20
+                    anchors.topMargin: adaptive_height/24/*20*/
                     columns: 3
                     rows:2
 //                    topPadding: 30
-                    columnSpacing: 96;
-                    rowSpacing: 25
+                    columnSpacing: adaptive_width/8.33/*96;*/
+                    rowSpacing: adaptive_height/19.2 /*25*/
                     anchors.horizontalCenter: parent.horizontalCenter
 
                     Repeater{
@@ -119,8 +120,8 @@ Rectangle {
         }
 
         Page{
-            width: 800
-            height: 400
+            width: adaptive_width
+            height: adaptive_height/1.2
             background: Rectangle {
                 anchors.fill: parent
                       opacity: 0
@@ -128,8 +129,8 @@ Rectangle {
                   }
             Rectangle{
                 id: recttop2
-                width: 800
-                height: 20
+                width: adaptive_width
+                height: adaptive_height/24
                 color: "transparent"
 
 //                MenuListItem {
@@ -201,12 +202,12 @@ Rectangle {
                 Grid{
                     id: menuListGrid2
                     anchors.top: recttop2.bottom
-                    anchors.topMargin: 20
+                    anchors.topMargin: adaptive_height/24/*20*/
                     columns: 3
                     rows:2
 //                    topPadding: 30
-                    columnSpacing: 96;
-                    rowSpacing: 25
+                    columnSpacing: adaptive_width/8.33/*96;*/
+                    rowSpacing: adaptive_height/19.2 /*25*/
                     anchors.horizontalCenter: parent.horizontalCenter
 
                     Repeater{

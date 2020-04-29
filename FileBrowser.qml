@@ -50,7 +50,7 @@
 
 import QtQuick 2.1
 import Qt.labs.folderlistmodel 2.1
-
+import QtQuick.Window 2.2
 Rectangle {
     id: fileBrowser
     color: "transparent"
@@ -190,8 +190,8 @@ Rectangle {
                 anchors.top: titleBar.bottom
 //                anchors.bottom: cancelButton.top
                 x: 0
-                width: 800
-                height: 300
+                width: Screen.desktopAvailableWidth
+                height: Screen.desktopAvailableHeight
                 model: folders1
                 delegate: folderDelegate
                 highlight: Rectangle {
@@ -241,8 +241,8 @@ Rectangle {
                 anchors.top: titleBar.bottom
                 anchors.bottom: parent.bottom
                 x: parent.width
-                width: 800
-                height: 300
+                width: Screen.desktopAvailableWidth
+                height: Screen.desktopAvailableHeight
                 model: folders2
                 delegate: folderDelegate
                 highlight: Rectangle {

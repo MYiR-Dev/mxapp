@@ -14,7 +14,10 @@ import QtQuick.VirtualKeyboard.Settings 2.2
 SystemWindow {
     id: browserWindow
     title: "browser"
-
+    property int adaptive_width: Screen.desktopAvailableWidth
+    property int adaptive_height: Screen.desktopAvailableHeight
+    width: adaptive_width
+    height: adaptive_height
     TitleLeftBar{
         id: leftBar
         titleIcon: "images/wvga/back_icon_nor.png"
@@ -46,15 +49,15 @@ SystemWindow {
         }
         focus: true
         color:"#F5F5F5"
-        width:800
-        height:420
+        width:adaptive_width
+        height:adaptive_height/1.14
         property alias currentWebView: webView
 
         visible: true
         InputPanel {
             id: inputPanel
-            x: 100
-            y: 450
+            x: adaptive_width/8
+            y: adaptive_height/1.06
             z:99
             anchors.left: parent.left
             anchors.right: parent.right
@@ -63,7 +66,7 @@ SystemWindow {
                 when: inputPanel.active
                 PropertyChanges {
                     target: inputPanel
-                    y: 450 - inputPanel.height
+                    y: adaptive_height/1.06 - inputPanel.height
                 }
             }
             transitions: Transition {
@@ -90,7 +93,7 @@ SystemWindow {
         Rectangle{
             id:dddd
             color:"#D3D3D3"
-            width:800
+            width:adaptive_width
             height:28
             anchors{
 
@@ -115,7 +118,7 @@ SystemWindow {
             }
             TextField {
                 id: addressInput
-                width:640
+                width:adaptive_width/1.25
                 height:25
                 anchors{
                     left: addressLable.right
@@ -135,7 +138,8 @@ SystemWindow {
                 onAccepted: {
                     webView.url = getSyetemInfo.fromUserInput(text)
                 }
-            }            Rectangle{
+            }
+            Rectangle{
                 id:goButton
                 anchors{
                     left: addressInput.right
@@ -143,7 +147,7 @@ SystemWindow {
                     top: parent.top
                     topMargin: 1
                 }
-                width:50
+                width:adaptive_width/16
                 height:25
                 color:"#C0C0C0"
                 focus: true
@@ -184,7 +188,7 @@ SystemWindow {
                     topMargin: 1
                 }
 
-                width:50
+                width:adaptive_width/16
                 height:25
                 color:"#C0C0C0"
                 Text{
@@ -218,8 +222,8 @@ SystemWindow {
 
         }
         ScrollView {
-            width: 1280
-            height: 720
+            width: adaptive_width
+            height: adaptive_height
             anchors{
                 top: dddd.bottom
                 topMargin: 35

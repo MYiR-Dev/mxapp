@@ -1,22 +1,21 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.1
-import QtQuick.Layouts 1.12
+import QtQuick.Layouts 1.1
 import QtQuick.VirtualKeyboard 2.1
-
+import QtQuick.Window 2.2
 SystemWindow {
     id: tickWnd
 //    visible: true
-//    width: 800
-//    height: 480
-//    opacity: 0
+    property int adaptive_width: Screen.desktopAvailableWidth
+    property int adaptive_height: Screen.desktopAvailableHeight
+    width: adaptive_width
+    height: adaptive_height
+
     title: qsTr("Ticket")
 
 //    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
 
-    InputPanel {
-        id: inputPanel
-        visible: false
-    }
+
 
     function doOp(op){
         console.log("OP:"+op)
@@ -76,8 +75,10 @@ SystemWindow {
             top: parent.top
             topMargin: 50
         }
-        width: 398
-        height: 430
+        width: adaptive_width/2.01
+        height: adaptive_height/1.11
+//        width: 398
+//        height: 430
 //        border.color: "#02b9db"
 //        border.width: 1
         color: Qt.rgba(0,0,0,0)
@@ -85,6 +86,8 @@ SystemWindow {
 
         Rectangle{
             id: m1l
+//            width: adaptive_width/2.01
+//            height: adaptive_height/15
             width: 398
             height: 32
             anchors{
@@ -138,6 +141,8 @@ SystemWindow {
         }
 
         Rectangle {
+//            width: adaptive_width/2.10
+//            height: adaptive_height/1.26
             width: 380
             height: 380
             radius: 5
@@ -348,16 +353,17 @@ SystemWindow {
         }
     }
     Canvas {
+
     id: canvas
     anchors.fill: parent
-    property real start_x: 399
-    property real start_y: 70
-    property real end_x: 399
-    property real end_y: 460
+    property real start_x: adaptive_width/2
+    property real start_y: adaptive_height/6.85
+    property real end_x: adaptive_width/2
+    property real end_y: adaptive_height/1.04
     property bool dashed: true
     property real dash_length: 10
     property real dash_space: 8
-    property real line_width: 1
+    property real line_width: 2
     property real stipple_length: (dash_length + dash_space) > 0 ? (dash_length + dash_space) : 16
     property color draw_color: "grey"
 
@@ -432,8 +438,10 @@ SystemWindow {
             left: method1.right
             leftMargin: 2
         }
-        width: 398
-        height: 430
+        width: adaptive_width/2.01
+        height: adaptive_height/1.11
+//        width: 398
+//        height: 430
 //        border.color: "#02b9dbf2"
 //        border.width: 1
         color: Qt.rgba(0,0,0,0)
@@ -441,6 +449,8 @@ SystemWindow {
 
         Rectangle{
             id: m2l
+//            width: adaptive_width/2.01
+//            height: adaptive_height/15
             width: 398
             height: 32
             anchors{
@@ -494,6 +504,8 @@ SystemWindow {
         }
         Rectangle{
             opacity: 0
+//            width: adaptive_width/2.01
+//            height: adaptive_height/15
             width: 398
             height: 32
             visible: false
@@ -592,8 +604,10 @@ SystemWindow {
         }
 
         Rectangle{
-            width: 398
-            height: 408
+            width: adaptive_width/2.01
+            height: adaptive_height/1.17
+//            width: 398
+//            height: 408
             color: 'transparent'
             anchors{
                 top: m2l.bottom
@@ -621,8 +635,8 @@ SystemWindow {
         modal: false
         focus: true
         closePolicy: Popup.NoAutoClose
-        width: 800
-        height: 480
+        width: adaptive_width
+        height: adaptive_height
 
         background:Rectangle{
             anchors.fill:parent
@@ -630,7 +644,7 @@ SystemWindow {
             opacity: 0.3
         }
 
-        anchors.centerIn: parent
+//        anchors.centerIn: parent
 
         property alias count: counter.text
         property alias txt: txtstatus.text
@@ -790,7 +804,7 @@ SystemWindow {
                                 properties: "topMargin"
                                 alwaysRunToEnd: true
                                 from:0
-                                to: 40
+                                to:  adaptive_height/12
                                 duration: 2000
                                 easing.type: Easing.InOutQuad
                             }

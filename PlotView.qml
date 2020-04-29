@@ -5,10 +5,7 @@ Item {
     id: plotForm
 //    opacity: 0.2
 
-
-
     CustomPlotItem {
-
 
         id: customPlot
         anchors.fill: parent

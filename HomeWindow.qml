@@ -49,8 +49,8 @@ Rectangle {
         //个性推荐的顶部，使用pathView
         Rectangle{
             id:pathViewRect;
-            width: 1745;
-            height: 900;
+            width: Screen.desktopAvailableWidth/1.3;
+            height: Screen.desktopAvailableHeight/1.2;
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top;
             anchors.topMargin: 20
@@ -110,11 +110,11 @@ Rectangle {
                     anchors.topMargin: 10;
                     z:PathView.zOrder;
                     scale: PathView.itemScale;
-
+                    antialiasing: true
                     Image {
                         id:image;
-                        width: 436;
-                        height: 618;
+                        width: Screen.desktopAvailableWidth/4.4;
+                        height: Screen.desktopAvailableHeight/1.74;
                         anchors.horizontalCenter: parent.horizontalCenter
                         source: cimage;
 
@@ -153,7 +153,7 @@ Rectangle {
                         height: 40;
                         anchors.bottom: image.bottom;
                         anchors.horizontalCenter: image.horizontalCenter
-                        anchors.bottomMargin: 15;
+                        anchors.bottomMargin: Screen.desktopAvailableHeight/24/*15*/;
                         text: cname;
                         horizontalAlignment: Text.AlignHCenter
                         color: "#dcdde4";
@@ -198,20 +198,23 @@ Rectangle {
                 path:Path{
                     startX:50;
                     startY:0;
+
                     PathAttribute{name:"zOrder";value:0}
-                    PathAttribute{name:"itemScale";value:0.45}
+                    PathAttribute{name:"itemScale";value:0.55}
                     PathAttribute{name:"iconAngle";value:-40}
                     PathLine{
                         x:pathView.width/4;
                         y:0;
                     }
+
                     PathAttribute{name:"zOrder";value:5}
-                    PathAttribute{name:"itemScale";value:0.55}
+                    PathAttribute{name:"itemScale";value:0.70}
                     PathAttribute{name:"iconAngle";value:-20}
                     PathLine{
                         x:pathView.width/2;
                         y:0;
                     }
+
                     PathAttribute{name:"zOrder";value:10}
                     PathAttribute{name:"itemScale";value:1}
                     PathAttribute{name:"iconAngle";value:0}
@@ -219,16 +222,20 @@ Rectangle {
                         x:pathView.width*0.75;
                         y:0;
                     }
+
                     PathAttribute{name:"zOrder";value:5}
-                    PathAttribute{name:"itemScale";value:0.55}
+                    PathAttribute{name:"itemScale";value:0.70}
                     PathAttribute{name:"iconAngle";value:20}
                     PathLine{
                         x:pathView.width-50;
                         y:0;
+
                     }
+
                     PathAttribute{name:"zOrder";value:0}
-                    PathAttribute{name:"itemScale";value:0.45}
+                    PathAttribute{name:"itemScale";value:0.55}
                     PathAttribute{name:"iconAngle";value:40}
+
                 }
             }
 
@@ -238,13 +245,13 @@ Rectangle {
                 anchors{
                     bottom:pathViewRect.bottom
                     horizontalCenter: pathViewRect.horizontalCenter
-                    bottomMargin: 75
+                    bottomMargin: Screen.desktopAvailableHeight/6.4
                 }
             }
             Rectangle{
                 id: subMenu
-                width: 1920
-                height: 124
+                width: Screen.desktopAvailableWidth
+                height: Screen.desktopAvailableHeight/8.7
 //                radius: 20
                 color: Qt.rgba(0,0xff,0xff,0.1)
                 anchors{
@@ -255,8 +262,8 @@ Rectangle {
 
                 RowLayout{
                     id: subMenuRow
-                    width: 1920
-                    height: 124
+                    width: Screen.desktopAvailableWidth
+                    height: Screen.desktopAvailableHeight/8.7
                     property bool isClickable: true
 
 //                    anchors{

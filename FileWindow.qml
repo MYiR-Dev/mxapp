@@ -1,11 +1,14 @@
 import QtQuick 2.1
-
+import QtQuick.Window 2.2
 
 import Qt.labs.folderlistmodel 2.1
 SystemWindow {
     id: fileWindow
     title: "file"
-
+    property int adaptive_width: Screen.desktopAvailableWidth
+    property int adaptive_height: Screen.desktopAvailableHeight
+    width: adaptive_width
+    height: adaptive_height
     TitleLeftBar{
         id: leftBar
         titleIcon: "images/wvga/back_icon_nor.png"
@@ -31,8 +34,8 @@ SystemWindow {
         id: imageFileBrowser
         folder:"file:///"
         anchors.fill: parent
-        width: 800
-        height: 430
+        width: adaptive_width
+        height: adaptive_height/*/1.16*/
         anchors{
             top: parent.top
             topMargin: 50

@@ -1,13 +1,13 @@
 import QtQuick 2.6
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.1
-import QtQuick.Layouts 1.12
+import QtQuick.Layouts 1.1
 import GetSystemInfoAPI 1.0
 ApplicationWindow {
     id: mainWnd
     visible: true
-    width: 1920
-    height: 1080
+    width: Screen.desktopAvailableWidth
+    height: Screen.desktopAvailableHeight
     title: qsTr("Hello World")
 
     background: Image{
@@ -26,8 +26,8 @@ ApplicationWindow {
 
     TitleBar {
         id:tBar
-        width:1920
-        height:76.8
+        width:Screen.desktopAvailableWidth
+        height:Screen.desktopAvailableHeight/14
     }
 
 //    HomeButton{
@@ -45,16 +45,16 @@ ApplicationWindow {
         id:homeWnd
         anchors.top: tBar.bottom
         visible: true
-        width: 1920
-        height: 1080-tBar.height
+        width: Screen.desktopAvailableWidth
+        height: Screen.desktopAvailableHeight-tBar.height
     }
 
     MenuWindow{
         id:menuWnd
         anchors.top: tBar.bottom
         visible: false
-        width: 1920
-        height: 1080-tBar.height
+        width: Screen.desktopAvailableWidth
+        height: Screen.desktopAvailableHeight-tBar.height
     }
 
     StateGroup{

@@ -1,6 +1,7 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.1
-
+import QtQuick.Layouts 1.3
+import QtQuick.Window 2.2
 Popup {
     id: systemWindow
     padding: 0
@@ -8,10 +9,11 @@ Popup {
     modal: false
     focus: true
     closePolicy: Popup.NoAutoClose
-    width: 800
-    height: 480
+//    width: Screen.desktopAvailableWidth
+//    height: Screen.desktopAvailableHeigh
     opacity: 0
     visible: false
+
 
     property bool isdump: false
     property bool showFlag: false
@@ -19,6 +21,9 @@ Popup {
     property string title: qsTr("BaseWindow")
 
     Image{
+//        width: Screen.desktopAvailableWidth
+//        height: Screen.desktopAvailableHeigh
+        anchors.fill: parent
         source: "images/wvga/home/background-dark.png"
     }
 
@@ -57,8 +62,7 @@ Popup {
         id: winoutani
         running: false
         NumberAnimation { target: systemWindow; property: "opacity"; to: 0; duration: 600}
-//        NumberAnimation { target: systemWindow; property: "x"; to: 0;  duration: 100}
-//        NumberAnimation { target: systemWindow; property: "y"; to: 0;  duration: 100}
+
         onRunningChanged: {
             console.log("x:" + x +"y:"+y);
             console.log(systemWindow+" is running:" + running)
@@ -71,14 +75,10 @@ Popup {
 
     ParallelAnimation {
         id: wininani
-        running: false
+        running: true
         NumberAnimation { target: systemWindow; property: "opacity"; to: 1.0; duration: 200}
-//        NumberAnimation { target: systemWindow; property: "x"; from: 0;  duration: 100
-//            onStopped: {
-//                systemWindow.show()
-//            }
-//        }
-//        NumberAnimation { target: tickWnd; property: "height"; from: 0; to: 480; duration: 200}
+        NumberAnimation { target: systemWindow; property: "x"; to: -640; duration: 200}
+        NumberAnimation { target: systemWindow; property: "y"; to: -360; duration: 200}
         onRunningChanged: {
             console.log("x:" + x);
             console.log("y:"+y);

@@ -1,10 +1,11 @@
 ﻿import QtQuick 2.0
 import MyFunction.module 1.0
-
+import QtQuick.Window 2.2
 Item {
     id: def
-    property int win_width: 800
-    property int win_height: 480
+
+    property int win_width: Screen.desktopAvailableWidth
+    property int win_height: Screen.desktopAvailableHeight
     MyFunction {id: myFunction}
     property int iconSize: 25
     //FontAwesome字体图标代码

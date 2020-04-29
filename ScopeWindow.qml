@@ -1,11 +1,14 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
-
+import QtQuick.Window 2.2
 SystemWindow {
     id:scopeWindow
-    title: qsTr("Hello QCustomPlot in QML")
-
+    title: qsTr("")
+    property int adaptive_width: Screen.desktopAvailableWidth
+    property int adaptive_height: Screen.desktopAvailableHeight
+    width: adaptive_width
+    height: adaptive_height
 //    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
 
 //    Item {
@@ -16,15 +19,17 @@ SystemWindow {
 //    }
     Image {
         id: rocket
-        fillMode: Image.TileHorizontally
+//        fillMode: Image.TileHorizontally
         smooth: true
-        source: 'images/wvga/ecg/ecg_bg4.png'
+        width: adaptive_width
+        height: adaptive_height
+        source: 'images/wvga/ecg/ecg_bg5.png'
     }
     Rectangle{
         x:0
         y:0
-        width: 800
-        height:33
+        width: adaptive_width
+        height:adaptive_height/14.54
         color: "transparent"
         Layout.fillWidth: true
 
@@ -32,6 +37,8 @@ SystemWindow {
         HomeButton{
             id: logo
             label.visible: false
+            width: adaptive_width/9.09
+            height: adaptive_height/34.28
             clickable: true
             source: "images/wvga/home/header_logo.png"
             anchors.verticalCenter: parent.verticalCenter
@@ -40,125 +47,130 @@ SystemWindow {
             id: t1
             color: "#F5F5F5"
             font.family: "Microsoft YaHei"
+            font.pixelSize: 20
             text: qsTr("BED")
             anchors{
                 left: logo.left
                 verticalCenter: parent.verticalCenter
                 topMargin: 10
-                leftMargin: 100
+                leftMargin: adaptive_width/8
                 }
         }
         Text {
             id :t2
             color: "#F5F5F5"
             font.family: "Microsoft YaHei"
+            font.pixelSize: 20
             text: qsTr("NO:5")
             anchors{
                 left: t1.left
                 verticalCenter: parent.verticalCenter
                 topMargin: 10
-                leftMargin: 60
+                leftMargin: adaptive_width/13.3
                 }
         }
         Text {
             id: t3
             color: "#F5F5F5"
             font.family: "Microsoft YaHei"
+            font.pixelSize: 20
             text: qsTr("ADULT")
             anchors{
                 left: t2.left
                 verticalCenter: parent.verticalCenter
                 topMargin: 10
-                leftMargin: 60
+                leftMargin: adaptive_width/13.3
+                }
+        }
+        Image{
+                id: close
+                source: "qrc:/images/wvga/smart/smart_btn_quit_nor.png"
+//                width: adaptive_width/12
+//                height: adaptive_height/19.2
+                width: 66
+                height:25
+                anchors{
+                    right:tt.left
+                    rightMargin: 15
+                    verticalCenter: parent.verticalCenter
+                }
+                Image {
+                    id: pwroff
+//                    width: adaptive_width/66.66
+//                    height: adaptive_height/40
+                    width: 12
+                    height: 12
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: "qrc:/images/wvga/smart/smart_icon_quit_nor.png"
+                }
+
+                Text {
+                    id: txtexit
+                    anchors.left: pwroff.right
+                    anchors.leftMargin: 10
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.family: "Microsoft YaHei"
+                    text: qsTr("退出")
+                    font.pointSize: 11
+                    color: "white"
+                }
+
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        scopeWindow.close();
+                    }
+
+                    onPressed: {
+                        close.source="qrc:/images/wvga/smart/smart_btn_quit_hover.png"
+                    }
+                    onReleased: {
+                        close.source="qrc:/images/wvga/smart/smart_btn_quit_nor.png"
+                    }
                 }
         }
 
         Rectangle{
-            id:close_button
-            width: 65
-            height: 20
+            id:tt
             color:"transparent"
-            Image{
-                anchors.fill: parent
-                source: "images/wvga/ecg/health_off_bg.png"
-            }
-            Image{
-                x:10
-                y:5
-                id:icon_image
-                source:"images/wvga/ecg/health_off.png"
-            }
-            Text{
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: icon_image.left
-                anchors.leftMargin: 15
-                font.family: "Microsoft YaHei"
-                text: qsTr("退出")
-                color: "white"
-            }
-            anchors{
-                left: t3.left
-                verticalCenter: parent.verticalCenter
-                topMargin: 0
-                leftMargin: 430
-            }
-            MouseArea{
-               anchors.fill: parent
-                onExited:{
-                   close_button.opacity = 1.0
-                }
-                onPressed: {
-
-                   close_button.opacity = 0.5
-                }
-
-                onReleased: {
-                    scopeWindow.close()
-                    close_button.opacity = 1.0
-
-                }
-            }
-        }
-        Rectangle{
-            id: tt
-            color:"transparent"
-            width:  100
-            height: 33
-            anchors.left: close_button.right
+            width: 80
+            height:30 /*adaptive_height/15*/
             anchors.right: parent.right
+            anchors.rightMargin: 5
+            anchors.verticalCenter: parent.verticalCenter
+    //        anchors.rightMargin: 20
+    //        anchors.topMargin: 5
 
 
-            Text {
-                id: time
-                 anchors.rightMargin: 10
-                anchors.right: parent.right
-                //anchors.leftMargin: 20
-//                anchors.horizontalCenter: parent.horizontalCenter
-                font{
-                    family: "DS-Digital"
-                    pointSize:14
-                }
-                text: "00:00:00";color: "white";// style: Text.Outline;
+        Text {
+            id: time
+            anchors.leftMargin: 15
+            anchors.horizontalCenter: parent.horizontalCenter
+            font{
+                family:"DS-Digital"
+                pointSize:11
             }
-
-            Text {
-                id: date
-                anchors.top:time.bottom
-                anchors.rightMargin: 10
-                anchors.right: parent.right
-                //anchors.leftMargin: 20
-                //anchors.horizontalCenter: parent.horizontalCenter
-
-                font{
-                    family:"DS-Digital"
-                    pointSize:8
-                }
-        //        style: Text.Outline;
-                text: qsTr("2020年2月25日")
-                color: "white"
-
-            }
+            text: "00:00:00";color: "white";// style: Text.Outline;
         }
+
+        Text {
+            id: date
+            anchors.top:time.bottom
+            anchors.leftMargin: 15
+            anchors.horizontalCenter: parent.horizontalCenter
+    //        font.pointSize:8; text: qsTr("2020年2月25日");style: Text.Outline;styleColor: "white"
+            font{
+                family: "DS-Digital"
+                pointSize:8
+            }
+    //        style: Text.Outline;
+    //        text: qsTr("2020年2月25日")
+            color: "white"
+
+        }
+    }
 
 
         Timer{
@@ -200,22 +212,24 @@ SystemWindow {
 
     Rectangle{
         x:0
-        y:30
+        y:adaptive_height/15
         PlotView {
             opacity: 0.2
-            width: 573
-            height: 451
+            width: adaptive_width/1.395
+            height: adaptive_height/1.06
         }
      }
     Column {
-        x:574
-        y:33
+        x:adaptive_width/1.39
+        y:adaptive_height/14.54
 
         Rectangle {
             id:rec1
             color: "transparent"
-            width: 227
-            height: 64
+            width: adaptive_width/3.52
+            height: adaptive_height/7.5
+//            width: 227
+//            height: 64
 
 
             Text {
@@ -224,9 +238,9 @@ SystemWindow {
                 color: "#F5F5F5"
                 anchors{
                     top: parent.top
-                    topMargin: 5
+                    topMargin: adaptive_height/96
                     left: parent.left
-                    leftMargin: 5
+                    leftMargin: adaptive_width/80
                 }
             }
             Text {
@@ -236,9 +250,9 @@ SystemWindow {
                 color: "#F5F5F5"
                 anchors{
                     top: parent.top
-                    topMargin: 5
+                    topMargin: adaptive_height/96
                     left: parent.left
-                    leftMargin: 80
+                    leftMargin: adaptive_width/10
                 }
             }
             Image {
@@ -248,7 +262,7 @@ SystemWindow {
 //                    top: parent.top
 //                    topMargin: 5
                     left: parent.left
-                    leftMargin: 160
+                    leftMargin: adaptive_width/5
                     verticalCenter:pace_text.verticalCenter
                 }
             }
@@ -259,13 +273,13 @@ SystemWindow {
                 color: "#00FF00"
                 anchors{
                     top: parent.top
-                    topMargin: 25
+                    topMargin: adaptive_height/19.2
                     left: parent.left
-                    leftMargin: 5
+                    leftMargin: adaptive_width/80
                 }
                 font{
-                    capitalization: Font.Capitalize
-                    pointSize:20
+//                    capitalization: Font.Capitalize
+                    pixelSize:30
                 }
 
             }
@@ -275,8 +289,10 @@ SystemWindow {
         }
         Rectangle {
             color: "transparent"
-            width: 227
-            height: 74
+            width: adaptive_width/3.52
+            height: adaptive_height/6.48
+//            width: 227
+//            height: 74
 
             Text {
                 font.family: "Microsoft YaHei"
@@ -284,9 +300,9 @@ SystemWindow {
                 color: "#F5F5F5"
                 anchors{
                     top: parent.top
-                    topMargin: 5
+                    topMargin: adaptive_height/48
                     left: parent.left
-                    leftMargin: 5
+                    leftMargin: adaptive_width/80
                 }
             }
             Text {
@@ -297,9 +313,9 @@ SystemWindow {
                 color: "#F5F5F5"
                 anchors{
                     top: parent.top
-                    topMargin: 5
+                    topMargin: adaptive_height/48
                     left: parent.left
-                    leftMargin: 80
+                    leftMargin: adaptive_width/10
                 }
             }
             Text {
@@ -308,9 +324,9 @@ SystemWindow {
                 color: "#F5F5F5"
                 anchors{
                     top: parent.top
-                    topMargin: 5
+                    topMargin: adaptive_height/48
                     left: parent.left
-                    leftMargin: 160
+                    leftMargin: adaptive_width/5
                 }
             }
             Text {
@@ -320,13 +336,13 @@ SystemWindow {
                 color: "#F5F5F5"
                 anchors{
                     top: parent.top
-                    topMargin: 35
+                    topMargin: adaptive_height/13.7
                     left: parent.left
-                    leftMargin: 5
+                    leftMargin: adaptive_width/80
                 }
                 font{
                     capitalization: Font.Capitalize
-                    pointSize:20
+                    pixelSize:30
                 }
             }
             Text {
@@ -336,13 +352,13 @@ SystemWindow {
                 color: "#F8F8FF"
                 anchors{
                     top: parent.top
-                    topMargin: 35
+                    topMargin: adaptive_height/13.7
                     left: parent.left
-                    leftMargin: 160
+                    leftMargin: adaptive_width/5
                 }
                 font{
                     capitalization: Font.Capitalize
-                    pointSize:20
+                    pixelSize:30
                 }
             }
 
@@ -350,8 +366,10 @@ SystemWindow {
         }
         Rectangle {
             color: "transparent"
-            width: 227
-            height: 74
+            width: adaptive_width/3.52
+            height: adaptive_height/6.48
+//            width: 227
+//            height: 74
 
             Text {
                 font.family: "Microsoft YaHei"
@@ -359,9 +377,9 @@ SystemWindow {
                 color: "#F5F5F5"
                 anchors{
                     top: parent.top
-                    topMargin: 5
+                    topMargin: adaptive_height/48
                     left: parent.left
-                    leftMargin: 5
+                    leftMargin: adaptive_width/80
                 }
             }
             Text {
@@ -370,9 +388,9 @@ SystemWindow {
                 color: "#F5F5F5"
                 anchors{
                     top: parent.top
-                    topMargin: 5
+                    topMargin: adaptive_height/48
                     left: parent.left
-                    leftMargin: 130
+                    leftMargin: adaptive_width/6.15
                 }
             }
             Text {
@@ -382,13 +400,13 @@ SystemWindow {
                 color: "#FF6347"
                 anchors{
                     top: parent.top
-                    topMargin: 35
+                    topMargin: adaptive_height/13.7
                     left: parent.left
-                    leftMargin: 5
+                    leftMargin: adaptive_width/80
                 }
                 font{
                     capitalization: Font.Capitalize
-                    pointSize:20
+                    pixelSize:30
                 }
             }
             Text {
@@ -398,13 +416,13 @@ SystemWindow {
                 color: "#FF6347"
                 anchors{
                     top: parent.top
-                    topMargin: 35
+                    topMargin: adaptive_height/13.7
                     left: parent.left
-                    leftMargin: 130
+                    leftMargin: adaptive_width/6.15
                 }
                 font{
                     capitalization: Font.Capitalize
-                    pointSize:20
+                    pixelSize:30
                 }
             }
 
@@ -412,8 +430,10 @@ SystemWindow {
 
         Rectangle {
             color: "transparent"
-            width: 227
-            height: 74
+            width: adaptive_width/3.52
+            height: adaptive_height/6.48
+//            width: 227
+//            height: 74
 
             Text {
                 text: "RESP";
@@ -421,9 +441,9 @@ SystemWindow {
                 color: "#F5F5F5"
                 anchors{
                     top: parent.top
-                    topMargin: 5
+                    topMargin: adaptive_height/48
                     left: parent.left
-                    leftMargin: 5
+                    leftMargin: adaptive_width/80
                 }
             }
             Text {
@@ -433,13 +453,13 @@ SystemWindow {
                 color: "yellow"
                 anchors{
                     top: parent.top
-                    topMargin: 35
+                    topMargin: adaptive_height/13.7
                     left: parent.left
-                    leftMargin: 5
+                    leftMargin: adaptive_width/80
                 }
                 font{
                     capitalization: Font.Capitalize
-                    pointSize:20
+                    pixelSize:30
                 }
             }
 
@@ -447,8 +467,10 @@ SystemWindow {
         }
         Rectangle {
             color: "transparent"
-            width: 227
-            height: 74
+            width: adaptive_width/3.52
+            height: adaptive_height/6.48
+//            width: 227
+//            height: 74
 
             Text {
                 font.family: "Microsoft YaHei"
@@ -456,9 +478,9 @@ SystemWindow {
                 color: "#F5F5F5"
                 anchors{
                     top: parent.top
-                    topMargin: 8
+                    topMargin: adaptive_height/48
                     left: parent.left
-                    leftMargin: 5
+                    leftMargin: adaptive_width/80
                 }
             }
             Text {
@@ -468,9 +490,9 @@ SystemWindow {
                 color: "#F5F5F5"
                 anchors{
                     top: parent.top
-                    topMargin: 30
+                    topMargin: adaptive_height/16
                     left: parent.left
-                    leftMargin: 5
+                    leftMargin: adaptive_width/80
                 }
             }
             Text {
@@ -480,9 +502,9 @@ SystemWindow {
                 color: "#F5F5F5"
                 anchors{
                     top: parent.top
-                    topMargin: 55
+                    topMargin: adaptive_height/8.72
                     left: parent.left
-                    leftMargin: 5
+                    leftMargin: adaptive_width/80
                 }
             }
             Text {
@@ -494,12 +516,12 @@ SystemWindow {
                 anchors{
                     left: temp1.left
                     top: parent.top
-                    topMargin: 30
-                    leftMargin: 50
+                    topMargin: adaptive_height/16
+                    leftMargin: adaptive_width/16
                 }
                 font{
                     capitalization: Font.Capitalize
-                    pointSize:12
+                    pixelSize:15
                 }
             }
             Text {
@@ -511,12 +533,12 @@ SystemWindow {
                 anchors{
                     left: temp2.left
                     top: parent.top
-                    topMargin: 55
-                    leftMargin: 50
+                    topMargin: adaptive_height/8.72
+                    leftMargin: adaptive_width/16
                 }
                 font{
                     capitalization: Font.Capitalize
-                    pointSize:12
+                    pixelSize:15
                 }
             }
             Text {
@@ -525,9 +547,9 @@ SystemWindow {
                 color: "#F5F5F5"
                 anchors{
                     top: parent.top
-                    topMargin: 30
+                    topMargin:  adaptive_height/16
                     left: parent.left
-                    leftMargin: 180
+                    leftMargin: adaptive_width/4.4
                 }
             }
             Text {
@@ -537,13 +559,13 @@ SystemWindow {
                 color: "#F5F5F5"
                 anchors{
                     top: parent.top
-                    topMargin: 55
+                    topMargin: adaptive_height/8.72
                     left: parent.left
-                    leftMargin: 180
+                    leftMargin: adaptive_width/4.4
                 }
                 font{
                     capitalization: Font.Capitalize
-                    pointSize:12
+                    pixelSize:15
                 }
             }
 
@@ -551,8 +573,10 @@ SystemWindow {
         Rectangle {
             id: btrec
             color: "transparent"
-            width: 227
-            height: 85
+            width: adaptive_width/3.52
+            height: adaptive_height/8.64
+//            width: 227
+//            height: 85
 
                 Button{
                     id: bt1
@@ -573,9 +597,11 @@ SystemWindow {
 
                     }
                     anchors{
+                        top:parent.top
+                        topMargin: adaptive_height/12.97
                         left: btrec.left
-                        verticalCenter: parent.verticalCenter
-                        leftMargin: 10
+//                        verticalCenter: parent.verticalCenter
+                        leftMargin: adaptive_width/80
                     }
 
                     MouseArea{
@@ -613,9 +639,11 @@ SystemWindow {
 
                     }
                     anchors{
+                        top:parent.top
+                        topMargin: adaptive_height/12.97
                        left: bt1.left
-                        verticalCenter: parent.verticalCenter
-                        leftMargin: 40
+//                       verticalCenter: parent.verticalCenter
+                       leftMargin: adaptive_width/20
                     }
 
                     MouseArea{
@@ -653,9 +681,11 @@ SystemWindow {
 
                     }
                     anchors{
+                        top:parent.top
+                        topMargin: adaptive_height/12.97
                         left: bt2.left
-                        verticalCenter: parent.verticalCenter
-                        leftMargin: 40
+//                        verticalCenter: parent.verticalCenter
+                        leftMargin: adaptive_width/20
                     }
 
                     MouseArea{
@@ -693,9 +723,11 @@ SystemWindow {
 
                     }
                     anchors{
+                        top:parent.top
+                        topMargin: adaptive_height/12.97
                         left: bt3.left
-                        verticalCenter: parent.verticalCenter
-                        leftMargin: 40
+//                        verticalCenter: parent.verticalCenter
+                        leftMargin: adaptive_width/20
                     }
 
 
@@ -737,9 +769,11 @@ SystemWindow {
 
                     }
                     anchors{
+//                        top:parent.top
+//                        topMargin: adaptive_height/12.97
                         left: bt4.left
-                        verticalCenter: parent.verticalCenter
-                        leftMargin: 40
+                        verticalCenter: bt4.verticalCenter
+                        leftMargin: adaptive_width/20
                     }
 
                     MouseArea{

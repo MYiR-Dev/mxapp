@@ -188,7 +188,7 @@
         <file>images/wvga/filebrowser/icon_BackArrow.png</file>
         <file>images/wvga/filebrowser/icon_Folder.png</file>
         <file>images/wvga/filebrowser/icon_file.png</file>
-        <file>Switch.qml</file>
+        <file>CustomSwitch.qml</file>
         <file>images/wvga/multimedia/img_audio_wave.png</file>
         <file>images/wvga/multimedia/img_black_transparent.png</file>
         <file>images/wvga/multimedia/img_fixdot.png</file>
@@ -249,15 +249,6 @@
         <file>images/fhd/home/contact.png</file>
         <file>images/fhd/home/eth.png</file>
         <file>images/fhd/home/filemanager.png</file>
-        <file>images/fhd/home/func_icon_file_nor.png</file>
-        <file>images/fhd/home/func_icon_heart_nor.png</file>
-        <file>images/fhd/home/func_icon_img_nor.png</file>
-        <file>images/fhd/home/func_icon_info_nor.png</file>
-        <file>images/fhd/home/func_icon_machine_nor.png</file>
-        <file>images/fhd/home/func_icon_photograph_nor.png</file>
-        <file>images/fhd/home/func_icon_player_nor.png</file>
-        <file>images/fhd/home/func_icon_set_nor.png</file>
-        <file>images/fhd/home/func_icon_ticket_nor.png</file>
         <file>images/fhd/home/header_logo.png</file>
         <file>images/fhd/home/home.png</file>
         <file>images/fhd/home/home_hover.png</file>
@@ -279,7 +270,6 @@
         <file>images/fhd/home/menu.png</file>
         <file>images/fhd/home/menu_hover.png</file>
         <file>images/fhd/home/mobile.png</file>
-        <file>images/fhd/home/music.png</file>
         <file>images/fhd/home/myir_address.png</file>
         <file>images/fhd/home/myir_fax.png</file>
         <file>images/fhd/home/myir_line.png</file>
@@ -410,5 +400,8 @@
         <file>images/fhd/system/wifi1.png</file>
         <file>images/fhd/back2.png</file>
         <file>images/fhd/back_icon_nor.png</file>
+        <file>images/fhd/home/home_page_bg.jpg</file>
+        <file>images/wvga/ecg/smart_icon_quit_nor.png</file>
+        <file>images/wvga/ecg/ecg_bg5.png</file>
     </qresource>
 </RCC>

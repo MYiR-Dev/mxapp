@@ -1,7 +1,7 @@
 import QtQuick 2.6
-import QtQuick.Controls 2.6
+import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
-
+import QtQuick.Window 2.2
 SystemWindow {
     id: washWindow
 //    title: "Wash"
@@ -227,10 +227,14 @@ SystemWindow {
         totaltime = (totalwatertime+totaltemeraturetime+totalwashtime+totalrinsetime+totaldehydrationtime+totaldrytime+totalarragetime)
         return totaltime;
     }
-
+    property int adaptive_width: Screen.desktopAvailableWidth
+    property int adaptive_height: Screen.desktopAvailableHeight
+    width: adaptive_width
+    height: adaptive_height
 //  background:
         Image {
         id: washbg
+        anchors.fill: parent
         source: "qrc:/images/wvga/smart/wash_bg.png"
     }
 
@@ -238,14 +242,14 @@ SystemWindow {
 
     Rectangle {
         id:tBar
-        width:800
-        height:32
+        width:adaptive_width
+        height:adaptive_height/15
         color: "transparent"
 
         HomeButton{
             id: logo
-            width: 88
-            height: 14
+            width: adaptive_width/9.09
+            height: adaptive_height/34.28
             label.visible: false
             clickable: true
             source: "qrc:/images/wvga/home/header_logo.png"
@@ -257,6 +261,8 @@ SystemWindow {
         Image{
                 id: close
                 source: "qrc:/images/wvga/smart/smart_btn_quit_nor.png"
+//                width: adaptive_width/12
+//                height: adaptive_height/19.2
                 width: 66
                 height:25
                 anchors{
@@ -266,6 +272,8 @@ SystemWindow {
                 }
                 Image {
                     id: pwroff
+//                    width: adaptive_width/66.66
+//                    height: adaptive_height/40
                     width: 12
                     height: 12
                     anchors.left: parent.left
@@ -281,7 +289,7 @@ SystemWindow {
                     anchors.verticalCenter: parent.verticalCenter
                     font.family: "Microsoft YaHei"
                     text: qsTr("退出")
-                    font.pixelSize: 12
+                    font.pointSize: 11
                     color: "white"
                 }
 
@@ -302,9 +310,13 @@ SystemWindow {
 
         Rectangle{
             id:tt
-            color:"green"
+            color:"transparent"
+
             width: 80
+            height: 30/*adaptive_height/15*/
             anchors.right: parent.right
+            anchors.rightMargin: 5
+            anchors.verticalCenter: parent.verticalCenter
     //        anchors.rightMargin: 20
     //        anchors.topMargin: 5
 
@@ -315,7 +327,7 @@ SystemWindow {
             anchors.horizontalCenter: parent.horizontalCenter
             font{
                 family:"DS-Digital"
-                pointSize:14
+                pointSize:11
             }
             text: "00:00:00";color: "white";// style: Text.Outline;
         }
@@ -354,8 +366,10 @@ SystemWindow {
 
     Rectangle{
         id: bottombar
-        width: 800
-        height: 70
+        width:adaptive_width
+        height:adaptive_height/6.85
+//        width: 800
+//        height: 70
         anchors.bottom: parent.bottom
         color: Qt.rgba(0,0,0,0)
 
@@ -368,8 +382,9 @@ SystemWindow {
                 color: Qt.rgba(0,0,0,0)
 //                Layout.fillWidth: true
                 Layout.fillHeight: true
-                Layout.minimumWidth: 80
-                Layout.preferredWidth: 99
+                Layout.fillWidth: true
+//                Layout.minimumWidth: 80
+//                Layout.preferredWidth: 99
 //                Layout.maximumWidth: 300
 //                Layout.minimumHeight: 150
                 Image {
@@ -389,8 +404,8 @@ SystemWindow {
                     anchors{
                         left: currentmode.right
                         top:currentrect.top
-                        topMargin: 15
-                        leftMargin: 5
+                        topMargin: adaptive_height/32
+                        leftMargin: adaptive_width/160
                     }
                     text: qsTr("当前设置")
                     horizontalAlignment: Text.AlignHCenter
@@ -404,8 +419,8 @@ SystemWindow {
                     anchors{
                         left: currentmode.right
                         bottom:currentrect.bottom
-                        bottomMargin: 15
-                        leftMargin: 5
+                        bottomMargin: adaptive_height/32
+                        leftMargin: adaptive_width/160
                     }
                     text: modes.model[mode]._text
                     horizontalAlignment: Text.AlignHCenter
@@ -435,7 +450,7 @@ SystemWindow {
                     width: 26
                     height: 26
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: adaptive_width/40
                     anchors.verticalCenter: parent.verticalCenter
                     source: "qrc:/images/wvga/smart/smart_icon_water.png"
 
@@ -444,7 +459,7 @@ SystemWindow {
                     width: parent.width-40
                     height: 60
                     anchors.left: parent.left
-                    anchors.leftMargin: 40
+                    anchors.leftMargin: adaptive_width/20
                     anchors.verticalCenter: parent.verticalCenter
                     color: "transparent"
 
@@ -576,7 +591,7 @@ SystemWindow {
                     width: 26
                     height: 26
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: adaptive_width/40
                     anchors.verticalCenter: parent.verticalCenter
                     source: "qrc:/images/wvga/smart/smart_icon_temperature.png"
 
@@ -585,7 +600,7 @@ SystemWindow {
                     width: parent.width-40
                     height: 60
                     anchors.left: parent.left
-                    anchors.leftMargin: 40
+                    anchors.leftMargin: adaptive_width/20
                     anchors.verticalCenter: parent.verticalCenter
                     color: "transparent"
 
@@ -713,7 +728,7 @@ SystemWindow {
                     width: 26
                     height: 26
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: adaptive_width/40
                     anchors.verticalCenter: parent.verticalCenter
                     source: "qrc:/images/wvga/smart/smart_icon_wash.png"
 
@@ -722,7 +737,7 @@ SystemWindow {
                     width: parent.width-40
                     height: 60
                     anchors.left: parent.left
-                    anchors.leftMargin: 40
+                    anchors.leftMargin: adaptive_width/20
                     anchors.verticalCenter: parent.verticalCenter
                     color: "transparent"
 
@@ -842,7 +857,7 @@ SystemWindow {
                     width: 26
                     height: 26
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: adaptive_width/40
                     anchors.verticalCenter: parent.verticalCenter
                     source: "qrc:/images/wvga/smart/smart_icon_rinse.png"
 
@@ -851,7 +866,7 @@ SystemWindow {
                     width: parent.width-40
                     height: 60
                     anchors.left: parent.left
-                    anchors.leftMargin: 40
+                    anchors.leftMargin: adaptive_width/20
                     anchors.verticalCenter: parent.verticalCenter
                     color: "transparent"
 
@@ -971,7 +986,7 @@ SystemWindow {
                     width: 26
                     height: 26
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: adaptive_width/40
                     anchors.verticalCenter: parent.verticalCenter
                     source: "qrc:/images/wvga/smart/smart_icon_dehydration.png"
 
@@ -980,7 +995,7 @@ SystemWindow {
                     width: parent.width-40
                     height: 60
                     anchors.left: parent.left
-                    anchors.leftMargin: 40
+                    anchors.leftMargin: adaptive_width/20
                     anchors.verticalCenter: parent.verticalCenter
                     color: "transparent"
 
@@ -1100,7 +1115,7 @@ SystemWindow {
                     width: 26
                     height: 26
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: adaptive_width/40
                     anchors.verticalCenter: parent.verticalCenter
                     source: "qrc:/images/wvga/smart/smart_icon_dry.png"
 
@@ -1109,7 +1124,7 @@ SystemWindow {
                     width: parent.width-40
                     height: 60
                     anchors.left: parent.left
-                    anchors.leftMargin: 40
+                    anchors.leftMargin: adaptive_width/20
                     anchors.verticalCenter: parent.verticalCenter
                     color: "transparent"
 
@@ -1230,7 +1245,7 @@ SystemWindow {
                     width: 26
                     height: 26
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: adaptive_width/40
                     anchors.verticalCenter: parent.verticalCenter
                     source: "qrc:/images/wvga/smart/smart_icon_arrange.png"
 
@@ -1239,7 +1254,7 @@ SystemWindow {
                     width: parent.width-40
                     height: 60
                     anchors.left: parent.left
-                    anchors.leftMargin: 40
+                    anchors.leftMargin: adaptive_width/20
                     anchors.verticalCenter: parent.verticalCenter
                     color: "transparent"
 
@@ -1390,9 +1405,11 @@ SystemWindow {
     Rectangle{
         id:modesel
         anchors.top: parent.top
-        anchors.topMargin: 32
-        width: 800
-        height:378
+        anchors.topMargin: adaptive_height/15
+        width:adaptive_width
+        height:adaptive_height/1.26
+//        width: 800
+//        height:378
         color: "transparent"
 
         onVisibleChanged: {
@@ -1718,9 +1735,11 @@ SystemWindow {
     Rectangle{
         id: washing
         anchors.top: parent.top
-        anchors.topMargin: 32
-        width: 800
-        height:378
+        anchors.topMargin: adaptive_height/15
+        width:adaptive_width
+        height:adaptive_height/1.26
+//        width: 800
+//        height:378
         color: "transparent"
         opacity: 0
         visible: false
@@ -1842,8 +1861,8 @@ SystemWindow {
             id: counttitle
             text: qsTr("剩余时间:")
             anchors{
-                left: washing.left
-                leftMargin: 220
+                right: countdown.left
+                rightMargin: adaptive_width/20
                 verticalCenter: countdown.verticalCenter
             }
             color: "white"
@@ -1854,8 +1873,8 @@ SystemWindow {
             width: 30
             height: 30
             anchors{
-                right: washing.right
-                rightMargin: 220
+                left: countdown.right
+                leftMargin: adaptive_width/20
                 verticalCenter: countdown.verticalCenter
             }
             source: "qrc:/images/wvga/smart/smart_icon_lock_close_nor.png"
@@ -1954,10 +1973,10 @@ SystemWindow {
         Image {
             id: rect4
             anchors{
-                top: washing.top
-                topMargin: 200
-                left: washing.left
-                leftMargin: 340
+                top: rect3.top
+                topMargin: 90
+                left: rect3.left
+                leftMargin: 65
             }
             width: 20
             height: 80

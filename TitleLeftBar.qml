@@ -1,9 +1,11 @@
 import QtQuick 2.0
-
+import QtQuick.Window 2.2
 Rectangle {
     id: leftbar
-    width: 300
-    height:32
+    property int adaptive_width: Screen.desktopAvailableWidth
+    property int adaptive_height: Screen.desktopAvailableHeight
+    width: adaptive_width/2.6
+    height:adaptive_height/15
     color: Qt.rgba(0,0,0,0)
     anchors{
         left: parent.left

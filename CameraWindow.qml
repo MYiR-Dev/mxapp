@@ -2,8 +2,13 @@ import QtQuick 2.5
 import QtMultimedia 5.6
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
+import QtQuick.Window 2.2
 SystemWindow {
     id: root
+    property int adaptive_width: Screen.desktopAvailableWidth
+    property int adaptive_height: Screen.desktopAvailableHeight
+    width: adaptive_width
+    height: adaptive_height
 //    width: def.win_width
 //    height: def.win_height
 ////    color: "black"

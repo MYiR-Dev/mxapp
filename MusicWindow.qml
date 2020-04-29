@@ -1,14 +1,14 @@
 ﻿import QtQuick 2.0
-import QtQuick.Window 2.12
+import QtQuick.Window 2.2
 import QtMultimedia 5.9
 import QtQuick.Dialogs 1.3
-import Qt.labs.folderlistmodel 2.12
+import Qt.labs.folderlistmodel 2.2
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 SystemWindow {
     id: root
-//    width: def.win_width
-//    height: def.win_height
+    width: def.win_width
+    height: def.win_height
 ////    flags: Qt.Dialog        //Dialog,没有最大最小化按钮
 ////    title: qsTr("音乐")
 
