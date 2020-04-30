@@ -21,7 +21,7 @@ SystemWindow {
     TitleLeftBar{
         id: leftBar
         titleIcon: "images/wvga/back_icon_nor.png"
-        titleName: "浏览器"
+        titleName: qsTr("浏览器")
         titleNameSize: 20
         titleIconWidth:120
         titleIconHeight: 30

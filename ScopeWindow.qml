@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 SystemWindow {
     id:scopeWindow
-    title: qsTr("")
+//    title: qsTr("")
     property int adaptive_width: Screen.desktopAvailableWidth
     property int adaptive_height: Screen.desktopAvailableHeight
     width: adaptive_width

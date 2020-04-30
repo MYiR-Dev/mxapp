@@ -403,5 +403,13 @@
         <file>images/fhd/home/home_page_bg.jpg</file>
         <file>images/wvga/ecg/smart_icon_quit_nor.png</file>
         <file>images/wvga/ecg/ecg_bg5.png</file>
+        <file>languages/language_en.ts</file>
+        <file>languages/language_zh.ts</file>
+        <file>common.cpp</file>
+        <file>common.h</file>
+        <file>myfunction.cpp</file>
+        <file>myfunction.h</file>
+        <file>languages/language_en.qm</file>
+        <file>languages/language_zh.qm</file>
     </qresource>
 </RCC>

@@ -19,7 +19,8 @@ SOURCES += \
     qcustomplot.cpp \
     qmlplot.cpp \
     common.cpp \
-    myfunction.cpp
+    myfunction.cpp \
+    translator.cpp
 
 RESOURCES += qml.qrc
 CONFIG += disable-desktop
@@ -43,8 +44,10 @@ HEADERS += \
     qcustomplot.h \
     qmlplot.h \
     common.h \
-    myfunction.h
+    myfunction.h \
+    translator.h
 DISTFILES +=
-
+TRANSLATIONS = languages/language_zh.ts \
+               languages/language_en.ts
 
 
