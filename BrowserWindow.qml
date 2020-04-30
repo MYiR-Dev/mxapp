@@ -114,7 +114,8 @@ SystemWindow {
                   }
                   font.pixelSize: 12
                   text: qsTr("地址:")
-                  font.bold: true
+                  font.family: "Microsoft YaHei"
+//                  font.bold: true
             }
             TextField {
                 id: addressInput
@@ -154,8 +155,9 @@ SystemWindow {
                 Text{
 
                     text: qsTr("开始")
-                    font.pointSize: 12;
-                    font.bold: true
+                    font.pixelSize: 12;
+                    font.family: "Microsoft YaHei"
+//                    font.bold: true
 //                    color: "white"
                     anchors{
                         centerIn: parent
@@ -194,8 +196,9 @@ SystemWindow {
                 Text{
 
                     text: qsTr("刷新")
-                    font.pointSize: 12;
-                    font.bold: true
+                    font.pixelSize: 12;
+                    font.family: "Microsoft YaHei"
+//                    font.bold: true
 //                    color: "white"
                     anchors{
                         centerIn: parent

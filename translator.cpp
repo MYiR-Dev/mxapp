@@ -2,7 +2,9 @@
 #include <QTranslator>
 #include <QApplication>
 #include <QDebug>
+#include <QQmlEngine>
 
+#include <QQmlApplicationEngine>
 Translator *Translator::getInstance()
 {
     static Translator transInstance;
@@ -33,6 +35,7 @@ void Translator::loadLanguage(QString lang)
         {
             QApplication::installTranslator(m_translator);
             emit languageChanged();
+
         }
         else
         {

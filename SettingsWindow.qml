@@ -19,7 +19,7 @@ SystemWindow {
     TitleLeftBar{
         id: leftBar
         titleIcon: "images/wvga/back_icon_nor.png"
-        titleName: "系统设置"
+        titleName: qsTr("系统设置")
         titleNameSize: 20
         titleIconWidth:120
         titleIconHeight: 30
@@ -226,7 +226,7 @@ SystemWindow {
                         }
 
                         function get_time(){
-                            return Qt.formatDateTime(new Date(), "yyyy年MM月dd日,ddd");
+                            return Qt.formatDateTime(new Date(), qsTr("yyyy年MM月dd日,ddd"));
 
                         }
 
@@ -370,7 +370,7 @@ SystemWindow {
                     }
                     Text{
                         id:eth
-                        text: "以太网"
+                        text: qsTr("以太网")
                         font.pointSize: 15;
                         font.family: "Microsoft YaHei"
                         font.bold: true
@@ -430,7 +430,7 @@ SystemWindow {
 
                     Text{
                         id:t1
-                        text: "以太网"
+                        text: qsTr("以太网")
                         font.pointSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
@@ -443,7 +443,7 @@ SystemWindow {
                     }
                     Text{
 
-                        text: getSyetemInfo.get_net_status() ? "电缆已接入" : "电缆已拔出"
+                        text: getSyetemInfo.get_net_status() ? qsTr("电缆已接入") : qsTr("电缆已拔出")
                         font.pointSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
@@ -457,7 +457,7 @@ SystemWindow {
                     }
                     Text{
                         id:t2
-                        text: "配置IPv4"
+                        text: qsTr("配置IPv4")
                         font.pointSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
@@ -495,7 +495,7 @@ SystemWindow {
 //                        }
                     Text{
                         id:t3
-                        text: "IP地址"
+                        text: qsTr("IP地址")
                         font.pointSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
@@ -539,7 +539,7 @@ SystemWindow {
                     }
                     Text{
                         id:t4
-                        text: "子网掩码"
+                        text: qsTr("子网掩码")
                         font.pointSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
@@ -774,7 +774,7 @@ SystemWindow {
 
                     Text{
                         id:wifi_set_title
-                        text: "WiFi设置"
+                        text: qsTr("WiFi设置")
                         font.pointSize: 15;
                         font.family: "Microsoft YaHei"
                         font.bold: true
@@ -951,7 +951,7 @@ SystemWindow {
                             Text{
                                 id:wifi_essid_text
                                 text: wifi_essid
-                                font.pixelSize: 8;
+                                font.pixelSize: 9;
                                 font.family: "Microsoft YaHei"
                                 font.bold: true
                                 color: "white"
@@ -965,7 +965,7 @@ SystemWindow {
                             Text{
 
                                 text: wifi_connect_status
-                                font.pixelSize: 6;
+                                font.pixelSize: 7;
                                 font.family: "Microsoft YaHei"
                                 font.bold: true
                                 color: "#A9A9A9"
@@ -999,7 +999,7 @@ SystemWindow {
                                 anchors{
 
                                     left:parent.left
-                                    leftMargin: 80
+                                    leftMargin: 100
 
                                 }
 

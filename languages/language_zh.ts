@@ -45,12 +45,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BrowserWindow.qml" line="156"/>
+        <location filename="../BrowserWindow.qml" line="157"/>
         <source>开始</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BrowserWindow.qml" line="196"/>
+        <location filename="../BrowserWindow.qml" line="198"/>
         <source>刷新</source>
         <translation type="unfinished"></translation>
     </message>
@@ -91,6 +91,14 @@
     <message>
         <location filename="../DeleteDialog.qml" line="75"/>
         <source>取消</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileWindow</name>
+    <message>
+        <location filename="../FileWindow.qml" line="15"/>
+        <source>文件浏览器</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -192,6 +200,11 @@
 </context>
 <context>
     <name>InfoWindow</name>
+    <message>
+        <location filename="../InfoWindow.qml" line="17"/>
+        <source>系统信息</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <location filename="../InfoWindow.qml" line="66"/>
         <location filename="../InfoWindow.qml" line="734"/>
@@ -558,8 +571,18 @@
 <context>
     <name>SettingsWindow</name>
     <message>
+        <location filename="../SettingsWindow.qml" line="22"/>
+        <source>系统设置</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../SettingsWindow.qml" line="86"/>
         <source>时间</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsWindow.qml" line="229"/>
+        <source>yyyy年MM月dd日,ddd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -586,6 +609,37 @@
         <location filename="../SettingsWindow.qml" line="325"/>
         <location filename="../SettingsWindow.qml" line="689"/>
         <source>保存</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsWindow.qml" line="373"/>
+        <location filename="../SettingsWindow.qml" line="433"/>
+        <source>以太网</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsWindow.qml" line="446"/>
+        <source>电缆已接入</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsWindow.qml" line="446"/>
+        <source>电缆已拔出</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsWindow.qml" line="460"/>
+        <source>配置IPv4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsWindow.qml" line="498"/>
+        <source>IP地址</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsWindow.qml" line="542"/>
+        <source>子网掩码</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -631,6 +685,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../SettingsWindow.qml" line="777"/>
         <location filename="../SettingsWindow.qml" line="1241"/>
         <source>WiFi设置</source>
         <translation type="unfinished"></translation>
@@ -781,6 +836,19 @@
     <message>
         <location filename="../TicketWindow.qml" line="671"/>
         <source>出票成功</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TitleBar</name>
+    <message>
+        <location filename="../TitleBar.qml" line="54"/>
+        <source>中文</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TitleBar.qml" line="54"/>
+        <source>English</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

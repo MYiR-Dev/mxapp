@@ -17,6 +17,7 @@ Rectangle {
 
     Text {
         text:  checked?    qsTr("已打开"): qsTr("已关闭")
+        font.family: "Microsoft YaHei"
         color: checked? 'white': 'black'
         x:    (checked? 0: pill.width) + (parent.width - pill.width - width) / 2
         font.pixelSize: 10

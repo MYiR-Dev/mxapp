@@ -14,7 +14,7 @@ SystemWindow {
     TitleLeftBar{
         id: leftBar
         titleIcon: "images/wvga/back_icon_nor.png"
-        titleName: "系统信息"
+        titleName: qsTr("系统信息")
         titleNameSize: 20
         titleIconWidth:120
         titleIconHeight: 30

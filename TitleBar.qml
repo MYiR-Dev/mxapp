@@ -37,8 +37,6 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 220
         color:"#02b9db"
-//        anchors.verticalCenter: parent.verticalCenter
-//        anchors.verticalCenterOffset: -50
         Text {
             id: icon
             font.family: "FontAwesome"
@@ -46,7 +44,6 @@ Item {
             text: language_icon //图标
             color: "white"
             opacity: 1.0        //不透明
-//            anchors.verticalCenter: parent.verticalCenter
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: 5
@@ -54,7 +51,6 @@ Item {
         }
         Text {
             id : textEnglish
-//            anchors.centerIn : languageBt
             text: checked? qsTr("中文"): qsTr("English")
             color: "white"
             font.pointSize: 12
@@ -74,7 +70,7 @@ Item {
                    translator.loadLanguage("English");
                 else
                    translator.loadLanguage("Chinese");
-        }
+            }
         }
 //        style: buttonStyle
     }

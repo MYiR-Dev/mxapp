@@ -206,6 +206,7 @@ Popup {
                  }
                  Text {
                      id:txt13
+                     visible: false
                      anchors.left: img1.right
                      anchors.margins: 10
                      anchors.top: txt12.bottom
