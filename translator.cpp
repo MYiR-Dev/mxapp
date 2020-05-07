@@ -14,13 +14,20 @@ Translator *Translator::getInstance()
 Translator::Translator(QObject *parent) : QObject(parent)
 {
     m_translator = new QTranslator;
+    m_current_language = "Chinese";
 }
 
 Translator::~Translator()
 {
     delete m_translator;
 }
-
+void Translator::set_QQmlEngine(QQmlApplicationEngine *engine){
+    m_engine = engine;
+}
+QString Translator::get_current_language()
+{
+    return m_current_language;
+}
 void Translator::loadLanguage(QString lang)
 {
     qDebug()<<"load"<<lang;
@@ -34,8 +41,9 @@ void Translator::loadLanguage(QString lang)
         if(m_translator->load(":/languages/language_en.qm"))
         {
             QApplication::installTranslator(m_translator);
-            emit languageChanged();
-
+            m_current_language = "English" ;
+            emit languageChanged("English");
+            m_engine->retranslate();
         }
         else
         {
@@ -47,7 +55,9 @@ void Translator::loadLanguage(QString lang)
         if(m_translator->load(":/languages/language_zh.qm"))
         {
             QApplication::installTranslator(m_translator);
-            emit languageChanged();
+            m_current_language = "Chinese" ;
+            emit languageChanged("Chinese");
+            m_engine->retranslate();
         }
         else
         {

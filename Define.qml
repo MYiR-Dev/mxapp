@@ -8,6 +8,7 @@ Item {
     property int win_height: Screen.desktopAvailableHeight
     MyFunction {id: myFunction}
     property int iconSize: 25
+
     //FontAwesome字体图标代码
     property string iconCode_play: "\uf04c"             //播放
     property string iconCode_pause: "\uf04b"            //暂停

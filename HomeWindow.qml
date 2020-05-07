@@ -22,7 +22,7 @@ Rectangle {
         var index = findIndex(catalogue)
         console.log("addModeData:"+catalogue)
         if(index === -1){
-            viewModel.append({"catalogue":catalogue,"cimage":cimage,"cname":cname,"level":0,
+            viewModel.append({"catalogue":catalogue,"cimage":cimage,"cname":QT_TR_NOOP(cname),"level":0,
                                  "subNode":[{"application":application,"aimage":aimage,"acolor":acolor,"aqml":aqml,"level":1,"subNode":[]}]})
         }
         else{
@@ -45,6 +45,25 @@ Rectangle {
         font.family: "Microsoft YaHei"
         font.pixelSize: 20
     }
+    property int family_font_size: 30
+    property int app_font_size: 20
+    Connections {
+        target: translator
+        onLanguageChanged: {
+            console.log(lang)
+            if (lang === "English")
+            {
+                family_font_size = 25
+                app_font_size = 15
+            }
+            else
+            {
+                family_font_size = 30
+                app_font_size = 20
+            }
+
+        }
+    }
 
         //个性推荐的顶部，使用pathView
         Rectangle{
@@ -58,45 +77,102 @@ Rectangle {
 
             ListModel{
                 id:viewModel;
-//                ListElement{
-//                    catalogue:"multimedia"
-//                    cimage:"qrc:/images/wvga/home/homepage_media_nor.png"
-//                    cname: qsTr("多媒体")
-//                    subNode: [
-//                        ListElement {
-//                            aimage: "qrc:/images/wvga/home/cam.png"
-//                            application: qsTr("摄像头")
-//                            aqml: "SystemWindow.qml"
-//                            acolor: "white"
-//                        },
-//                        ListElement {
-//                            aimage:"qrc:/images/wvga/home/mpl.png"
-//                            application: qsTr("播放器")
-//                            aqml:"SystemWindow.qml"
-//                            acolor:"black"
-//                        }
-//                    ]
-//                }
-//                ListElement{
-//                    catalogue:"system"
-//                    cimage:"qrc:/images/wvga/home/homepage_system_nor.png"
-//                    cname: qsTr("系统")
-//                }
-//                ListElement{
-//                    catalogue:"public"
-//                    cimage:"qrc:/images/wvga/home/homepage_public_nor.png"
-//                    cname: qsTr("公共服务")
-//                }
-//                ListElement{
-//                    catalogue:"health"
-//                    cimage:"qrc:/images/wvga/home/homepage_medical_nor.png"
-//                    cname: qsTr("卫生医疗")
-//                }
-//                ListElement{
-//                    catalogue:"machine"
-//                    cimage:"qrc:/images/wvga/home/homepage_machine_nor.png"
-//                    cname: qsTr("智能家电")
-//                }
+                ListElement{
+                    catalogue:"multimedia"
+                    cimage:"qrc:/images/fhd/home/homepage_media_nor.png"
+                    cname: qsTr("多媒体")
+                    subNode: [
+                        ListElement {
+                            aimage: "qrc:/images/wvga/home/media_icon_camera_nor.png"
+                            application: qsTr("摄像头")
+                            aqml: "CameraWindow.qml"
+                            acolor: "#02b9db"
+                        },
+                        ListElement {
+                            aimage:"qrc:/images/wvga/home/media_icon_video_nor.png"
+                            application: qsTr("播放器")
+                            aqml:"PlayerWindow.qml"
+                            acolor:"#02b9db"
+                        },
+                        ListElement {
+                            aimage:"qrc:/images/wvga/home/icon_music.png"
+                            application: qsTr("音乐")
+                            aqml:"MusicWindow.qml"
+                            acolor:"#02b9db"
+                        },
+                        ListElement {
+                            aimage:"qrc:/images/wvga/home/media_icon_img_nor.png"
+                            application: qsTr("图片")
+                            aqml:"PictureWindow.qml"
+                            acolor:"#02b9db"
+                        }
+                    ]
+                }
+                ListElement{
+                    catalogue:"system"
+                    cimage:"qrc:/images/fhd/home/homepage_system_nor.png"
+                    cname: qsTr("系统")
+                    subNode: [
+                        ListElement {
+                            aimage: "qrc:/images/wvga/home/system_icon_info_nor.png"
+                            application: qsTr("系统信息")
+                            aqml: "InfoWindow.qml"
+                            acolor: "#02b9db"
+                        },
+                        ListElement {
+                            aimage:"qrc:/images/wvga/home/system_icon_set_nor.png"
+                            application: qsTr("系统设置")
+                            aqml:"SettingsWindow.qml"
+                            acolor:"#02b9db"
+                        },
+                        ListElement {
+                            aimage:"qrc:/images/wvga/home/media_icon_doc.png"
+                            application: qsTr("文件管理器")
+                            aqml:"FileWindow.qml"
+                            acolor:"#02b9db"
+                        }
+                    ]
+                }
+				ListElement{
+                    catalogue:"machine"
+                    cimage:"qrc:/images/fhd/home/homepage_machine_nor.png"
+                    cname: qsTr("智能家电")
+                    subNode: [
+                        ListElement {
+                            aimage: "qrc:/images/wvga/home/smart_icon_washing_nor.png"
+                            application: qsTr("洗衣机")
+                            aqml: "WashWindow.qml"
+                            acolor: "#02b9db"
+                        }
+                    ]
+                }
+				ListElement{
+                    catalogue:"health"
+                    cimage:"qrc:/images/fhd/home/homepage_medical_nor.png"
+                    cname: qsTr("卫生医疗")
+                    subNode: [
+                        ListElement {
+                            aimage: "qrc:/images/wvga/home/medical_icon_heart_nor.png"
+                            application: qsTr("心电仪")
+                            aqml: "ScopeWindow.qml"
+                            acolor: "#02b9db"
+                        }
+                    ]
+                }
+				ListElement{
+                    catalogue:"public"
+                    cimage:"qrc:/images/fhd/home/homepage_public_nor.png"
+                    cname: qsTr("公共服务")
+                    subNode: [
+                        ListElement {
+                            aimage: "qrc:/images/wvga/home/public_icon_ticket_nor.png"
+                            application: qsTr("取票机")
+                            aqml: "TicketWindow.qml"
+                            acolor: "#02b9db"
+                        }
+                    ]
+                }				
+
             }
 
             Component{
@@ -158,7 +234,7 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         color: "#dcdde4";
                         font.family: "Microsoft YaHei";
-                        font.pixelSize: 30;
+                        font.pixelSize: family_font_size;
                         wrapMode: Text.Wrap;
                     }
                     MouseArea{
@@ -326,7 +402,7 @@ Rectangle {
                                     text: model.application
                                     color: "#dcdde4";
                                     font.family: "Microsoft YaHei";
-                                    font.pixelSize: 20;
+                                    font.pixelSize: app_font_size;
 //                                    wrapMode: Text.Wrap;
                                     anchors{
                                         verticalCenter: parent.verticalCenter
@@ -491,72 +567,6 @@ Rectangle {
         }
 
 
-//    property string myText: "1234567890:."
-
-//    property int size: 40
-////    anchors.fill: parent
-//    Rectangle {
-
-//        width: 320; height: 450
-////        color: "#00000000"
-
-
-//        Column {
-//            anchors { fill: parent; leftMargin: 10; rightMargin: 10; topMargin: 10 }
-//            spacing: 15
-
-//            Text {
-//                text: myText
-//                color: "lightsteelblue"
-//                width: parent.width
-//                wrapMode: Text.WordWrap
-//                font.family: "Times"
-//                font.pixelSize: size
-//            }
-//            Text {
-//                text: myText
-//                color: "lightsteelblue"
-//                width: parent.width
-//                wrapMode: Text.WordWrap
-//                horizontalAlignment: Text.AlignHCenter
-//                font { family: "Times"; pixelSize: size; capitalization: Font.AllUppercase }
-//            }
-//            Text {
-//                text: myText
-//                color: "lightsteelblue"
-//                width: parent.width
-//                horizontalAlignment: Text.AlignRight
-//                wrapMode: Text.WordWrap
-//                font { family: fixedFont.name; pixelSize: size; weight: Font.Bold; capitalization: Font.AllLowercase }
-//            }
-//            Text {
-//                text: myText
-//                color: "lightsteelblue"
-//                width: parent.width
-//                wrapMode: Text.WordWrap
-//                font { family: fixedFont.name; pixelSize: size; italic: true; capitalization: Font.SmallCaps }
-//            }
-//            Text {
-//                text: myText
-//                color: "lightsteelblue"
-//                width: parent.width
-//                wrapMode: Text.WordWrap
-//                font { family: localFont.name; pixelSize: size; capitalization: Font.Capitalize }
-//            }
-//            Text {
-//                text: {
-//                    if (webFont.status == FontLoader.Ready) myText
-//                    else if (webFont.status == FontLoader.Loading) "Loading..."
-//                    else if (webFont.status == FontLoader.Error) "Error loading font"
-//                }
-//                color: "lightsteelblue"
-//                width: parent.width
-//                wrapMode: Text.WordWrap
-//                font.family: webFont.name; font.pixelSize: size
-//            }
-//        }
-//    }
-
     HomeButton {
         text: qsTr("toMENU")
         label.visible: false
@@ -576,114 +586,114 @@ Rectangle {
                mainWnd.chooseWnd("MENU")
         }
 
-    Component.onCompleted: {
-//1
-        addModelData(
-                    "multimedia",
-                    "qrc:/images/fhd/home/homepage_media_nor.png",
-                    qsTr("多媒体"),qsTr("摄像头"),
-                    "qrc:/images/wvga/home/media_icon_camera_nor.png",
-                    "CameraWindow.qml",
-                    "#02b9db"
-                    )
-//2
-        addModelData(
-                    "multimedia",
-                    "qrc:/images/fhd/home/homepage_media_nor.png",
-                    qsTr("多媒体"),qsTr("播放器"),
-                    "qrc:/images/wvga/home/media_icon_video_nor.png",
-                    "PlayerWindow.qml",
-                    "#02b9db"
-                    )
-        //3
-        addModelData(
-                    "system",
-                    "qrc:/images/fhd/home/homepage_system_nor.png",
-                    qsTr("系统"),
-                    qsTr("系统信息"),
-                    "qrc:/images/wvga/home/system_icon_info_nor.png",
-                    "InfoWindow.qml",
-                    "#02b9db"
-                    )
-        //4
-        addModelData(
-                    "system",
-                    "qrc:/images/fhd/home/homepage_system_nor.png",
-                    qsTr("系统"),
-                    qsTr("系统设置"),
-                    "qrc:/images/wvga/home/system_icon_set_nor.png",
-                    "SettingsWindow.qml",
-                    "#02b9db"
-                    )
-        //5
-        addModelData(
-                    "machine",
-                    "qrc:/images/fhd/home/homepage_machine_nor.png",
-                    qsTr("智能家电"),
-                    qsTr("洗衣机"),
-                    "qrc:/images/wvga/home/smart_icon_washing_nor.png",
-                    "WashWindow.qml",
-                    "#02b9db"
-                    )
-        //6
-        addModelData(
-                    "health",
-                    "qrc:/images/fhd/home/homepage_medical_nor.png",
-                    qsTr("卫生医疗"),
-                    qsTr("心电仪"),
-                    "qrc:/images/wvga/home/medical_icon_heart_nor.png",
-                    "ScopeWindow.qml",
-                    "#02b9db"
-                    )
-        //7
-        addModelData(
-                    "public",
-                    "qrc:/images/fhd/home/homepage_public_nor.png",
-                    qsTr("公共服务"),
-                    qsTr("取票机"),
-                    "qrc:/images/wvga/home/public_icon_ticket_nor.png",
-                    "TicketWindow.qml",
-                    "#02b9db"
-                    )
-        //8
-        addModelData(
-                    "system",
-                    "qrc:/images/fhd/home/homepage_system_nor.png",
-                    qsTr("系统"),
-                    qsTr("文件管理器"),
-                    "qrc:/images/wvga/home/media_icon_doc.png",
-                    "FileWindow.qml",
-                    "#02b9db"
-                    )
-        //9
-        addModelData(
-                    "multimedia",
-                    "qrc:/images/fhd/home/homepage_media_nor.png",
-                    qsTr("多媒体"),
-                    qsTr("Music"),
-                    "qrc:/images/wvga/home/icon_music.png",
-                    "MusicWindow.qml",
-                    "#02b9db"
-                    )
-        //10
-        addModelData(
-                    "multimedia",
-                    "qrc:/images/fhd/home/homepage_media_nor.png",
-                    qsTr("多媒体"),
-                    qsTr("图片"),
-                    "qrc:/images/wvga/home/media_icon_img_nor.png",
-                    "PictureWindow.qml",
-                    "#02b9db"
-                    )
+//    Component.onCompleted: {
+////1
 //        addModelData(
-//                    "browser",
-//                    "qrc:/images/wvga/home/homepage_media_nor.png",
-//                    qsTr("网络应用"),
-//                    qsTr("浏览器"),
-//                    "qrc:/images/wvga/home/media_icon_img_nor.png",
-//                    "BrowserWindow.qml",
+//                    "multimedia",
+//                    "qrc:/images/fhd/home/homepage_media_nor.png",
+//                    qsTr("多媒体"),qsTr("摄像头"),
+//                    "qrc:/images/wvga/home/media_icon_camera_nor.png",
+//                    "CameraWindow.qml",
 //                    "#02b9db"
 //                    )
-    }
+////2
+//        addModelData(
+//                    "multimedia",
+//                    "qrc:/images/fhd/home/homepage_media_nor.png",
+//                    qsTr("多媒体"),qsTr("播放器"),
+//                    "qrc:/images/wvga/home/media_icon_video_nor.png",
+//                    "PlayerWindow.qml",
+//                    "#02b9db"
+//                    )
+//        //3
+//        addModelData(
+//                    "system",
+//                    "qrc:/images/fhd/home/homepage_system_nor.png",
+//                    qsTr("系统"),
+//                    qsTr("系统信息"),
+//                    "qrc:/images/wvga/home/system_icon_info_nor.png",
+//                    "InfoWindow.qml",
+//                    "#02b9db"
+//                    )
+//        //4
+//        addModelData(
+//                    "system",
+//                    "qrc:/images/fhd/home/homepage_system_nor.png",
+//                    qsTr("系统"),
+//                    qsTr("系统设置"),
+//                    "qrc:/images/wvga/home/system_icon_set_nor.png",
+//                    "SettingsWindow.qml",
+//                    "#02b9db"
+//                    )
+//        //5
+//        addModelData(
+//                    "machine",
+//                    "qrc:/images/fhd/home/homepage_machine_nor.png",
+//                    qsTr("智能家电"),
+//                    qsTr("洗衣机"),
+//                    "qrc:/images/wvga/home/smart_icon_washing_nor.png",
+//                    "WashWindow.qml",
+//                    "#02b9db"
+//                    )
+//        //6
+//        addModelData(
+//                    "health",
+//                    "qrc:/images/fhd/home/homepage_medical_nor.png",
+//                    qsTr("卫生医疗"),
+//                    qsTr("心电仪"),
+//                    "qrc:/images/wvga/home/medical_icon_heart_nor.png",
+//                    "ScopeWindow.qml",
+//                    "#02b9db"
+//                    )
+//        //7
+//        addModelData(
+//                    "public",
+//                    "qrc:/images/fhd/home/homepage_public_nor.png",
+//                    qsTr("公共服务"),
+//                    qsTr("取票机"),
+//                    "qrc:/images/wvga/home/public_icon_ticket_nor.png",
+//                    "TicketWindow.qml",
+//                    "#02b9db"
+//                    )
+//        //8
+//        addModelData(
+//                    "system",
+//                    "qrc:/images/fhd/home/homepage_system_nor.png",
+//                    qsTr("系统"),
+//                    qsTr("文件管理器"),
+//                    "qrc:/images/wvga/home/media_icon_doc.png",
+//                    "FileWindow.qml",
+//                    "#02b9db"
+//                    )
+//        //9
+//        addModelData(
+//                    "multimedia",
+//                    "qrc:/images/fhd/home/homepage_media_nor.png",
+//                    qsTr("多媒体"),
+//                    qsTr("Music"),
+//                    "qrc:/images/wvga/home/icon_music.png",
+//                    "MusicWindow.qml",
+//                    "#02b9db"
+//                    )
+//        //10
+//        addModelData(
+//                    "multimedia",
+//                    "qrc:/images/fhd/home/homepage_media_nor.png",
+//                    qsTr("多媒体"),
+//                    qsTr("图片"),
+//                    "qrc:/images/wvga/home/media_icon_img_nor.png",
+//                    "PictureWindow.qml",
+//                    "#02b9db"
+//                    )
+////        addModelData(
+////                    "browser",
+////                    "qrc:/images/wvga/home/homepage_media_nor.png",
+////                    qsTr("网络应用"),
+////                    qsTr("浏览器"),
+////                    "qrc:/images/wvga/home/media_icon_img_nor.png",
+////                    "BrowserWindow.qml",
+////                    "#02b9db"
+////                    )
+//    }
     }
 }

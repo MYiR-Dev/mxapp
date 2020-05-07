@@ -99,7 +99,7 @@
     <message>
         <location filename="../FileWindow.qml" line="15"/>
         <source>文件浏览器</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">File Browser</translation>
     </message>
 </context>
 <context>
@@ -113,87 +113,82 @@
 <context>
     <name>HomeWindow</name>
     <message>
-        <location filename="../HomeWindow.qml" line="561"/>
+        <location filename="../HomeWindow.qml" line="571"/>
         <source>toMENU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="584"/>
-        <location filename="../HomeWindow.qml" line="593"/>
-        <location filename="../HomeWindow.qml" line="662"/>
-        <location filename="../HomeWindow.qml" line="672"/>
+        <location filename="../HomeWindow.qml" line="83"/>
         <source>多媒体</source>
         <translation type="unfinished">Multimedia</translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="584"/>
+        <location filename="../HomeWindow.qml" line="87"/>
         <source>摄像头</source>
         <translation type="unfinished">Camera</translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="593"/>
+        <location filename="../HomeWindow.qml" line="93"/>
         <source>播放器</source>
         <translation type="unfinished">Player</translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="602"/>
-        <location filename="../HomeWindow.qml" line="612"/>
-        <location filename="../HomeWindow.qml" line="652"/>
+        <location filename="../HomeWindow.qml" line="99"/>
+        <source>音乐</source>
+        <translation type="unfinished">Music</translation>
+    </message>
+    <message>
+        <location filename="../HomeWindow.qml" line="114"/>
         <source>系统</source>
         <translation type="unfinished">System</translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="603"/>
+        <location filename="../HomeWindow.qml" line="118"/>
         <source>系统信息</source>
         <translation type="unfinished">System Info</translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="613"/>
+        <location filename="../HomeWindow.qml" line="124"/>
         <source>系统设置</source>
         <translation type="unfinished">System Setting</translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="622"/>
+        <location filename="../HomeWindow.qml" line="139"/>
         <source>智能家电</source>
-        <translation type="unfinished">Smart Appliances</translation>
+        <translation type="unfinished">Appliances</translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="623"/>
+        <location filename="../HomeWindow.qml" line="143"/>
         <source>洗衣机</source>
-        <translation type="unfinished">Washing Machine</translation>
+        <translation type="unfinished">Washer</translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="632"/>
+        <location filename="../HomeWindow.qml" line="152"/>
         <source>卫生医疗</source>
         <translation type="unfinished">Health Care</translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="633"/>
+        <location filename="../HomeWindow.qml" line="156"/>
         <source>心电仪</source>
         <translation type="unfinished">ECG</translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="642"/>
+        <location filename="../HomeWindow.qml" line="165"/>
         <source>公共服务</source>
         <translation type="unfinished">Public Service</translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="643"/>
+        <location filename="../HomeWindow.qml" line="169"/>
         <source>取票机</source>
         <translation type="unfinished">Ticket Machine</translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="653"/>
+        <location filename="../HomeWindow.qml" line="130"/>
         <source>文件管理器</source>
         <translation type="unfinished">File Manager</translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="663"/>
-        <source>Music</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../HomeWindow.qml" line="673"/>
+        <location filename="../HomeWindow.qml" line="105"/>
         <source>图片</source>
         <translation type="unfinished">Picture</translation>
     </message>
@@ -394,8 +389,8 @@
     </message>
     <message>
         <location filename="../MenuWindow.qml" line="63"/>
-        <source>Music</source>
-        <translation type="unfinished"></translation>
+        <source>音乐</source>
+        <translation type="unfinished">Music</translation>
     </message>
     <message>
         <location filename="../MenuWindow.qml" line="69"/>
@@ -445,7 +440,7 @@
     <message>
         <location filename="../MenuWindow.qml" line="149"/>
         <source>洗衣机</source>
-        <translation type="unfinished">Washing Machine</translation>
+        <translation type="unfinished">Washer</translation>
     </message>
     <message>
         <location filename="../MenuWindow.qml" line="155"/>
@@ -709,76 +704,76 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="212"/>
-        <location filename="../SupportWindow.qml" line="269"/>
-        <location filename="../SupportWindow.qml" line="423"/>
-        <location filename="../SupportWindow.qml" line="537"/>
+        <location filename="../SupportWindow.qml" line="213"/>
+        <location filename="../SupportWindow.qml" line="270"/>
+        <location filename="../SupportWindow.qml" line="424"/>
+        <location filename="../SupportWindow.qml" line="538"/>
         <source>18926526796</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="242"/>
+        <location filename="../SupportWindow.qml" line="243"/>
         <source>传真</source>
         <translation type="unfinished">Fax</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="255"/>
+        <location filename="../SupportWindow.qml" line="256"/>
         <source>0755-25532724</source>
         <translation type="unfinished">+86-755-25532724</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="297"/>
+        <location filename="../SupportWindow.qml" line="298"/>
         <source>深圳米尔电子有限公司</source>
         <translation type="unfinished">MYIR Electronics Limited</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="311"/>
-        <location filename="../SupportWindow.qml" line="480"/>
+        <location filename="../SupportWindow.qml" line="312"/>
+        <location filename="../SupportWindow.qml" line="481"/>
         <source>www.myir-tech.com</source>
         <translation type="unfinished">www.myirtech.com</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="340"/>
+        <location filename="../SupportWindow.qml" line="341"/>
         <source>邮箱</source>
         <translation type="unfinished">E-mail</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="353"/>
+        <location filename="../SupportWindow.qml" line="354"/>
         <source>sales.cn@myirtech.com</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="366"/>
+        <location filename="../SupportWindow.qml" line="367"/>
         <source>project@myirtech.com</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="396"/>
+        <location filename="../SupportWindow.qml" line="397"/>
         <source>技术支持邮箱</source>
         <translation type="unfinished">Support E-mail</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="409"/>
+        <location filename="../SupportWindow.qml" line="410"/>
         <source>support.cn@myirtech.com</source>
         <translation type="unfinished">support@myirtech.com</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="453"/>
+        <location filename="../SupportWindow.qml" line="454"/>
         <source>地址</source>
         <translation type="unfinished">Address</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="466"/>
+        <location filename="../SupportWindow.qml" line="467"/>
         <source>深圳市龙岗区坂田街道发达路云里&lt;br&gt;智能园2栋6楼04室</source>
         <translation type="unfinished">Room 04, 6th Floor, Building No.2,&lt;br&gt; Fada Road,Yunli Intelligent Park, Bantian, Longgang District,Shenzhen, Guangdong,</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="510"/>
+        <location filename="../SupportWindow.qml" line="511"/>
         <source>技术支持电话</source>
         <translation type="unfinished">Support Phone</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="523"/>
+        <location filename="../SupportWindow.qml" line="524"/>
         <source>027-59621648</source>
         <translation type="unfinished">null</translation>
     </message>
@@ -794,47 +789,47 @@
 <context>
     <name>TicketWindow</name>
     <message>
-        <location filename="../TicketWindow.qml" line="14"/>
-        <source>Ticket</source>
-        <translation type="unfinished"></translation>
+        <location filename="../TicketWindow.qml" line="61"/>
+        <source>取票机</source>
+        <translation type="unfinished">Ticket Machine</translation>
     </message>
     <message>
-        <location filename="../TicketWindow.qml" line="132"/>
+        <location filename="../TicketWindow.qml" line="139"/>
         <source>取票码取票</source>
-        <translation type="unfinished">Get the ticket by ticket code</translation>
+        <translation type="unfinished">Get ticket by ticket code</translation>
     </message>
     <message>
-        <location filename="../TicketWindow.qml" line="212"/>
+        <location filename="../TicketWindow.qml" line="219"/>
         <source>请输入取票码！</source>
         <translation type="unfinished">Please enter the ticket code</translation>
     </message>
     <message>
-        <location filename="../TicketWindow.qml" line="251"/>
+        <location filename="../TicketWindow.qml" line="258"/>
         <source>清除输入</source>
         <translation type="unfinished">Clear Input</translation>
     </message>
     <message>
-        <location filename="../TicketWindow.qml" line="252"/>
+        <location filename="../TicketWindow.qml" line="259"/>
         <source>确认取票</source>
         <translation type="unfinished">Confirm Ticket Collection</translation>
     </message>
     <message>
-        <location filename="../TicketWindow.qml" line="495"/>
+        <location filename="../TicketWindow.qml" line="502"/>
         <source>扫码取票</source>
-        <translation type="unfinished">Get the ticket by code scanning </translation>
+        <translation type="unfinished">Get ticket by code scan</translation>
     </message>
     <message>
-        <location filename="../TicketWindow.qml" line="590"/>
+        <location filename="../TicketWindow.qml" line="597"/>
         <source>请将条码置于机器下方扫码处</source>
         <translation type="unfinished">Please place the bar code at the scanning position under the machine</translation>
     </message>
     <message>
-        <location filename="../TicketWindow.qml" line="665"/>
+        <location filename="../TicketWindow.qml" line="672"/>
         <source>出票失败</source>
         <translation type="unfinished">Ticketing Failed</translation>
     </message>
     <message>
-        <location filename="../TicketWindow.qml" line="671"/>
+        <location filename="../TicketWindow.qml" line="678"/>
         <source>出票成功</source>
         <translation type="unfinished">Ticketing Success</translation>
     </message>
@@ -842,12 +837,12 @@
 <context>
     <name>TitleBar</name>
     <message>
-        <location filename="../TitleBar.qml" line="54"/>
+        <location filename="../TitleBar.qml" line="55"/>
         <source>中文</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TitleBar.qml" line="54"/>
+        <location filename="../TitleBar.qml" line="55"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>

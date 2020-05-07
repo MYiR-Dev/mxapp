@@ -60,7 +60,7 @@ Rectangle {
                     ListElement {
                         _imageSource: "images/wvga/home/music.png"
                         _text1: qsTr("音乐播放器")
-                        _text2: qsTr("Music")
+                        _text2: qsTr("音乐")
                         _num: "1"
                         _qurl: "MusicWindow.qml"
                     }

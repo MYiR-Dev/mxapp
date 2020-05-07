@@ -11,12 +11,19 @@ SystemWindow {
     width: adaptive_width
     height: adaptive_height
 
-    title: qsTr("Ticket")
 
 //    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
 
+    property int title_font_size: 24
+    Component.onCompleted:  {
+        console.log(translator.get_current_language())
+        if (translator.get_current_language() === "English")
+            title_font_size = 18
+        else
+            title_font_size = 24
 
-
+        console.log(title_font_size)
+    }
     function doOp(op){
         console.log("OP:"+op)
         if (op.toString().length===1) {
@@ -51,7 +58,7 @@ SystemWindow {
     TitleLeftBar{
         id: leftBar
         titleIcon: "images/wvga/back_icon_nor.png"
-        titleName: "ticket"
+        titleName: qsTr("取票机")
         titleNameSize: 20
         titleIconWidth:120
         titleIconHeight: 30
@@ -133,7 +140,7 @@ SystemWindow {
                                     horizontalAlignment: Text.AlignHCenter
                                     color: "#dcdde4";
                                     font.family: "Microsoft YaHei";
-                                    font.pixelSize: 24;
+                                    font.pixelSize: title_font_size;
                                     wrapMode: Text.Wrap;
                                 }
                 }
@@ -496,7 +503,7 @@ SystemWindow {
                                     horizontalAlignment: Text.AlignHCenter
                                     color: "#dcdde4";
                                     font.family: "Microsoft YaHei";
-                                    font.pixelSize: 24;
+                                    font.pixelSize: title_font_size;
                                     wrapMode: Text.Wrap;
                                 }
                 }

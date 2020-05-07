@@ -34,8 +34,11 @@ int main(int argc, char *argv[])
     qmlRegisterType<CustomPlotItem>("CustomPlot", 1, 0, "CustomPlotItem");
     qmlRegisterType<MyFunction>("MyFunction.module", 1, 0, "MyFunction");
 //    qmlRegisterType<Translator>("translator", 1, 0, );
+    Translator *translator = Translator::getInstance();
+    translator->set_QQmlEngine(&engine);
+
     engine.rootContext()->setContextProperty("translator",
-                                             Translator::getInstance());
+                                             translator);
     //font icon init
     iconFontInit();
 

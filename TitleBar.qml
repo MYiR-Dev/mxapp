@@ -25,6 +25,7 @@ Item {
         }
 
     }
+
     property bool checked: false
     property string language_icon:"\uf1ab"
     Rectangle{
