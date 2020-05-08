@@ -41,12 +41,13 @@ SystemWindow {
             rightMargin: 10
         }
     }
-
+    property bool wifi_statu: false
     function openwifi(checked) {
 
         if(checked)
         {
             getSyetemInfo.wifi_open()
+            wifi_statu = true
 //            getSyetemInfo.get_wifi_list()
         }
         else
@@ -54,6 +55,7 @@ SystemWindow {
             wifi_list_model.clear()
 
             getSyetemInfo.wifi_close()
+            wifi_statu = false
         }
     }
     Rectangle{
@@ -85,7 +87,7 @@ SystemWindow {
                         id:title
                         text: qsTr("时间")
                         font.family: "Microsoft YaHei"
-                        font.pointSize: 16;
+                        font.pixelSize: 16;
                         font.bold: true
                         color: "white"
                         anchors{
@@ -127,7 +129,7 @@ SystemWindow {
 
                             text: ":"
                             font.family: "Microsoft YaHei"
-                            font.pointSize: 15;
+                            font.pixelSize: 15;
                             font.bold: true
                             color: "white"
 
@@ -140,7 +142,7 @@ SystemWindow {
                                         "21", "22", "23","24", "25", "26","27", "28", "29","30",
                                         "31", "32", "33","34", "35", "36","37", "38", "39","40",
                                         "41", "42", "43","44", "45", "46","47", "48", "49","50",
-                                        "51", "52", "53","54", "55", "56","57", "58", "59","60",]
+                                        "51", "52", "53","54", "55", "56","57", "58", "59"]
 
                             Component.onCompleted: {
 
@@ -152,7 +154,7 @@ SystemWindow {
 
                             text: ":"
                             font.family: "Microsoft YaHei"
-                            font.pointSize: 15;
+                            font.pixelSize: 15;
                             font.bold: true
                             color: "white"
                         }
@@ -164,7 +166,7 @@ SystemWindow {
                                         "21", "22", "23","24", "25", "26","27", "28", "29","30",
                                         "31", "32", "33","34", "35", "36","37", "38", "39","40",
                                         "41", "42", "43","44", "45", "46","47", "48", "49","50",
-                                        "51", "52", "53","54", "55", "56","57", "58", "59","60",]
+                                        "51", "52", "53","54", "55", "56","57", "58", "59"]
 
                             Component.onCompleted: {
 
@@ -213,7 +215,7 @@ SystemWindow {
                     Text{
                         id:time_value
                         text: get_time()
-                        font.pointSize: 12;
+                        font.pixelSize: 12;
                         font.family: "Microsoft YaHei"
                         font.bold: true
                         color: "#059EC9"
@@ -246,7 +248,7 @@ SystemWindow {
                         }
                         CustomCombox{
                             id:combox_year
-                            delegate_width:80
+                            delegate_width:85
                             property date currentTime: new Date()
                             modeldata: ["2015"+qsTr("年"),+"2016"+qsTr("年"), "2017"+qsTr("年"),"2018"+qsTr("年"), "2019"+qsTr("年"), "2020"+qsTr("年"),
                                 "2021"+qsTr("年"), "2022"+qsTr("年"), "2023"+qsTr("年"),"2024"+qsTr("年"),"2025"+qsTr("年")]
@@ -261,7 +263,7 @@ SystemWindow {
                         }
                         CustomCombox{
                             id:combox_mon
-                            delegate_width:60
+                            delegate_width:65
                             property date currentTime: new Date()
 
                             modeldata: ["1"+qsTr("月"), "2"+qsTr("月"), "3"+qsTr("月"),"4"+qsTr("月"), "5"+qsTr("月"), "6"+qsTr("月"),
@@ -275,7 +277,7 @@ SystemWindow {
                         }
                         CustomCombox{
                             id:combox_day
-                            delegate_width:60
+                            delegate_width:65
                             property date currentTime: new Date()
                             modeldata: ["1"+qsTr("日"), "2"+qsTr("日"), "3"+qsTr("日"),"4"+qsTr("日"), "5"+qsTr("日"), "6"+qsTr("日"),"7"+qsTr("日"), "8"+qsTr("日"),"9"+qsTr("日"),"10"+qsTr("日"),
                                         "11"+qsTr("日"), "12"+qsTr("日"), "13"+qsTr("日"),"14"+qsTr("日"), "15"+qsTr("日"), "16"+qsTr("日"),"17"+qsTr("日"), "18"+qsTr("日"),"19"+qsTr("日"),"20"+qsTr("日"),
@@ -323,7 +325,7 @@ SystemWindow {
                         Text{
                             id:save_button
                             text: qsTr("保存")
-                            font.pointSize: 10;
+                            font.pixelSize: 10;
                             font.family: "Microsoft YaHei"
                             font.bold: true
                             color: "white"
@@ -371,7 +373,7 @@ SystemWindow {
                     Text{
                         id:eth
                         text: qsTr("以太网")
-                        font.pointSize: 15;
+                        font.pixelSize: 15;
                         font.family: "Microsoft YaHei"
                         font.bold: true
                         color: "white"
@@ -431,7 +433,7 @@ SystemWindow {
                     Text{
                         id:t1
                         text: qsTr("以太网")
-                        font.pointSize: 10;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -444,7 +446,7 @@ SystemWindow {
                     Text{
 
                         text: getSyetemInfo.get_net_status() ? qsTr("电缆已接入") : qsTr("电缆已拔出")
-                        font.pointSize: 10;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -458,7 +460,7 @@ SystemWindow {
                     Text{
                         id:t2
                         text: qsTr("配置IPv4")
-                        font.pointSize: 10;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -472,13 +474,13 @@ SystemWindow {
                     CustomCombox{
                         id:combox_dhcp
                         delegate_width:141
-                        delegate_height:34
+                        delegate_height:30
                         combox_bg:"images/wvga/system/input-bg.png"
                         modeldata: ["Manual", "DHCP"]
 
                         anchors{
                             top:t1.top
-                            topMargin: 32
+                            topMargin: 28
                             left: t2.left
                             leftMargin: 250
                         }
@@ -496,7 +498,7 @@ SystemWindow {
                     Text{
                         id:t3
                         text: qsTr("IP地址")
-                        font.pointSize: 10;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -532,7 +534,7 @@ SystemWindow {
 
                         anchors{
                             top:t2.top
-                            topMargin: 32
+                            topMargin: 30
                             left: t3.left
                             leftMargin: 250
                         }
@@ -540,7 +542,7 @@ SystemWindow {
                     Text{
                         id:t4
                         text: qsTr("子网掩码")
-                        font.pointSize: 10;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -575,7 +577,7 @@ SystemWindow {
 
                         anchors{
                             top:t3.top
-                            topMargin: 32
+                            topMargin: 30
                             left: t4.left
                             leftMargin: 250
                         }
@@ -583,7 +585,7 @@ SystemWindow {
                     Text{
                         id:t5
                         text: qsTr("网关")
-                        font.pointSize: 10;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -618,7 +620,7 @@ SystemWindow {
 
                         anchors{
                             top:t4.top
-                            topMargin: 32
+                            topMargin: 30
                             left: t5.left
                             leftMargin: 250
                         }
@@ -626,7 +628,7 @@ SystemWindow {
                     Text{
                         id:t6
                         text: qsTr("DNS")
-                        font.pointSize: 10;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -661,7 +663,7 @@ SystemWindow {
 
                         anchors{
                             top:t5.top
-                            topMargin: 32
+                            topMargin: 30
                             left: t6.left
                             leftMargin: 250
 
@@ -687,7 +689,7 @@ SystemWindow {
                         Text{
                             id:net_save_button
                             text: qsTr("保存")
-                            font.pointSize: 10;
+                            font.pixelSize: 10;
                             font.family: "Microsoft YaHei"
                             font.bold: true
                             color: "white"
@@ -775,7 +777,7 @@ SystemWindow {
                     Text{
                         id:wifi_set_title
                         text: qsTr("WiFi设置")
-                        font.pointSize: 15;
+                        font.pixelSize: 15;
                         font.family: "Microsoft YaHei"
                         font.bold: true
                         color: "white"
@@ -821,7 +823,7 @@ SystemWindow {
                         Text{
 
                             text: qsTr("扫描")
-                            font.pointSize: 10;
+                            font.pixelSize: 10;
                             font.family: "Microsoft YaHei"
                             font.bold: true
                             color: "white"
@@ -842,9 +844,9 @@ SystemWindow {
                         MouseArea{
                             anchors.fill: parent;
                             onClicked: {
-                                serch_rec.opacity = 0.5
-
-                               getSyetemInfo.get_wifi_list()
+                               serch_rec.opacity = 0.5
+                               if(wifi_statu)
+                                    getSyetemInfo.get_wifi_list()
 
                             }
                             onExited:{
@@ -865,13 +867,13 @@ SystemWindow {
                     ListModel {
                         id: wifi_list_model
 
-                        ListElement {
-                            wifi_essid: "myir1"
-                            wifi_connect_status: qsTr("已连接")
-                            key_image: "images/wvga/system/key.png"
-                            signal_iamge:"images/wvga/system/wifi-signal.png"
+//                        ListElement {
+//                            wifi_essid: "myir1"
+//                            wifi_connect_status: qsTr("已连接")
+//                            key_image: "images/wvga/system/key.png"
+//                            signal_iamge:"images/wvga/system/wifi-signal.png"
 
-                        }
+//                        }
                     }
                     Connections {
                         target: getSyetemInfo

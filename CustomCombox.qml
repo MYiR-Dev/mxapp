@@ -33,7 +33,7 @@ Rectangle {
             }
             background: Rectangle {
                 border.color: "transparent"
-                color:control.pressed? "blue":"transparent"
+                color:control.pressed? "#059EC9":"transparent"
 //                radius: 2
             }
 
@@ -93,7 +93,7 @@ Rectangle {
         }
 
         popup: Popup {
-            y: control.height - 1
+            y: control.height-1
             width: control.width
             implicitHeight: listview.contentHeight
             padding: 1
@@ -108,7 +108,7 @@ Rectangle {
             }
 
             background: Rectangle {
-                border.color: "#059EC9"
+//                border.color: "#059EC9"
                 color: "#003245"
                 radius: 2
             }

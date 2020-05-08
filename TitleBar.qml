@@ -58,7 +58,7 @@ Item {
             font.family:"Microsoft YaHei"
             anchors.left: icon.right
             anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: 5
+            anchors.leftMargin: Screen.desktopAvailableWidth/96
         }
 
         MouseArea{

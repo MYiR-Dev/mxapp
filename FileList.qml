@@ -121,9 +121,16 @@ SystemWindow {
                         folderModel.folder = folderModel.get(index, "fileURL")
                     }
                     else {
+                        fileIndex = index;
+                        fileUrl = folderModel.folder;
+                        console.log("index:", index, ":" , fileUrl);
+                        root.accepted()
+                        close()
                         console.log(filePath)
                         console.log(def.getFileSuffix(fileName), ":", fileName);
                     }
+
+
                 }
                 onDoubleClicked: {
                     if(!fileIsDir)  //是一个文件

@@ -40,7 +40,7 @@ SystemWindow {
             width: adaptive_width/9.09
             height: adaptive_height/34.28
             clickable: true
-            source: "images/wvga/home/header_logo.png"
+            source: "images/fhd/ecg/header_logo.png"
             anchors.verticalCenter: parent.verticalCenter
         }
         Text {
@@ -150,7 +150,7 @@ SystemWindow {
             anchors.horizontalCenter: parent.horizontalCenter
             font{
                 family:"DS-Digital"
-                pointSize:11
+                pixelSize:14
             }
             text: "00:00:00";color: "white";// style: Text.Outline;
         }
@@ -163,7 +163,7 @@ SystemWindow {
     //        font.pointSize:8; text: qsTr("2020年2月25日");style: Text.Outline;styleColor: "white"
             font{
                 family: "DS-Digital"
-                pointSize:8
+                pixelSize:10
             }
     //        style: Text.Outline;
     //        text: qsTr("2020年2月25日")

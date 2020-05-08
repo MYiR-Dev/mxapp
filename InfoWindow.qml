@@ -64,7 +64,7 @@ SystemWindow {
 
                     Text{
                         text: qsTr("基本信息")
-                        font.pointSize: 15;
+                        font.pixelSize: 15;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -78,7 +78,7 @@ SystemWindow {
                         id:memory
                         text: qsTr("可用内存")
                         font.family: "Microsoft YaHei"
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         color: "white"
                         anchors{
                             top: parent.top
@@ -90,7 +90,7 @@ SystemWindow {
                     Text{
                         id:memory_value
                         text: mem_free+"MB"
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
 
@@ -104,7 +104,7 @@ SystemWindow {
                     Text{
                         id:ip
                         text: qsTr("IP 地址")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -117,7 +117,7 @@ SystemWindow {
                     Text{
                         id:ip_value
                         text: net_ip
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         Layout.row:2
@@ -132,7 +132,7 @@ SystemWindow {
                     Text{
                         id:resolution
                         text: qsTr("屏幕分辨率")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -145,7 +145,7 @@ SystemWindow {
                     Text{
                         id:resolution_value
                         text: Screen.desktopAvailableWidth+"*"+Screen.desktopAvailableHeight
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
 
@@ -159,7 +159,7 @@ SystemWindow {
                     Text{
                         id:op
                         text: qsTr("操作系统")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -172,7 +172,7 @@ SystemWindow {
                     Text{
                         id:op_value
                         text:getSyetemInfo.read_system_version()
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
 
@@ -186,7 +186,7 @@ SystemWindow {
                     Text{
                         id:run_time
                         text: qsTr("系统运行时间")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -201,7 +201,7 @@ SystemWindow {
                     Text{
                         id:run_time_value
                         text:day+qsTr("天")+hour+qsTr("时")+min+qsTr("分")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -215,7 +215,7 @@ SystemWindow {
                     Text{
                         id:total_run_time
                         text: qsTr("总运行时间")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -228,7 +228,7 @@ SystemWindow {
                     Text{
                         id:total_run_time_value
                         text: day+qsTr("天")+hour+qsTr("时")+min+qsTr("分")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
 
@@ -242,7 +242,7 @@ SystemWindow {
                     Text{
                         id:battery_power
                         text: qsTr("电池电量")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -255,7 +255,7 @@ SystemWindow {
                     Text{
                         id:battery_power_value
                         text: "null"
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -268,7 +268,7 @@ SystemWindow {
                     Text{
                         id:create
                         text: qsTr("创建")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -282,7 +282,7 @@ SystemWindow {
                     Text{
                         id:create_value
                         text: qsTr("Buildroot")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -295,7 +295,7 @@ SystemWindow {
                     Text{
                         id:compile_time
                         text: qsTr("编译")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -308,7 +308,7 @@ SystemWindow {
                     Text{
                         id:compile_time_value
                         text: "2020-05-15 "
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -348,7 +348,7 @@ SystemWindow {
                         Text{
                             id:cpu_value
                             text:qsTr("系统CPU使用率: ")+cpu_percent+"%"
-                            font.pointSize: 8;
+                            font.pixelSize: 10;
                             font.family: "Microsoft YaHei"
                             color: "white"
 
@@ -414,7 +414,7 @@ SystemWindow {
                         Text{
                             id:disk_value
                             text:qsTr("系统内存使用率: ")+mem_usage+"-"+mem_percent+"%"
-                            font.pointSize: 8;
+                            font.pixelSize: 10;
                             font.family: "Microsoft YaHei"
                             color: "white"
                             anchors{
@@ -463,7 +463,7 @@ SystemWindow {
 
                     Text{
                         text: qsTr("网络信息")
-                        font.pointSize: 15;
+                        font.pixelSize: 15;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -477,7 +477,7 @@ SystemWindow {
                     Text{
                         id:mac
                         text: qsTr("网卡MAC地址")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -490,7 +490,7 @@ SystemWindow {
                     Text{
                         id:mac_value
                         text: net_mac
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -503,7 +503,7 @@ SystemWindow {
                     Text{
                         id:ip_text
                         text: qsTr("IP地址")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -516,7 +516,7 @@ SystemWindow {
                     Text{
                         id:ip_text_value
                         text: net_ip
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -530,7 +530,7 @@ SystemWindow {
                     Text{
                         id:speed
                         text: qsTr("速率 ")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -543,7 +543,7 @@ SystemWindow {
                     Text{
                         id:speed_value
                         text: qsTr("1000")+"MB/s"
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -556,7 +556,7 @@ SystemWindow {
                     Text{
                         id:net_connect
                         text: qsTr("是否联网")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -575,7 +575,7 @@ SystemWindow {
                             else
                                 qsTr("未联网")
                         }
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "green"
                         anchors{
@@ -598,7 +598,7 @@ SystemWindow {
 
                     Text{
                         text: qsTr("版权信息")
-                        font.pointSize: 15;
+                        font.pixelSize: 15;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -611,7 +611,7 @@ SystemWindow {
                     Text{
                         id:copyright
                         text: qsTr("版权声明")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -624,7 +624,7 @@ SystemWindow {
                     Text{
                         id:copyright_value
                         text: qsTr("Copyright © 2020 MYIR Electronics Limited. All rights reserved.")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -637,7 +637,7 @@ SystemWindow {
                     Text{
                         id:qt_version
                         text: qsTr("QT版本")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -650,7 +650,7 @@ SystemWindow {
                     Text{
                         id:qt_version_value
                         text: qsTr("5.12.0")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -662,8 +662,8 @@ SystemWindow {
                     }
                     Text{
                         id:thirdpart_copyright
-                        text: qsTr("第三方版权声明")
-                        font.pointSize: 8;
+                        text: qsTr("MEasy HMI版本")
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -675,8 +675,8 @@ SystemWindow {
                     }
                     Text{
                         id:thirdpart_copyright_value
-                        text: qsTr("Copyright ©2020 [xxxxx] Powered By [xxxxx] Version 1.0.0 ")
-                        font.pointSize: 8;
+                        text: qsTr("MEasy HMI v2.0 ")
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -732,7 +732,7 @@ SystemWindow {
                     Text{
                         id:cake
                         text: qsTr("基本信息")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -777,7 +777,7 @@ SystemWindow {
                     Text{
                         id:netinfo
                         text: qsTr("网络信息")
-                        font.pointSize:8;
+                        font.pixelSize:10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
@@ -821,7 +821,7 @@ SystemWindow {
                     Text{
                         id:copyright_button
                         text: qsTr("版权信息")
-                        font.pointSize: 8;
+                        font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{

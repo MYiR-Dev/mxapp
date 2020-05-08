@@ -97,7 +97,7 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         font{
             family:"DS-Digital"
-            pointSize:14
+            pixelSize:14
         }
 //        FontLoader { id: localFont; source: "qrc:/fonts/DIGITAL/DS-DIGIB.TTF" }
         text: "00:00:00";color: "white";// style: Text.Outline;
@@ -112,7 +112,7 @@ Rectangle {
 //        FontLoader { id: localFont1; source: "qrc:/fonts/DIGITAL/DS-DIGIB.TTF" }
         font{
             family: "DS-Digital"
-            pointSize:8
+            pixelSize:10
         }
 //        style: Text.Outline;
 //        text: qsTr("2020年2月25日")

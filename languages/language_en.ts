@@ -353,13 +353,17 @@
     </message>
     <message>
         <location filename="../InfoWindow.qml" line="665"/>
-        <source>第三方版权声明</source>
-        <translation type="unfinished">Third Copyright </translation>
+        <source>MEasy HMI版本</source>
+        <translation type="unfinished">MEasy HMI Version</translation>
     </message>
     <message>
         <location filename="../InfoWindow.qml" line="678"/>
-        <source>Copyright ©2020 [xxxxx] Powered By [xxxxx] Version 1.0.0 </source>
+        <source>MEasy HMI v2.0 </source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>第三方版权声明</source>
+        <translation type="obsolete">Third Copyright </translation>
     </message>
 </context>
 <context>
@@ -571,117 +575,116 @@
         <translation type="unfinished">System Setting</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="86"/>
+        <location filename="../SettingsWindow.qml" line="88"/>
         <source>时间</source>
         <translation type="unfinished">Time</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="229"/>
+        <location filename="../SettingsWindow.qml" line="231"/>
         <source>yyyy年MM月dd日,ddd</source>
         <translation type="unfinished">dd MM yyyy,ddd</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="251"/>
-        <location filename="../SettingsWindow.qml" line="252"/>
+        <location filename="../SettingsWindow.qml" line="253"/>
+        <location filename="../SettingsWindow.qml" line="254"/>
         <source>年</source>
         <translation type="unfinished"> Y</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="267"/>
-        <location filename="../SettingsWindow.qml" line="268"/>
+        <location filename="../SettingsWindow.qml" line="269"/>
+        <location filename="../SettingsWindow.qml" line="270"/>
         <source>月</source>
         <translation type="unfinished"> M</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="280"/>
-        <location filename="../SettingsWindow.qml" line="281"/>
         <location filename="../SettingsWindow.qml" line="282"/>
         <location filename="../SettingsWindow.qml" line="283"/>
+        <location filename="../SettingsWindow.qml" line="284"/>
+        <location filename="../SettingsWindow.qml" line="285"/>
         <source>日</source>
         <translation type="unfinished"> D</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="325"/>
-        <location filename="../SettingsWindow.qml" line="689"/>
+        <location filename="../SettingsWindow.qml" line="327"/>
+        <location filename="../SettingsWindow.qml" line="691"/>
         <source>保存</source>
         <translation type="unfinished">Save</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="373"/>
-        <location filename="../SettingsWindow.qml" line="433"/>
+        <location filename="../SettingsWindow.qml" line="375"/>
+        <location filename="../SettingsWindow.qml" line="435"/>
         <source>以太网</source>
         <translation type="unfinished">Ethernet</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="446"/>
+        <location filename="../SettingsWindow.qml" line="448"/>
         <source>电缆已接入</source>
         <translation type="unfinished">Cable is connected</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="446"/>
+        <location filename="../SettingsWindow.qml" line="448"/>
         <source>电缆已拔出</source>
         <translation type="unfinished">Cable is unplugged</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="460"/>
+        <location filename="../SettingsWindow.qml" line="462"/>
         <source>配置IPv4</source>
         <translation type="unfinished">Configure IPv4</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="498"/>
+        <location filename="../SettingsWindow.qml" line="500"/>
         <source>IP地址</source>
         <translation type="unfinished">IP Address</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="542"/>
+        <location filename="../SettingsWindow.qml" line="544"/>
         <source>子网掩码</source>
         <translation type="unfinished">Subnet Mask</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="585"/>
+        <location filename="../SettingsWindow.qml" line="587"/>
         <source>网关</source>
         <translation type="unfinished">Gateway</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="628"/>
+        <location filename="../SettingsWindow.qml" line="630"/>
         <source>DNS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="823"/>
+        <location filename="../SettingsWindow.qml" line="825"/>
         <source>扫描</source>
         <translation type="unfinished">Scan</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="870"/>
-        <location filename="../SettingsWindow.qml" line="923"/>
+        <location filename="../SettingsWindow.qml" line="925"/>
         <source>已连接</source>
         <translation type="unfinished">Connected</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="891"/>
-        <location filename="../SettingsWindow.qml" line="928"/>
+        <location filename="../SettingsWindow.qml" line="893"/>
+        <location filename="../SettingsWindow.qml" line="930"/>
         <source>未启用</source>
         <translation type="unfinished">Not Activated</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1054"/>
+        <location filename="../SettingsWindow.qml" line="1056"/>
         <source>连接</source>
         <translation type="unfinished">Connection</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1153"/>
+        <location filename="../SettingsWindow.qml" line="1155"/>
         <source>时间设置</source>
         <translation type="unfinished">Time Setting</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1198"/>
+        <location filename="../SettingsWindow.qml" line="1200"/>
         <source>以太网设置</source>
         <translation type="unfinished">Ethernet Setting</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="777"/>
-        <location filename="../SettingsWindow.qml" line="1241"/>
+        <location filename="../SettingsWindow.qml" line="779"/>
+        <location filename="../SettingsWindow.qml" line="1243"/>
         <source>WiFi设置</source>
         <translation type="unfinished">WiFi Setting</translation>
     </message>
@@ -701,7 +704,7 @@
     <message>
         <location filename="../SupportWindow.qml" line="199"/>
         <source>0755-25622735</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">+86-755-22984836</translation>
     </message>
     <message>
         <location filename="../SupportWindow.qml" line="213"/>
@@ -740,12 +743,12 @@
     <message>
         <location filename="../SupportWindow.qml" line="354"/>
         <source>sales.cn@myirtech.com</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">sales@myirtech.com</translation>
     </message>
     <message>
         <location filename="../SupportWindow.qml" line="367"/>
         <source>project@myirtech.com</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">myirtech@yahoo.com</translation>
     </message>
     <message>
         <location filename="../SupportWindow.qml" line="397"/>

@@ -411,5 +411,6 @@
         <file>myfunction.h</file>
         <file>languages/language_en.qm</file>
         <file>languages/language_zh.qm</file>
+        <file>images/fhd/ecg/header_logo.png</file>
     </qresource>
 </RCC>
