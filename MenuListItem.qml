@@ -240,9 +240,11 @@ Rectangle {
                    }else if(qurl === "SettingsWindow.qml"){
 //                      settingsWnd.forceActiveFocus()
 //                      settingsWnd.z=4;
-                        mainloader.source = "SettingsWindow.qml"
-                        mainloader.item.show()
-                        mainloader.item.requestActivate()
+//                        mainloader.source = "SettingsWindow.qml"
+//                        mainloader.item.show()
+//                        mainloader.item.requestActivate()
+                        settingsWnd.item.show()
+                        settingsWnd.item.requestActivate()
                    }
                   else if(qurl === "BrowserWindow.qml"){
 //                      browserWnd.forceActiveFocus()

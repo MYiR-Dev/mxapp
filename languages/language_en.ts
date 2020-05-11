@@ -113,7 +113,7 @@
 <context>
     <name>HomeWindow</name>
     <message>
-        <location filename="../HomeWindow.qml" line="571"/>
+        <location filename="../HomeWindow.qml" line="574"/>
         <source>toMENU</source>
         <translation type="unfinished"></translation>
     </message>
@@ -570,121 +570,121 @@
 <context>
     <name>SettingsWindow</name>
     <message>
-        <location filename="../SettingsWindow.qml" line="22"/>
+        <location filename="../SettingsWindow.qml" line="23"/>
         <source>系统设置</source>
         <translation type="unfinished">System Setting</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="88"/>
+        <location filename="../SettingsWindow.qml" line="92"/>
         <source>时间</source>
         <translation type="unfinished">Time</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="231"/>
+        <location filename="../SettingsWindow.qml" line="235"/>
         <source>yyyy年MM月dd日,ddd</source>
         <translation type="unfinished">dd MM yyyy,ddd</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="253"/>
-        <location filename="../SettingsWindow.qml" line="254"/>
+        <location filename="../SettingsWindow.qml" line="257"/>
+        <location filename="../SettingsWindow.qml" line="258"/>
         <source>年</source>
         <translation type="unfinished"> Y</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="269"/>
-        <location filename="../SettingsWindow.qml" line="270"/>
+        <location filename="../SettingsWindow.qml" line="273"/>
+        <location filename="../SettingsWindow.qml" line="274"/>
         <source>月</source>
         <translation type="unfinished"> M</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="282"/>
-        <location filename="../SettingsWindow.qml" line="283"/>
-        <location filename="../SettingsWindow.qml" line="284"/>
-        <location filename="../SettingsWindow.qml" line="285"/>
+        <location filename="../SettingsWindow.qml" line="286"/>
+        <location filename="../SettingsWindow.qml" line="287"/>
+        <location filename="../SettingsWindow.qml" line="288"/>
+        <location filename="../SettingsWindow.qml" line="289"/>
         <source>日</source>
         <translation type="unfinished"> D</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="327"/>
-        <location filename="../SettingsWindow.qml" line="691"/>
+        <location filename="../SettingsWindow.qml" line="331"/>
+        <location filename="../SettingsWindow.qml" line="695"/>
         <source>保存</source>
         <translation type="unfinished">Save</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="375"/>
-        <location filename="../SettingsWindow.qml" line="435"/>
+        <location filename="../SettingsWindow.qml" line="379"/>
+        <location filename="../SettingsWindow.qml" line="439"/>
         <source>以太网</source>
         <translation type="unfinished">Ethernet</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="448"/>
+        <location filename="../SettingsWindow.qml" line="452"/>
         <source>电缆已接入</source>
         <translation type="unfinished">Cable is connected</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="448"/>
+        <location filename="../SettingsWindow.qml" line="452"/>
         <source>电缆已拔出</source>
         <translation type="unfinished">Cable is unplugged</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="462"/>
+        <location filename="../SettingsWindow.qml" line="466"/>
         <source>配置IPv4</source>
         <translation type="unfinished">Configure IPv4</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="500"/>
+        <location filename="../SettingsWindow.qml" line="504"/>
         <source>IP地址</source>
         <translation type="unfinished">IP Address</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="544"/>
+        <location filename="../SettingsWindow.qml" line="548"/>
         <source>子网掩码</source>
         <translation type="unfinished">Subnet Mask</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="587"/>
+        <location filename="../SettingsWindow.qml" line="591"/>
         <source>网关</source>
         <translation type="unfinished">Gateway</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="630"/>
+        <location filename="../SettingsWindow.qml" line="634"/>
         <source>DNS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="825"/>
+        <location filename="../SettingsWindow.qml" line="829"/>
         <source>扫描</source>
         <translation type="unfinished">Scan</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="925"/>
+        <location filename="../SettingsWindow.qml" line="929"/>
         <source>已连接</source>
         <translation type="unfinished">Connected</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="893"/>
-        <location filename="../SettingsWindow.qml" line="930"/>
+        <location filename="../SettingsWindow.qml" line="897"/>
+        <location filename="../SettingsWindow.qml" line="934"/>
         <source>未启用</source>
         <translation type="unfinished">Not Activated</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1056"/>
+        <location filename="../SettingsWindow.qml" line="1060"/>
         <source>连接</source>
         <translation type="unfinished">Connection</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1155"/>
+        <location filename="../SettingsWindow.qml" line="1159"/>
         <source>时间设置</source>
         <translation type="unfinished">Time Setting</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1200"/>
+        <location filename="../SettingsWindow.qml" line="1204"/>
         <source>以太网设置</source>
         <translation type="unfinished">Ethernet Setting</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="779"/>
-        <location filename="../SettingsWindow.qml" line="1243"/>
+        <location filename="../SettingsWindow.qml" line="783"/>
+        <location filename="../SettingsWindow.qml" line="1247"/>
         <source>WiFi设置</source>
         <translation type="unfinished">WiFi Setting</translation>
     </message>
@@ -692,91 +692,96 @@
 <context>
     <name>SupportWindow</name>
     <message>
-        <location filename="../SupportWindow.qml" line="86"/>
+        <location filename="../SupportWindow.qml" line="88"/>
         <source>米尔支持</source>
         <translation type="unfinished">MYIR Support</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="186"/>
+        <location filename="../SupportWindow.qml" line="188"/>
         <source>电话</source>
         <translation type="unfinished">Phone</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="199"/>
+        <location filename="../SupportWindow.qml" line="201"/>
         <source>0755-25622735</source>
         <translation type="unfinished">+86-755-22984836</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="213"/>
-        <location filename="../SupportWindow.qml" line="270"/>
-        <location filename="../SupportWindow.qml" line="424"/>
-        <location filename="../SupportWindow.qml" line="538"/>
+        <location filename="../SupportWindow.qml" line="215"/>
+        <location filename="../SupportWindow.qml" line="272"/>
+        <location filename="../SupportWindow.qml" line="426"/>
+        <location filename="../SupportWindow.qml" line="540"/>
         <source>18926526796</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="243"/>
+        <location filename="../SupportWindow.qml" line="245"/>
         <source>传真</source>
         <translation type="unfinished">Fax</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="256"/>
+        <location filename="../SupportWindow.qml" line="258"/>
         <source>0755-25532724</source>
         <translation type="unfinished">+86-755-25532724</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="298"/>
+        <location filename="../SupportWindow.qml" line="300"/>
         <source>深圳米尔电子有限公司</source>
         <translation type="unfinished">MYIR Electronics Limited</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="312"/>
-        <location filename="../SupportWindow.qml" line="481"/>
+        <location filename="../SupportWindow.qml" line="314"/>
+        <location filename="../SupportWindow.qml" line="483"/>
         <source>www.myir-tech.com</source>
         <translation type="unfinished">www.myirtech.com</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="341"/>
+        <location filename="../SupportWindow.qml" line="343"/>
         <source>邮箱</source>
         <translation type="unfinished">E-mail</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="354"/>
+        <location filename="../SupportWindow.qml" line="356"/>
         <source>sales.cn@myirtech.com</source>
         <translation type="unfinished">sales@myirtech.com</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="367"/>
+        <location filename="../SupportWindow.qml" line="369"/>
         <source>project@myirtech.com</source>
         <translation type="unfinished">myirtech@yahoo.com</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="397"/>
+        <location filename="../SupportWindow.qml" line="399"/>
         <source>技术支持邮箱</source>
         <translation type="unfinished">Support E-mail</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="410"/>
+        <location filename="../SupportWindow.qml" line="412"/>
         <source>support.cn@myirtech.com</source>
         <translation type="unfinished">support@myirtech.com</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="454"/>
+        <location filename="../SupportWindow.qml" line="456"/>
         <source>地址</source>
         <translation type="unfinished">Address</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="467"/>
+        <location filename="../SupportWindow.qml" line="469"/>
         <source>深圳市龙岗区坂田街道发达路云里&lt;br&gt;智能园2栋6楼04室</source>
-        <translation type="unfinished">Room 04, 6th Floor, Building No.2,&lt;br&gt; Fada Road,Yunli Intelligent Park, Bantian, Longgang District,Shenzhen, Guangdong,</translation>
+        <translation type="unfinished">Room 04, 6th Floor, Building No.2,&lt;br&gt; Fada Road,Yunli Intelligent Park, Bantian, Longgang District,Shenzhen, Guangdong,China </translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="511"/>
+        <location filename="../SupportWindow.qml" line="469"/>
+        <source>深圳市龙岗区坂田街道发达路云里智能园2栋6楼04室</source>
+        <translation type="unfinished">Room 04, 6th Floor, Building No.2,Fada Road,Yunli&lt;br&gt;Intelligent Park,Bantian, Longgang District,Shenzhen,&lt;br&gt;Guangdong,China</translation>
+    </message>
+    <message>
+        <location filename="../SupportWindow.qml" line="513"/>
         <source>技术支持电话</source>
         <translation type="unfinished">Support Phone</translation>
     </message>
     <message>
-        <location filename="../SupportWindow.qml" line="524"/>
+        <location filename="../SupportWindow.qml" line="526"/>
         <source>027-59621648</source>
         <translation type="unfinished">null</translation>
     </message>

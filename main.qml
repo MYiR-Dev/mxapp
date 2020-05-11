@@ -93,4 +93,19 @@ ApplicationWindow {
         anchors.centerIn: parent;
 
     }
+    Loader{
+        id:settingsWnd;
+        anchors.centerIn: parent;
+        source: "SettingsWindow.qml";
+
+    }
+    Connections {
+         target: settingsWnd.item
+         onMessage:{
+             settingsWnd.setSource("")
+             settingsWnd.setSource("SettingsWindow.qml")
+
+         }
+
+     }
 }

@@ -9,6 +9,8 @@ Popup {
     modal: false
     focus: true
     closePolicy: Popup.NoAutoClose
+    property int adaptive_width: Screen.desktopAvailableWidth
+    property int adaptive_height: Screen.desktopAvailableHeight
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
 
@@ -53,14 +55,14 @@ Popup {
 
     Rectangle{
         id: poprect
-        width: 720
-        height: 400
+        width: adaptive_width/1.11/*720*/
+        height: adaptive_height/1.2/*400*/
         scale: 0.95
         anchors.centerIn: parent
-        color: "red"
+        color: "transparent"
          Image{
-                width: 720
-                height: 400
+                width: adaptive_width/1.11
+                height: adaptive_height/1.2
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectCrop
                 source: "images/wvga/home/background-dark.png"
@@ -68,16 +70,16 @@ Popup {
         }
          Rectangle{
              id:supporttitle
-             width: 720
-             height: 40
+             width: adaptive_width/1.11
+             height: adaptive_height/12
              anchors.top: poprect.top
-             anchors.topMargin: 30
+             anchors.topMargin: adaptive_height/16
              color: "transparent"
 
              Image {
                  id: myirline
-                 width: 600
-                 height: 1
+                 width: adaptive_width/1.33
+                 height: adaptive_height/480
                  anchors.centerIn: supporttitle
                  source: "qrc:/images/wvga/home/myir_line.png"
              }
@@ -95,10 +97,10 @@ Popup {
          }
          Rectangle{
              id:supportlogo
-             width: 720
-             height: 40
+             width: adaptive_width/1.11/*720*/
+             height: adaptive_height/12/*40*/
              anchors.top: poprect.top
-             anchors.topMargin: 60
+             anchors.topMargin: adaptive_height/8/*60*/
              color: "transparent"
             Image{
                 id:back2
@@ -156,8 +158,8 @@ Popup {
              id: supportgrid
              anchors.top: supportlogo.bottom
              anchors.topMargin: 5
-             width: 720
-             height: 300
+             width: adaptive_width/1.11
+             height: adaptive_height/1.6
              columns: 3
              rows: 3
              columnSpacing: 6
@@ -182,7 +184,7 @@ Popup {
 //                     anchors.leftMargin: 10
                      anchors.top: parent.top
 //                     anchors.topMargin: 10
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      text: qsTr("电话")
                      horizontalAlignment: Text.AlignHCenter
                      color: "#dcdde4";
@@ -194,7 +196,7 @@ Popup {
                  Text {
                      id:txt12
                      anchors.left: img1.right
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      anchors.top: txt11.bottom
                      text: qsTr("0755-25622735")
                      horizontalAlignment: Text.AlignHCenter
@@ -208,7 +210,7 @@ Popup {
                      id:txt13
                      visible: false
                      anchors.left: img1.right
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      anchors.top: txt12.bottom
                      text: qsTr("18926526796")
                      horizontalAlignment: Text.AlignHCenter
@@ -239,7 +241,7 @@ Popup {
 //                     anchors.leftMargin: 10
                      anchors.top: parent.top
 //                     anchors.topMargin: 10
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      text: qsTr("传真")
                      horizontalAlignment: Text.AlignHCenter
                      color: "#dcdde4";
@@ -251,7 +253,7 @@ Popup {
                  Text {
                      id:txt22
                      anchors.left: img2.right
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      anchors.top: txt21.bottom
                      text: qsTr("0755-25532724")
                      horizontalAlignment: Text.AlignHCenter
@@ -265,7 +267,7 @@ Popup {
                      id:txt23
                      visible: false
                      anchors.left: img2.right
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      anchors.top: txt22.bottom
                      text: qsTr("18926526796")
                      horizontalAlignment: Text.AlignHCenter
@@ -307,7 +309,7 @@ Popup {
                      id:txt33
 //                     visible: false
                      anchors.horizontalCenter: parent.horizontalCenter
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      anchors.top: img3.bottom
                      text: qsTr("www.myir-tech.com")
                      horizontalAlignment: Text.AlignHCenter
@@ -337,7 +339,7 @@ Popup {
 //                     anchors.leftMargin: 10
                      anchors.top: parent.top
 //                     anchors.topMargin: 10
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      text: qsTr("邮箱")
                      horizontalAlignment: Text.AlignHCenter
                      color: "#dcdde4";
@@ -349,7 +351,7 @@ Popup {
                  Text {
                      id:txt42
                      anchors.left: img4.right
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      anchors.top: txt41.bottom
                      text: qsTr("sales.cn@myirtech.com")
                      horizontalAlignment: Text.AlignHCenter
@@ -362,7 +364,7 @@ Popup {
                  Text {
                      id:txt43
                      anchors.left: img4.right
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      anchors.top: txt42.bottom
                      text: qsTr("project@myirtech.com")
                      horizontalAlignment: Text.AlignHCenter
@@ -393,7 +395,7 @@ Popup {
 //                     anchors.leftMargin: 10
                      anchors.top: parent.top
 //                     anchors.topMargin: 10
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      text: qsTr("技术支持邮箱")
                      horizontalAlignment: Text.AlignHCenter
                      color: "#dcdde4";
@@ -405,7 +407,7 @@ Popup {
                  Text {
                      id:txt52
                      anchors.left: img5.right
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      anchors.top: txt51.bottom
                      text: qsTr("support.cn@myirtech.com")
                      horizontalAlignment: Text.AlignHCenter
@@ -419,7 +421,7 @@ Popup {
                      id:txt53
                      visible: false
                      anchors.left: img5.right
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      anchors.top: txt52.bottom
                      text: qsTr("18926526796")
                      horizontalAlignment: Text.AlignHCenter
@@ -450,7 +452,7 @@ Popup {
 //                     anchors.leftMargin: 10
                      anchors.top: parent.top
 //                     anchors.topMargin: 10
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      text: qsTr("地址")
                      horizontalAlignment: Text.AlignHCenter
                      color: "#dcdde4";
@@ -462,9 +464,9 @@ Popup {
                  Text {
                      id:txt62
                      anchors.left: img6.right
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      anchors.top: txt61.bottom
-                     text: qsTr("深圳市龙岗区坂田街道发达路云里<br>智能园2栋6楼04室")
+                     text: (adaptive_height<=480)?qsTr("深圳市龙岗区坂田街道发达路云里<br>智能园2栋6楼04室"):qsTr("深圳市龙岗区坂田街道发达路云里智能园2栋6楼04室")
 //                     horizontalAlignment: Text.AlignHCenter
                      color: "#dcdde4";
                      font.family: "Microsoft YaHei";//bahnschriftFont.name;//
@@ -476,7 +478,7 @@ Popup {
                      id:txt63
                      visible: false
                      anchors.left: img6.right
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      anchors.top: txt62.bottom
                      text: qsTr("www.myir-tech.com")
                      horizontalAlignment: Text.AlignHCenter
@@ -507,7 +509,7 @@ Popup {
 //                     anchors.leftMargin: 10
                      anchors.top: parent.top
 //                     anchors.topMargin: 10
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      text: qsTr("技术支持电话")
                      horizontalAlignment: Text.AlignHCenter
                      color: "#dcdde4";
@@ -519,7 +521,7 @@ Popup {
                  Text {
                      id:txt72
                      anchors.left: img7.right
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      anchors.top: txt71.bottom
                      text: qsTr("027-59621648")
                      horizontalAlignment: Text.AlignHCenter
@@ -533,7 +535,7 @@ Popup {
                      id:txt73
                      visible: false
                      anchors.left: img7.right
-                     anchors.margins: 10
+                     anchors.margins: adaptive_height/48
                      anchors.top: txt72.bottom
                      text: qsTr("18926526796")
                      horizontalAlignment: Text.AlignHCenter

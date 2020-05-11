@@ -16,6 +16,7 @@ SystemWindow {
     property int adaptive_height: Screen.desktopAvailableHeight
     width: adaptive_width
     height: adaptive_height
+    signal message(string msg)
     TitleLeftBar{
         id: leftBar
         titleIcon: "images/wvga/back_icon_nor.png"
@@ -24,7 +25,10 @@ SystemWindow {
         titleIconWidth:120
         titleIconHeight: 30
         onLeftBarClicked: {
+
             settingsWindow.close()
+//
+            settingsWindow.message("settingsWindow close!")
 //            info_timer.stop()
         }
 
