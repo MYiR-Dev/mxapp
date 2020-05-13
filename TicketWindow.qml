@@ -252,7 +252,7 @@ SystemWindow {
                 Repeater{
                     model:["0","1","2","3","4","5","6","7",
                     "8","9","A","B","C","D","E","F",
-                    "G","H","I","J","K","L","L","M",
+                    "G","H","I","J","K","L","M",
                     "N","O","P","Q","R","S","T","U",
                     "V","W","X","Y","Z","\u2190",
                         qsTr("清除输入"),
@@ -262,13 +262,13 @@ SystemWindow {
                         id:nbutton
                         signal clicked
                         property string operation: {
-                            if(index===37){
+                            if(index===36){
                                 "backspace"
                             }
-                            else if(index===38){
+                            else if(index===37){
                                 "clear"
                             }
-                            else if(index===39){
+                            else if(index===38){
                                 "ok"
                             }
                             else{
@@ -279,7 +279,7 @@ SystemWindow {
                             id: bg
                             anchors.fill: parent
                             source: {
-                                if(index > 36){
+                                if(index > 35){
                                     "images/wvga/public/ok_bg.png"
                                 }
                                 else{
@@ -298,10 +298,10 @@ SystemWindow {
 
                         }
                         Layout.columnSpan:{
-                            if(index===37){
-                                3
+                            if(index===36){
+                                4
                             }
-                            else if(index>37){
+                            else if(index>36){
                                 8
                             }
                         }
@@ -315,7 +315,7 @@ SystemWindow {
                             id:buttontxt
                             text:modelData
                             color: {
-                                if(index >36){
+                                if(index >35){
                                 "white"
                                 }
                                 else
