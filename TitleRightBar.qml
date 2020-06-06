@@ -27,6 +27,7 @@ Rectangle {
         id: btIcon
         label.visible: false
         clickable: false
+        visible: false
         source: "images/wvga/home/bt.png"
 //        width: 12
 //        height: 12
@@ -42,6 +43,7 @@ Rectangle {
         id: ethIcon
         label.visible: false
         clickable: false
+        visible: false
         source: "images/wvga/home/eth.png"
         anchors{
             right: wifiIcon.left
@@ -56,6 +58,7 @@ Rectangle {
 //            anchors.margins: 5
             label.visible: false
 //            height: 24
+            visible: false
             clickable: false
             source: "images/wvga/home/wifi.png"
             anchors{
@@ -71,6 +74,7 @@ Rectangle {
 //            anchors.margins: 5
             label.visible: false
 //           height: 24
+            visible: false
             clickable: false
             source: "images/wvga/home/mobile.png"
             anchors{

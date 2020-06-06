@@ -36,12 +36,12 @@ Item {
         anchors.top:parent.top
         anchors.topMargin: 10
         anchors.right: parent.right
-        anchors.rightMargin: 220
+        anchors.rightMargin: 100
         color:"#02b9db"
         Text {
             id: icon
             font.family: "FontAwesome"
-            font.pointSize: 12
+            font.pixelSize: 12
             text: language_icon //图标
             color: "white"
             opacity: 1.0        //不透明
