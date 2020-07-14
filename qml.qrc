@@ -405,10 +405,6 @@
         <file>images/wvga/ecg/ecg_bg5.png</file>
         <file>languages/language_en.ts</file>
         <file>languages/language_zh.ts</file>
-        <file>common.cpp</file>
-        <file>common.h</file>
-        <file>myfunction.cpp</file>
-        <file>myfunction.h</file>
         <file>languages/language_en.qm</file>
         <file>languages/language_zh.qm</file>
         <file>images/fhd/ecg/header_logo.png</file>

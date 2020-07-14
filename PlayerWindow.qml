@@ -4,6 +4,9 @@ import QtQuick.Dialogs 1.3
 import Qt.labs.folderlistmodel 2.2
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
+
+import mvideooutput 1.0
+
 SystemWindow {
     id: root
     width: def.win_width
@@ -44,7 +47,7 @@ SystemWindow {
 //    }
 
     //视频输出到背景
-    VideoOutput {
+    MVideoOutput {
         anchors.fill: parent        //充满背景
         source: video
     }

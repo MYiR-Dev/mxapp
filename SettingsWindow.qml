@@ -28,7 +28,6 @@ SystemWindow {
 
             settingsWindow.close()
 //
-//            settingsWindow.message("settingsWindow close!")
 //            info_timer.stop()
         }
 

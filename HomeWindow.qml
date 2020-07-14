@@ -422,7 +422,6 @@ Rectangle {
 
                                     onClicked: {
                                         console.log("clicked:"+model.aqml + " " + subMenuRow.isClickable)
-
 // 第一种方式加载
 //                                        timer.start()
 //                                        if(subMenuRow.isClickable === true){
@@ -490,9 +489,8 @@ Rectangle {
                                             mainloader.source = "SettingsWindow.qml"
                                             mainloader.item.show()
                                             mainloader.item.requestActivate()
-////                                            settingsWnd.source="SettingsWindow.qml"
-//                                            settingsWnd.item.show()
-//                                            settingsWnd.item.requestActivate()
+//                                            settingsWnd.source="SettingsWindow.qml"
+
                                         }else if(model.aqml === "MusicWindow.qml"){
 //                                            settingsWnd.forceActiveFocus()
 //                                            settingsWnd.z=4;

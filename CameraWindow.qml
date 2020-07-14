@@ -86,7 +86,7 @@ SystemWindow {
         Component.onCompleted: console.log('StackView.onStatusChanged camera.viewfinder.resolution:', camera.viewfinder.resolution)
     }
 
-    VideoOutput {
+    MVideoOutput {
         anchors.fill: parent
         source: camera
     }

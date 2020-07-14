@@ -6,6 +6,8 @@
 #include "common.h"
 #include "myfunction.h"
 #include "translator.h"
+#include "mvideooutput.h"
+
 void iconFontInit()
 {
     //����fontawesome-webfont.ttf����ͼ����
@@ -33,6 +35,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<GetSystemInfo>("GetSystemInfoAPI", 1, 0, "GetSystemInfo");
     qmlRegisterType<CustomPlotItem>("CustomPlot", 1, 0, "CustomPlotItem");
     qmlRegisterType<MyFunction>("MyFunction.module", 1, 0, "MyFunction");
+    qmlRegisterType<MVideoOutput>("mvideooutput",1,0, "MVideoOutput");
 //    qmlRegisterType<Translator>("translator", 1, 0, );
     Translator *translator = Translator::getInstance();
     translator->set_QQmlEngine(&engine);

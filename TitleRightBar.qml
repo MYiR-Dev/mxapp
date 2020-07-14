@@ -58,8 +58,8 @@ Rectangle {
 //            anchors.margins: 5
             label.visible: false
 //            height: 24
-            visible: false
             clickable: false
+            visible: false
             source: "images/wvga/home/wifi.png"
             anchors{
                 right:mobiIcon.left
@@ -74,8 +74,8 @@ Rectangle {
 //            anchors.margins: 5
             label.visible: false
 //           height: 24
-            visible: false
             clickable: false
+            visible: false
             source: "images/wvga/home/mobile.png"
             anchors{
                 right:tt.left

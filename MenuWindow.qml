@@ -171,13 +171,13 @@ Rectangle {
                         _num: "1"
                         _qurl: "FileWindow.qml"
                     }
-                    ListElement {
-                        _imageSource: "images/wvga/home/browser.png"
-                        _text1: qsTr("浏览器演示")
-                        _text2: qsTr("浏览器")
-                        _num: "1"
-                        _qurl: "BrowserWindow.qml"
-                    }
+//                    ListElement {
+//                        _imageSource: "images/wvga/home/browser.png"
+//                        _text1: qsTr("浏览器演示")
+//                        _text2: qsTr("浏览器")
+//                        _num: "1"
+//                        _qurl: "BrowserWindow.qml"
+//                    }
                     ListElement {
                         _imageSource: "images/wvga/home/contact.png"
                         _text1: qsTr("联系我们")

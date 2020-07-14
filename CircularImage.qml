@@ -10,7 +10,7 @@ Rectangle {
     Image {
         id: _image
         smooth: true
-        visible: false
+        visible: true
         anchors.fill: parent
         source: img_src
         sourceSize: Qt.size(parent.size, parent.size)
@@ -19,21 +19,21 @@ Rectangle {
         fillMode: Image.PreserveAspectCrop
 //        fillMode: Image.PreserveAspectFit
     }
-    Rectangle {
-        id: _mask
-        color: "black"
-        anchors.fill: parent
-        radius: parent.radius
-        visible: false
-        antialiasing: true
-        smooth: true
-    }
-    OpacityMask {
-        id: mask_image
-        anchors.fill: _image
-        source: _image
-        maskSource: _mask
-        visible: true
-        antialiasing: true
-    }
+//    Rectangle {
+//        id: _mask
+//        color: "black"
+//        anchors.fill: parent
+//        radius: parent.radius
+//        visible: false
+//        antialiasing: true
+//        smooth: true
+//    }
+//    OpacityMask {
+//        id: mask_image
+//        anchors.fill: _image
+//        source: _image
+//        maskSource: _mask
+//        visible: true
+//        antialiasing: true
+//    }
 }
