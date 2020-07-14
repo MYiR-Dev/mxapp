@@ -281,7 +281,7 @@ SystemWindow {
                     }
                     Text{
                         id:create_value
-                        text: qsTr("Buildroot")
+                        text: qsTr("Yocto")
                         font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
@@ -649,7 +649,7 @@ SystemWindow {
                     }
                     Text{
                         id:qt_version_value
-                        text: qsTr("5.12.0")
+                        text: qsTr("5.12")
                         font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"

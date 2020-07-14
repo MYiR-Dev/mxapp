@@ -45,7 +45,8 @@ SystemWindow {
 
     //视频输出到背景
     VideoOutput {
-        anchors.fill: parent        //充满背景
+        //anchors.fill: parent        //充满背景
+        anchors.centerIn: parent  //center
         source: video
     }
 

@@ -1,5 +1,4 @@
-QT += qml quick core gui printsupport testlib quickcontrols2
-
+QT += qml quick core gui printsupport testlib quickcontrols2 multimedia multimediawidgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++11
 
@@ -20,7 +19,9 @@ SOURCES += \
     qmlplot.cpp \
     common.cpp \
     myfunction.cpp \
-    translator.cpp
+    translator.cpp \
+    mvideooutput.cpp \
+    videowidgetsurface.cpp
 
 RESOURCES += qml.qrc
 CONFIG += disable-desktop
@@ -45,7 +46,9 @@ HEADERS += \
     qmlplot.h \
     common.h \
     myfunction.h \
-    translator.h
+    translator.h \
+    mvideooutput.h \
+    videowidgetsurface.h
 DISTFILES +=
 TRANSLATIONS = languages/language_zh.ts \
                languages/language_en.ts

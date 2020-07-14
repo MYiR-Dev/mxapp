@@ -30,7 +30,7 @@ Item {
     property string language_icon:"\uf1ab"
     Rectangle{
         id:languageBt
-        width: 85
+        width: 100
         height: 25
         radius: 10
         anchors.top:parent.top

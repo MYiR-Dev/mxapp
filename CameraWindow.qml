@@ -3,6 +3,8 @@ import QtMultimedia 5.6
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
+import mvideooutput 1.0
+
 SystemWindow {
     id: root
     property int adaptive_width: Screen.desktopAvailableWidth
@@ -49,7 +51,7 @@ SystemWindow {
         //白平衡
         imageProcessing.whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
         //分辨率
-        viewfinder.resolution: "320x240"
+        viewfinder.resolution: "640x480"
         flash.mode: Camera.FlashRedEyeReduction
         //曝光
         exposure {
@@ -86,7 +88,7 @@ SystemWindow {
         Component.onCompleted: console.log('StackView.onStatusChanged camera.viewfinder.resolution:', camera.viewfinder.resolution)
     }
 
-    VideoOutput {
+    MVideoOutput {
         anchors.fill: parent
         source: camera
     }

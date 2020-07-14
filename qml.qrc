@@ -412,5 +412,9 @@
         <file>languages/language_en.qm</file>
         <file>languages/language_zh.qm</file>
         <file>images/fhd/ecg/header_logo.png</file>
+        <file>mvideooutput.cpp</file>
+        <file>mvideooutput.h</file>
+        <file>videowidgetsurface.cpp</file>
+        <file>videowidgetsurface.h</file>
     </qresource>
 </RCC>
