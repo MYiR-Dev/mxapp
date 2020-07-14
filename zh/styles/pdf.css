@@ -1,0 +1,118 @@
+body {
+	font-size: 18px;
+	margin-left: 1.5cm;
+	font-family: "WenQuanYi Zen Hei";
+	margin-right: 1cm;
+	color: #343232; /* dunkel-grau */
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+p {
+	margin-bottom: 0px;
+	margin-top: 0px;
+}
+
+h1, h2, h3, h4 {
+	color: teal;
+/* font-family: "Tex Gyre Heros","Source Sans Pro",sans-serif;*/
+/*	margin-bottom: 5px;*/
+}
+
+h1 {
+	font-size: 18px;
+	/*line-height: 0px*/
+	/*color: #04B0DB;*/
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+h2 {
+	/*margin-bottom: -2px;*/
+	/*line-height: 0px*/
+	font-size: 16px;
+	margin-top: 2px;
+	margin-bottom: 0px;
+}
+
+h3 {
+	font-size: 15px;
+}
+
+h3 {
+	font-size: 14px;
+}
+
+ul, ol {
+	margin-top: 5px;
+}
+
+img {
+	/*max-height: 200px;*/
+}
+
+.book .book-body .page-wrapper .page-inner section.normal blockquote {
+    color: black;
+}
+
+blockquote {
+    color: black;
+}
+
+em {
+	color: #04B0DB;
+}
+a {
+	color: #04B0DB;
+}
+
+
+/*.e-footer {
+	font-family: "Tex Gyre Heros","Source Sans Pro",sans-serif;
+	font-size: 8px;
+	color: darkgray;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50px;
+	bottom: 0;
+
+}*/
+
+/*ul, dl {list-style-type: none;}
+ul li:before,
+dl dt:before {
+	position: absolute;
+	content: "\26AB";
+	font-size: 9px;
+	color: #04B0DB;
+	margin-top: 3px;
+	margin-left: -14px;
+}
+
+ol {counter-reset: list; list-style-type: none;}
+ol li:before {
+	position: absolute;
+	content: counter(list) ".";
+	counter-increment: list;
+	font-size: 12px;
+	color: #04B0DB;
+	margin-left: -15px;
+}*/
+
+
+
+/*table {
+	display: block;
+	width: 200px;
+}*/
+
+
+/*.book .book-body .page-wrapper .page-inner section.normal h1 {
+    margin-top: 1em;
+}
+.book .book-body .page-wrapper .page-inner section.normal h2 {
+    margin-bottom: -0.7em;
+}
+*/

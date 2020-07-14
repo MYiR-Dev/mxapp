@@ -1,2 +1,2 @@
-# mxapp
-MEasy HMI V2.0 source code.
+# MEasy HMI v2.0 Development Guide
+

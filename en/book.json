@@ -1,0 +1,37 @@
+{
+   "gitbook" : "3.x.x",                                                             
+   "title": "MYIR MEasy HMI",                                                       
+   "language": "en",                                                           
+   "author": "Sunny.Guo Fan.Hu Longhua.Qin" ,                                        
+   "links" : {
+        "sidebar" : {
+            "MYiR Technology Ltd." : "http://www.myir-tech.com"
+        }
+   },
+ 
+    "plugins" : ["disqus"],
+    "pluginsConfig" : {
+        "disqus" : {
+            "shortName" : ""
+        }
+    },
+    
+    "plugins": ["theme-pdftoc"],
+
+    "pluginsConfig": {
+    	"fontSettings":{
+	"size": 2
+	}
+    },
+
+    "pdf" : {
+        "fontSize" : 16,
+        "paperSize" : "a4"
+    },
+    
+    "tbfed-pagefooter": {
+  		"copyright":"Copyright@MYIR Tech Limited 2011-2017 all rights reserved.",
+  		"modify_label": "该文件修订时间：",
+  		"modify_format": "YYYY-MM-DD HH:mm:ss"
+    }
+}
