@@ -1,4 +1,5 @@
 import QtQuick 2.5
+import mvideooutput 1.0
 import QtMultimedia 5.6
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
@@ -43,13 +44,18 @@ SystemWindow {
 
     Camera {
         id: camera
+        //deviceId: Qtmultimedia.defaultCamera.deviceId
+        deviceId: "/dev/video0" 
+        cameraState: Camera.LoadedState
+
         //相机模式
 //        captureMode: Camera.CaptureStillImage       //静态照片捕捉模式
         captureMode: Camera.CaptureStillImage
         //白平衡
         imageProcessing.whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
         //分辨率
-        viewfinder.resolution: "320x240"
+        //viewfinder.resolution: "320x240"
+        viewfinder.resolution: "800x600"
         flash.mode: Camera.FlashRedEyeReduction
         //曝光
         exposure {
