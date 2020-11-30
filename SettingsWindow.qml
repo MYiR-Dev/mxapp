@@ -394,7 +394,7 @@ SystemWindow {
                     InputPanel {
                         id: inputPanel
                         x: adaptive_width/8
-                        y: adaptive_height/1.06
+                        y: adaptive_height/0.95
                         z:99
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -1097,8 +1097,8 @@ SystemWindow {
                     }
                     ListView {
                         id: listView
-                        width: 548
-                        height: 340
+                        width: adaptive_width/1.45
+                        height: adaptive_height/1.41
                         focus:true
                         anchors {
                             left: parent.left

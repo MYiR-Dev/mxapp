@@ -46,11 +46,11 @@ void CustomPlotItem::initCustomPlot()
     m_CustomPlot->graph(0)->setPen(QPen(Qt::green));
     m_CustomPlot->graph(1)->setPen(QPen(Qt::green));
     m_CustomPlot->graph(2)->setPen(QPen(Qt::red));
-    m_CustomPlot->graph(3)->setPen(QPen(Qt::red));
+    m_CustomPlot->graph(3)->setPen(QPen(Qt::yellow));
     m_CustomPlot->graph(4)->setPen(QPen(Qt::green));
     m_CustomPlot->graph(5)->setPen(QPen(Qt::green));
     m_CustomPlot->graph(6)->setPen(QPen(Qt::red));
-    m_CustomPlot->graph(7)->setPen(QPen(Qt::red));
+    m_CustomPlot->graph(7)->setPen(QPen(Qt::yellow));
 
     m_CustomPlot->xAxis->setLabel( "t" );
     m_CustomPlot->yAxis->setLabel( "S" );
@@ -67,7 +67,7 @@ void CustomPlotItem::initCustomPlot()
     startTimer(20);
 
     connect( m_CustomPlot, &QCustomPlot::afterReplot, this, &CustomPlotItem::onCustomReplot );
-
+    m_CustomPlot->setBackground(QBrush(QColor(0, 0, 0)));
     m_CustomPlot->replot();
 }
 void CustomPlotItem::timerEvent(QTimerEvent *event)

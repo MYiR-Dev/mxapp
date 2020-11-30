@@ -214,7 +214,7 @@ SystemWindow {
         x:0
         y:adaptive_height/15
         PlotView {
-            opacity: 0.2
+            opacity: 0.5
             width: adaptive_width/1.395
             height: adaptive_height/1.06
         }

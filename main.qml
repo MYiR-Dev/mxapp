@@ -9,7 +9,7 @@ ApplicationWindow {
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
     title: qsTr("Hello World")
-
+    flags: Qt.Window | Qt.FramelessWindowHint
     background: Image{
             source: "images/wvga/home/background-dark.png"
         }
