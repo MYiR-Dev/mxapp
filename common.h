@@ -33,10 +33,12 @@ public:
     Q_INVOKABLE void disconnect_wifi();
     Q_INVOKABLE void shootScreenWindow(QQuickWindow *rootWindow);
     Q_INVOKABLE QUrl fromUserInput(const QString& userInput);
+    Q_INVOKABLE void do_wifi_siganl();
 //    Q_INVOKABLE void wifiReady();
     QString getWirelessInterfaceStatus(QString interface);
     void parseIwlist(QString buffer);
-
+    QString get_wifi_rfkill_path();
+    void wifi_rfkill_control(QString value);
 
     void Start(int interval);
     QProcess *process;
@@ -63,11 +65,13 @@ public slots:
     void msic_ReadData();
     void get_memory_info();
     void get_cpu_info();
+    void do_wifi_open();
 //    void get_wifi_info();
 signals:
     void begin();
     void wifiReady(QVariantList  wifi_data);
     void wifiConnected(QString  wifi_essid_info);
+    void wifi_open_signal();
 };
 
 

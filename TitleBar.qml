@@ -30,13 +30,18 @@ Item {
     property string language_icon:"\uf1ab"
     Rectangle{
         id:languageBt
-        width: 85
+        implicitWidth: {
+             var wid = textEnglish.width+30
+             Math.min(wid,160)
+         }
         height: 25
         radius: 10
-        anchors.top:parent.top
-        anchors.topMargin: 10
-        anchors.right: parent.right
-        anchors.rightMargin: 100
+        anchors {
+            right: rightBar.left
+            rightMargin: 5
+            top: parent.top
+            topMargin: 10
+        }
         color:"#02b9db"
         Text {
             id: icon
@@ -57,8 +62,8 @@ Item {
             font.pointSize: 12
             font.family:"Microsoft YaHei"
             anchors.left: icon.right
+            anchors.leftMargin: 10
             anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: Screen.desktopAvailableWidth/96
         }
 
         MouseArea{

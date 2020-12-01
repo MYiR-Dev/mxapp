@@ -27,6 +27,7 @@ GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent)
     connect(timerWifi, SIGNAL(timeout()), this, SLOT(get_wifi_info()));
     wifi_id = "0";
 
+    connect(this, SIGNAL(wifi_open_signal()), this, SLOT(do_wifi_open()),Qt::QueuedConnection);
     this->Start(100);
 }
 GetSystemInfo::~GetSystemInfo()
@@ -56,6 +57,7 @@ QUrl GetSystemInfo::fromUserInput(const QString& userInput)
 }
 void GetSystemInfo::Start(int interval)
 {
+    
     timerCPU->start(interval);
     timerMemory->start(interval + 200);
     timerWifi->start(1000);
@@ -81,42 +83,110 @@ void GetSystemInfo::get_wifi_info()
     if (msic_process->state() == QProcess::NotRunning) {
         msic_process->start("iwconfig wlan0");
     }
+   
+}
+QString GetSystemInfo::get_wifi_rfkill_path()
+{
+    QString path,value;
+    QStringList string_list;
+    string_list << "/sys/class/rfkill/rfkill0/" << "/sys/class/rfkill/rfkill1/";
 
+    QStringListIterator strIterator(string_list);
+    while(strIterator.hasNext())
+    {
+
+        path =  strIterator.next();   
+        QFile file(path+"name");
+        if (file.exists())
+        {
+            if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+                return NULL;
+            QByteArray line = file.readLine();
+            value = line.trimmed();
+            if(value == "phy0")
+            {
+                file.close();
+                return path;
+            }
+            file.close();   
+            
+        }
+    }
+}
+void GetSystemInfo::wifi_rfkill_control( QString value)
+{
+    QString rfkill_path;
+
+    rfkill_path = get_wifi_rfkill_path();
+    qDebug() << rfkill_path;
+    if(!rfkill_path.isEmpty()){
+        QFile write_file(rfkill_path+"state");
+        if (write_file.exists())
+        {
+            if (!write_file.open(QIODevice::WriteOnly | QIODevice::Text))
+                return;
+            QString str=value;
+            QByteArray  strBytes=str.toUtf8();
+            write_file.write(strBytes,strBytes.length());
+            write_file.close();
+        }
+    }
+
+}
+void GetSystemInfo::do_wifi_open()
+{
+    qDebug() << "do_wifi_open";
+    wifi_open();
+}
+void GetSystemInfo::do_wifi_siganl()
+{
+    emit wifi_open_signal();
 }
 void GetSystemInfo::wifi_open()
 {
+
     QString command;
+
     command = "killall wpa_supplicant";
-//    QThread::msleep(2000);
+    // QThread::msleep(5000);
     msic_process->start(command);
     msic_process->waitForFinished();
+
+   // wifi_rfkill_control("1");
+
     command = "ifconfig wlan0 up";
     msic_process->start(command);
     msic_process->waitForFinished();
-//    QTest::qSleep(1000);
+
     command = "iwlist wlan0 scan";
     wifi_process->start(command);
+    wifi_process->waitForFinished();
 
-    command = "wpa_supplicant -i wlan0 -c /etc/wpa_supplicant.conf -B";
+//    QTest::qSleep(1000);
+    command = "wpa_supplicant -i wlan0 -c /etc/wpa_supplicant.conf -D nl80211 -B";
     msic_process->start(command);
     msic_process->waitForFinished();
-//    QTest::qSleep(1000);
+
 }
 void GetSystemInfo::wifi_close()
 {
     QString command;
+
 //    command = "killall udhcpc";
 //    msic_process->start(command);
 //    msic_process->waitForFinished();
+
     command = "wpa_cli -i wlan0 disconnect";
     msic_process->start(command);
     msic_process->waitForFinished();
     command = "killall wpa_supplicant";
     msic_process->start(command);
     msic_process->waitForFinished();
-    command = "ifconfig wlan0 down";
-    msic_process->start(command);
-    msic_process->waitForFinished();
+   // wifi_rfkill_control("0");
+    // command = "ifconfig wlan0 down";
+    // msic_process->start(command);
+    // msic_process->waitForFinished();
+    
 
 }
 void GetSystemInfo::connect_wifi(QString essid_passwd)
@@ -164,35 +234,62 @@ void GetSystemInfo::disconnect_wifi()
 void GetSystemInfo::msic_ReadData()
 {
     QTextStream stream(msic_process->readAll().data());
-    QString wifi_connect_status;
+    QString wifi_connect_status,wifi_interface,wirelessInterfaceStatus;
     QString line,command;
-
-
+    wifi_interface = "wlan0";
+    
     do {
 
+       
         line = stream.readLine().trimmed();
-//        qDebug() <<"msic_ReadData"<< line;
-        if ( line.startsWith("wlan0") )
-        {
-            QStringList tmp = line.split("ESSID:");
-            QString temp = tmp[1];
-            if(tmp[1] != "on/off")
-            {
 
-                wifi_connect_status =temp.mid ( temp.indexOf ( "\"" ) + 1, temp.lastIndexOf ( "\"" ) - temp.indexOf ( "\"" ) - 1 );
-                if(wifi_status != wifi_connect_status && wifi_status != NULL)
+        wirelessInterfaceStatus = getWirelessInterfaceStatus(wifi_interface);
+        if(wirelessInterfaceStatus != "down")
+        {
+            if ( line.startsWith("wlan0") )
+            {    
+                if(line.length() > 31)
                 {
-                    emit wifiConnected(wifi_connect_status);
-                    command = "udhcpc -i wlan0 -t 3 -n -q -b";
-                    msic_process->start(command);
+                    
+                    QStringList tmp = line.split("ESSID:");
+                    QString temp = tmp[1];
+                    
+                    if(tmp[1] != "on/off")
+                    {
+
+                        wifi_connect_status =temp.mid ( temp.indexOf ( "\"" ) + 1, temp.lastIndexOf ( "\"" ) - temp.indexOf ( "\"" ) - 1 );
+                        if(wifi_status != wifi_connect_status)
+                        {
+                            
+                            emit wifiConnected(wifi_connect_status);
+                            command = "udhcpc -i wlan0 -t 3 -n -q -b";
+                            msic_process->start(command);
+                            wifi_status = wifi_connect_status;
+                        }
+
+                    }
                 }
+                else
+                {
+                    wifi_connect_status="disconnect";
+                    if(wifi_status != wifi_connect_status)
+                    {
+                        emit wifiConnected(wifi_connect_status);
+                        wifi_status=wifi_connect_status;
+                    }
+                }
+                
 
             }
+
+            
+
         }
+        
 
 
     } while (!line.isNull());
-    wifi_status = wifi_connect_status;
+    
 }
 QString GetSystemInfo::get_wifi_list()
 {
@@ -235,6 +332,7 @@ QString GetSystemInfo::getWirelessInterfaceStatus(QString interface)
             return status;
         QByteArray line = file.readLine();
         status = line.trimmed();
+        file.close();
     }
     return status;
 }
@@ -262,7 +360,7 @@ void GetSystemInfo::Wifi_ReadData()
             buffer = buffer + line + "<<>>"; // line change
 
     } while (!line.isNull());
-//    qDebug() << buffer;
+    // qDebug() << buffer;
     parseIwlist(buffer);
 }
 void GetSystemInfo::parseIwlist(QString buffer)
@@ -301,6 +399,8 @@ void GetSystemInfo::parseIwlist(QString buffer)
             if ( line.startsWith ( "ESSID:" ) )
             {
                 QString ssid =line.mid ( line.indexOf ( "\"" ) + 1, line.lastIndexOf ( "\"" ) - line.indexOf ( "\"" ) - 1 );
+                //  qDebug() << line ;
+                //  qDebug() << ssid;
                 if(ssid.contains("\\"))
                 {
                     ssid = " ";
@@ -316,14 +416,14 @@ void GetSystemInfo::parseIwlist(QString buffer)
                 wifi_info.append("on");
             if ( line.startsWith ( "Encryption key:off" ) )
                 wifi_info.append("off");
-            if ( line.startsWith ( "Quality=" ) )
-                wifi_info.append(line.mid (line.indexOf ("=") + 1, line.indexOf ("/") - line.indexOf ("=") - 1 ));
+            if ( line.startsWith ( "Quality:" ) )
+                wifi_info.append(line.mid (line.indexOf (":") + 1, line.indexOf ("/") - line.indexOf (":") - 1 ));
         }
-//        for(int i = 0; i< wifi_info.size();++i)
-//        {
-//            QString tmp = wifi_info.at(i);
-//            qDebug()<<"tmp ="<< i<<tmp;
-//        }
+    //    for(int i = 0; i< wifi_info.size();++i)
+    //    {
+    //        qDebug() << wifi_info.value(i);
+    //        //qDebug()<<"tmp ="<< i<<tmp;
+    //    }
 //        wifi_info_list.append(wifi_info);
     }
 //    for(int i = 0; i< wifi_info_list.size();++i)

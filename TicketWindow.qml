@@ -188,7 +188,48 @@ SystemWindow {
                         source: "images/wvga/public/number.png"
                     }
                 }
-
+                InputPanel {
+                        id: inputPanel
+                        x: adaptive_width/8
+                        y: adaptive_height/0.95
+                        z:99
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        visible:false
+                        states: State {
+                            name: "visible"
+                            /*  The visibility of the InputPanel can be bound to the Qt.inputMethod.visible property,
+                                but then the handwriting input panel and the keyboard input panel can be visible
+                                at the same time. Here the visibility is bound to InputPanel.active property instead,
+                                which allows the handwriting panel to control the visibility when necessary.
+                            */
+                            when: inputPanel.active
+                            PropertyChanges {
+                                target: inputPanel
+                                y: adaptive_height/1.06 - inputPanel.height
+                            }
+                        }
+                        transitions: Transition {
+                            id: inputPanelTransition
+                            from: ""
+                            to: ""
+                            reversible: true
+                            enabled: !VirtualKeyboardSettings.fullScreenMode
+                            ParallelAnimation {
+                                NumberAnimation {
+                                    properties: "y"
+                                    duration: 250
+                                    easing.type: Easing.InOutQuad
+                                }
+                            }
+                        }
+                        Binding {
+                            target: InputContext
+                            property: "animating"
+                            value: inputPanelTransition.running
+                        }
+                            AutoScroller {}
+                    }
                 TextInput{
                     id: input
                     anchors.top: parent.top
@@ -204,6 +245,7 @@ SystemWindow {
                     clip: true
                     focus: false
                     readOnly:true
+                    
                     activeFocusOnPress:false
 
                     Text {

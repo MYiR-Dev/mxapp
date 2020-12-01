@@ -46,11 +46,11 @@ void CustomPlotItem::initCustomPlot()
     m_CustomPlot->graph(0)->setPen(QPen(Qt::green));
     m_CustomPlot->graph(1)->setPen(QPen(Qt::green));
     m_CustomPlot->graph(2)->setPen(QPen(Qt::red));
-    m_CustomPlot->graph(3)->setPen(QPen(Qt::red));
+    m_CustomPlot->graph(3)->setPen(QPen(Qt::yellow));
     m_CustomPlot->graph(4)->setPen(QPen(Qt::green));
     m_CustomPlot->graph(5)->setPen(QPen(Qt::green));
     m_CustomPlot->graph(6)->setPen(QPen(Qt::red));
-    m_CustomPlot->graph(7)->setPen(QPen(Qt::red));
+    m_CustomPlot->graph(7)->setPen(QPen(Qt::yellow));
 
     m_CustomPlot->xAxis->setLabel( "t" );
     m_CustomPlot->yAxis->setLabel( "S" );
@@ -65,10 +65,12 @@ void CustomPlotItem::initCustomPlot()
     getRESPData();
     timer_count = 0;
     startTimer(20);
-
+    
     connect( m_CustomPlot, &QCustomPlot::afterReplot, this, &CustomPlotItem::onCustomReplot );
 
+    m_CustomPlot->setBackground(QBrush(QColor(0, 0, 0)));
     m_CustomPlot->replot();
+
 }
 void CustomPlotItem::timerEvent(QTimerEvent *event)
 {
@@ -101,6 +103,7 @@ void CustomPlotItem::timerEvent(QTimerEvent *event)
     m_CustomPlot->graph(1)->addData(ecg_time[timer_count],ecg_data2[timer_count]);
     m_CustomPlot->graph(2)->addData(ecg_time[timer_count],pleth_data[timer_count+30]);
     m_CustomPlot->graph(3)->addData(ecg_time[timer_count],resp_data[timer_count+30]);
+    
 
     m_CustomPlot->replot();
 
@@ -214,9 +217,11 @@ void CustomPlotItem::paint( QPainter* painter )
 
     if (m_CustomPlot)
     {
+		if (!painter->isActive())
+            return;
         QPixmap    picture( boundingRect().size().toSize() );
         QCPPainter qcpPainter( &picture );
-
+    
         m_CustomPlot->toPainter( &qcpPainter );
 
         painter->drawPixmap( QPoint(), picture );

@@ -2,6 +2,7 @@ import QtQuick 2.0
 
 Rectangle {
     id:root
+    width:tt.width+5
     anchors{
         right: parent.right
         rightMargin: 5
@@ -22,69 +23,6 @@ Rectangle {
 //            popupFrame1.open()
 //        }
 //    }
-
-    HomeButton{
-        id: btIcon
-        label.visible: false
-        clickable: false
-        visible: false
-        source: "images/wvga/home/bt.png"
-//        width: 12
-//        height: 12
-        anchors{
-            right: ethIcon.left
-            rightMargin: icongap
-            top: parent.top
-            topMargin: 10
-            //            verticalCenter: parent.verticalCenter
-            }
-    }
-    HomeButton{
-        id: ethIcon
-        label.visible: false
-        clickable: false
-        visible: false
-        source: "images/wvga/home/eth.png"
-        anchors{
-            right: wifiIcon.left
-            rightMargin: icongap
-            top: parent.top
-            topMargin: 10
-            //            verticalCenter: parent.verticalCenter
-            }
-    }
-    HomeButton{
-            id: wifiIcon
-//            anchors.margins: 5
-            label.visible: false
-//            height: 24
-            visible: false
-            clickable: false
-            source: "images/wvga/home/wifi.png"
-            anchors{
-                right:mobiIcon.left
-                rightMargin: icongap
-                top: parent.top
-                topMargin: 10
-                //            verticalCenter: parent.verticalCenter
-            }
-    }
-    HomeButton{
-            id: mobiIcon
-//            anchors.margins: 5
-            label.visible: false
-//           height: 24
-            visible: false
-            clickable: false
-            source: "images/wvga/home/mobile.png"
-            anchors{
-                right:tt.left
-                rightMargin: icongap
-                top: parent.top
-                topMargin: 10
-                //            verticalCenter: parent.verticalCenter
-            }
-    }
 
     Rectangle{
         id:tt

@@ -37,7 +37,7 @@ SystemWindow {
         id:getSyetemInfo
 
     }
-
+    
     TitleRightBar{
         anchors{
             top: parent.top
@@ -50,7 +50,9 @@ SystemWindow {
 
         if(checked)
         {
-            getSyetemInfo.wifi_open()
+            
+            getSyetemInfo.do_wifi_siganl()
+            // getSyetemInfo.wifi_open()
             wifi_statu = true
 //            getSyetemInfo.get_wifi_list()
         }
@@ -394,7 +396,7 @@ SystemWindow {
                     InputPanel {
                         id: inputPanel
                         x: adaptive_width/8
-                        y: adaptive_height/1.06
+                        y: adaptive_height/0.95
                         z:99
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -887,17 +889,17 @@ SystemWindow {
                              console.log(wifi_data.length/3)
                              for(var j=0;j<wifi_data.length/3;j++)
                              {
-                                 if (wifi_data[j*3+1] === "on")
+                                 if (wifi_data[j*3+2] === "on")
                                       image= "images/wvga/system/key.png"
                                  else
                                       image=""
 //                                 console.log("Received ++: " +wifi_data[j*3+2])
                                  wifi_list_model.append({
-                                     "wifi_essid": wifi_data[j*3+2],
+                                     "wifi_essid": wifi_data[j*3+0],
                                      "wifi_connect_status": qsTr("未启用"),
                                      "key_image":image,
                                      "signal_iamge":"images/wvga/system/wifi-signal.png",
-                                     "signal":wifi_data[j*3+0]
+                                     "signal":wifi_data[j*3+1]
                                  })
 
                              }
@@ -933,7 +935,7 @@ SystemWindow {
                                 else
                                     wifi_list_model.setProperty(k, "wifi_connect_status", qsTr("未启用"))
                             }
-//                            console.log("Received ++: " +wifi_essid_info)
+ //                           console.log("Received ++: " +wifi_essid_info)
                         }
                     }
                     Component {
@@ -1097,8 +1099,8 @@ SystemWindow {
                     }
                     ListView {
                         id: listView
-                        width: 548
-                        height: 340
+                        width: adaptive_width/1.45
+                        height: adaptive_height/1.41
                         focus:true
                         anchors {
                             left: parent.left
