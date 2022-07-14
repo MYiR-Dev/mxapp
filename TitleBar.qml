@@ -15,7 +15,7 @@ Item {
         titleIconWidth: 172
         titleIconHeight: 35
         titleNameSize: 20
-        titleName: "Make Your Ideal Real!"
+        titleName: "Make Your Idea Real!"
 
         onLeftBarClicked: {
             mainloader.source = "SupportWindow.qml"
