@@ -1,0 +1,21 @@
+QMAKE_CXX.QT_COMPILER_STDCXX = 201402L
+QMAKE_CXX.QMAKE_GCC_MAJOR_VERSION = 9
+QMAKE_CXX.QMAKE_GCC_MINOR_VERSION = 3
+QMAKE_CXX.QMAKE_GCC_PATCH_VERSION = 0
+QMAKE_CXX.COMPILER_MACROS = \
+    QT_COMPILER_STDCXX \
+    QMAKE_GCC_MAJOR_VERSION \
+    QMAKE_GCC_MINOR_VERSION \
+    QMAKE_GCC_PATCH_VERSION
+QMAKE_CXX.INCDIRS = \
+    /media/xmr/ST-workplace/sysroots/cortexa7t2hf-neon-vfpv4-ostl-linux-gnueabi/usr/include/c++/9.3.0 \
+    /media/xmr/ST-workplace/sysroots/cortexa7t2hf-neon-vfpv4-ostl-linux-gnueabi/usr/include/c++/9.3.0/arm-ostl-linux-gnueabi \
+    /media/xmr/ST-workplace/sysroots/cortexa7t2hf-neon-vfpv4-ostl-linux-gnueabi/usr/include/c++/9.3.0/backward \
+    /media/xmr/ST-workplace/sysroots/x86_64-ostl_sdk-linux/usr/lib/arm-ostl-linux-gnueabi/gcc/arm-ostl-linux-gnueabi/9.3.0/include \
+    /media/xmr/ST-workplace/sysroots/x86_64-ostl_sdk-linux/usr/lib/arm-ostl-linux-gnueabi/gcc/arm-ostl-linux-gnueabi/9.3.0/include-fixed \
+    /media/xmr/ST-workplace/sysroots/cortexa7t2hf-neon-vfpv4-ostl-linux-gnueabi/usr/include
+QMAKE_CXX.LIBDIRS = \
+    /media/xmr/ST-workplace/sysroots/x86_64-ostl_sdk-linux/usr/lib/arm-ostl-linux-gnueabi/gcc/arm-ostl-linux-gnueabi/9.3.0 \
+    /media/xmr/ST-workplace/sysroots/cortexa7t2hf-neon-vfpv4-ostl-linux-gnueabi/lib \
+    /media/xmr/ST-workplace/sysroots/cortexa7t2hf-neon-vfpv4-ostl-linux-gnueabi/usr/lib/arm-ostl-linux-gnueabi/9.3.0 \
+    /media/xmr/ST-workplace/sysroots/cortexa7t2hf-neon-vfpv4-ostl-linux-gnueabi/usr/lib
