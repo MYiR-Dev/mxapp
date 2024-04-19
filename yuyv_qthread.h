@@ -46,16 +46,46 @@
 #include <stdbool.h>
 #include <string>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+
+#include <getopt.h>             /* getopt_long() */
+
+#include <fcntl.h>              /* low-level i/o */
+#include <unistd.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <sys/mman.h>
+#include <sys/ioctl.h>
+
+#include <linux/videodev2.h>
+
 #define FRAMEBUFFER_COUNT 4
 #define PIXWIDTH    640
 #define PIXHEIGHT   480
 
 #define CLEAR(x) memset(&(x), 0, sizeof(x))
+#define NUM_PLANES 1
+
 /* 命名空间 */
 using namespace std;
 
+struct csi_buffer {
+    void *  start[NUM_PLANES];
+    size_t  length[NUM_PLANES];
+};
+
+struct usb_buffer{
+	void *  start;
+    size_t  length;
+};
+
 class YUYVQThread : public QThread{
-	Q_OBJECT
+    Q_OBJECT
 public:
     explicit YUYVQThread(QWidget *parent = nullptr);
     ~YUYVQThread();
@@ -64,6 +94,7 @@ public:
     bool show_flag;
 
     /* v4l2结构体 */
+    /*
     struct v4l2_format              fmt;
     struct v4l2_buffer              buf;
     struct v4l2_requestbuffers      reqbuf;
@@ -74,23 +105,49 @@ public:
     int                             ret, v4l2_fd;    //返回值ret和v4l2描述符v4l2_fd
     unsigned int                    n_buffers;
     QString                         dev_name;
+    */
 
-    /* buffer描述信息结构体 */
-    struct buffer {
-        void *start;
-        size_t length;
+    enum vb2_memory {
+        VB2_MEMORY_UNKNOWN      = 0,
+        VB2_MEMORY_MMAP         = 1,
     };
 
-    struct buffer buffers[FRAMEBUFFER_COUNT];
+    char dev_name[20];
+    char convertcmd[100];
+    int fd = -1;
+
+    unsigned int n_buffers;
+    int out_buf;
+    int frame_count = 1;
+    int frame_number = 0;
+    int img_width = 1280;
+    int img_height = 720;
+    int status;
+    int ret;
+    struct csi_buffer *csi_buffers;
+	struct usb_buffer usb_buffers[FRAMEBUFFER_COUNT];
+
     QImage m_img;
+	int m_type;
     /* QThread 虚函数run */
     void run();
 
     void exit_show();
-    void handleData(unsigned char *bufData);
+    int handleData(unsigned char *bufData);
     void yuv_to_rgb(unsigned char* yuv, unsigned char *rgb);
     void set_device(QString device);
+    int xioctl(int fh, int request, void *arg);
+    void process_image(const void *p, int size);
+    int read_frame(void);
+    void stop_capturing(int m_type);
+    int mainloop(void);
+    int start_capturing(int m_type);
+    void uninit_device(int m_type);
+    int init_mmap(void);
+    int init_device(int m_type);
+    void close_device(void);
+    int open_device(void);
 signals:
-	void sign_img(QImage image);
+    void sign_img(QImage image);
 };
 #endif // YUYV_QTHREAD_H

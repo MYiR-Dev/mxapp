@@ -41,7 +41,7 @@ SystemWindow {
         }
     }
     onAboutToHide: {
-        showFlag = false
+       showFlag = false
     }
 
     Define {id: def}
@@ -138,7 +138,7 @@ SystemWindow {
         id: bar
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        img_src: captureSession.imageCapture.preview
+    	img_src: captureSession.imageCapture.preview
         onCaptureImage: {
 
             //保存照片到指定位置
