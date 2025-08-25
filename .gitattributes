@@ -1,0 +1,24 @@
+# -----------------------------
+# Qt + QML 跨平台项目配置
+# -----------------------------
+
+# 源代码文件（统一 LF 换行符）
+*.c      text eol=lf
+*.cpp    text eol=lf
+*.cc     text eol=lf
+*.h      text eol=lf
+*.hpp    text eol=lf
+*.hh     text eol=lf
+
+# Qt 工程相关文件
+*.pro    text eol=lf
+*.pri    text eol=lf
+*.qrc    text eol=lf
+*.qml    text eol=lf
+*.js     text eol=lf
+*.json   text eol=lf
+*.ts     text eol=lf
+*.ui     text eol=lf
+
+# 脚本文件（Linux 下运行，必须 LF）
+*.sh     text eol=lf
