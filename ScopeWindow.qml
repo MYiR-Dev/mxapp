@@ -39,6 +39,11 @@ SystemWindow {
 //        PlotView {
 //        }
 //    }
+    //组件open()后，打开时钟更新曲线
+    onVisibleChanged: {
+        if(visible === true)
+            plotviewrect.timerpause = true
+    }
     Image {
         id: rocket
 //        fillMode: Image.TileHorizontally
@@ -143,6 +148,8 @@ SystemWindow {
                     anchors.fill: parent
                     onClicked: {
                         scopeWindow.close();
+                        //点击退出以后，暂停曲线更新（时钟并为stop）
+                        plotviewrect.timerpause = false;
                     }
 
                     onPressed: {
@@ -233,10 +240,13 @@ SystemWindow {
 
 
     Rectangle{
+        id: plotviewrect
         x:0
         y:adaptive_height/15
+        property alias timerpause: plotview.timerpause
         PlotView {
-            opacity: 0.2
+            id: plotview
+            // opacity: 0.2
             width: adaptive_width/1.395
             height: adaptive_height/1.06
         }

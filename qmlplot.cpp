@@ -30,9 +30,29 @@
 CustomPlotItem::CustomPlotItem( QQuickItem* parent ) : QQuickPaintedItem( parent )
                                                      , m_CustomPlot( nullptr ), m_timerId( 0 )
 {
+    QDir dir;
+    bool ret = false;
     setFlag( QQuickItem::ItemHasContents, true );
     setAcceptedMouseButtons( Qt::AllButtons );
+    m_PlotshowImage = QPixmap(0, 0);
+    m_timerPause = false;
 
+    if(!dir.exists("/usr/share/myir")){
+        ret = dir.mkpath("/usr/share/myir");
+        if(!ret){
+            qDebug()<<"failed create dir";
+        }
+    }
+    QFile file(":/ecg/ecg.dat");
+    if(!QFile("/usr/share/myir/ecg.dat").exists()){
+        ret = file.copy(":/ecg/ecg.dat","/usr/share/myir/ecg.dat");
+        qDebug() << "ecg.dat file copy " << ret;
+    }
+    QFile file1(":/ecg/resp.text");
+    if(!QFile("/usr/share/myir/resp.text").exists()){
+        ret = file1.copy(":/ecg/resp.text","/usr/share/myir/resp.text");
+        qDebug() << "resp.text file copy " << ret;
+    }
 //    QPalette backGround;
 //    backGround.setColor(QPalette::Background, QColor(0,0,0,255));
 
@@ -65,28 +85,34 @@ void CustomPlotItem::initCustomPlot()
     m_CustomPlot->addGraph();
     m_CustomPlot->addGraph();
 
-    m_CustomPlot->graph(0)->setPen(QPen(Qt::green));
-    m_CustomPlot->graph(1)->setPen(QPen(Qt::green));
-    m_CustomPlot->graph(2)->setPen(QPen(Qt::red));
-    m_CustomPlot->graph(3)->setPen(QPen(Qt::red));
-    m_CustomPlot->graph(4)->setPen(QPen(Qt::green));
-    m_CustomPlot->graph(5)->setPen(QPen(Qt::green));
-    m_CustomPlot->graph(6)->setPen(QPen(Qt::red));
-    m_CustomPlot->graph(7)->setPen(QPen(Qt::red));
+    QPen pen;
+    pen.setColor(Qt::green); // 设置画笔颜色
+    pen.setWidth(1); // 设置线宽为1像素
+    m_CustomPlot->graph(0)->setPen(pen);
+    m_CustomPlot->graph(1)->setPen(pen);
+    m_CustomPlot->graph(4)->setPen(pen);
+    m_CustomPlot->graph(5)->setPen(pen);
+    pen.setColor(Qt::red);
+    m_CustomPlot->graph(2)->setPen(pen);
+    m_CustomPlot->graph(3)->setPen(pen);
+    m_CustomPlot->graph(6)->setPen(pen);
+    m_CustomPlot->graph(7)->setPen(pen);
 
     m_CustomPlot->xAxis->setLabel( "t" );
     m_CustomPlot->yAxis->setLabel( "S" );
+    m_CustomPlot->setBackground(Qt::NoBrush);
     m_CustomPlot->xAxis->setRange(0, 5, Qt::AlignLeading);
     m_CustomPlot->yAxis->setRange(0, 1200, Qt::AlignLeading);
     m_CustomPlot->setInteractions( QCP::iRangeDrag | QCP::iRangeZoom );
     m_CustomPlot->yAxis->setVisible(false);
     m_CustomPlot->xAxis->setVisible(false);
-//    m_CustomPlot->setBackground(Qt :: transparent);
+    m_CustomPlot->setPlottingHints(QCP::phCacheLabels | QCP::phImmediateRefresh);
 
     getECGData();
     getRESPData();
     timer_count = 0;
-    startTimer(20);
+    m_timerId = startTimer(20);
+    m_timerPause = true;
 
     connect( m_CustomPlot, &QCustomPlot::afterReplot, this, &CustomPlotItem::onCustomReplot );
 
@@ -94,11 +120,13 @@ void CustomPlotItem::initCustomPlot()
 }
 void CustomPlotItem::timerEvent(QTimerEvent *event)
 {
-    int i = 0;
+    //如果ui界面点击返回触发m_timerPause=false
+    if(!m_timerPause || event->timerId() != m_timerId)
+        return;
     if (ecg_time[timer_count] > 5)
     {
 
-        timer_count = 0;;
+        timer_count = 0;
 
         m_CustomPlot->graph(0)->data()->clear();
         m_CustomPlot->graph(4)->setData(ecg_time,ecg_data1_backup);
@@ -124,9 +152,21 @@ void CustomPlotItem::timerEvent(QTimerEvent *event)
     m_CustomPlot->graph(2)->addData(ecg_time[timer_count],pleth_data[timer_count+30]);
     m_CustomPlot->graph(3)->addData(ecg_time[timer_count],resp_data[timer_count+30]);
 
-    m_CustomPlot->replot();
+    m_CustomPlot->replot(QCustomPlot::rpQueuedReplot);
 
     timer_count++;
+}
+bool CustomPlotItem::timerPause() const
+{
+    return m_timerPause;
+}
+
+void CustomPlotItem::setTimerPause(bool newTimerPause)
+{
+    if (m_timerPause == newTimerPause)
+        return;
+    m_timerPause = newTimerPause;
+    emit timerPauseChanged();
 }
 void CustomPlotItem::getRESPData()
 {
@@ -236,12 +276,10 @@ void CustomPlotItem::paint( QPainter* painter )
 
     if (m_CustomPlot)
     {
-        QPixmap    picture( boundingRect().size().toSize() );
-        QCPPainter qcpPainter( &picture );
-
-        m_CustomPlot->toPainter( &qcpPainter );
-
-        painter->drawPixmap( QPoint(), picture );
+        painter->setRenderHints(QPainter::Antialiasing|QPainter::SmoothPixmapTransform, true);
+        //使用toPixmap()，去除设置背景透明后的残影
+        m_PlotshowImage = m_CustomPlot->toPixmap(0,0);
+        painter->drawPixmap( QPoint(), m_PlotshowImage );
     }
 
 }

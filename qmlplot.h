@@ -30,6 +30,8 @@ class QCPAbstractPlottable;
 class CustomPlotItem : public QQuickPaintedItem
 {
     Q_OBJECT
+    //宏 交互变量m_timerPause
+    Q_PROPERTY(bool m_timerPause READ timerPause WRITE setTimerPause NOTIFY timerPauseChanged FINAL)
 
 public:
     CustomPlotItem( QQuickItem* parent = 0 );
@@ -51,6 +53,11 @@ public:
     QVector<double> pleth_data_backup;
     QVector<double> resp_data_backup;
     int timer_count;
+    bool timerPause() const;
+    void setTimerPause(bool newTimerPause);
+
+signals:
+    void timerPauseChanged();
 protected:
 //    void routeMouseEvents( QMouseEvent* event );
 //    void routeWheelEvents( QWheelEvent* event );
@@ -65,7 +72,9 @@ protected:
 
 private:
     QCustomPlot*         m_CustomPlot;
+    QPixmap              m_PlotshowImage;
     int                  m_timerId;
+    bool                 m_timerPause;
 
 private slots:
     void graphClicked( QCPAbstractPlottable* plottable );
