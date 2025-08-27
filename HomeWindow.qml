@@ -84,7 +84,126 @@ Rectangle {
             }
         }
     }
+    HomeWinPop{
+        id:homewinpop
+        width: Screen.desktopAvailableWidth
+        height: Screen.desktopAvailableHeight
+        //用于接收pathview的currentIndex,实现动态加载listmodel中的数据
+        property alias popindex: rectte.popindex
+        Rectangle{
+            id:rectte
+            anchors.fill:parent
+            color:"transparent"
 
+            property alias popindex: reppop.index
+            RowLayout{
+                spacing: 10
+                anchors.fill:parent
+
+                Repeater{
+                    id:reppop
+                    property int index: 0
+                    model: viewModel.get(index).subNode
+                    delegate: Rectangle{
+                        color: Qt.rgba(0,0,0,0)
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.preferredWidth:parent.width/4.5
+                        Layout.preferredHeight:parent.height/2.5
+
+                        Rectangle{
+                            id: apppopRectfg
+                            radius: 10
+                            color: model.acolor
+                            anchors.fill:parent
+                            Image{
+                                id: appiconpopfg
+                                width: parent.height*0.8
+                                height: parent.height*0.8
+                                source: model.aimage
+                                anchors{
+                                    horizontalCenter: parent.horizontalCenter
+                                    top:parent.top
+                                    topMargin: 10
+                                }
+                            }
+
+                            Text{
+                                id:ttpopfg
+                                text: model.application
+                                color: "#dcdde4";
+                                font.family: "Microsoft YaHei";
+                                font.pixelSize: family_font_size;
+                                //                                    wrapMode: Text.Wrap;
+                                anchors{
+                                    horizontalCenter: parent.horizontalCenter
+                                    top:appiconpopfg.bottom
+                                    topMargin: 10
+                                }
+                            }
+
+                            MouseArea{
+                                id: homepopMAfg
+                                anchors.fill: parent;
+                                hoverEnabled: true;
+                                cursorShape: Qt.PointingHandCursor;
+
+                                onClicked: {
+                                    console.log("clicked:"+model.aqml)
+                                    if(model.aqml === "CameraWindow.qml"){
+                                        mainloader.source = "CameraWindow.qml"
+                                        mainloader.item.show()
+                                        mainloader.item.requestActivate()
+                                    }else if(model.aqml === "PictureWindow.qml"){
+                                        mainloader.source = "PictureWindow.qml"
+                                        mainloader.item.show()
+                                        mainloader.item.requestActivate()
+                                    }else if(model.aqml === "TicketWindow.qml"){
+                                        mainloader.source = "TicketWindow.qml"
+                                        mainloader.item.show()
+                                        mainloader.item.requestActivate()
+                                    }else if(model.aqml === "ScopeWindow.qml"){
+                                        mainloader.source = "ScopeWindow.qml"
+                                        mainloader.item.show()
+                                        mainloader.iteimagem.requestActivate()
+                                    }else if(model.aqml === "FileWindow.qml"){
+                                        mainloader.source = "FileWindow.qml"
+                                        mainloader.item.show()
+                                        mainloader.item.requestActivate()
+                                    }else if(model.aqml === "WashWindow.qml"){
+                                        mainloader.source = "WashWindow.qml"
+                                        mainloader.item.show()
+                                        mainloader.item.requestActivate()
+                                    }else if(model.aqml === "InfoWindow.qml"){
+                                        mainloader.source = "InfoWindow.qml"
+                                        mainloader.item.show()
+                                        mainloader.item.requestActivate()
+                                    }else if(model.aqml === "SettingsWindow.qml"){
+                                        mainloader.source = "SettingsWindow.qml"
+                                        mainloader.item.show()
+                                        mainloader.item.requestActivate()
+                                        settingsWnd.item.requestActivate()
+                                    }else if(model.aqml === "MusicWindow.qml"){
+                                        mainloader.source = "MusicWindow.qml"
+                                        mainloader.item.show()
+                                        mainloader.item.requestActivate()
+                                    }else if(model.aqml === "ChargeWindow.qml"){
+                                        mainloader.source = "ChargeWindow.qml"
+                                        mainloader.item.open()
+                                        mainloader.item.forceActiveFocus()
+                                    }
+                                    else if(model.aqml === "WinAppearance.qml"){
+                                        mainloader.source="WinAppearance.qml"
+                                        mainloader.item.open()
+                                        mainloader.item.forceActiveFocus()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     //个性推荐的顶部，使用pathView
     Rectangle{
         id:pathViewRect;
@@ -234,6 +353,34 @@ Rectangle {
                         axis{x:0;y:1;z:0}
                         angle:wrapper.iangle
                     }
+                    //移至此处解决触摸和图片尺寸完美适配问题
+                    MouseArea{
+                        anchors.fill: parent;
+                        hoverEnabled: true;
+                        cursorShape: Qt.PointingHandCursor;
+
+                        onClicked: {
+                            if(index!==pathView.currentIndex)
+                            {
+                                pathView.currentIndex=index;
+                                pageIndicator.currentIndex=index;
+                            }
+                            else
+                            {
+                                console.log("just pressed on pathview ui")
+                                //只有一个子项的时候直接加载
+                                if(viewModel.get(pathView.currentIndex).subNode.count === 1){
+                                    mainloader.source = viewModel.get(pathView.currentIndex).subNode.get(0).aqml
+                                    mainloader.item.show()
+                                    mainloader.item.forceActiveFocus()
+                                }else{
+                                    //指定弹窗中加载的数据
+                                    homewinpop.popindex = pathView.currentIndex
+                                    homewinpop.open()
+                                }
+                            }
+                        }
+                    }
                 }
 
 
@@ -271,25 +418,7 @@ Rectangle {
                     font.pixelSize: family_font_size;
                     wrapMode: Text.Wrap;
                 }
-                MouseArea{
-                    anchors.fill: parent;
-                    hoverEnabled: true;
-                    cursorShape: Qt.PointingHandCursor;
-
-                    onClicked: {
-                        if(index!==pathView.currentIndex)
-                        {
-                            pathView.currentIndex=index;
-                            pageIndicator.currentIndex=index;
-                        }
-                        else
-                        {
-                            //打开链接
-                        }
-                    }
-                }
             }
-
         }
 
         PathView{

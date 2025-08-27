@@ -488,5 +488,6 @@
         <file>images/wvga/public/appearance.png</file>
         <file>images/wvga/public/charge_pile.png</file>
         <file>CopyrightNoticeDialog.qml</file>
+        <file>HomeWinPop.qml</file>
     </qresource>
 </RCC>
