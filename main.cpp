@@ -74,6 +74,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<Charge104>("Charge104",1,0,"Charge104");
     qmlRegisterType<MVideoOutput>("mvideooutput",1,0, "MVideoOutput");
 
+    engine.rootContext()->setContextProperty("appQtVersion", QT_VERSION_STR);
+
     Translator *translator = Translator::getInstance();
     translator->set_QQmlEngine(&engine);
     engine.rootContext()->setContextProperty("translator",translator);

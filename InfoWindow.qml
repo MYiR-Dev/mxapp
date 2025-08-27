@@ -671,7 +671,7 @@ SystemWindow {
                     }
                     Text{
                         id:qt_version_value
-                        text: qsTr("5.12")
+                        text:qsTr(appQtVersion)
                         font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
@@ -697,7 +697,7 @@ SystemWindow {
                     }
                     Text{
                         id:thirdpart_copyright_value
-                        text: qsTr("MEasy HMI v2.0 ")
+                        text: qsTr("MEasy HMI " + Qt.application.version)
                         font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
