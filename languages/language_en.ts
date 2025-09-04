@@ -864,6 +864,11 @@
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../TitleBar.qml" line="110"/>
+        <source>版权说明</source>
+        <translation>CopyRight</translation>
+    </message>
 </context>
 <context>
     <name>WashWindow</name>

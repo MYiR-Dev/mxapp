@@ -24,7 +24,8 @@ import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
-import Qt.labs.settings 1.0
+// import Qt.labs.settings 1.0
+import QtCore 6.6
 
 //#02b9db home界面小图片背景色
 
@@ -61,6 +62,13 @@ Rectangle {
         return -1
     }
 
+    function reloadModel() {
+        var oldIndex = pathView.currentIndex
+        pathView.currentIndex = -1
+        pathView.currentIndex = oldIndex
+        pathView.pathItemCount = 5
+    }
+
     FontMetrics {
         id: fontMetrics
         font.family: "Microsoft YaHei"
@@ -70,8 +78,9 @@ Rectangle {
     property int app_font_size: 20
     Connections {
         target: translator
-        onLanguageChanged: {
+        function onLanguageChanged(lang) {
             console.log(lang)
+            pathView.pathItemCount = 4
             if (lang === "English")
             {
                 family_font_size = 25
@@ -82,6 +91,7 @@ Rectangle {
                 family_font_size = 30
                 app_font_size = 20
             }
+            Qt.callLater(reloadModel)
         }
     }
     HomeWinPop{

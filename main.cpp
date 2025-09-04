@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 
     app.setOrganizationName("MYiR_Electronics");
     app.setApplicationName("MEasy_HMI");
-    app.setApplicationVersion("V2.2");
+    app.setApplicationVersion("V2.3");
 
     QQmlApplicationEngine engine;
 
