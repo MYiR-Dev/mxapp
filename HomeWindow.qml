@@ -72,7 +72,8 @@ Rectangle {
     FontMetrics {
         id: fontMetrics
         font.family: "Microsoft YaHei"
-        font.pixelSize: 20
+        //动态设置字体大小
+        font.pixelSize: app_font_size
     }
     property int family_font_size: 30
     property int app_font_size: 20
@@ -539,24 +540,21 @@ Rectangle {
                     Rectangle{
                         id:rootrect
                         Layout.alignment: Qt.AlignHCenter
-                        Layout.preferredWidth:128
+                        Layout.preferredWidth:parent.width/viewModel.get(pathView.currentIndex).subNode.count
                         Layout.preferredHeight:48
                         color: Qt.rgba(0,0,0,0)
 
                         Rectangle{
                             id: appRect
                             implicitWidth: {
+                                //动态设置按钮框大小
                                 var wid = fitWidth(tt.text)+55
-                                console.log("wid:"+wid)
-                                Math.min(wid,160)
+                                Math.ceil(wid)
                             }
                             implicitHeight: 42
                             radius: 10
                             color: model.acolor
-                            anchors{
-                                verticalCenter: parent.verticalCenter
-                                leftMargin: 20
-                            }
+                            anchors.centerIn: parent
 
                             Image{
                                 id: appicon
