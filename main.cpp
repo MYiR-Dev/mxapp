@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 
     app.setOrganizationName("MYiR_Electronics");
     app.setApplicationName("MEasy_HMI");
-    app.setApplicationVersion("V2.3");
+    app.setApplicationVersion("V2.4");
 
     QQmlApplicationEngine engine;
 
@@ -80,9 +80,9 @@ int main(int argc, char *argv[])
     translator->set_QQmlEngine(&engine);
     engine.rootContext()->setContextProperty("translator",translator);
 
-    CameraImageProvider *cameraImageProvider = new CameraImageProvider;
-    cameraImageProvider->registerImageProvider(&engine);
-    engine.rootContext()->setContextProperty("cameraImageProvider",cameraImageProvider);
+    showImage *show_image = new showImage;
+    engine.rootContext()->setContextProperty("show_image",show_image);
+    engine.addImageProvider(QLatin1String("cameraImageProvider"), show_image->cameraImageProvider);
 
     ClearCache *clear_cache = new ClearCache;
 

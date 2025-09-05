@@ -23,23 +23,41 @@
 #ifndef CAMERAIMAGEPROVIDER_H
 #define CAMERAIMAGEPROVIDER_H
 
-#include <QQuickItem>
-#include <QQuickItem>
 #include <QQuickImageProvider>
 #include <QImage>
-#include "yuyv_qthread.h"
+#include <QPixmap>
+#include <QQmlEngine>
+#include <QDir>
+#include <QStringList>
+#include "camera_qthread.h"
+
 class CameraImageProvider : public QQuickImageProvider
 {
-    Q_OBJECT
-    QML_ELEMENT
 public:
-    Q_INVOKABLE void captureImg(QString path);
-    CameraImageProvider(QObject *parent = nullptr);
+    static CameraImageProvider* getInstance();
     QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize);
     QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
-    void registerImageProvider(QQmlEngine *engine);
     QImage img;
-    YUYVQThread *thread;
+private:
+    explicit CameraImageProvider();
+    static CameraImageProvider* ImageProviderSingle;
+};
+
+
+class showImage : public QObject
+{
+    Q_OBJECT
+public:
+    Q_INVOKABLE void captureImg(QString path);
+    Q_INVOKABLE void startCamera();
+    Q_INVOKABLE void stopCamera();
+
+    showImage(QObject *parent = nullptr);
+    void getCameraList();
+    Camera_qthread *thread;
+    QImage img;
+    CameraImageProvider *cameraImageProvider;
+    QStringList cameraList;
 signals:
     void callQmlRefreshImage();
     void callQmlSavePath(QString path);

@@ -34,14 +34,18 @@ SystemWindow {
     height: adaptive_height
 
     onVisibleChanged: {
-        if(showFlag == false)
+        if(visible == true)
         {
-            showFlag = true
-            console.log("相机窗口被激活")
+            //摄像头窗口打开后开启摄像头
+            show_image.startCamera();
+            console.log("The camera window is activated")
         }
     }
     onAboutToHide: {
-       showFlag = false
+        showFlag = false
+        //解决再次进入黑屏问题
+        counter = !counter
+        image.source = ""+ counter
     }
 
     Define {id: def}
@@ -54,10 +58,11 @@ SystemWindow {
     Image {
         id: image
         anchors.fill: parent
+        cache: false
     }
 
     Connections {
-        target: cameraImageProvider
+        target: show_image
         onCallQmlRefreshImage:{
             reload()
         }
@@ -110,12 +115,17 @@ SystemWindow {
     MyIconButton {
         id: backButton
         icon_code: def.iconCode_back
+	// 如果获取不到摄像头信息将导致画面卡死
         button_text: mediaDevices.defaultVideoInput.description
         button_color: "white"
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.margins: 10
-        onClicked: root.close()
+        onClicked: {
+            //点击推出后停止摄像头
+            show_image.stopCamera();
+            root.close()
+        }
     }
 
     //右上角跳转到图库按钮
@@ -143,7 +153,7 @@ SystemWindow {
 
             //保存照片到指定位置
             var savePath = def.captureSavePath + def.captureSaveHead + def.getCurrentTime();
-            cameraImageProvider.captureImg(savePath)
+            show_image.captureImg(savePath)
         }
 
         //以下为小视频录制功能

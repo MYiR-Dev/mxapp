@@ -3,11 +3,13 @@ QT += core-private network gui-private multimedia-private
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++11
 CONFIG += qcamera-v4l2
+
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Refer to the documentation for the
 # deprecated API to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
+# QMAKE_CXXFLAGS += -mavx2
 
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -18,10 +20,13 @@ SOURCES += \
     Charge104.cpp \
     ChargeManage.cpp \
     ClearCache.cpp \
+    abstractcamera.cpp \
+    camera_qthread.cpp \
     cameraimageprovider.cpp \
     iec104_class.cpp \
     logmsg.cpp \
         main.cpp \
+    multicamera.cpp \
     multimedia/controls/qmediaavailabilitycontrol.cpp \
     multimedia/controls/qmetadatareadercontrol.cpp \
     multimedia/controls/qvideorenderercontrol.cpp \
@@ -79,10 +84,14 @@ HEADERS += \
     Charge104.h \
     ChargeManage.h \
     ClearCache.h \
+    abstractcamera.h \
+    camera_data.h \
+    camera_qthread.h \
     cameraimageprovider.h \
     iec104_class.h \
     iec104_types.h \
     logmsg.h \
+    multicamera.h \
     multimedia/controls/qmediaavailabilitycontrol.h \
     multimedia/controls/qmetadatareadercontrol.h \
     multimedia/controls/qvideorenderercontrol.h \

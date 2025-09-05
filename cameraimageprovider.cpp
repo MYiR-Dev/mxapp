@@ -22,13 +22,19 @@
 
 #include "cameraimageprovider.h"
 #include <QDebug>
-CameraImageProvider::CameraImageProvider(QObject *parent): QQuickImageProvider(QQuickImageProvider::Image)
+
+CameraImageProvider* CameraImageProvider::ImageProviderSingle = nullptr;
+CameraImageProvider::CameraImageProvider(): QQuickImageProvider(QQuickImageProvider::Image)
 {
-    thread = new YUYVQThread;
-    thread->set_device("/dev/video0");
-    thread->show_flag = true;
-    thread->start();
-    connect(thread,SIGNAL(sign_img(QImage)),this,SLOT(slot_img(QImage)));
+
+}
+
+CameraImageProvider *CameraImageProvider::getInstance()
+{
+    if(ImageProviderSingle != nullptr)
+        return ImageProviderSingle;
+    ImageProviderSingle = new CameraImageProvider;
+    return ImageProviderSingle;
 }
 
 QImage CameraImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
@@ -41,19 +47,66 @@ QPixmap CameraImageProvider::requestPixmap(const QString &id, QSize *size, const
     return QPixmap::fromImage(this->img);
 }
 
-void CameraImageProvider::registerImageProvider(QQmlEngine *engine)
+void showImage::captureImg(QString path)
 {
-    engine->addImageProvider("cameraImageProvider",this);
+    QDir dir;
+    if(!dir.exists("/usr/share/myir/Capture"))
+        dir.mkpath("/usr/share/myir/Capture");
+    bool ret = this->img.save(path + ".jpg");
+    if(ret){
+        qDebug()<<"save img:"<<path + ".jpg" << "succ";
+        emit callQmlSavePath(path + ".jpg");
+    }
+    else
+        qDebug()<<"save img:"<<path + ".jpg" << "fail";
+}
+//qml端点击打开摄像头后调用
+//打开识别到第一个具有预览功能的/dev/video*节点
+void showImage::startCamera()
+{
+    getCameraList();
+    foreach (QString cameraPath, cameraList) {
+        if(!thread->set_device(QString(cameraPath))){
+            qDebug() << "can't open camera" << cameraPath;
+            // return;
+        }else{
+            qDebug() << cameraPath << "camera open successed";
+            thread->start();
+            return ;
+        }
+    }
+    qDebug() << "dont have supported camera";
+    return ;
 }
 
-void CameraImageProvider::captureImg(QString path)
+//qml端点击退出调用
+void showImage::stopCamera()
 {
-    this->img.save(path + ".jpg");
-    emit callQmlSavePath(path);
+    thread->exit_camera();
 }
 
-void CameraImageProvider::slot_img(QImage img)
+showImage::showImage(QObject *parent) : QObject(parent)
+{
+    thread = Camera_qthread::getInstance();
+    cameraImageProvider = CameraImageProvider::getInstance();
+
+    connect(thread,SIGNAL(sign_img(QImage)),this,SLOT(slot_img(QImage)));
+}
+//获取所有的/dev/video*
+void showImage::getCameraList()
+{
+    QDir devDir("/dev");
+    QString devStr("/dev/");
+    cameraList.clear();
+    cameraList = devDir.entryList({"video*"}, QDir::System);
+    for(int i = 0; i < cameraList.count(); i++){
+        cameraList[i] = devStr + cameraList[i];
+    }
+}
+
+void showImage::slot_img(QImage img)
 {
     this->img = img;
+    cameraImageProvider->img = img;
     emit callQmlRefreshImage();
 }
