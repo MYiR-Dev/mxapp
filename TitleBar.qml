@@ -20,7 +20,7 @@
     See <https://www.gnu.org/licenses/lgpl-3.0.html> for more details.
 ***********************************************************************/
 
-import QtQuick 2.0
+import QtQuick
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
@@ -30,13 +30,30 @@ Item {
         top: parent.top
         left: parent.left
     }
+    Component.onCompleted: {
+        languageBt.implicitWidth = fitWidth(languageBt.icontext)+fitWidth(languageBt.engtext)+20
+        copyrightNotice.implicitWidth = fitWidth(copyrightNotice.crtext)+20
+    }
 
+    function fitWidth(text){
+        return  Math.ceil(fontMetrics.advanceWidth(text));
+    }
+
+    property int app_font_size: {
+        Math.ceil(height*0.4)
+    }
+
+    FontMetrics {
+        id: fontMetrics
+        font.family: "Microsoft YaHei"
+        font.pixelSize: app_font_size
+    }
     TitleLeftBar{
         id: leftBar
         titleIcon: "images/LOGO.png"
-        titleIconWidth: 172
-        titleIconHeight: 35
-        titleNameSize: 20
+        titleIconWidth: parent.width*0.2
+        titleIconHeight: parent.height*0.8
+        titleNameSize: app_font_size*1.2
         titleName: "Make Your Idea Real!"
 
         onLeftBarClicked: {
@@ -52,9 +69,12 @@ Item {
     property string language_icon:"\uf1ab"
     Rectangle{
         id:languageBt
-        width: 100
-        height: 25
-        radius: 10
+        property int engwidth: fitWidth(icontext)+fitWidth(engtext)+20
+        property alias engtext: textEnglish.text
+        property alias icontext: icon.text
+        implicitWidth:engwidth
+        implicitHeight: app_font_size*1.8
+        radius: implicitHeight*0.2
         anchors.top:parent.top
         anchors.topMargin: 10
         anchors.right: parent.right
@@ -63,7 +83,7 @@ Item {
         Text {
             id: icon
             font.family: "FontAwesome"
-            font.pixelSize: 12
+            font.pixelSize: app_font_size
             text: language_icon //图标
             color: "white"
             opacity: 1.0        //不透明
@@ -76,7 +96,7 @@ Item {
             id : textEnglish
             text: checked? qsTr("中文"): qsTr("English")
             color: "white"
-            font.pixelSize: 12
+            font.pixelSize: app_font_size
             font.family:"Microsoft YaHei"
             anchors.left: icon.right
             anchors.verticalCenter: parent.verticalCenter
@@ -89,6 +109,7 @@ Item {
             onClicked: {
                 checked = !checked
                 console.log(checked)
+                languageBt.implicitWidth = fitWidth(languageBt.icontext)+fitWidth(languageBt.engtext)+20
                 if(checked)
                    translator.loadLanguage("English");
                 else
@@ -99,18 +120,20 @@ Item {
     }
 Rectangle{
         id:copyrightNotice
-        width: 100
-        height: 25
-        radius: 10
+        implicitWidth:fitWidth(crtext)+20
+        implicitHeight: app_font_size*1.8
+        radius: implicitHeight*0.2
         anchors.top:parent.top
         anchors.topMargin: 10
         anchors.right: languageBt.left
         anchors.rightMargin: 30
         color:"#02b9db"
+        property alias crtext: cR.text
         Text {
+            id:cR
             text: qsTr("版权说明")
             color: "white"
-            font.pixelSize: 12
+            font.pixelSize: app_font_size
             font.family:"Microsoft YaHei"
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter

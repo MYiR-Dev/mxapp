@@ -64,6 +64,7 @@ Rectangle {
         id: name
         text: titleName
         anchors{
+            verticalCenter: logo.verticalCenter
             left: logo.right
             leftMargin: 16
         }
