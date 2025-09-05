@@ -47,11 +47,6 @@
         <file>images/wvga/home/public_icon_ticket_nor.png</file>
         <file>images/wvga/home/media_icon_camera_nor.png</file>
         <file>PlotView.qml</file>
-        <file>main.cpp</file>
-        <file>qcustomplot.cpp</file>
-        <file>qcustomplot.h</file>
-        <file>qmlplot.cpp</file>
-        <file>qmlplot.h</file>
         <file>images/wvga/ecg/display_bg.png</file>
         <file>ecg/resp.text</file>
         <file>images/wvga/ecg/heart.png</file>
@@ -405,17 +400,9 @@
         <file>images/wvga/ecg/ecg_bg5.png</file>
         <file>languages/language_en.ts</file>
         <file>languages/language_zh.ts</file>
-        <file>common.cpp</file>
-        <file>common.h</file>
-        <file>myfunction.cpp</file>
-        <file>myfunction.h</file>
         <file>languages/language_en.qm</file>
         <file>languages/language_zh.qm</file>
         <file>images/fhd/ecg/header_logo.png</file>
-        <file>mvideooutput.cpp</file>
-        <file>mvideooutput.h</file>
-        <file>videowidgetsurface.cpp</file>
-        <file>videowidgetsurface.h</file>
         <file>aging/aging.qml</file>
         <file>aging/aging2.qml</file>
         <file>aging/camera.qml</file>
@@ -435,15 +422,6 @@
         <file>WinHomeScreen.qml</file>
         <file>WinPayInterface.qml</file>
         <file>WinRechargeSelect.qml</file>
-        <file>Charge104.cpp</file>
-        <file>Charge104.h</file>
-        <file>ChargeManage.cpp</file>
-        <file>ChargeManage.h</file>
-        <file>iec104_class.cpp</file>
-        <file>iec104_class.h</file>
-        <file>iec104_types.h</file>
-        <file>qiec104.cpp</file>
-        <file>qiec104.h</file>
         <file>images/wvga/charge/account.png</file>
         <file>images/wvga/charge/alipay.png</file>
         <file>images/wvga/charge/background.jpg</file>

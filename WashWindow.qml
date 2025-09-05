@@ -311,7 +311,7 @@ SystemWindow {
                     anchors.verticalCenter: parent.verticalCenter
                     font.family: "Microsoft YaHei"
                     text: qsTr("退出")
-                    font.pointSize: 11
+                    font.pixelSize: 12
                     color: "white"
                 }
 

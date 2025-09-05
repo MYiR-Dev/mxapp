@@ -76,7 +76,7 @@ Item {
             id : textEnglish
             text: checked? qsTr("中文"): qsTr("English")
             color: "white"
-            font.pointSize: 12
+            font.pixelSize: 12
             font.family:"Microsoft YaHei"
             anchors.left: icon.right
             anchors.verticalCenter: parent.verticalCenter
@@ -110,7 +110,7 @@ Rectangle{
         Text {
             text: qsTr("版权说明")
             color: "white"
-            font.pointSize: 12
+            font.pixelSize: 12
             font.family:"Microsoft YaHei"
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter

@@ -128,13 +128,13 @@ Rectangle {
                             anchors.fill:parent
                             Image{
                                 id: appiconpopfg
-                                width: parent.height*0.8
-                                height: parent.height*0.8
+                                width: parent.height*0.6
+                                height: parent.height*0.6
                                 source: model.aimage
                                 anchors{
                                     horizontalCenter: parent.horizontalCenter
                                     top:parent.top
-                                    topMargin: 10
+                                    topMargin: parent.height*0.1
                                 }
                             }
 
