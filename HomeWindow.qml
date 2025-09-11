@@ -64,7 +64,7 @@ Rectangle {
 
     function reloadModel() {
         var oldIndex = pathView.currentIndex
-        pathView.currentIndex = -1
+        pathView.currentIndex = (pathView.currentIndex +1)%pathView.count
         pathView.currentIndex = oldIndex
         pathView.pathItemCount = 5
     }
