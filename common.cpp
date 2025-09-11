@@ -26,10 +26,13 @@
 #include <QSysInfo>
 #include <QThread>
 #include <QTest>
+#include <QStringView>
+#include <QDir>
+
 #define MB (1024 * 1024)
 #define KB (1024)
 
-GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent)
+GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent), totalOld(0), idleOld(0)
 {
     process = new QProcess(this);
     connect(process, SIGNAL(readyRead()), this, SLOT(ReadData()));
@@ -49,7 +52,6 @@ GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent)
     connect(timerWifi, SIGNAL(timeout()), this, SLOT(get_wifi_info()));
     wifi_id = "0";
 
-    this->Start(100);
 }
 GetSystemInfo::~GetSystemInfo()
 {
@@ -100,23 +102,30 @@ QUrl GetSystemInfo::fromUserInput(const QString& userInput)
         return QUrl::fromLocalFile(fileInfo.absoluteFilePath());
     return QUrl::fromUserInput(userInput);
 }
-void GetSystemInfo::Start(int interval)
+void GetSystemInfo::starttimer(int interval)
 {
     timerCPU->start(interval);
     timerMemory->start(interval + 200);
     timerWifi->start(1000);
 }
+void GetSystemInfo::stoptimer()
+{
+    timerCPU->stop();
+    timerMemory->stop();
+    timerWifi->stop();
+    qDebug() << "cpp timer close";
+}
 void GetSystemInfo::get_cpu_info()
 {
     if (process->state() == QProcess::NotRunning) {
         totalNew = idleNew = 0;
-        process->start("cat /proc/stat");
+        process->start(QString("cat"), QStringList()<<"/proc/stat");
     }
 }
 void GetSystemInfo::get_memory_info()
 {
     if (process->state() == QProcess::NotRunning) {
-        process->start("cat /proc/meminfo");
+        process->start(QString("cat"), QStringList()<<"/proc/meminfo");
     }
 }
 void GetSystemInfo::get_wifi_info()
@@ -188,8 +197,8 @@ void GetSystemInfo::connect_wifi(QString essid_passwd)
 void GetSystemInfo::disconnect_wifi()
 {
     QString command;
-    command = "wpa_cli -i mlan0 disconnect";
-    msic_process->start(command);
+    command = "wpa_cli";
+    msic_process->start(command, QStringList()<<"-i"<< "mlan0"<< "disconnect");
     msic_process->waitForFinished();
 }
 
@@ -497,23 +506,34 @@ QString GetSystemInfo::read_system_version()
 }
 int GetSystemInfo::get_net_status()
 {
-    QFile file("/sys/class/net/eth0/carrier");
-    int net_status = 0;
-    int m_info[4] = {0};
-    if (file.exists() && file.open(QIODevice::ReadOnly))
-    {
-        QTextStream stream(&file);
-        QString line;
+    QDir net_path("/sys/class/net/");
+    QFileInfoList net_list = net_path.entryInfoList({"e*"});
+    QList<QString> file_list;
 
-        do
+    foreach(auto file_name, net_list)
+        file_list.append(file_name.absoluteFilePath() + QString("/carrier"));
+
+    int net_status = 0;
+    foreach(auto filestring, file_list){
+        QFile file(filestring);
+        if (file.exists() && file.open(QIODevice::ReadOnly))
         {
-            line = stream.readLine();
-            if (!line.isEmpty())
-                net_status = line.toInt();
+            QTextStream stream(&file);
+            QString line;
+
+            do
+            {
+                line = stream.readLine();
+                if (!line.isEmpty())
+                    net_status = line.toInt();
+                if(net_status)
+                    break;
+            }
+            while (!line.isNull());
         }
-        while (!line.isNull());
+        if(net_status)
+            break;
     }
-    qDebug() << "net_status" << net_status;
     return net_status;
 }
 QString GetSystemInfo::read_net_ip()
@@ -534,8 +554,6 @@ QString GetSystemInfo::read_net_ip()
     // 如果没有找到，则以本地IP地址为IP
     if (strIpAddress.isEmpty())
         strIpAddress = QHostAddress(QHostAddress::LocalHost).toString();
-
-    qDebug() << strIpAddress;
     return strIpAddress;
 }
 QString GetSystemInfo::read_net_mac()
@@ -592,16 +610,18 @@ void GetSystemInfo::ReadData()
 
         QString s = QLatin1String(process->readLine());
         if (s.startsWith("cpu")) {
+            s.replace(QRegularExpression("( ){1,}")," ");
             QStringList list = s.split(" ");
-            idleNew = list.at(5).toInt();
-            foreach (QString value, list) {
-                totalNew += value.toInt();
+            idleNew = list.at(4).toInt() + list.at(5).toInt();
+            for(int i = 1; i < 8; i++){
+                totalNew += list.at(i).toInt();
             }
-
-            int total = totalNew - totalOld;
-            int idle = idleNew - idleOld;
-            cpuPercent = 100 * (total - idle) / total;
-
+            // qDebug() << "cat /proc/stat: " << totalNew << idleNew;
+            int total = qAbs(totalNew - totalOld);
+            int idle = qAbs(idleNew - idleOld);
+            if(total != 0 &&  totalOld > 0){
+                cpuPercent = 100 * (total - idle) / total;
+            }
             totalOld = totalNew;
             idleOld = idleNew;
             break;
@@ -609,22 +629,22 @@ void GetSystemInfo::ReadData()
         if (s.startsWith("MemTotal")) {
             s = s.replace(" ", "");
             s = s.split(":").at(1);
-            memoryAll = s.left(s.length() - 3).toInt() / KB;
+            memoryAll = QStringView(s).left(s.length() - 3).toInt() / KB;
         }
         if (s.startsWith("MemFree")) {
             s = s.replace(" ", "");
             s = s.split(":").at(1);
-            memoryFree = s.left(s.length() - 3).toInt() / KB;
+            memoryFree = QStringView(s).left(s.length() - 3).toInt() / KB;
         }
         if (s.startsWith("Buffers")) {
             s = s.replace(" ", "");
             s = s.split(":").at(1);
-            memoryFree += s.left(s.length() - 3).toInt() / KB;
+            memoryFree += QStringView(s).left(s.length() - 3).toInt() / KB;
         }
         if (s.startsWith("Cached")) {
             s = s.replace(" ", "");
             s = s.split(":").at(1);
-            memoryFree += s.left(s.length() - 3).toInt() / KB;
+            memoryFree += QStringView(s).left(s.length() - 3).toInt() / KB;
             memoryUse = memoryAll - memoryFree;
             memoryPercent = 100 * memoryUse / memoryAll;
             break;

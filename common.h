@@ -60,7 +60,8 @@ public:
 	int Runcommand(const char * cmd,char * result, int length);
 
 
-    void Start(int interval);
+    Q_INVOKABLE void starttimer(int interval);
+    Q_INVOKABLE void stoptimer();
     QProcess *process;
     QProcess *wifi_process;
     QProcess *msic_process;

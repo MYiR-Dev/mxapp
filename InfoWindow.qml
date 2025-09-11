@@ -33,6 +33,13 @@ SystemWindow {
     property int adaptive_height: Screen.desktopAvailableHeight
     width: adaptive_width
     height: adaptive_height
+    onVisibleChanged: {
+        if(visible === true){
+            getSyetemInfo.starttimer(500)
+            info_timer.start()
+        }
+    }
+
     TitleLeftBar{
         id: leftBar
         titleIcon: "images/wvga/back_icon_nor.png"
@@ -43,6 +50,7 @@ SystemWindow {
         onLeftBarClicked: {
             infoWindow.close()
             info_timer.stop()
+            getSyetemInfo.stoptimer()
         }
 
     }
@@ -376,7 +384,7 @@ SystemWindow {
 
                             anchors{
                                 top: parent.top
-                                left:parent.top
+                                left:parent.left
                             }
                         }
                         Rectangle {
@@ -441,7 +449,7 @@ SystemWindow {
                             color: "white"
                             anchors{
                                 top: parent.top
-                                left:parent.top
+                                left:parent.left
                             }
                         }
                         Rectangle {
@@ -592,7 +600,7 @@ SystemWindow {
                         id:net_connect_value
 
                         text:{
-                            if(getSyetemInfo.get_net_status())
+                            if(connect_net)
                                 qsTr("已联网")
                             else
                                 qsTr("未联网")
@@ -883,9 +891,10 @@ SystemWindow {
     property int timer_count:0
     property string net_ip:getSyetemInfo.read_net_ip()
     property string net_mac:getSyetemInfo.read_net_mac()
+    property int connect_net:getSyetemInfo.get_net_status()
     Timer{
         id:info_timer
-        interval:1000;running:true;repeat: true
+        interval:1000;running:false;repeat: true
 
         onTriggered: {
             timer_count++
@@ -900,7 +909,8 @@ SystemWindow {
             mem_percent = getSyetemInfo.read_memory_percent()
             mem_usage = getSyetemInfo.read_memory_usage()
             mem_free = getSyetemInfo.read_memory_free()
-
+            connect_net = getSyetemInfo.get_net_status()
+            net_ip = getSyetemInfo.read_net_ip()
         }
 //      Component.onCompleted:info_timer.start()
     }
