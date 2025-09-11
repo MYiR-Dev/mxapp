@@ -37,6 +37,12 @@ SystemWindow {
     width: adaptive_width
     height: adaptive_height
     signal message(string msg)
+    property bool wifi_avail: false
+    Component.onCompleted: {
+        wifi_avail = getSyetemInfo.isWifi_avail()
+        console.log("wifi avail "+ wifi_avail)
+    }
+
     TitleLeftBar{
         id: leftBar
         titleIcon: "images/wvga/back_icon_nor.png"
@@ -745,7 +751,7 @@ SystemWindow {
             }
             Item {
                 id: thirdPage
-
+                visible: wifi_avail
                 Rectangle{
                     width:adaptive_width/1.26
                     height:adaptive_height*2
@@ -1242,6 +1248,7 @@ SystemWindow {
                     width:adaptive_width/6.55
                     height:adaptive_height/7.5
                     color:"transparent"
+                    visible: wifi_avail
                     Image{
                         id: wifi_icon_bg
                         width:adaptive_width/6.7

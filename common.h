@@ -62,6 +62,7 @@ public:
 
     Q_INVOKABLE void starttimer(int interval);
     Q_INVOKABLE void stoptimer();
+    Q_INVOKABLE bool isWifi_avail();
     QProcess *process;
     QProcess *wifi_process;
     QProcess *msic_process;

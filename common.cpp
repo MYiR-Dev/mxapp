@@ -115,6 +115,14 @@ void GetSystemInfo::stoptimer()
     timerWifi->stop();
     qDebug() << "cpp timer close";
 }
+
+bool GetSystemInfo::isWifi_avail()
+{
+    QDir net_path("/sys/class/net/");
+    QStringList net_list = net_path.entryList({"wlan*"});
+
+    return net_list.isEmpty() ? false : true;
+}
 void GetSystemInfo::get_cpu_info()
 {
     if (process->state() == QProcess::NotRunning) {
