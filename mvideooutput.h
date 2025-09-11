@@ -116,8 +116,8 @@ public slots:
 
 private:
     static void filter_append(QQmlListProperty<QAbstractVideoFilter> *property, QAbstractVideoFilter *value);
-    static long long filter_count(QQmlListProperty<QAbstractVideoFilter> *property);
-    static QAbstractVideoFilter *filter_at(QQmlListProperty<QAbstractVideoFilter> *property, long long index);
+    static qsizetype filter_count(QQmlListProperty<QAbstractVideoFilter> *property);
+    static QAbstractVideoFilter *filter_at(QQmlListProperty<QAbstractVideoFilter> *property, qsizetype index);
     static void filter_clear(QQmlListProperty<QAbstractVideoFilter> *property);
 
     SourceType m_sourceType;

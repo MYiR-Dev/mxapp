@@ -25,7 +25,7 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.1
 // import Qt.labs.settings 1.0
-import QtCore 6.6
+import QtCore
 import ChargeManage 1.0
 import Charge104 1.0
 import GetSystemInfoAPI 1.0

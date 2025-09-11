@@ -370,13 +370,13 @@ void MVideoOutput::filter_append(QQmlListProperty<QAbstractVideoFilter> *propert
     self->m_surface->appendFilter(value);
 }
 
-long long MVideoOutput::filter_count(QQmlListProperty<QAbstractVideoFilter> *property)
+qsizetype MVideoOutput::filter_count(QQmlListProperty<QAbstractVideoFilter> *property)
 {
     MVideoOutput *self = static_cast<MVideoOutput *>(property->object);
     return self->m_filters.count();
 }
 
-QAbstractVideoFilter *MVideoOutput::filter_at(QQmlListProperty<QAbstractVideoFilter> *property, long long index)
+QAbstractVideoFilter *MVideoOutput::filter_at(QQmlListProperty<QAbstractVideoFilter> *property, qsizetype index)
 {
     MVideoOutput *self = static_cast<MVideoOutput *>(property->object);
     return self->m_filters.at(index);

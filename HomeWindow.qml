@@ -25,7 +25,7 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 // import Qt.labs.settings 1.0
-import QtCore 6.6
+import QtCore
 
 //#02b9db home界面小图片背景色
 
