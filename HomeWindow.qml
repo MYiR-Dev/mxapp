@@ -64,8 +64,10 @@ Rectangle {
 
     function reloadModel() {
         var oldIndex = pathView.currentIndex
+        homewinpop.popindex = (pathView.currentIndex +1)%pathView.count
         pathView.currentIndex = (pathView.currentIndex +1)%pathView.count
         pathView.currentIndex = oldIndex
+        homewinpop.popindex = oldIndex
         pathView.pathItemCount = 5
     }
 
@@ -140,11 +142,18 @@ Rectangle {
 
                             Text{
                                 id:ttpopfg
-                                text: model.application
+                                text: {
+                                    if(model.application === "Excavator dashboard")
+                                        return "Dashboard"
+                                    else if(model.application === "Charging station")
+                                        return "Charging"
+                                    else
+                                        return model.application
+                                }
                                 color: "#dcdde4";
                                 font.family: "Microsoft YaHei";
                                 font.pixelSize: family_font_size;
-                                //                                    wrapMode: Text.Wrap;
+                                // wrapMode: Text.Wrap;
                                 anchors{
                                     horizontalCenter: parent.horizontalCenter
                                     top:appiconpopfg.bottom
