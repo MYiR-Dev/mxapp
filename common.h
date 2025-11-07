@@ -62,6 +62,8 @@ public:
 
     Q_INVOKABLE void starttimer(int interval);
     Q_INVOKABLE void stoptimer();
+    Q_INVOKABLE void startwifitimer();
+    Q_INVOKABLE void stopwifitimer();
     Q_INVOKABLE bool isWifi_avail();
     QProcess *process;
     QProcess *wifi_process;
@@ -77,6 +79,8 @@ public:
     QString memTotal;
     QString wifi_id;
     QString wifi_status;
+    QString wifi_port;
+    QStringList connect_wifi_status;  // 连接wifi信息
 
     QTimer *timerCPU;       //定时器获取CPU信息
     QTimer *timerMemory;    //定时器获取内存信息
@@ -91,7 +95,7 @@ public slots:
 signals:
     void begin();
     void wifiReady(QVariantList  wifi_data);
-    void wifiConnected(QString  wifi_essid_info);
+    void wifiConnected(QString  wifi_essid_info, QString flag);
 };
 
 

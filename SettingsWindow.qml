@@ -76,6 +76,7 @@ SystemWindow {
 
         if(checked)
         {
+            getSyetemInfo.startwifitimer()
             getSyetemInfo.wifi_open()
             wifi_statu = true
 //            getSyetemInfo.get_wifi_list()
@@ -83,8 +84,7 @@ SystemWindow {
         else
         {
             wifi_list_model.clear()
-
-            getSyetemInfo.wifi_close()
+            getSyetemInfo.stopwifitimer()
             wifi_statu = false
         }
     }
@@ -203,43 +203,6 @@ SystemWindow {
                                 combox_sec.combox_control.currentIndex =Number(Qt.formatTime(currentTime,"ss"))
                             }
                         }
-//                        Rectangle{
-//                            id: comboBox
-//                            width:47
-//                            height:28
-//                            color:"transparent"
-//                            Image {
-//                                anchors.fill: parent
-//                                source: "images/wvga/system/day-rec.png"
-//                            }
-//                            Image {
-//                                id:sec_dw
-//                                source: "images/wvga/system/drop-down.png"
-//                                anchors{
-//                                    right:    parent.right
-//                                    verticalCenter:parent.verticalCenter
-//                                    rightMargin: 5
-//                                }
-//                            }
-//                            Text{
-//                                property date currentTime: new Date()
-//                                text: {
-
-//                                    Qt.formatTime(currentTime,"ss")
-//                                }
-//                                font.pointSize: 15;
-//                                font.family:localFont.name
-
-//                                color: "white"
-//                                anchors{
-//                                    verticalCenter:parent.verticalCenter
-//                                    right:sec_dw.left
-//                                    rightMargin: 5
-//                                }
-//                            }
-//                        }
-
-
                     }
                     property var date
                     Text{
@@ -324,7 +287,7 @@ SystemWindow {
                         id:custom_calendar
                         width:350
                         height: 210
-                        color: "transparent"
+                        // color: "transparent"
 
                         anchors{
                             top:    row_layout1.bottom
@@ -385,7 +348,6 @@ SystemWindow {
 
                 }
 
-
             }
             Item {
                 id: secondPage
@@ -417,6 +379,7 @@ SystemWindow {
                         id: inputPanel
                         x: adaptive_width/8
                         y: adaptive_height/1.06
+                        visible: false
                         z:99
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -432,6 +395,7 @@ SystemWindow {
                             PropertyChanges {
                                 target: inputPanel
                                 y: adaptive_height/1.06 - inputPanel.height
+                                visible: true
                             }
                         }
                         transitions: Transition {
@@ -511,16 +475,6 @@ SystemWindow {
                             leftMargin: 250
                         }
                     }
-//                        Text{
-
-//                            text: "xx"
-//                            font.pointSize: 10;
-
-//                            color: "white"
-
-//                            Layout.row: 1
-//                            Layout.column: 1
-//                        }
                     Text{
                         id:t3
                         text: qsTr("IP地址")
@@ -727,11 +681,6 @@ SystemWindow {
                             anchors.fill: parent;
                             onClicked: {
                                 net_save_button_rec.opacity = 0.5
-//                                console.log(combox_dhcp.combox_control.currentText)
-//                                console.log(ip_input.text)
-//                                console.log(netmask_input.text)
-//                                console.log(gw_input.text)
-//                                console.log(dns_input.text)
                                 var net_info_string = combox_dhcp.combox_control.currentText + " " +ip_input.text + " " +
                                         netmask_input.text + " " + gw_input.text + " " +dns_input.text
                                 console.log(net_info_string)
@@ -761,6 +710,7 @@ SystemWindow {
                         id: inputPanel_passwd
                         x: adaptive_width/8
                         y: adaptive_height/1.06
+                        visible: false
                         z:99
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -775,6 +725,7 @@ SystemWindow {
                             PropertyChanges {
                                 target: inputPanel_passwd
                                 y: adaptive_height/1.06 - inputPanel_passwd.height
+                                visible: true
                             }
                         }
                         transitions: Transition {
@@ -814,7 +765,7 @@ SystemWindow {
                         }
 
                     }
-
+                    // 打开wifi 按键
                     CustomSwitch {
                         id:wifi_switch
                         anchors{
@@ -830,7 +781,7 @@ SystemWindow {
                         Component.onCompleted: clicked.connect(openwifi)
                     }
 
-
+                    // 扫描按键
                     Rectangle{
                         id:serch_rec
                         width: adaptive_width/1.45
@@ -859,12 +810,6 @@ SystemWindow {
                                 verticalCenter: serch_icon.verticalCenter
                             }
 
-                        }
-                        Component.onCompleted:{
-//                            getSyetemInfo.get_wifi_list()
-//                            getSyetemInfo.wifi_close()
-//                            getSyetemInfo.wifi_open()
-//                            getSyetemInfo.connect_wifi("long+6032509792+qrc:/images/wvga/system/key.png")
                         }
 
                         MouseArea{
@@ -938,26 +883,23 @@ SystemWindow {
                              for(var i=0 ; i<wifi_data.length/3;i++ )
                              {
                                  console.log("Received ++: " +wifi_list_model.get(i).wifi_essid)
-//                                 console.log("Received ++: " +wifi_list_model.get(i).wifi_connect_status)
-//                                 console.log("Received ++: " +wifi_list_model.get(i).key_image)
-//                                 console.log("Received ++: " +wifi_list_model.get(i).signal_iamge)
                              }
                         }
                         onWifiConnected:{
                             for(var k=0; k < wifi_list_model.count; k++)
                             {
-                                if(wifi_list_model.get(k).wifi_essid===wifi_essid_info)
+                                if(wifi_list_model.get(k).wifi_essid === wifi_essid_info)
                                 {
-                                    wifi_list_model.setProperty(k, "wifi_connect_status", qsTr("已连接"))
-//                                   wifi_list_model.set(k).wifi_connect_status = "ddd"
-//                                   console.log("Received ++: " +wifi_list_model.get(k).wifi_connect_status)
-                                }
-                                else
-                                    wifi_list_model.setProperty(k, "wifi_connect_status", qsTr("未启用"))
+                                    if(flag === "true"){
+                                        wifi_list_model.setProperty(k, "wifi_connect_status", qsTr("已连接"))
+                                        wifi_list_model.move(k,0,1)
+                                    }else
+                                        wifi_list_model.setProperty(k, "wifi_connect_status", qsTr("未启用"))
+                                }                                  
                             }
-//                          console.log("Received ++: " +wifi_essid_info)
                         }
                     }
+                    // wifi列表每一行
                     Component {
                         id: listDelegate
 
@@ -968,14 +910,6 @@ SystemWindow {
                             height: 32
                             clip: true
 
-//                            color: "transparent"
-
-//                            anchors{
-//                                left: parent.left
-//                                leftMargin: 30
-//                                top: serch_rec.bottom
-//                                topMargin: 10
-//                            }
                             Text{
                                 id:wifi_essid_text
                                 text: wifi_essid
@@ -1058,6 +992,7 @@ SystemWindow {
     //                            source: "images/wvga/system/wifi-signal.png"
                                 source:signal_iamge
                             }
+                            // 连接按钮
                             Item{
                                 id:content_rec
                                 width: 105
@@ -1075,8 +1010,13 @@ SystemWindow {
                                     source: "images/wvga/system/connect.png"
                                 }
                                 Text{
-
-                                    text: qsTr("连接")
+                                    id: bttxt
+                                    text: {
+                                        if(model.wifi_connect_status === "已连接")
+                                            return qsTr("断开")
+                                        else
+                                            return qsTr("连接")
+                                    }
                                     font.pointSize: 12;
                                     font.family: "Microsoft YaHei"
     //                                font.bold: true
@@ -1093,10 +1033,15 @@ SystemWindow {
                                         content_rec.opacity = 0.5
                                         focus = true
                                         listView.currentIndex = index;
+                                        if(bttxt.text === "断开"){
+                                            getSyetemInfo.disconnect_wifi()
+                                            return
+                                        }
 
                                         getSyetemInfo.disconnect_wifi()
                                         var essid_passwd = wifi_essid_text.text+"+"+passwd_input.text+"+"+key_icon.source
                                         getSyetemInfo.connect_wifi(essid_passwd)
+                                        passwd_input.text = ""
     //                                    myPopup.open()
                                     }
                                     onExited:{

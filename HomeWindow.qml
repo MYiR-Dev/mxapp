@@ -121,7 +121,7 @@ Rectangle {
                         color: Qt.rgba(0,0,0,0)
                         Layout.alignment: Qt.AlignCenter
                         Layout.preferredWidth:parent.width/4.5
-                        Layout.preferredHeight:parent.height/2.5
+                        Layout.preferredHeight:parent.width/4
 
                         Rectangle{
                             id: apppopRectfg

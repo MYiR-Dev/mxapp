@@ -51,6 +51,7 @@ GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent), totalOld(0), idl
     timerWifi = new QTimer(this);
     connect(timerWifi, SIGNAL(timeout()), this, SLOT(get_wifi_info()));
     wifi_id = "0";
+    connect_wifi_status.resize(4);
 
 }
 GetSystemInfo::~GetSystemInfo()
@@ -61,12 +62,6 @@ GetSystemInfo::~GetSystemInfo()
     process->close();
     wifi_process->close();
     msic_process->close();
-    delete timerCPU;
-    delete timerMemory;
-    delete timerWifi;
-    delete process;
-    delete wifi_process;
-    delete msic_process;
 }
 
 int GetSystemInfo::Runcommand(const char * cmd,char * result, int length)
@@ -106,21 +101,30 @@ void GetSystemInfo::starttimer(int interval)
 {
     timerCPU->start(interval);
     timerMemory->start(interval + 200);
-    timerWifi->start(1000);
 }
 void GetSystemInfo::stoptimer()
 {
     timerCPU->stop();
     timerMemory->stop();
-    timerWifi->stop();
     qDebug() << "cpp timer close";
+}
+
+void GetSystemInfo::startwifitimer()
+{
+    timerWifi->start(1000);
+}
+
+void GetSystemInfo::stopwifitimer()
+{
+    timerWifi->stop();
 }
 
 bool GetSystemInfo::isWifi_avail()
 {
     QDir net_path("/sys/class/net/");
-    QStringList net_list = net_path.entryList({"wlan*"});
-
+    QStringList net_list = net_path.entryList({"wlan*", "mlan*"});
+    if(!net_list.isEmpty())
+        wifi_port = net_list[0];
     return net_list.isEmpty() ? false : true;
 }
 void GetSystemInfo::get_cpu_info()
@@ -139,29 +143,27 @@ void GetSystemInfo::get_memory_info()
 void GetSystemInfo::get_wifi_info()
 {
     if (msic_process->state() == QProcess::NotRunning) {
-        msic_process->start("wpa_cli -i mlan0 status");
+        msic_process->start("wpa_cli", {"-i", wifi_port, "status"});
     }
 }
 void GetSystemInfo::wifi_open()
 {
     QString command;
-	
-	command = "ifconfig | grep mlan0 | wc -l";
+    command = "ifconfig | grep " + wifi_port + " | wc -l";
+    msic_process->start("/bin/sh", {"-c", command});
 	msic_process->start(command);
 	msic_process->waitForFinished();
 	if(msic_process->readAll().toInt() == 0){
-		command = "ifconfig mlan0 up";
-		msic_process->start(command);
+        command = "ifconfig";
+        msic_process->start(command, {wifi_port, "up"});
 		msic_process->waitForFinished();
 	}
-	command = "wpa_cli -i mlan0 scan_result";
-    wifi_process->start(command);
 }
 void GetSystemInfo::wifi_close()
 {
     QString command;
-    command = "ifconfig mlan0 down";
-    msic_process->start(command);
+    command = "ifconfig";
+    msic_process->start(command, {wifi_port, "down"});
     msic_process->waitForFinished();
 }
 void GetSystemInfo::connect_wifi(QString essid_passwd)
@@ -170,35 +172,33 @@ void GetSystemInfo::connect_wifi(QString essid_passwd)
     QString command;
 	
 	qDebug()<<tmp[0]<<tmp[1]<<tmp[2];
-	
 	if(tmp[0] != wifi_status){
-		command = "wpa_cli -i mlan0 disconnect";
-		msic_process->start(command);
+        command = "wpa_cli";
+        msic_process->start(command, {"-i", wifi_port, "disconnect"});
 		msic_process->waitForFinished();
 		
 		QFile file("/usr/share/connect_wifi.sh");
-		file.open(QIODevice::WriteOnly | QIODevice::Text);
+        file.open(QIODevice::WriteOnly | QIODevice::Text);
 		QTextStream out(&file);
-
-		if(tmp[2] == "qrc:/images/wvga/system/key.png")
+        if(tmp[2] == "images/wvga/system/key.png")
 		{
 			out << "#!/bin/sh\n";
-			out << "wpa_cli -i mlan0 remove_network 0\n";
-			out << "wpa_cli -i mlan0 add_network\n";
-			out << "wpa_cli -i mlan0 set_network " + wifi_id + " ssid " + "\'\""+tmp[0]+"\"\'"+"\n";
-			out << "wpa_cli -i mlan0 set_network "+ wifi_id + " psk "+ "\'\""+tmp[1]+"\"\'"+"\n";
-			out << "wpa_cli -i mlan0 select_network "+wifi_id+"\n";
+            out << "wpa_cli -i " +wifi_port+ " remove_network 0\n";
+            out << "wpa_cli -i " +wifi_port+ " add_network\n";
+            out << "wpa_cli -i " +wifi_port+ " set_network " + wifi_id + " ssid " + "\'\""+tmp[0]+"\"\'"+"\n";
+            out << "wpa_cli -i " +wifi_port+ " set_network "+ wifi_id + " psk "+ "\'\""+tmp[1]+"\"\'"+"\n";
+            out << "wpa_cli -i " +wifi_port+ " select_network "+wifi_id+"\n";
 		}
 		else {
 			out << "#!/bin/sh\n";
-			out << "wpa_cli -i mlan0 remove_network 0\n";
-			out << "wpa_cli -i mlan0 add_network\n";
-			out << "wpa_cli -i mlan0 set_network " + wifi_id + " ssid " + "\'\"" + tmp[0] + "\"\'" + "\n";
-			out << "wpa_cli -i mlan0 set_network " + wifi_id + " key_mgmt NONE" + "\n";
-			out << "wpa_cli -i mlan0 select_network " + wifi_id + "\n";
+            out << "wpa_cli -i " +wifi_port+ " remove_network 0\n";
+            out << "wpa_cli -i " +wifi_port+ " add_network\n";
+            out << "wpa_cli -i " +wifi_port+ " set_network " + wifi_id + " ssid " + "\'\"" + tmp[0] + "\"\'" + "\n";
+            out << "wpa_cli -i " +wifi_port+ " set_network " + wifi_id + " key_mgmt NONE" + "\n";
+            out << "wpa_cli -i " +wifi_port+ " select_network " + wifi_id + "\n";
 		}
 		file.close();
-		msic_process->execute("chmod a+x /usr/share/connect_wifi.sh");
+        msic_process->execute("chmod", {"a+x", "/usr/share/connect_wifi.sh"});
 		msic_process->execute("/usr/share/connect_wifi.sh");
 	}
 }
@@ -206,50 +206,55 @@ void GetSystemInfo::disconnect_wifi()
 {
     QString command;
     command = "wpa_cli";
-    msic_process->start(command, QStringList()<<"-i"<< "mlan0"<< "disconnect");
+    msic_process->start(command, {"-i", wifi_port, "disconnect"});
     msic_process->waitForFinished();
+    msic_process->start("ip", {"addr", "flush", "dev", wifi_port});
+    connect_wifi_status[0] = "false";
 }
 
 void GetSystemInfo::msic_ReadData()
 {
     QTextStream stream(msic_process->readAll().data());
-    QString wifi_connect_status;
     QString line,command;
 
     do {
         line = stream.readLine().trimmed();
-		qDebug()<<line;
         if ( line.startsWith("ssid") ){
             QStringList tmp = line.split("=");
-			wifi_connect_status = tmp[1];
-		}
+            connect_wifi_status[1] = tmp[1];
+        }
 		else if( line.startsWith("wpa_state") ){
 			QStringList tmp = line.split("=");
-			if(tmp[1] == "COMPLETED"){
-				if(wifi_status != wifi_connect_status){
-                    emit wifiConnected(wifi_connect_status);
-                    command = "udhcpc -i mlan0 -t 3 -n -q -b";
-                    msic_process->start(command);
+            connect_wifi_status[2] = tmp[1];
+            if(tmp[1] == "COMPLETED"){
+                if(connect_wifi_status[0] != "true"){
+                    command = "udhcpc";
+                    msic_process->execute(command, {"-i", wifi_port, "-t", "3", "-n", "-q", "-b"});
                 }
+            }else{
+                emit wifiConnected(connect_wifi_status[1], "fasle");
 			}
-			
-			else{
-				wifi_connect_status = "";
-				emit wifiConnected(wifi_connect_status);
-			}
-		}
+        }else if(line.startsWith("ip_address")){
+            QStringList tmp = line.split("=");
+            connect_wifi_status[3] = tmp[1];
+            if(connect_wifi_status[2] == "COMPLETED"){
+                connect_wifi_status[0] = "true";
+                emit wifiConnected(connect_wifi_status[1], "true");
+            }
+        }
     } while (!line.isNull());
-    wifi_status = wifi_connect_status;
+    wifi_status = connect_wifi_status[0];
 }
 QString GetSystemInfo::get_wifi_list()
 {
-    QString wifi_interface = "mlan0";
-    QString wirelessInterfaceStatus = getWirelessInterfaceStatus(wifi_interface);
+    QString wirelessInterfaceStatus = getWirelessInterfaceStatus(wifi_port);
 
     if(wirelessInterfaceStatus == "down"){
-        msic_process->start("ifconfig",QStringList() << wifi_interface << "up");
+        msic_process->start("ifconfig", {wifi_port, "up"});
     }
-	wifi_process->start("wpa_cli -i mlan0 scan_result");
+    wifi_process->start("wpa_cli", {"-i", wifi_port, "scan"});
+    wifi_process->waitForFinished();
+    wifi_process->start("wpa_cli", {"-i", wifi_port, "scan_result"});
     if(!wifi_process->waitForStarted()){
         qDebug() << "error starting wpa_cli scan process";
     }
@@ -413,14 +418,14 @@ void GetSystemInfo::set_net_info(QString net_info)
 
         }
         writeFile.close();
-        command ="udhcpc -i eth0 -t 3 -n -q -b";
-        process->startDetached(command);
+        command ="udhcpc";
+        process->startDetached(command, {"-i", "eth0", "-t", "3", "-n", "-q", "-b"});
     }
     else {
         if(!list.at(1).isEmpty()&& !list.at(2).isEmpty())
         {
-            command ="ifconfig eth0 "+ list.at(1) +" netmask "+list.at(2);
-           process->startDetached(command);
+            command ="ifconfig";
+           process->startDetached(command, {"eth0", list.at(1), "netmask", list.at(2)});
         }
         else {
 
@@ -429,16 +434,16 @@ void GetSystemInfo::set_net_info(QString net_info)
 
         if(!list.at(3).isEmpty() )
         {
-            command ="route add default gw "+ list.at(3);
-            process->startDetached(command);
+            command ="route";
+            process->startDetached(command, {"add", "default", "gw", list.at(3)});
         }
         else{
             qDebug() << "route null";
         }
         if(!list.at(4).isEmpty())
         {
-            command ="echo \"nameserver "+ list.at(4)+ "\""+">> /etc/resolv.conf";
-            process->startDetached(command);
+            command ="echo nameserver "+ list.at(4)+ " >> /etc/resolv.conf";
+            process->startDetached("/bin/sh", {"-c", command});
         }
         else {
            qDebug() << "nameserver null";

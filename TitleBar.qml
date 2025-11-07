@@ -40,7 +40,10 @@ Item {
     }
 
     property int app_font_size: {
-        Math.ceil(height*0.4)
+        if(parent.width < parent.height){
+            Math.ceil(parent.width/14*0.4)
+        }else
+            Math.ceil(Math.min(width, height)*0.4)
     }
 
     FontMetrics {
@@ -100,7 +103,7 @@ Item {
             font.family:"Microsoft YaHei"
             anchors.left: icon.right
             anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: Screen.desktopAvailableWidth/96
+            anchors.leftMargin: app_font_size*0.2
         }
 
         MouseArea{
@@ -118,7 +121,7 @@ Item {
         }
 //        style: buttonStyle
     }
-Rectangle{
+    Rectangle{
         id:copyrightNotice
         implicitWidth:fitWidth(crtext)+20
         implicitHeight: app_font_size*1.8
