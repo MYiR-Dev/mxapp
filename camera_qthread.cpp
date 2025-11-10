@@ -50,6 +50,7 @@ bool Camera_qthread::isMultiCamera(int fd)
     }else{
         fprintf(stdout, "%s don't support STREAMING I/O\n",m_camera.dev_name);
         delete camera_handle;
+        camera_handle = nullptr;
         return false;
     }
     return true;
@@ -57,10 +58,14 @@ bool Camera_qthread::isMultiCamera(int fd)
 //停止摄像头循环取帧并释放资源
 void Camera_qthread::exit_camera()
 {
+    if(camera_handle == nullptr)
+        return ;
     frameLoop.store(false);
     wait();
     camera_handle->stop_capturing(m_camera);
     camera_handle->exit_device(m_camera);
+    delete camera_handle;
+    camera_handle = nullptr;
 }
 
 int Camera_qthread::open_device(char* dev_name)
@@ -142,6 +147,8 @@ streamoff_handle:
     camera_handle->stop_capturing(m_camera);
 err_handle:
     camera_handle->exit_device(m_camera);
+    delete camera_handle;
+    camera_handle = nullptr;
     return;
 }
 
@@ -230,9 +237,9 @@ void Camera_qthread::yuv_to_rgb(unsigned char *yuv, unsigned char *rgb){
 Camera_qthread::Autorealse::~Autorealse()
 {
     pthread_mutex_lock(&camera_mutex);
-    if(CameraHandleSingle != nullptr)
-        delete CameraHandleSingle;
     if(camera_handle != nullptr)
         delete camera_handle;
+    if(CameraHandleSingle != nullptr)
+        delete CameraHandleSingle;
     pthread_mutex_unlock(&camera_mutex);
 }
