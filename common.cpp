@@ -127,6 +127,11 @@ bool GetSystemInfo::isWifi_avail()
         wifi_port = net_list[0];
     return net_list.isEmpty() ? false : true;
 }
+
+QVariantList GetSystemInfo::get_net_ports()
+{
+    return net_ports;
+}
 void GetSystemInfo::get_cpu_info()
 {
     if (process->state() == QProcess::NotRunning) {
@@ -384,6 +389,7 @@ void GetSystemInfo::set_net_info(QString net_info)
 
     QString command;
     QStringList list = net_info.split(" ");
+    qDebug() << "net port " << list[5];
 
     if(list.at(0) =="DHCP")
     {
@@ -400,10 +406,10 @@ void GetSystemInfo::set_net_info(QString net_info)
 
         for(int i=0;i<strList.size();i++)
         {
-            if(strList.at(i).startsWith("iface eth0 inet"))
+            if(strList.at(i).startsWith("iface" + list[5] + "inet"))
             {
                 QString tempStr=strList.at(i);
-                 tempStr.replace(0,tempStr.length(),"iface eth0 inet dhcp");
+                 tempStr.replace(0,tempStr.length(),"iface" + list[5] + "inet dhcp");
                  strList.replace(i,tempStr);
             }
         }
@@ -419,13 +425,13 @@ void GetSystemInfo::set_net_info(QString net_info)
         }
         writeFile.close();
         command ="udhcpc";
-        process->startDetached(command, {"-i", "eth0", "-t", "3", "-n", "-q", "-b"});
+        process->startDetached(command, {"-i", list[5], "-t", "3", "-n", "-q", "-b"});
     }
     else {
         if(!list.at(1).isEmpty()&& !list.at(2).isEmpty())
         {
             command ="ifconfig";
-           process->startDetached(command, {"eth0", list.at(1), "netmask", list.at(2)});
+           process->startDetached(command, {list[5], list.at(1), "netmask", list.at(2)});
         }
         else {
 
@@ -522,10 +528,10 @@ int GetSystemInfo::get_net_status()
     QDir net_path("/sys/class/net/");
     QFileInfoList net_list = net_path.entryInfoList({"e*"});
     QList<QString> file_list;
-
-    foreach(auto file_name, net_list)
+    foreach(auto file_name, net_list){
         file_list.append(file_name.absoluteFilePath() + QString("/carrier"));
-
+        net_ports.append(file_name.fileName());
+    }
     int net_status = 0;
     foreach(auto filestring, file_list){
         QFile file(filestring);
@@ -544,8 +550,25 @@ int GetSystemInfo::get_net_status()
             }
             while (!line.isNull());
         }
+
         if(net_status)
             break;
+    }
+    return net_status;
+}
+
+int GetSystemInfo::get_net_status(QString netport)
+{
+    QString net_status_file = "/sys/class/net/" + netport + "/carrier";
+    QFile file(net_status_file);
+    int net_status = 0;
+    if (file.exists() && file.open(QIODevice::ReadOnly))
+    {
+        QTextStream stream(&file);
+        QString line;
+        line = stream.readLine();
+        if (!line.isEmpty())
+            net_status = line.toInt();
     }
     return net_status;
 }
@@ -568,6 +591,28 @@ QString GetSystemInfo::read_net_ip()
     if (strIpAddress.isEmpty())
         strIpAddress = QHostAddress(QHostAddress::LocalHost).toString();
     return strIpAddress;
+}
+
+QString GetSystemInfo::read_net_ip(const QString interfaceName)
+{
+    QList<QNetworkInterface> ipAddressesList = QNetworkInterface::allInterfaces();
+
+    // 获取本主机的IPv4地址
+    foreach (auto iface ,ipAddressesList) {
+        // 查找指定接口
+        if (iface.name() == interfaceName && iface.flags().testFlag(QNetworkInterface::IsUp)) {
+            // 获取该接口的所有地址条目
+            QList<QNetworkAddressEntry> entries = iface.addressEntries();
+            foreach (auto entry , entries) {
+                QHostAddress ip = entry.ip();
+
+                // IPv4 地址
+                if (ip.protocol() == QAbstractSocket::IPv4Protocol)
+                    return ip.toString();
+            }
+        }
+    }
+    return {};
 }
 QString GetSystemInfo::read_net_mac()
 {

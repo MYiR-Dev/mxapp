@@ -45,8 +45,10 @@ public:
     Q_INVOKABLE void get_wifi_info();
     Q_INVOKABLE void set_net_info(QString net_info);
     Q_INVOKABLE QString read_net_ip();
+    Q_INVOKABLE QString read_net_ip(const QString interfaceName);
     Q_INVOKABLE QString read_net_mac();
     Q_INVOKABLE int get_net_status();
+    Q_INVOKABLE int get_net_status(QString netport);
     Q_INVOKABLE  void set_date(QString date);
     Q_INVOKABLE void wifi_open();
     Q_INVOKABLE void wifi_close();
@@ -65,6 +67,7 @@ public:
     Q_INVOKABLE void startwifitimer();
     Q_INVOKABLE void stopwifitimer();
     Q_INVOKABLE bool isWifi_avail();
+    Q_INVOKABLE QVariantList get_net_ports();
     QProcess *process;
     QProcess *wifi_process;
     QProcess *msic_process;
@@ -81,6 +84,7 @@ public:
     QString wifi_status;
     QString wifi_port;
     QStringList connect_wifi_status;  // 连接wifi信息
+    QVariantList net_ports;
 
     QTimer *timerCPU;       //定时器获取CPU信息
     QTimer *timerMemory;    //定时器获取内存信息

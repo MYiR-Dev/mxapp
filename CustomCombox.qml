@@ -73,7 +73,10 @@ Rectangle {
 
             Connections {
                 target: control
-                onPressedChanged: canvas.requestPaint()
+                // onPressedChanged: canvas.requestPaint()
+                function onPressedChanged(){
+                    canvas.requestPaint()
+                }
             }
 
             onPaint: {

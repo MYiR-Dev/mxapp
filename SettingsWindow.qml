@@ -34,6 +34,7 @@ SystemWindow {
 
     property int adaptive_width: Screen.desktopAvailableWidth
     property int adaptive_height: Screen.desktopAvailableHeight
+    property var netports: []
     width: adaptive_width
     height: adaptive_height
     signal message(string msg)
@@ -41,6 +42,24 @@ SystemWindow {
     Component.onCompleted: {
         wifi_avail = getSyetemInfo.isWifi_avail()
         console.log("wifi avail "+ wifi_avail)
+        getSyetemInfo.get_net_status()
+        netports = getSyetemInfo.get_net_ports()
+    }
+    onVisibleChanged: {
+        if(visible === true){
+            setting_timer.start()
+        }
+    }
+    property string net_ip:getSyetemInfo.read_net_ip(combox_ethport.combox_control.currentText)
+    property int connect_net:getSyetemInfo.get_net_status(combox_ethport.combox_control.currentText)
+    Timer{
+        id:setting_timer
+        interval:1000;running:false;repeat: true
+
+        onTriggered: {
+            net_ip = getSyetemInfo.read_net_ip(combox_ethport.combox_control.currentText)
+            connect_net = getSyetemInfo.get_net_status(combox_ethport.combox_control.currentText)
+        }
     }
 
     TitleLeftBar{
@@ -53,6 +72,7 @@ SystemWindow {
         onLeftBarClicked: {
 
             settingsWindow.close()
+            setting_timer.stop()
 //
 //            settingsWindow.message("settingsWindow close!")
 //            info_timer.stop()
@@ -421,8 +441,8 @@ SystemWindow {
                     }
 
                     Text{
-                        id:t1
-                        text: qsTr("以太网")
+                        id:ethport
+                        text: qsTr("网口")
                         font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
@@ -433,15 +453,44 @@ SystemWindow {
                             leftMargin: 30
                         }
                     }
-                    Text{
 
-                        text: getSyetemInfo.get_net_status() ? qsTr("电缆已接入") : qsTr("电缆已拔出")
+                    CustomCombox{
+                        id:combox_ethport
+                        delegate_width:141
+                        delegate_height:30
+                        combox_bg:"images/wvga/system/input-bg.png"
+                        modeldata: netports
+
+                        anchors{
+                            top:eth.bottom
+                            topMargin: 28
+                            left: ethport.left
+                            leftMargin: 250
+                        }
+                    }
+
+                    Text{
+                        id:t1
+                        text: qsTr("以太网")
                         font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
                         anchors{
-                            top: eth.bottom
-                            topMargin: 30
+                            top: ethport.top
+                            topMargin: 35
+                            left: parent.left
+                            leftMargin: 30
+                        }
+                    }
+                    Text{
+
+                        text: connect_net ? qsTr("电缆已接入") : qsTr("电缆已拔出")
+                        font.pixelSize: 10;
+                        font.family: "Microsoft YaHei"
+                        color: "white"
+                        anchors{
+                            top: ethport.top
+                            topMargin: 35
                             left: t1.left
                             leftMargin: 250
                         }
@@ -490,6 +539,29 @@ SystemWindow {
 
                     }
 
+                    Text {
+                        text: net_ip
+                        font.pixelSize: 12
+                        color: "white"
+                        width:141
+                        height:25
+                        visible: combox_dhcp.combox_control.currentText === "Manual" ? false : true
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        Image {
+                            anchors.fill: parent
+                            source: "images/wvga/system/input-bg.png"
+                            z: -1
+                        }
+                        anchors{
+                            top:t2.top
+                            topMargin: 30
+                            left: t3.left
+                            leftMargin: 250
+                            // verticalCenter: parent.verticalCenter
+                        }
+                    }
+
                     TextField {
 
                         id: ip_input
@@ -500,6 +572,7 @@ SystemWindow {
                         onAccepted: digitsField.focus = true
                         font.family: "Microsoft YaHei"
                         color: "white"
+                        visible: combox_dhcp.combox_control.currentText === "Manual" ? true : false
                         validator: RegularExpressionValidator{regularExpression:/(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/}
                         background: Rectangle{
 
@@ -649,6 +722,8 @@ SystemWindow {
 
                         }
                     }
+
+                    // 保存按键
                     Rectangle{
                         id:net_save_button_rec
                         width: 106
@@ -682,7 +757,7 @@ SystemWindow {
                             onClicked: {
                                 net_save_button_rec.opacity = 0.5
                                 var net_info_string = combox_dhcp.combox_control.currentText + " " +ip_input.text + " " +
-                                        netmask_input.text + " " + gw_input.text + " " +dns_input.text
+                                        netmask_input.text + " " + gw_input.text + " " +dns_input.text + " " +combox_ethport.combox_control.currentText
                                 console.log(net_info_string)
                                 getSyetemInfo.set_net_info(net_info_string)
                             }
