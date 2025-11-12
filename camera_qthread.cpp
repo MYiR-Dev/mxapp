@@ -128,16 +128,15 @@ void Camera_qthread::run()
             fprintf(stderr, "camera handle failed \n");
             goto streamoff_handle;
         }//如果是yuyv编码格式需要转换成rgb3
-        if(m_camera.pixelformat == v4l2_fourcc_i('Y', 'U', 'Y', 'V')){
+        if(m_camera.pixelformat == v4l2_fourcc_i('U', 'Y', 'V', 'Y')){
             unsigned char onebuf1[m_camera.width*m_camera.height*3];
             yuv_to_rgb(onebuf, onebuf1);
             img = QImage(onebuf1,m_camera.width,m_camera.height,QImage::Format_RGB888);
-        }else if(m_camera.pixelformat == v4l2_fourcc_i('R', 'G', 'B', '3'))
-            img = QImage(onebuf,m_camera.width,m_camera.height,QImage::Format_RGB888);
+        }
         else if(m_camera.pixelformat == v4l2_fourcc_i('M', 'J', 'P', 'G'))
             img = QImage::fromData(onebuf, m_camera.frame_length, "JPEG");
-        else if(m_camera.pixelformat == v4l2_fourcc_i('R', 'G', 'B', 'R'))
-            img = QImage(onebuf,m_camera.width,m_camera.height,QImage::Format_RGB16);
+        else if(m_camera.pixelformat == v4l2_fourcc_i('R', 'G', 'B', '3'))
+            img = QImage(onebuf,m_camera.width,m_camera.height,QImage::Format_RGB888);
         if(!img.isNull())
             emit sign_img(img);
     }
@@ -164,10 +163,10 @@ int Camera_qthread::xioctl(int fh, int request, void *arg)
 
 void Camera_qthread::yuv_to_rgb(unsigned char *yuv, unsigned char *rgb){
     unsigned int i;
-    unsigned char* y0 = yuv + 0;
-    unsigned char* u0 = yuv + 1;
-    unsigned char* y1 = yuv + 2;
-    unsigned char* v0 = yuv + 3;
+    unsigned char* u0 = yuv + 0;
+    unsigned char* y0 = yuv + 1;
+    unsigned char* v0 = yuv + 2;
+    unsigned char* y1 = yuv + 3;
 
     unsigned  char* r0 = rgb + 0;
     unsigned  char* g0 = rgb + 1;
@@ -220,10 +219,10 @@ void Camera_qthread::yuv_to_rgb(unsigned char *yuv, unsigned char *rgb){
         if(yuv == NULL)
             break;
 
-        y0 = yuv;
-        u0 = yuv + 1;
-        y1 = yuv + 2;
-        v0 = yuv + 3;
+        u0 = yuv;
+        y0 = yuv + 1;
+        v0 = yuv + 2;
+        y1 = yuv + 3;
 
         r0 = rgb + 0;
         g0 = rgb + 1;

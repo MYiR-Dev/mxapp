@@ -24,7 +24,11 @@ int AbstractCamera::init_device(camera_info& in_camera)
         printf("discription=%s\n",fmtDesc.description);
         unsigned char *p = (unsigned char *)&fmtDesc.pixelformat;
         printf("pixelformat=%c%c%c%c\n\n",p[0],p[1],p[2],p[3]);
-        if(fmtDesc.pixelformat == v4l2_fourcc_i('M', 'J', 'P', 'G')){
+        if(fmtDesc.pixelformat == v4l2_fourcc_i('U', 'Y', 'V', 'Y')){
+            in_camera.pixelformat = V4L2_PIX_FMT_UYVY;
+            break ;
+        }
+        else if(fmtDesc.pixelformat == v4l2_fourcc_i('M', 'J', 'P', 'G')){
             in_camera.pixelformat = V4L2_PIX_FMT_MJPEG;
             break ;
         }
@@ -32,10 +36,7 @@ int AbstractCamera::init_device(camera_info& in_camera)
             in_camera.pixelformat = V4L2_PIX_FMT_RGB565X;
             break ;
         }
-        else if(fmtDesc.pixelformat == v4l2_fourcc_i('Y', 'U', 'Y', 'V')){
-            in_camera.pixelformat = V4L2_PIX_FMT_YUYV;
-            break ;
-        }
+
         fmtDesc.index++;
     }
 
@@ -51,8 +52,6 @@ int AbstractCamera::init_device(camera_info& in_camera)
     fmt.fmt.pix.width = in_camera.width;
     fmt.fmt.pix.height = in_camera.height;
     fmt.fmt.pix.pixelformat = in_camera.pixelformat;   //选择YUYV
-    // fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_YUYV;
-    // fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_MJPEG;
 
     if (ioctl(in_camera.fd, VIDIOC_S_FMT, &fmt) == -1) {
         fprintf(stderr, "set format failed : %d\n",errno);
