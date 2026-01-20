@@ -28,8 +28,9 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 SystemWindow {
     id: root
-    width: def.win_width
-    height: def.win_height
+    width: parent.width
+    height: parent.height
+
     onVisibleChanged: {
         if(showFlag == false)
         {

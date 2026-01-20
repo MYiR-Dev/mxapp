@@ -190,8 +190,8 @@ Rectangle {
                 anchors.top: titleBar.bottom
 //                anchors.bottom: cancelButton.top
                 x: 0
-                width: Screen.desktopAvailableWidth
-                height: Screen.desktopAvailableHeight
+                width: parent.width
+                height: parent.height
                 model: folders1
                 delegate: folderDelegate
                 highlight: Rectangle {
@@ -241,8 +241,8 @@ Rectangle {
                 anchors.top: titleBar.bottom
                 anchors.bottom: parent.bottom
                 x: parent.width
-                width: Screen.desktopAvailableWidth
-                height: Screen.desktopAvailableHeight
+                width: parent.width
+                height: parent.height
                 model: folders2
                 delegate: folderDelegate
                 highlight: Rectangle {

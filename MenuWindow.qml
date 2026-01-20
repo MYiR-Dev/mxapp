@@ -29,8 +29,8 @@ Rectangle {
 //    height: 480-tBar.height
 //    color: "green"
     color: "#00000000"
-    property int adaptive_width: Screen.desktopAvailableWidth
-    property int adaptive_height: Screen.desktopAvailableHeight
+    property int adaptive_width: parent.width
+    property int adaptive_height: parent.height
     SwipeView{
         id:menuSwpView
         width: adaptive_width

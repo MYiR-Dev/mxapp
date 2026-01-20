@@ -31,10 +31,10 @@ Popup {
     modal: false
     focus: true
     closePolicy: Popup.NoAutoClose
-    property int adaptive_width: Screen.desktopAvailableWidth
-    property int adaptive_height: Screen.desktopAvailableHeight
-    width: Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight
+    property int adaptive_width: parent.width
+    property int adaptive_height: parent.height
+    width: parent.width
+    height: parent.height
 
 //    FontLoader { id: bahnschriftFont; source: "qrc:/fonts/Bahnschrift.ttf" }
 

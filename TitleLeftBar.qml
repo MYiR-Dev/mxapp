@@ -24,8 +24,8 @@ import QtQuick 2.0
 import QtQuick.Window 2.2
 Rectangle {
     id: leftbar
-    property int adaptive_width: Screen.desktopAvailableWidth
-    property int adaptive_height: Screen.desktopAvailableHeight
+    property int adaptive_width: parent.width
+    property int adaptive_height: parent.height
     width: adaptive_width/2.6
     height:adaptive_height/15
     color: Qt.rgba(0,0,0,0)

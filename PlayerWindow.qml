@@ -28,8 +28,8 @@ import QtQuick.Layouts 1.3
 import mvideooutput 1.0
 SystemWindow {
     id: root
-    width: def.win_width
-    height: def.win_height
+    width: parent.width
+    height: parent.height
     onVisibleChanged: {
         if(showFlag == false){
             showFlag = true;

@@ -1,0 +1,7 @@
+build/
+*.o
+Makefile
+.vscode
+*.swp
+*.pro.user
+.qmake.stash

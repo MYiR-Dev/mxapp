@@ -28,8 +28,8 @@ import QtQuick.Layouts
 import QtQuick.Window
 SystemWindow {
     id: root
-    property int adaptive_width: Screen.desktopAvailableWidth
-    property int adaptive_height: Screen.desktopAvailableHeight
+    property int adaptive_width: parent.width
+    property int adaptive_height: parent.height
     width: adaptive_width
     height: adaptive_height
 
@@ -148,6 +148,7 @@ SystemWindow {
         id: bar
         anchors.bottom: parent.bottom
         anchors.right: parent.right
+        width: parent.width
     	img_src: captureSession.imageCapture.preview
         onCaptureImage: {
 

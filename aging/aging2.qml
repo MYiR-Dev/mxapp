@@ -34,8 +34,8 @@ import "../"
 
 SystemWindow {
     id: root
-    property int adaptive_width: Screen.desktopAvailableWidth
-    property int adaptive_height: Screen.desktopAvailableHeight
+    property int adaptive_width: parent.width
+    property int adaptive_height: parent.height
     width: adaptive_width
     height: adaptive_height
 
@@ -45,8 +45,8 @@ SystemWindow {
     }
     TitleBar {
         id:tBar
-        width:Screen.desktopAvailableWidth
-        height:Screen.desktopAvailableHeight/14
+        width:parent.width
+        height:parent.height/14
     }
 
     Item {

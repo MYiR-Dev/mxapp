@@ -32,10 +32,7 @@ import GetSystemInfoAPI 1.0
 ApplicationWindow {
     id: mainWnd
     visible: true
-    visibility: Window.FullScreen
-    //width: Screen.desktopAvailableWidth
-    //height: Screen.desktopAvailableHeight
-    title: qsTr("Hello World")
+    title: qsTr("MXAPP2")
 
     background: Image{
             source: "images/wvga/home/background-dark.png"
@@ -58,8 +55,8 @@ ApplicationWindow {
 
     TitleBar {
         id:tBar
-        width:Screen.desktopAvailableWidth
-        height:Screen.desktopAvailableHeight/14
+        width:parent.width
+        height:parent.height/14
     }
 
 //    HomeButton{
@@ -77,16 +74,17 @@ ApplicationWindow {
         id:homeWnd
         anchors.top: tBar.bottom
         visible: true
-        width: Screen.desktopAvailableWidth
-        height: Screen.desktopAvailableHeight-tBar.height
+        width: parent.width
+        height: parent.height-tBar.height
+        app_height: parent.height
     }
 
     MenuWindow{
         id:menuWnd
         anchors.top: tBar.bottom
         visible: false
-        width: Screen.desktopAvailableWidth
-        height: Screen.desktopAvailableHeight-tBar.height
+        width: parent.width
+        height: parent.height-tBar.height
     }
 
     StateGroup{
@@ -124,7 +122,7 @@ ApplicationWindow {
     Loader{
         id:mainloader;
         anchors.centerIn: parent;
-
+        anchors.fill: parent
     }
 //    Loader{
 //        id:settingsWnd;
@@ -147,6 +145,13 @@ ApplicationWindow {
         settings.setValue("hmiBootCount", settings.hmiBootCount);
         console.log("settings.hmiBootCount is ", settings.hmiBootCount);
         settings.sync();
+        if(Qt.platform.pluginName === "wayland") {
+            mainWnd.width = 1024
+            mainWnd.height = 600
+        }else{
+            mainWnd.visibility =  Window.FullScreen
+        }
+        console.log("qml platform "+Qt.platform.pluginName)
     }
 
     ChargeManage{

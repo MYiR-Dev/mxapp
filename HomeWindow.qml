@@ -33,6 +33,8 @@ Rectangle {
     id:root
     color: "#00000000"
 
+    property int app_height
+
     //    FontLoader { id: fixedFont; name: "Courier" }
     //    FontLoader { id: localFont; source: "fonts/DIGITAL/DS-DIGIB.TTF" }
     //    FontLoader { id: webFont; source: "http://www.princexml.com/fonts/steffmann/Starburst.ttf" }
@@ -99,8 +101,8 @@ Rectangle {
     }
     HomeWinPop{
         id:homewinpop
-        width: Screen.desktopAvailableWidth
-        height: Screen.desktopAvailableHeight
+        width: parent.width
+        height: app_height
         //用于接收pathview的currentIndex,实现动态加载listmodel中的数据
         property alias popindex: rectte.popindex
         Rectangle{
@@ -227,8 +229,8 @@ Rectangle {
     //个性推荐的顶部，使用pathView
     Rectangle{
         id:pathViewRect;
-        width: Screen.desktopAvailableWidth/1.3;
-        height: Screen.desktopAvailableHeight/1.2;
+        width: parent.width/1.3;
+        height: app_height/1.2;
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top;
         anchors.topMargin: 20
@@ -362,8 +364,8 @@ Rectangle {
                 antialiasing: true
                 Image {
                     id:image;
-                    width: Screen.desktopAvailableWidth/4.4;
-                    height: Screen.desktopAvailableHeight/1.74;
+                    width: root.width/4.4;
+                    height: app_height/1.74;
                     anchors.horizontalCenter: parent.horizontalCenter
                     source: cimage;
 
@@ -430,7 +432,7 @@ Rectangle {
                     height: 40;
                     anchors.bottom: image.bottom;
                     anchors.horizontalCenter: image.horizontalCenter
-                    anchors.bottomMargin: Screen.desktopAvailableHeight/24/*15*/;
+                    anchors.bottomMargin: app_height/24/*15*/;
                     text: cname;
                     horizontalAlignment: Text.AlignHCenter
                     color: "#dcdde4";
@@ -504,13 +506,13 @@ Rectangle {
             anchors{
                 bottom:pathViewRect.bottom
                 horizontalCenter: pathViewRect.horizontalCenter
-                bottomMargin: Screen.desktopAvailableHeight/6.4
+                bottomMargin: app_height/6.4
             }
         }
         Rectangle{
             id: subMenu
-            width: Screen.desktopAvailableWidth
-            height: Screen.desktopAvailableHeight/8.7
+            width: root.width
+            height: app_height/8.7
             //                radius: 20
             color: Qt.rgba(0,0xff,0xff,0.1)
             anchors{
@@ -521,8 +523,8 @@ Rectangle {
 
             RowLayout{
                 id: subMenuRow
-                width: Screen.desktopAvailableWidth
-                height: Screen.desktopAvailableHeight/8.7
+                width: root.width
+                height: app_height/8.7
                 property bool isClickable: true
 
                 //                    anchors{
@@ -548,7 +550,7 @@ Rectangle {
                     }
                     Rectangle{
                         id:rootrect
-                        Layout.alignment: Qt.AlignHCenter
+                        Layout.alignment: Qt.AlignCenter
                         Layout.preferredWidth:parent.width/viewModel.get(pathView.currentIndex).subNode.count
                         Layout.preferredHeight:48
                         color: Qt.rgba(0,0,0,0)
