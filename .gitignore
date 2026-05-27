@@ -1,0 +1,178 @@
+# =========================================================
+# Qt/C++ Build Artifacts
+# =========================================================
+
+# Object files
+*.o
+*.obj
+
+# Precompiled headers
+*.gch
+*.pch
+
+# Generated MOC files
+moc_*.cpp
+moc_*.h
+
+# Generated UIC files
+ui_*.h
+
+# Generated QRC files
+qrc_*.cpp
+
+# Generated translation files
+*.qm
+
+# =========================================================
+# CMake Build System
+# =========================================================
+# Build directories
+build/
+build_*/
+cmake-build-*/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake.in
+!CMakeLists.txt
+
+# CMake ninja files
+.ninja_deps
+.ninja_log
+build.ninja
+rules.ninja
+
+# =========================================================
+# Qt Creator / QMake (Legacy)
+# =========================================================
+# Qt Creator project files
+*.pro.user
+*.pro.user.*
+.qmake.stash
+
+# QMake generated files
+*.Debug
+*.Release
+object_script.*
+
+# =========================================================
+# IDE and Editor Files
+# =========================================================
+# Qt Creator
+*.autosave
+CMakeLists.txt.user
+CMakeLists.txt.user.*
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Visual Studio
+.vs/
+*.vcxproj
+*.vcxproj.filters
+*.sln
+*.suo
+*.user
+*.sdf
+*.opensdf
+*.pdb
+ipch/
+
+# JetBrains IDEs (CLion, etc.)
+.idea/
+*.iml
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# =========================================================
+# Operating System Generated Files
+# =========================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.TemporaryItems
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.directory
+
+# =========================================================
+# Backup and Temporary Files
+# =========================================================
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# =========================================================
+# Version Control
+# =========================================================
+# Git merge files
+*.orig
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*_BACKUP_*.txt
+*_BASE_*.txt
+*_LOCAL_*.txt
+*_REMOTE_*.txt
+
+# =========================================================
+# Debug and Release Builds
+# =========================================================
+# Debug builds
+debug/
+Debug/
+
+# Release builds
+release/
+Release/
+
+# =========================================================
+# Documentation and Dependencies
+# =========================================================
+# Generated documentation
+docs/_build/
+doxygen/
+
+# Package manager directories
+node_modules/
+vendor/bundle/
