@@ -61,6 +61,11 @@ object_script.*
 # =========================================================
 # IDE and Editor Files
 # =========================================================
+# clangd cache
+.cache/
+.clangd
+compile_commands.json
+
 # Qt Creator
 *.autosave
 CMakeLists.txt.user
@@ -172,6 +177,7 @@ Release/
 # Generated documentation
 docs/_build/
 doxygen/
+mk_docs/
 
 # Package manager directories
 node_modules/

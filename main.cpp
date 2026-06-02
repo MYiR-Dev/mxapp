@@ -31,7 +31,6 @@
 #include "common.h"
 #include "myfunction.h"
 #include "translator.h"
-#include "mvideooutput.h"
 #include "qmlprocess.h"
 #include "ChargeManage.h"
 #include "Charge104.h"
@@ -72,7 +71,6 @@ int main(int argc, char *argv[])
     qmlRegisterType<MyFunction>("MyFunction.module", 1, 0, "MyFunction");
     qmlRegisterType<ChargeManage>("ChargeManage",1,0,"ChargeManage");
     qmlRegisterType<Charge104>("Charge104",1,0,"Charge104");
-    qmlRegisterType<MVideoOutput>("mvideooutput",1,0, "MVideoOutput");
 
     engine.rootContext()->setContextProperty("appQtVersion", QT_VERSION_STR);
 

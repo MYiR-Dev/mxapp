@@ -22,7 +22,6 @@
 
 import QtQuick
 import QtMultimedia
-import mvideooutput 1.0
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window

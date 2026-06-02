@@ -403,18 +403,6 @@
         <file>languages/language_en.qm</file>
         <file>languages/language_zh.qm</file>
         <file>images/fhd/ecg/header_logo.png</file>
-        <file>aging/aging.qml</file>
-        <file>aging/aging2.qml</file>
-        <file>aging/camera.qml</file>
-        <file>aging/can.qml</file>
-        <file>aging/developing.qml</file>
-        <file>aging/ethernet.qml</file>
-        <file>aging/memory.qml</file>
-        <file>aging/serial.qml</file>
-        <file>aging/video.qml</file>
-        <file>aging/wifi.qml</file>
-        <file>aging/images/demo-mode-white.png</file>
-        <file>aging/images/demo-mode-white@2x.png</file>
         <file>WinAppearance.qml</file>
         <file>WinChargeMonitor.qml</file>
         <file>WinChargeScheme.qml</file>

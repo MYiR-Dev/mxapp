@@ -773,11 +773,6 @@ Rectangle {
         glowRadius: 20
         //        z: 2
 
-        Settings{
-            id:settings
-            property var agingsrc: "aging/aging.qml"
-        }
-
         anchors {
             horizontalCenter: parent.horizontalCenter
             bottom: parent.bottom
@@ -786,12 +781,6 @@ Rectangle {
 
         onClicked: {
             mainWnd.chooseWnd("MENU")
-        }
-
-        onLongpressed: {
-            mainloader.source="aging/aging.qml"
-            mainloader.item.show()
-            mainloader.item.requestActivate()
         }
 
         //    Component.onCompleted: {

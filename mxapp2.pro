@@ -1,5 +1,4 @@
 QT += qml quick core gui printsupport testlib quickcontrols2 multimedia multimediawidgets
-QT += core-private network gui-private multimedia-private
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++11
 CONFIG += qcamera-v4l2
@@ -27,40 +26,13 @@ SOURCES += \
     logmsg.cpp \
         main.cpp \
     multicamera.cpp \
-    multimedia/controls/qmediaavailabilitycontrol.cpp \
-    multimedia/controls/qmetadatareadercontrol.cpp \
-    multimedia/controls/qvideorenderercontrol.cpp \
-    multimedia/qmediabindableinterface.cpp \
-    multimedia/qmediacontrol.cpp \
-    multimedia/qmediametadata.cpp \
-    multimedia/qmediaobject.cpp \
-    multimedia/qmediaresourcepolicyplugin_p.cpp \
-    multimedia/qmediaresourceset_p.cpp \
-    multimedia/qmediaservice.cpp \
-    multimedia/qmediatimerange.cpp \
-    multimedia/qmultimedia.cpp \
-    multimedia/qmultimediautils.cpp \
-    multimedia/video/mvideoframe.cpp \
-    multimedia/video/qabstractvideobuffer.cpp \
-    multimedia/video/qabstractvideofilter.cpp \
-    multimedia/video/qabstractvideosurface.cpp \
-    multimedia/video/qimagevideobuffer.cpp \
-    multimedia/video/qmemoryvideobuffer.cpp \
-    multimedia/video/qvideoframeconversionhelper.cpp \
-    multimedia/video/qvideoframeconversionhelper_avx2.cpp \
-    multimedia/video/qvideoframeconversionhelper_sse2.cpp \
-    multimedia/video/qvideoframeconversionhelper_ssse3.cpp \
-    multimedia/video/qvideosurfaceformat.cpp \
     qcustomplot.cpp \
     qiec104.cpp \
     qmlplot.cpp \
     common.cpp \
     myfunction.cpp \
     qmlprocess.cpp \
-    translator.cpp \
-    mvideooutput.cpp \
-    videowidgetsurface.cpp \
-    yuyv_qthread.cpp
+    translator.cpp
 
 RESOURCES += qml.qrc
 CONFIG += disable-desktop
@@ -92,45 +64,13 @@ HEADERS += \
     iec104_types.h \
     logmsg.h \
     multicamera.h \
-    multimedia/controls/qmediaavailabilitycontrol.h \
-    multimedia/controls/qmetadatareadercontrol.h \
-    multimedia/controls/qvideorenderercontrol.h \
-    multimedia/qmediabindableinterface.h \
-    multimedia/qmediacontrol.h \
-    multimedia/qmediacontrol_p.h \
-    multimedia/qmediaenumdebug.h \
-    multimedia/qmediametadata.h \
-    multimedia/qmediaobject.h \
-    multimedia/qmediaobject_p.h \
-    multimedia/qmediaresourcepolicyplugin_p.h \
-    multimedia/qmediaresourceset_p.h \
-    multimedia/qmediaservice.h \
-    multimedia/qmediaservice_p.h \
-    multimedia/qmediatimerange.h \
-    multimedia/qmultimedia.h \
-    multimedia/qmultimediautils_p.h \
-    multimedia/qtmultimediaglobal.h \
-    multimedia/qtmultimediaglobal_p.h \
-    multimedia/video/mvideoframe.h \
-    multimedia/video/mvideoframe_p.h \
-    multimedia/video/qabstractvideobuffer.h \
-    multimedia/video/qabstractvideobuffer_p.h \
-    multimedia/video/qabstractvideofilter.h \
-    multimedia/video/qabstractvideosurface.h \
-    multimedia/video/qimagevideobuffer_p.h \
-    multimedia/video/qmemoryvideobuffer_p.h \
-    multimedia/video/qvideoframeconversionhelper_p.h \
-    multimedia/video/qvideosurfaceformat.h \
     qcustomplot.h \
     qiec104.h \
     qmlplot.h \
     common.h \
     myfunction.h \
     qmlprocess.h \
-    translator.h \
-    mvideooutput.h \
-    videowidgetsurface.h \
-    yuyv_qthread.h
+    translator.h
 TRANSLATIONS = languages/language_zh.ts \
                languages/language_en.ts
 
