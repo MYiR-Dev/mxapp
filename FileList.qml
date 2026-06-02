@@ -115,15 +115,14 @@ SystemWindow {
         ListView {
             id: listFolder
             visible: true
-            width: 800
-            height: 480
-//            clip: true
             spacing: 10
 
             anchors.top: parentButton.bottom
             anchors.topMargin: 10
             anchors.right: parentButton.right
             anchors.left: parentButton.left
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 10
 
             focus: false
             //model提供数据

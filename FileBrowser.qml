@@ -188,10 +188,9 @@ Rectangle {
             ListView {
                 id: view1
                 anchors.top: titleBar.bottom
-//                anchors.bottom: cancelButton.top
+                anchors.bottom: parent.bottom
                 x: 0
-                width: Screen.desktopAvailableWidth
-                height: Screen.desktopAvailableHeight
+                width: parent.width
                 model: folders1
                 delegate: folderDelegate
                 highlight: Rectangle {
@@ -241,8 +240,7 @@ Rectangle {
                 anchors.top: titleBar.bottom
                 anchors.bottom: parent.bottom
                 x: parent.width
-                width: Screen.desktopAvailableWidth
-                height: Screen.desktopAvailableHeight
+                width: parent.width
                 model: folders2
                 delegate: folderDelegate
                 highlight: Rectangle {
