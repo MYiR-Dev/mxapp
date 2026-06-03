@@ -50,10 +50,12 @@ class showImage : public QObject
 public:
     Q_INVOKABLE void captureImg(QString path);
     Q_INVOKABLE void startCamera();
+    Q_INVOKABLE void selectCamera(QString path);
     Q_INVOKABLE void stopCamera();
+    Q_INVOKABLE QStringList getCameraList();
+    Q_INVOKABLE bool fileExists(QString path);  // 检查文件是否存在
 
     showImage(QObject *parent = nullptr);
-    void getCameraList();
     Camera_qthread *thread;
     QImage img;
     CameraImageProvider *cameraImageProvider;
@@ -61,6 +63,7 @@ public:
 signals:
     void callQmlRefreshImage();
     void callQmlSavePath(QString path);
+    void selectCameraPort(QString port);
 private slots:
     void slot_img(QImage img);
 };

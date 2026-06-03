@@ -181,4 +181,4 @@ mk_docs/
 
 # Package manager directories
 node_modules/
-vendor/bundle/
+vendor/bundle/compile_commands.json

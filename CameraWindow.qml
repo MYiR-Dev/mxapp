@@ -31,22 +31,24 @@ SystemWindow {
     property int adaptive_height: Screen.desktopAvailableHeight
     width: adaptive_width
     height: adaptive_height
-
+    property bool first_flag: true
     onVisibleChanged: {
         if(visible == true)
         {
             //摄像头窗口打开后开启摄像头
-            show_image.startCamera();
+            show_image.startCamera()
             console.log("The camera window is activated")
         }
     }
     onAboutToHide: {
+        first_flag = true
         showFlag = false
         //解决再次进入黑屏问题
         counter = !counter
         image.source = ""+ counter
     }
 
+    MediaDevices {id: mediaDevices}
     Define {id: def}
     Album {id: w_album}
     property bool counter: false
@@ -62,51 +64,17 @@ SystemWindow {
 
     Connections {
         target: show_image
-        onCallQmlRefreshImage:{
+        function onCallQmlRefreshImage(){
             reload()
         }
-        onCallQmlSavePath:{
+        function onCallQmlSavePath(path){
             bar.img_src = "file://" + path
         }
+        function onSelectCameraPort(port){
+            var index = combox_camport.combox_control.indexOfValue(port)
+            combox_camport.combox_control.currentIndex = index
+        }
     }
-
-    MediaDevices {id: mediaDevices}
-    // CaptureSession{
-    //     id:captureSession
-    //     videoOutput: VideoOutput{
-    //         id:videoOutput
-    //         visible: true
-    //         width: 640
-    //         height: 480
-    //         x:0
-    //         y:0
-    //     }
-
-    //     camera:Camera {
-    //         id:camera
-    //         cameraDevice: mediaDevices.videoInputs[0]
-    //         //白平衡
-    //         whiteBalanceMode: Camera.WhiteBalanceManual
-    //         //曝光
-    //         exposureCompensation: +1.0
-    //         exposureMode: Camera.ExposurePortrait
-    //         //相机模式
-    //         flashMode: Camera.FlashAuto
-    //         focusMode: Camera.FocusModeAutoNear
-    //         onErrorOccurred: console.log("camera err: " + error + errorString);
-    //     }
-    //     //拍照模式配置
-    //     imageCapture : ImageCapture {
-    //         id:cameraCapture
-    //         onErrorOccurred: console.log("capture failed:" + cameraCapture.errorString)
-    //     }
-
-    //     //录像模式配置
-    //     recorder: MediaRecorder {
-    //         id:cameraRecorder
-    //         onRecorderStateChanged: console.log("state changed")
-    //     }
-    // }
 
     ListModel {id: imagePaths}
 
@@ -114,15 +82,16 @@ SystemWindow {
     MyIconButton {
         id: backButton
         icon_code: def.iconCode_back
-	// 如果获取不到摄像头信息将导致画面卡死
+        // 如果获取不到摄像头信息将导致画面卡死
         button_text: mediaDevices.defaultVideoInput.description
         button_color: "white"
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.margins: 10
         onClicked: {
+            first_flag = true
             //点击推出后停止摄像头
-            show_image.stopCamera();
+            show_image.stopCamera()
             root.close()
         }
     }
@@ -147,9 +116,38 @@ SystemWindow {
         id: bar
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-    	img_src: captureSession.imageCapture.preview
-        onCaptureImage: {
+        width: parent.width
 
+        // camera ports lists - 位于缩略图右侧
+        CustomCombox{
+            id:combox_camport
+            delegate_width:150
+            delegate_height:40
+            combox_bg:"images/wvga/system/input-bg.png"
+            modeldata: show_image.getCameraList()
+
+            // 调整位置：在缩略图（宽度80）右侧，避免重叠
+            anchors.left: parent.left
+            anchors.leftMargin: 90  // 缩略图宽度80 + 间距10
+            anchors.verticalCenter: parent.verticalCenter
+
+            onSelectValueChanged: {
+                if(first_flag === true){
+                    first_flag = false
+                    return
+                }
+                console.log("current camera: "+selectValue)
+                show_image.stopCamera()
+                show_image.selectCamera(selectValue)
+            }
+
+            onClicked: {
+                modeldata = show_image.getCameraList()
+                console.log("combox_camport clicked")
+            }
+        }
+
+        onCaptureImage: {
             //保存照片到指定位置
             var savePath = def.captureSavePath + def.captureSaveHead + def.getCurrentTime();
             show_image.captureImg(savePath)
@@ -161,6 +159,24 @@ SystemWindow {
         }
         onCaptureVideoStop: {
             console.log("capture video stop")
+        }
+    }
+
+    // 监听 Album 关闭事件，检查缩略图文件是否存在
+    Connections {
+        target: w_album
+        function onVisibleChanged() {
+            if(w_album.visible == false && bar.img_src !== "") {
+                // 检查缩略图文件是否还存在
+                var filePath = bar.img_src.toString()
+                if(filePath.startsWith("file://")) {
+                    filePath = filePath.substring(7)
+                }
+                // 使用 QFile 检查文件是否存在（通过 show_image 的方法）
+                if(!show_image.fileExists(filePath)) {
+                    bar.clearThumbnail()
+                }
+            }
         }
     }
 }

@@ -22,6 +22,7 @@
 
 #include "cameraimageprovider.h"
 #include <QDebug>
+#include <QFileInfo>
 
 CameraImageProvider* CameraImageProvider::ImageProviderSingle = nullptr;
 CameraImageProvider::CameraImageProvider(): QQuickImageProvider(QQuickImageProvider::Image)
@@ -64,19 +65,38 @@ void showImage::captureImg(QString path)
 //打开识别到第一个具有预览功能的/dev/video*节点
 void showImage::startCamera()
 {
-    getCameraList();
-    foreach (QString cameraPath, cameraList) {
+    QStringList cameraList_tmp = getCameraList();
+    if(cameraList_tmp.size() > 10) {
+        selectCamera(cameraList_tmp[0]);
+        return ;
+    }
+    foreach (QString cameraPath, cameraList_tmp) {
         if(!thread->set_device(QString(cameraPath))){
             qDebug() << "can't open camera" << cameraPath;
             // return;
         }else{
             qDebug() << cameraPath << "camera open successed";
             thread->start();
+            qDebug() << "select camera port" << cameraPath;
+            emit selectCameraPort(cameraPath);
             return ;
         }
     }
     qDebug() << "dont have supported camera";
     return ;
+}
+
+void showImage::selectCamera(QString path)
+{
+    if(!thread->set_device(QString(path))){
+        qDebug() << "can't open camera" << path;
+        return;
+    }else{
+        qDebug() << path << "camera open successed";
+        thread->start();
+        qDebug() << "select camera port" << path;
+        return;
+    }
 }
 
 //qml端点击退出调用
@@ -93,15 +113,21 @@ showImage::showImage(QObject *parent) : QObject(parent)
     connect(thread,SIGNAL(sign_img(QImage)),this,SLOT(slot_img(QImage)));
 }
 //获取所有的/dev/video*
-void showImage::getCameraList()
+QStringList showImage::getCameraList()
 {
     QDir devDir("/dev");
     QString devStr("/dev/");
     cameraList.clear();
-    cameraList = devDir.entryList({"video*"}, QDir::System);
+    cameraList = devDir.entryList({"video*"}, QDir::System | QDir::Files);
+    std::sort(cameraList.begin(), cameraList.end(), [](const QString &a, const QString &b) {
+        int index_A = a.mid(5).toInt();
+        int index_B = b.mid(5).toInt();
+        return index_A < index_B;
+    });
     for(int i = 0; i < cameraList.count(); i++){
         cameraList[i] = devStr + cameraList[i];
     }
+    return cameraList;
 }
 
 void showImage::slot_img(QImage img)
@@ -109,4 +135,18 @@ void showImage::slot_img(QImage img)
     this->img = img;
     cameraImageProvider->img = img;
     emit callQmlRefreshImage();
+}
+
+// 检查文件是否存在
+bool showImage::fileExists(QString path)
+{
+    if(path.isEmpty())
+        return false;
+
+    // 处理 file:// 前缀
+    if(path.startsWith("file://"))
+        path = path.mid(7);
+
+    QFileInfo fileInfo(path);
+    return fileInfo.exists();
 }

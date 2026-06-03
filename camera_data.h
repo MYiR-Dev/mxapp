@@ -20,7 +20,7 @@ struct usb_buffer{
 };
 
 struct camera_info {
-    char dev_name[20];              //摄像头节点
+    char dev_name[32];              // 摄像头节点
     int fd;
     int width;
     int height;

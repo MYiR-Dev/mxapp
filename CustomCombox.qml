@@ -20,21 +20,22 @@
     See <https://www.gnu.org/licenses/lgpl-3.0.html> for more details.
 ***********************************************************************/
 
-import QtQuick 2.0
-import QtQuick.Controls 2.2
-import QtQuick.Window 2.2
-import QtQuick.Layouts 1.1
-Rectangle {
+import QtQuick
+import QtQuick.Controls
 
+Rectangle {
+    id: root
     width: delegate_width
     height: delegate_height
     color:"transparent"
+    signal clicked()
     property var modeldata: ["1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12",
                        "13", "14", "15","16", "17", "18","19", "20", "21","22", "23", "24"]
     property var verticalAlig:""
     property var combox_bg:"images/wvga/system/day-rec.png"
     property int delegate_width:47
     property int delegate_height:28
+    property string selectValue: control.currentText
     property alias combox_control:control
     ComboBox {
         id: control
@@ -50,12 +51,10 @@ Rectangle {
                 font: control.font
 
                 elide: Text.ElideRight
-//                verticalAlignment: Text.AlignVCenter
             }
             background: Rectangle {
                 border.color: "transparent"
                 color:control.pressed? "#059EC9":"transparent"
-//                radius: 2
             }
 
             highlighted:  control.highlightedIndex == index
@@ -73,13 +72,13 @@ Rectangle {
 
             Connections {
                 target: control
-                // onPressedChanged: canvas.requestPaint()
                 function onPressedChanged(){
                     canvas.requestPaint()
                 }
             }
 
             onPaint: {
+                if (!context) return;
                 context.reset();
                 context.moveTo(0, 0);
                 context.lineTo(width, 0);
@@ -91,9 +90,6 @@ Rectangle {
         }
 
         contentItem: Text {
-//                                leftPadding: 0
-//                                rightPadding: control.indicator.width + control.spacing
-
             text: control.displayText
             font: control.font
             color: control.pressed ? "white" : "white"
@@ -106,8 +102,6 @@ Rectangle {
         background: Rectangle {
             implicitWidth: delegate_width
             implicitHeight: delegate_height
-//                                border.color: control.pressed ? "#17a81a" : "#21be2b"
-//                                border.width: control.visualFocus ? 2 : 1
             color:"transparent"
             Image {
                 anchors.fill: parent
@@ -132,10 +126,13 @@ Rectangle {
             }
 
             background: Rectangle {
-//                border.color: "#059EC9"
                 color: "#003245"
                 radius: 2
             }
+        }
+
+        onPressedChanged: {
+            root.clicked()
         }
     }
 
