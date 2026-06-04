@@ -28,6 +28,7 @@
 #include <QTest>
 #include <QStringView>
 #include <QDir>
+#include <QSet>
 
 #define MB (1024 * 1024)
 #define KB (1024)
@@ -36,11 +37,6 @@ GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent), totalOld(0), idl
 {
     process = new QProcess(this);
     connect(process, SIGNAL(readyRead()), this, SLOT(ReadData()));
-    wifi_process = new QProcess(this);
-    connect(wifi_process, SIGNAL(finished(int)), this, SLOT(Wifi_ReadData()));
-
-    msic_process = new QProcess(this);
-    connect(msic_process, SIGNAL(finished(int)), this, SLOT(msic_ReadData()));
 
     timerCPU = new QTimer(this);
     connect(timerCPU, SIGNAL(timeout()), this, SLOT(get_cpu_info()));
@@ -48,20 +44,40 @@ GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent), totalOld(0), idl
     timerMemory = new QTimer(this);
     connect(timerMemory, SIGNAL(timeout()), this, SLOT(get_memory_info()));
 
-    timerWifi = new QTimer(this);
-    connect(timerWifi, SIGNAL(timeout()), this, SLOT(get_wifi_info()));
-    wifi_id = "0";
-    connect_wifi_status.resize(4);
+    // 存在wifi节点初始化相关资源
+    if(isWifi_avail()){
+        wifi_process = new QProcess(this);
+        // 待优化
+        wifi_process->start("wpa_supplicant", {"-Dnl80211", "-i"+wifi_port ,"-c/etc/wpa_supplicant.conf", "-B"});
+        connect(wifi_process, SIGNAL(finished(int)), this, SLOT(Wifi_ReadData()));
 
+        msic_process = new QProcess(this);
+        connect(msic_process, SIGNAL(finished(int)), this, SLOT(msic_ReadData()));
+
+        wifi_process_connoct = new QProcess(this);
+        connect(wifi_process_connoct, SIGNAL(finished(int)), this, SLOT(connect_ReadData()));
+
+        timerWifi = new QTimer(this);
+        connect(timerWifi, SIGNAL(timeout()), this, SLOT(get_wifi_info()));
+
+        wifi_id = "0";
+        connect_wifi_status.reserve(5);
+        for (int i = 0; i < 5; ++i) {
+            connect_wifi_status << QString();
+        }
+    }
 }
 GetSystemInfo::~GetSystemInfo()
 {
     timerCPU->stop();
     timerMemory->stop();
-    timerWifi->stop();
     process->close();
-    wifi_process->close();
-    msic_process->close();
+    if(isWifi_avail()){
+        timerWifi->stop();
+        wifi_process->close();
+        msic_process->close();
+        wifi_process_connoct->close();
+    }
 }
 
 int GetSystemInfo::Runcommand(const char * cmd,char * result, int length)
@@ -111,11 +127,13 @@ void GetSystemInfo::stoptimer()
 
 void GetSystemInfo::startwifitimer()
 {
+    if (!timerWifi) return;
     timerWifi->start(1000);
 }
 
 void GetSystemInfo::stopwifitimer()
 {
+    if (!timerWifi) return;
     timerWifi->stop();
 }
 
@@ -147,25 +165,27 @@ void GetSystemInfo::get_memory_info()
 }
 void GetSystemInfo::get_wifi_info()
 {
+    if (!msic_process) return;
     if (msic_process->state() == QProcess::NotRunning) {
         msic_process->start("wpa_cli", {"-i", wifi_port, "status"});
     }
 }
 void GetSystemInfo::wifi_open()
 {
+    if (!msic_process) return;
     QString command;
     command = "ifconfig | grep " + wifi_port + " | wc -l";
     msic_process->start("/bin/sh", {"-c", command});
-	msic_process->start(command);
-	msic_process->waitForFinished();
-	if(msic_process->readAll().toInt() == 0){
+    msic_process->waitForFinished();
+    if(msic_process->readAll().toInt() == 0){
         command = "ifconfig";
         msic_process->start(command, {wifi_port, "up"});
-		msic_process->waitForFinished();
-	}
+        msic_process->waitForFinished();
+    }
 }
 void GetSystemInfo::wifi_close()
 {
+    if (!msic_process) return;
     QString command;
     command = "ifconfig";
     msic_process->start(command, {wifi_port, "down"});
@@ -173,19 +193,15 @@ void GetSystemInfo::wifi_close()
 }
 void GetSystemInfo::connect_wifi(QString essid_passwd)
 {
+    if (!msic_process || !wifi_process_connoct) return;
     QStringList tmp= essid_passwd.split("+");
-    QString command;
-	
-	qDebug()<<tmp[0]<<tmp[1]<<tmp[2];
+
+    // qDebug()<<tmp[0]<<tmp[1]<<tmp[2];
 	if(tmp[0] != wifi_status){
-        command = "wpa_cli";
-        msic_process->start(command, {"-i", wifi_port, "disconnect"});
-		msic_process->waitForFinished();
-		
 		QFile file("/usr/share/connect_wifi.sh");
-        file.open(QIODevice::WriteOnly | QIODevice::Text);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		QTextStream out(&file);
-        if(tmp[2] == "images/wvga/system/key.png")
+        if(tmp[2] == "true")
 		{
 			out << "#!/bin/sh\n";
             out << "wpa_cli -i " +wifi_port+ " remove_network 0\n";
@@ -204,54 +220,84 @@ void GetSystemInfo::connect_wifi(QString essid_passwd)
 		}
 		file.close();
         msic_process->execute("chmod", {"a+x", "/usr/share/connect_wifi.sh"});
-		msic_process->execute("/usr/share/connect_wifi.sh");
+        wifi_process_connoct->start("/bin/sh", {"-c", "/usr/share/connect_wifi.sh"});
+	}
 	}
 }
 void GetSystemInfo::disconnect_wifi()
 {
+    if (!msic_process) return;
     QString command;
     command = "wpa_cli";
     msic_process->start(command, {"-i", wifi_port, "disconnect"});
     msic_process->waitForFinished();
     msic_process->start("ip", {"addr", "flush", "dev", wifi_port});
     connect_wifi_status[0] = "false";
+    connect_wifi_status[1] = "";  // 清空SSID，确保connect_wifi中的比对不会跳过重连
+    emit wifiConnected(connect_wifi_status[4], "false");
 }
 
+// 获取wifi连接状态[status, ssid, wpa_state, ip, bssid]
 void GetSystemInfo::msic_ReadData()
 {
-    QTextStream stream(msic_process->readAll().data());
+    QByteArray data = msic_process->readAll();
+    QTextStream stream(data);
     QString line,command;
+    QStringList tmp;
 
     do {
         line = stream.readLine().trimmed();
+        // qDebug()<<line;
         if ( line.startsWith("ssid") ){
-            QStringList tmp = line.split("=");
+            tmp = line.split("=");
             connect_wifi_status[1] = tmp[1];
         }
-		else if( line.startsWith("wpa_state") ){
-			QStringList tmp = line.split("=");
+        else if(line.startsWith("bssid")) {
+            tmp = line.split("=");
+            connect_wifi_status[4] = tmp[1];
+        }
+        else if( line.startsWith("wpa_state") ){
+            tmp = line.split("=");
             connect_wifi_status[2] = tmp[1];
             if(tmp[1] == "COMPLETED"){
                 if(connect_wifi_status[0] != "true"){
                     command = "udhcpc";
-                    msic_process->execute(command, {"-i", wifi_port, "-t", "3", "-n", "-q", "-b"});
+                    // 获取ip
+                    QProcess::startDetached(command, {"-i", wifi_port, "-t", "3", "-n", "-q", "-b"});
                 }
             }else{
-                emit wifiConnected(connect_wifi_status[1], "fasle");
-			}
+                emit wifiConnected(connect_wifi_status[4], "false");
+            }
         }else if(line.startsWith("ip_address")){
-            QStringList tmp = line.split("=");
+            tmp = line.split("=");
             connect_wifi_status[3] = tmp[1];
             if(connect_wifi_status[2] == "COMPLETED"){
+                // 获取到ip并且"COMPLETED"才算连接成功
                 connect_wifi_status[0] = "true";
-                emit wifiConnected(connect_wifi_status[1], "true");
+                emit wifiConnected(connect_wifi_status[4], "true");
             }
         }
     } while (!line.isNull());
-    wifi_status = connect_wifi_status[0];
+    wifi_status = connect_wifi_status[1];  // 存当前连接的SSID名，用于connect_wifi中的重复断开优化
 }
+// 检测wifi连接脚本的返回结果
+void GetSystemInfo::connect_ReadData()
+{
+    QByteArray data = wifi_process_connoct->readAll();
+    if(data.isEmpty()) return;
+    QTextStream stream(data);
+    QString line;
+
+    do {
+        line = stream.readLine().trimmed();
+        if (line.contains("FAIL", Qt::CaseInsensitive))
+            emit wifiConnectedStatus("false");
+    } while (!line.isNull());
+}
+
 QString GetSystemInfo::get_wifi_list()
 {
+    if (!msic_process || !wifi_process) return {};
     QString wirelessInterfaceStatus = getWirelessInterfaceStatus(wifi_port);
 
     if(wirelessInterfaceStatus == "down"){
@@ -291,7 +337,7 @@ QString GetSystemInfo::getWirelessInterfaceStatus(QString str)
 void GetSystemInfo::Wifi_ReadData()
 {
 	QByteArray data = wifi_process->readAll();
-    QTextStream stream(data.data());
+    QTextStream stream(data);
     QString buffer = "";
     QString line;
     int cellCount = 0;
@@ -305,33 +351,41 @@ void GetSystemInfo::Wifi_ReadData()
 				buffer = buffer + line + "<<>>"; // line change
 		}
     } while (!line.isNull());
+    // 解析扫描信息
     parseIwlist(buffer);
 }
 
 void GetSystemInfo::parseIwlist(QString buffer)
 {
-    QStringList bufferLines = buffer.split("<<#>>");
-    QString line;
-    QVector<QStringList> wifi_info_list;
+    // QStringList bufferLines = buffer.split("<<#>>");
+    // QString line;
+    // QVector<QStringList> wifi_info_list;
     QVariantList  wifi_info;
-	
-	QStringList infoLines = buffer.split("<<>>");
-	for(int i=0;i<infoLines.length();i++){
-		QString str = infoLines[i];
-		QStringList list = str.split("\t");
-		if(list.length()!=5)
-			continue;
-		else{
-			wifi_info.append(list[0]);
-			if(list[3].indexOf("WPA") >= 0)
-				wifi_info.append("on");
-			else
-				wifi_info.append("off");
-			wifi_info.append(list[4]);
-		}
-	}
-	
-	/*
+    QSet<QString> seenBssids;  // 按MAC地址去重
+
+    // 按"<<>>"分割wifi信息
+    QStringList infoLines = buffer.split("<<>>");
+    for(int i=0;i<infoLines.length();i++){
+        QString str = infoLines[i];
+        QStringList list = str.split("\t");
+        if(list.length()!=5)
+            continue;
+        else{
+            // 按BSSID(MAC地址)去重，同一MAC只保留一个
+            if(seenBssids.contains(list[0]))
+                continue;
+            seenBssids.insert(list[0]);
+            wifi_info.append(list[0]);
+            if(list[3].indexOf("WPA") >= 0)
+                wifi_info.append("on");
+            else
+                wifi_info.append("off");
+            wifi_info.append(list[4]);
+            wifi_info.append(list[2]);
+        }
+    }
+
+    /*
     if (bufferLines.size() > 0)
     {
         if ( bufferLines.at(0).contains("No scan results") )

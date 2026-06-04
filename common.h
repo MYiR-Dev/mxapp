@@ -68,9 +68,10 @@ public:
     Q_INVOKABLE void stopwifitimer();
     Q_INVOKABLE bool isWifi_avail();
     Q_INVOKABLE QVariantList get_net_ports();
-    QProcess *process;
-    QProcess *wifi_process;
-    QProcess *msic_process;
+    QProcess *process = nullptr;
+    QProcess *wifi_process = nullptr;
+    QProcess *msic_process = nullptr;
+    QProcess *wifi_process_connoct = nullptr;
     int totalNew, idleNew, totalOld, idleOld;
     int cpuPercent;
     int memoryPercent;
@@ -86,20 +87,22 @@ public:
     QStringList connect_wifi_status;  // 连接wifi信息
     QVariantList net_ports;
 
-    QTimer *timerCPU;       //定时器获取CPU信息
-    QTimer *timerMemory;    //定时器获取内存信息
-    QTimer *timerWifi;    //定时器获取存储信息
+    QTimer *timerCPU = nullptr;       //定时器获取CPU信息
+    QTimer *timerMemory = nullptr;    //定时器获取内存信息
+    QTimer *timerWifi = nullptr;    //定时器获取存储信息
 public slots:
     void ReadData();
     void Wifi_ReadData();
     void msic_ReadData();
     void get_memory_info();
     void get_cpu_info();
+    void connect_ReadData();
 //    void get_wifi_info();
 signals:
     void begin();
     void wifiReady(QVariantList  wifi_data);
     void wifiConnected(QString  wifi_essid_info, QString flag);
+    void wifiConnectedStatus(QString flag);
 };
 
 

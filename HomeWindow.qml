@@ -82,7 +82,7 @@ Rectangle {
     Connections {
         target: translator
         function onLanguageChanged(lang) {
-            console.log(lang)
+            // console.log(lang)
             pathView.pathItemCount = 4
             if (lang === "English")
             {
@@ -537,13 +537,13 @@ Rectangle {
                     //                        }
                     model:{
                         var index = findIndex("multimedia")
-                        console.log("index="+index)
-                        console.log("currentIndex="+pathView.currentIndex)
+                        // console.log("index="+index)
+                        // console.log("currentIndex="+pathView.currentIndex)
                         if(pathView.currentIndex>0)
                         {
                             index = pathView.currentIndex;
                         }
-                        console.log("index="+index)
+                        // console.log("index="+index)
                         viewModel.get(index/*pathView.currentIndex*/).subNode
                     }
                     Rectangle{
@@ -743,7 +743,7 @@ Rectangle {
             onCurrentIndexChanged: {
                 //                    timer.running=false;
                 //                    timer.running=true;
-                console.log("currentIndexChanged:"+ currentIndex)
+                // console.log("currentIndexChanged:"+ currentIndex)
             }
         }
 

@@ -111,12 +111,13 @@ Item {
 
             onClicked: {
                 checked = !checked
-                console.log(checked)
-                languageBt.implicitWidth = fitWidth(languageBt.icontext)+fitWidth(languageBt.engtext)+20
+                // console.log(checked)
                 if(checked)
                    translator.loadLanguage("English");
                 else
                    translator.loadLanguage("Chinese");
+                languageBt.implicitWidth = fitWidth(languageBt.icontext)+fitWidth(languageBt.engtext)+app_font_size
+                copyrightNotice.implicitWidth = fitWidth(copyrightNotice.crtext)+app_font_size
             }
         }
 //        style: buttonStyle

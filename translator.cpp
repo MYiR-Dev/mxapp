@@ -52,7 +52,7 @@ QString Translator::get_current_language()
 }
 void Translator::loadLanguage(QString lang)
 {
-    qDebug()<<"load"<<lang;
+    // qDebug()<<"load"<<lang;
     if(NULL == m_translator)
     {
         return;
@@ -60,7 +60,7 @@ void Translator::loadLanguage(QString lang)
 
     if(lang.contains("English"))
     {
-        if(m_translator->load(":/languages/language_en.qm"))
+        if(m_translator->load(":/i18n/language_en.qm"))
         {
             QApplication::installTranslator(m_translator);
             m_current_language = "English" ;
@@ -74,7 +74,7 @@ void Translator::loadLanguage(QString lang)
     }
     else
     {
-        if(m_translator->load(":/languages/language_zh.qm"))
+        if(m_translator->load(":/i18n/language_zh.qm"))
         {
             QApplication::installTranslator(m_translator);
             m_current_language = "Chinese" ;

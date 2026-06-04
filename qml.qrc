@@ -400,8 +400,6 @@
         <file>images/wvga/ecg/ecg_bg5.png</file>
         <file>languages/language_en.ts</file>
         <file>languages/language_zh.ts</file>
-        <file>languages/language_en.qm</file>
-        <file>languages/language_zh.qm</file>
         <file>images/fhd/ecg/header_logo.png</file>
         <file>WinAppearance.qml</file>
         <file>WinChargeMonitor.qml</file>

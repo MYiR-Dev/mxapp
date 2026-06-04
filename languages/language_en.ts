@@ -698,6 +698,46 @@
         <source>WiFi设置</source>
         <translation type="unfinished">WiFi Setting</translation>
     </message>
+    <message>
+        <location filename="../SettingsWindow.qml"/>
+        <source>Connect</source>
+        <translation>Connect</translation>
+    </message>
+    <message>
+        <location filename="../SettingsWindow.qml"/>
+        <source>Password field</source>
+        <translation>Password</translation>
+    </message>
+    <message>
+        <location filename="../SettingsWindow.qml"/>
+        <source>Connected</source>
+        <translation>Connected</translation>
+    </message>
+    <message>
+        <location filename="../SettingsWindow.qml"/>
+        <source>Failed</source>
+        <translation>Failed</translation>
+    </message>
+    <message>
+        <location filename="../SettingsWindow.qml"/>
+        <source>connect</source>
+        <translation>Connect</translation>
+    </message>
+    <message>
+        <location filename="../SettingsWindow.qml"/>
+        <source>cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <location filename="../SettingsWindow.qml"/>
+        <source>网口</source>
+        <translation>Network Port</translation>
+    </message>
+    <message>
+        <location filename="../SettingsWindow.qml"/>
+        <source>断开</source>
+        <translation>Disconnect</translation>
+    </message>
 </context>
 <context>
     <name>SupportWindow</name>
