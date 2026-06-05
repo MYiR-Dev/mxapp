@@ -24,7 +24,7 @@ import QtQuick
 
 Rectangle {
     id: root
-    width: def.win_width
+    width: parent.width
     height: 80
     color: "black"
     property alias img_src: photoPreview.source

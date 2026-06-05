@@ -33,8 +33,8 @@ SystemWindow {
     id: settingsWindow
     title: "settings"
 
-    property int adaptive_width: Screen.desktopAvailableWidth
-    property int adaptive_height: Screen.desktopAvailableHeight
+    property int adaptive_width: parent.width
+    property int adaptive_height: parent.height
     property var netports: []
     property var selectedWifi: null
     property bool wifistatus: false

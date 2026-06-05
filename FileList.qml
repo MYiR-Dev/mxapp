@@ -29,8 +29,8 @@ import QtQuick.Layouts 1.3
 
 SystemWindow {
     id: root
-    width: def.win_width
-    height: def.win_height
+    width: parent.width
+    height: parent.height
 //    title: qsTr("视频")
 //    flags: Qt.Dialog        //Dialog,没有最大最小化按钮
 
@@ -86,8 +86,8 @@ SystemWindow {
 
     Rectangle {
         id: rootRectangle
-        width: def.win_width-100
-        height: def.win_height-backButton.height-20
+        width: parent.width-100
+        height: parent.height-backButton.height-20
         visible: true
         color: "transparent"
         opacity: 0.8
@@ -107,7 +107,7 @@ SystemWindow {
             onClicked: {
                 if(folderModel.parentFolder != ""){
                     folderModel.folder = folderModel.parentFolder;
-                    fileUrl=folderModel.folder
+                    root.fileUrl=folderModel.folder
                 }
             }
         }
@@ -141,11 +141,11 @@ SystemWindow {
                 onClicked: {
                     if(fileIsDir){
                         folderModel.folder = folderModel.get(index, "fileURL")
-                        fileUrl=folderModel.folder
+                        root.fileUrl=folderModel.folder
                     }
                     else {
                         fileIndex = index;
-                        fileUrl = folderModel.folder;
+                        root.fileUrl = folderModel.folder;
                         console.log("index:", index, ":" , fileUrl);
                         root.accepted()
                         close()
@@ -159,7 +159,7 @@ SystemWindow {
                     if(!fileIsDir)  //是一个文件
                     {
                         fileIndex = index;
-                        fileUrl = folderModel.folder;
+                        root.fileUrl = folderModel.folder;
                         console.log("index:", index, ":" , fileUrl);
                         root.accepted()
                         close()
@@ -178,7 +178,7 @@ SystemWindow {
             sortField: FolderListModel.Type
             onFolderChanged: {
                 console.log("current folder:", folderModel.folder)
-                fileUrl = folderModel.folder;
+                root.fileUrl = folderModel.folder;
             }
             //            onStatusChanged: console.log("status:", folderModel.status);
         }

@@ -26,8 +26,8 @@ import QtQuick.Layouts
 import QtQuick.Window
 SystemWindow {
     id: tickWnd
-    property int adaptive_width: Screen.desktopAvailableWidth
-    property int adaptive_height: Screen.desktopAvailableHeight
+    property int adaptive_width: parent.width
+    property int adaptive_height: parent.height
     width: adaptive_width
     height: adaptive_height
     property int title_font_size: 24

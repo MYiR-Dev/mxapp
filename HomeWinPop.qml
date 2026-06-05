@@ -28,8 +28,8 @@ import QtQuick.Layouts
 
 SystemWindow {
     id: root
-    width: def.win_width
-    height: def.win_height
+    width: parent.width
+    height: parent.height
     property string iconCode_back: "\uf053"             //返回图标
 
     Define {

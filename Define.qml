@@ -26,8 +26,8 @@ import QtQuick.Window 2.2
 Item {
     id: def
 
-    property int win_width: Screen.desktopAvailableWidth
-    property int win_height: Screen.desktopAvailableHeight
+    property int win_width: parent.width
+    property int win_height: parent.height
     MyFunction {id: myFunction}
     property int iconSize: 25
 

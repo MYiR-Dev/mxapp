@@ -27,8 +27,8 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 SystemWindow {
     id: root
-    width: def.win_width
-    height: def.win_height
+    width: parent.width
+    height: parent.height
     onVisibleChanged: {
         if(showFlag == false){
             showFlag = true;
@@ -83,7 +83,7 @@ SystemWindow {
     PlayerControlBar {
         id: player
         visible: true
-        width: def.win_width
+        width: parent.width
         enabled: video.hasVideo & (folderModel.count!=0)
         anchors.bottom: parent.bottom
         media_duration: video.duration

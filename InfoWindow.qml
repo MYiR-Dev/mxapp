@@ -29,8 +29,8 @@ SystemWindow {
     id: infoWindow
     title: "info"
     focus: true
-    property int adaptive_width: Screen.desktopAvailableWidth
-    property int adaptive_height: Screen.desktopAvailableHeight
+    property int adaptive_width: parent.width
+    property int adaptive_height: parent.height
     width: adaptive_width
     height: adaptive_height
     onVisibleChanged: {
@@ -174,7 +174,7 @@ SystemWindow {
                     }
                     Text{
                         id:resolution_value
-                        text: Screen.desktopAvailableWidth+"*"+Screen.desktopAvailableHeight
+                        text: infoWindow.adaptive_width+"*"+infoWindow.adaptive_height
                         font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"

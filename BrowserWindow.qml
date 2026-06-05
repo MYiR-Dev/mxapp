@@ -34,8 +34,8 @@ import QtQuick.VirtualKeyboard.Settings 2.2
 SystemWindow {
     id: browserWindow
     title: "browser"
-    property int adaptive_width: Screen.desktopAvailableWidth
-    property int adaptive_height: Screen.desktopAvailableHeight
+    property int adaptive_width: parent.width
+    property int adaptive_height: parent.height
     width: adaptive_width
     height: adaptive_height
     TitleLeftBar{

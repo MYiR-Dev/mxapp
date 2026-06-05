@@ -27,8 +27,8 @@ import QtQuick.Layouts 1.3
 Rectangle {
     id: root
     visible: true
-    width: def.win_width
-    height: def.win_height/5
+    width: parent.width
+    height: parent.height/5
     color: "transparent"
 
     //    border.color: "white"

@@ -28,8 +28,8 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 SystemWindow {
     id: root
-    width: def.win_width
-    height: def.win_height
+    width: parent.width
+    height: parent.height
 ////    title: qsTr("图库")
 ////    flags: Qt.Dialog        //Dialog,没有最大最小化按钮
 
@@ -78,8 +78,8 @@ SystemWindow {
 
     //中央网格图片显示
     Rectangle {
-        width: def.win_width
-        height: def.win_height - backButton.height
+        width: parent.width
+        height: parent.height - backButton.height
         color: "transparent"        //透明
         anchors.top: backButton.bottom
         anchors.horizontalCenter: parent.horizontalCenter

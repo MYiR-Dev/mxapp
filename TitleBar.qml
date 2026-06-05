@@ -30,9 +30,12 @@ Item {
         top: parent.top
         left: parent.left
     }
-    Component.onCompleted: {
-        languageBt.implicitWidth = fitWidth(languageBt.icontext)+fitWidth(languageBt.engtext)+20
-        copyrightNotice.implicitWidth = fitWidth(copyrightNotice.crtext)+20
+    // Wayland 下窗口缩放是异步的,强制延迟到下一帧
+    onHeightChanged: {
+        Qt.callLater(function(){
+            languageBt.width = fitWidth(languageBt.icontext)+fitWidth(languageBt.engtext)+app_font_size
+            copyrightNotice.width = fitWidth(copyrightNotice.crtext)+app_font_size
+        } )
     }
 
     function fitWidth(text){
@@ -40,10 +43,7 @@ Item {
     }
 
     property int app_font_size: {
-        if(parent.width < parent.height){
-            Math.ceil(parent.width/14*0.4)
-        }else
-            Math.ceil(Math.min(width, height)*0.4)
+        Math.ceil(root.height*0.4)
     }
 
     FontMetrics {
@@ -72,38 +72,39 @@ Item {
     property string language_icon:"\uf1ab"
     Rectangle{
         id:languageBt
-        property int engwidth: fitWidth(icontext)+fitWidth(engtext)+20
+        property int engwidth: fitWidth(icontext)+fitWidth(engtext)+app_font_size
         property alias engtext: textEnglish.text
         property alias icontext: icon.text
-        implicitWidth:engwidth
-        implicitHeight: app_font_size*1.8
-        radius: implicitHeight*0.2
+        width:engwidth
+        height: app_font_size*1.4
+        radius: height*0.2
         anchors.top:parent.top
         anchors.topMargin: 10
         anchors.right: parent.right
         anchors.rightMargin: 100
         color:"#02b9db"
-        Text {
-            id: icon
-            font.family: "FontAwesome"
-            font.pixelSize: app_font_size
-            text: language_icon //图标
-            color: "white"
-            opacity: 1.0        //不透明
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: parent.left
-            anchors.leftMargin: 5
-//            anchors.centerIn: root
-        }
-        Text {
-            id : textEnglish
-            text: checked? qsTr("中文"): qsTr("English")
-            color: "white"
-            font.pixelSize: app_font_size
-            font.family:"Microsoft YaHei"
-            anchors.left: icon.right
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: app_font_size*0.2
+        Item{
+            anchors.centerIn: parent
+            width:icon.width+textEnglish.width
+            Text {
+                id: icon
+                font.family: "FontAwesome"
+                font.pixelSize: app_font_size
+                text: language_icon //图标
+                color: "white"
+                opacity: 1.0        //不透明
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            Text {
+                id : textEnglish
+                text: checked? qsTr("中文"): qsTr("English")
+                color: "white"
+                font.pixelSize: app_font_size
+                font.family:"Microsoft YaHei"
+                anchors.left: icon.right
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.leftMargin: app_font_size*0.2
+            }
         }
 
         MouseArea{
@@ -115,18 +116,18 @@ Item {
                 if(checked)
                    translator.loadLanguage("English");
                 else
-                   translator.loadLanguage("Chinese");
-                languageBt.implicitWidth = fitWidth(languageBt.icontext)+fitWidth(languageBt.engtext)+app_font_size
-                copyrightNotice.implicitWidth = fitWidth(copyrightNotice.crtext)+app_font_size
+                    translator.loadLanguage("Chinese");
+                languageBt.width = fitWidth(languageBt.icontext)+fitWidth(languageBt.engtext)+app_font_size
+                copyrightNotice.width = fitWidth(copyrightNotice.crtext)+app_font_size
             }
         }
 //        style: buttonStyle
     }
     Rectangle{
         id:copyrightNotice
-        implicitWidth:fitWidth(crtext)+20
-        implicitHeight: app_font_size*1.8
-        radius: implicitHeight*0.2
+        width:fitWidth(crtext)+app_font_size
+        height: app_font_size*1.4
+        radius: height*0.2
         anchors.top:parent.top
         anchors.topMargin: 10
         anchors.right: languageBt.left
