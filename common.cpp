@@ -59,7 +59,7 @@ void GetSystemInfo::initAlsaVolume()
         qDebug() << "ALSA: no known output control found, skip volume init";
 }
 
-GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent), totalOld(0), idleOld(0)
+GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent), totalOld(0), idleOld(0), cpuPercent(0), memoryPercent(0)
 {
     process = new QProcess(this);
     connect(process, SIGNAL(readyRead()), this, SLOT(ReadData()));
@@ -748,7 +748,7 @@ void GetSystemInfo::ReadData()
 
         QString s = QLatin1String(process->readLine());
         if (s.startsWith("cpu")) {
-            s.replace(QRegularExpression("( ){1,}")," ");
+            s = s.simplified();
             QStringList list = s.split(" ");
             idleNew = list.at(4).toInt() + list.at(5).toInt();
             for(int i = 1; i < 8; i++){
