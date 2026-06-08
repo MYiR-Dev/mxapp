@@ -70,6 +70,8 @@ int AbstractCamera::init_device(camera_info& in_camera)
         return -1;
     }
     in_camera.pixelformat = fmt.fmt.pix.pixelformat;
+    in_camera.width = fmt.fmt.pix.width;
+    in_camera.height = fmt.fmt.pix.height;
     p = (unsigned char *)&in_camera.pixelformat;
     qDebug() << in_camera.dev_name << QString("%1%2%3%4").arg(QChar(p[0])).arg(QChar(p[1])).arg(QChar(p[2])).arg(QChar(p[3]));
 

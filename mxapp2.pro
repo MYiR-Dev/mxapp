@@ -25,6 +25,7 @@ SOURCES += \
     iec104_class.cpp \
     logmsg.cpp \
         main.cpp \
+    mediapipeline.cpp \
     multicamera.cpp \
     qcustomplot.cpp \
     qiec104.cpp \
@@ -63,6 +64,7 @@ HEADERS += \
     iec104_class.h \
     iec104_types.h \
     logmsg.h \
+    mediapipeline.h \
     multicamera.h \
     qcustomplot.h \
     qiec104.h \

@@ -69,9 +69,11 @@ int MultiCamera::init_device(camera_info& in_camera)
         fprintf(stderr, "VIDIOC_S_FMT1: error: %d\n", errno);
         return -1;
     }
-    //获取多平面个数和设置的编码格式
+    //获取驱动实际设置的参数
     in_camera.NUM_PLANES = fmt.fmt.pix_mp.num_planes;
     in_camera.pixelformat = fmt.fmt.pix_mp.pixelformat;
+    in_camera.width = fmt.fmt.pix_mp.width;
+    in_camera.height = fmt.fmt.pix_mp.height;
     p = (unsigned char *)&in_camera.pixelformat;
     qDebug() << in_camera.dev_name <<QString("%1%2%3%4").arg(QChar(p[0])).arg(QChar(p[1])).arg(QChar(p[2])).arg(QChar(p[3]));
     if(init_mmap(in_camera) == -1)

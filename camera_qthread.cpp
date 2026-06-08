@@ -1,4 +1,5 @@
 #include "camera_qthread.h"
+#include "mediapipeline.h"
 #include <QtEndian>
 
 Camera_qthread *Camera_qthread::CameraHandleSingle = nullptr;
@@ -18,6 +19,9 @@ bool Camera_qthread::set_device(QString device, int in_width, int in_height) {
     return false;
   }
 
+  // CSI media pipeline 初始化（USB 摄像头无 sensor 实体，自动跳过）
+  MediaPipeline::setupAll(in_width, in_height);
+
   CLEAR(m_camera);
   QByteArray devBytes = device.toUtf8();
   strncpy(m_camera.dev_name, devBytes.data(), sizeof(m_camera.dev_name) - 1);
@@ -33,6 +37,15 @@ bool Camera_qthread::set_device(QString device, int in_width, int in_height) {
   m_camera.fd = ret;
   m_camera.width = in_width;
   m_camera.height = in_height;
+
+  // 获取 CSI pipeline 配置后的实际分辨率（USB 设备返回 false，使用默认值）
+  int actual_w = in_width, actual_h = in_height;
+  if (MediaPipeline::getActualResolution(device, actual_w, actual_h)) {
+    m_camera.width = actual_w;
+    m_camera.height = actual_h;
+    qDebug() << "Using CSI actual resolution:" << actual_w << "x" << actual_h;
+  }
+
   // 初始化摄像头、申请buffer并映射
   ret = camera_handle->init_device(m_camera);
   if (ret < 0) {
@@ -131,22 +144,38 @@ void Camera_qthread::run() {
   Fds[0].fd = m_camera.fd;
   Fds[0].events = POLLIN;
 
-  frameLoop.store(true); // 原子变量控制摄像头是否循环取帧
+  frameLoop.store(true);
   qDebug() << "frame_length: " << m_camera.frame_length;
-  onebuf =
-      (unsigned char *)calloc(m_camera.frame_length, sizeof(unsigned char));
-  if (onebuf == nullptr)
+  onebuf = (unsigned char *)calloc(m_camera.frame_length, sizeof(unsigned char));
+  // 预分配 RGB 转换缓冲区，避免每帧栈分配 VLA
+  unsigned char *rgbbuf = (unsigned char *)calloc(m_camera.width * m_camera.height * 3, 1);
+  if (onebuf == nullptr || rgbbuf == nullptr) {
+    free(onebuf); onebuf = nullptr;
+    free(rgbbuf); rgbbuf = nullptr;
     goto streamoff_handle;
+  }
   while (frameLoop.load()) {
-    ret = poll(Fds, 1, 1000); // 监听摄像头数据
+    ret = poll(Fds, 1, 1000);
     if (ret == 0) {
       fprintf(stderr, "poll I/O timeout\n");
       fprintf(stderr, "%s reset again\n", m_camera.dev_name);
+      size_t oldFrameLen = m_camera.frame_length;
+      size_t oldRgbLen   = (size_t)m_camera.width * m_camera.height * 3;
       camera_handle->stop_capturing(m_camera);
       camera_handle->exit_device(m_camera);
       delete camera_handle;
       camera_handle = nullptr;
       if (set_device(m_camera.dev_name)) {
+        // 仅当缓冲区尺寸变化时才重新分配（避免每次超时都 free/malloc）
+        if (m_camera.frame_length != oldFrameLen ||
+            (size_t)m_camera.width * m_camera.height * 3 != oldRgbLen) {
+          free(onebuf); onebuf = nullptr;
+          free(rgbbuf); rgbbuf = nullptr;
+          onebuf = (unsigned char *)calloc(m_camera.frame_length, 1);
+          rgbbuf = (unsigned char *)calloc(m_camera.width * m_camera.height * 3, 1);
+        }
+        if (onebuf == nullptr || rgbbuf == nullptr)
+          goto streamoff_handle;
         Fds[0].fd = m_camera.fd;
         Fds[0].events = POLLIN;
         continue;
@@ -164,41 +193,38 @@ void Camera_qthread::run() {
       fprintf(stderr, "camera handle failed \n");
       goto streamoff_handle;
     }
-    // 如果是yuyv编码格式需要转换成rgb3
+
     if (m_camera.pixelformat == v4l2_fourcc_i('Y', 'U', 'Y', 'V')) {
-      unsigned char onebuf1[m_camera.width * m_camera.height * 3];
-      yuv_to_rgb(onebuf, onebuf1);
-      img = QImage(onebuf1, m_camera.width, m_camera.height,
-                   QImage::Format_RGB888);
+      yuv_to_rgb(onebuf, rgbbuf);
+      img = QImage(m_camera.width, m_camera.height, QImage::Format_RGB888);
+      if (!img.isNull())
+        memcpy(img.bits(), rgbbuf, m_camera.width * m_camera.height * 3);
     } else if (m_camera.pixelformat == v4l2_fourcc_i('M', 'J', 'P', 'G'))
       img = QImage::fromData(onebuf, m_camera.frame_length, "JPEG");
-    else if (m_camera.pixelformat == v4l2_fourcc_i('R', 'G', 'B', '3'))
-      img = QImage(onebuf, m_camera.width, m_camera.height,
-                   QImage::Format_RGB888);
-    else if (m_camera.pixelformat == v4l2_fourcc_i('R', 'G', 'B', 'R')) {
-      img =
-          QImage(onebuf, m_camera.width, m_camera.height, QImage::Format_RGB16);
+    else if (m_camera.pixelformat == v4l2_fourcc_i('R', 'G', 'B', '3')) {
+      img = QImage(m_camera.width, m_camera.height, QImage::Format_RGB888);
+      if (!img.isNull())
+        memcpy(img.bits(), onebuf, m_camera.width * m_camera.height * 3);
+    } else if (m_camera.pixelformat == v4l2_fourcc_i('R', 'G', 'B', 'R')) {
+      img = QImage(m_camera.width, m_camera.height, QImage::Format_RGB16);
+      if (!img.isNull())
+        memcpy(img.bits(), onebuf, m_camera.frame_length);
     } else if (m_camera.pixelformat == v4l2_fourcc_i('N', 'V', '1', '2')) {
-      unsigned char onebuf1[m_camera.width * m_camera.height * 3];
-      nv12_to_rgb(onebuf, onebuf1);
-      img = QImage(onebuf1, m_camera.width, m_camera.height,
-                   QImage::Format_RGB888);
+      nv12_to_rgb(onebuf, rgbbuf);
+      img = QImage(m_camera.width, m_camera.height, QImage::Format_RGB888);
+      if (!img.isNull())
+        memcpy(img.bits(), rgbbuf, m_camera.width * m_camera.height * 3);
     }
     if (!img.isNull())
       emit sign_img(img);
   }
   qDebug() << "camera loop end";
-  // 正常退出时释放 onebuf
-  if (onebuf != nullptr) {
-    free(onebuf);
-    onebuf = nullptr;
-  }
+  free(onebuf); onebuf = nullptr;
+  free(rgbbuf); rgbbuf = nullptr;
   return;
 streamoff_handle:
-  if (onebuf != nullptr) {
-    free(onebuf);
-    onebuf = nullptr;
-  }
+  if (onebuf != nullptr) { free(onebuf); onebuf = nullptr; }
+  if (rgbbuf != nullptr) { free(rgbbuf); rgbbuf = nullptr; }
   if (camera_handle != nullptr) {
     camera_handle->stop_capturing(m_camera);
     camera_handle->exit_device(m_camera);

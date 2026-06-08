@@ -68,6 +68,7 @@ set(SOURCES
     iec104_class.cpp
     logmsg.cpp
     main.cpp
+    mediapipeline.cpp
     multicamera.cpp
 
     qcustomplot.cpp
@@ -93,6 +94,7 @@ set(HEADERS
     iec104_class.h
     iec104_types.h
     logmsg.h
+    mediapipeline.h
     multicamera.h
 
     qcustomplot.h

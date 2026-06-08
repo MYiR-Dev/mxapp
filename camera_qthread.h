@@ -35,7 +35,7 @@ public:
     static Camera_qthread* getInstance();
     void run() override;
     int xioctl(int fh, int request, void *arg);
-    bool set_device(QString device, int in_width = 640, int in_height = 480);
+    bool set_device(QString device, int in_width = 1280, int in_height = 720);
     bool isMultiCamera(int fd);
     void exit_camera();
 
