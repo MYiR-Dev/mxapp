@@ -41,6 +41,8 @@ SystemWindow {
     property string backButtonText: "File Browser"
 
     //输出
+    // 5.15后FolderListModel存在重名属性fileUrl（需区分）
+    // 被选中路径
     property url fileUrl;
     property int fileIndex: 0
 
@@ -128,10 +130,10 @@ SystemWindow {
             //model提供数据
             model: folderModel
             //delegate显示数据
-            delegate: component
+            delegate: component_list
         }
         Component {
-            id: component
+            id: component_list
             //文件和文件夹列表
             MyIconButton {
                 icon_code: fileIsDir ? def.iconCode_file_folder : def.getFileIconCode(fileName)
@@ -139,28 +141,26 @@ SystemWindow {
                 button_text: fileName
                 button_color: fileIsDir ? "#FFCF2B" : "white"
                 onClicked: {
+                    console.log("fileisDir: "+fileIsDir)
                     if(fileIsDir){
                         folderModel.folder = folderModel.get(index, "fileURL")
                         root.fileUrl=folderModel.folder
                     }
                     else {
                         fileIndex = index;
+                        // 5.15后存在重名属性fileUrl（需区分）
                         root.fileUrl = folderModel.folder;
-                        console.log("index:", index, ":" , fileUrl);
+                        console.log("index: ", index, ":" , root.fileUrl);
                         root.accepted()
                         close()
-                        console.log(filePath)
-                        console.log(def.getFileSuffix(fileName), ":", fileName);
                     }
-
-
                 }
                 onDoubleClicked: {
                     if(!fileIsDir)  //是一个文件
                     {
                         fileIndex = index;
                         root.fileUrl = folderModel.folder;
-                        console.log("index:", index, ":" , fileUrl);
+                        console.log("index:", index, ":" , root.fileUrl);
                         root.accepted()
                         close()
                     }

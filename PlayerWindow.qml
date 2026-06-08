@@ -203,8 +203,15 @@ SystemWindow {
             {
                 if(videoSwitchFlag === false)
                 {
-                    console.log("video stop")
-                    videoForward();     //自动播放下一个
+                    if(video.error === MediaPlayer.NoError && video.position > 0) {
+                        console.log("video stop")
+                        videoForward();     //自动播放下一个
+                    } else {
+                        console.log("video playback failed, error:", video.error,
+                                    "position:", video.position, video.errorString)
+                        // 复位UI状态
+                        player.playing = false;
+                    }
                 }
             }
         }
@@ -230,8 +237,9 @@ SystemWindow {
             else {
                 console.log("共发现" + getVideoCount() + "个视频文件")
                 videoSwitchFlag = true;
-                videoIndex = 0;
+                // 先加载后更新index
                 video.source = getVideoURL(videoIndex)
+                videoIndex = 0;
                 videoSwitchFlag = false;
             }
         }
@@ -260,15 +268,11 @@ SystemWindow {
     function setVideoPath(path)
     {
         console.log(path)
-        folderModel.folder = path;
+        folderModel.folder = path
     }
     function getVideoURL(idx)
     {
-        var path = "file://";
-        var filepath = folderModel.get(idx, "filePath")
-        path += filepath;
-        console.log(path)
-        return path;
+        return folderModel.get(idx, "fileUrl")
     }
     function getVideoFolder()
     {

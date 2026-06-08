@@ -191,7 +191,7 @@ SystemWindow {
         onClicked_delete: {
             var imgPath = folderModel.get(imageIndex, "filePath")
             myFunction.deleteFile(imgPath);
-            if(getImageCount() != 0)
+            if(getImageCount() !== 0)
                 previousImg()
             else
                 w_preview.close();
@@ -210,7 +210,7 @@ SystemWindow {
     function nextImage()
     {
         imageIndex++;
-        if(imageIndex == getImageCount())
+        if(imageIndex === getImageCount())
             imageIndex = 0;
         w_preview.imageUrl = getImageURL(imageIndex)
         w_preview.imageName = def.getFileName()

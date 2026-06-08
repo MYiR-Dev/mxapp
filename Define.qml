@@ -96,11 +96,11 @@ Item {
     property string imageDefaultLocation: "file:///" + captureSavePath;
 */
     //媒体文件类型过滤
-    property var audioNameFilters: ["*.mp3", "*.ape", "*.acc", "*.ogg", "*.flac"]
+    property var audioNameFilters: ["*.mp3", "*.ape", "*.aac", "*.ogg", "*.flac", "*.wav"]
     property var videoNameFilters: ["*.mp4", "*.mkv", "*.avi", "*.wmv", "*.rmvb", "*.mov"]
     property var imageNameFilters: ["*.jpg", "*.png", "*.bmp", "*.jpeg"]
 
-    property url url_img_preview: "qrc:/img/img_preview.jpg"
+    property url url_img_preview: "qrc:/images/wvga/multimedia/img_preview.jpg"
     property url url_img_black_transparent: "qrc:/images/wvga/multimedia/img_black_transparent.png"
 
     property string source_url: "qrc:/images/wvga/multimedia/img_preview.jpg"
@@ -161,6 +161,30 @@ Item {
         return suffix;
     }
 
+    //根据文件路径获取基地址
+    function getFileBasePath(fileFolder)
+    {
+        var s = fileFolder.toString();
+        // 处理 file://、qrc:/ 等
+        if (s.indexOf("://") === -1 && s[0] !== '/') {
+            // 非绝对路径，无法处理
+            return "";
+        }
+
+        // 移除查询参数
+        var cleanUrl = s.split(/[?#]/)[0];
+
+        if (cleanUrl.endsWith("/")) {
+            return cleanUrl;
+        }
+
+        var lastSlash = cleanUrl.lastIndexOf("/");
+        if (lastSlash > 0) {
+            return cleanUrl.substring(0, lastSlash + 1);
+        }
+        return cleanUrl + "/";
+    }
+
     //根据文件后缀显示对应的图标
     function getFileIconCode(fileName)
     {
@@ -184,6 +208,7 @@ Item {
         case "aac":
         case "ogg":
         case "flac":
+        case "wav":
             iconCode = iconCode_file_audio;
             break;
 

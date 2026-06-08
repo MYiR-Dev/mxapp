@@ -268,8 +268,18 @@ SystemWindow {
             {
                 if(musicSwitchFlag == false)
                 {
-                    console.log("music stop")
-                    musicForward();
+                    if(music.error === MediaPlayer.NoError && music.position > 0) {
+                        console.log("music stop")
+                        musicForward();
+                    } else {
+                        console.log("music playback failed, error:", music.error,
+                                    "position:", music.position, music.errorString)
+                        // 停止动画，复位UI状态
+                        player.playing = false;
+                        stylusRoation.angle = -10;
+                        recordImage.rotation = 0;
+                        recordAnimation.stop();
+                    }
                 }
             }
         }
@@ -283,16 +293,17 @@ SystemWindow {
         nameFilters: def.audioNameFilters
         sortField: FolderListModel.Name
         onFolderChanged: {
+            console.log("FolderListModel changed: "+folderModel.folder)
             if(getMusicCount() === 0) {
-                console.log("所选文件夹内无音乐文件" + getMusicFolder())
+                console.log("所选文件夹内无音乐文件 " + getMusicFolder())
                 musicIndex = 0;
             }
             else {
                 console.log("共发现" + getMusicCount() + "个音乐文件")
                 musicSwitchFlag = true;
-                musicIndex = 0;
-
+                // 先加载后更新index
                 music.source = getMusicURL(musicIndex)
+                musicIndex = 0;
                 musicSwitchFlag = false;
             }
         }
@@ -306,9 +317,11 @@ SystemWindow {
             if(music.hasAudio)
                 musicPlay()
         }
+        // 选中音乐文件触发
         onAccepted: {
             musicSwitchFlag = true;
             musicIndex = fileBrowser.fileIndex
+            console.log("musicIndex: ",musicIndex)
             music.source = getMusicURL(musicIndex)
             setMusicPath(fileUrl + "/");
             console.log("设置音乐文件夹为:", fileUrl + "/");
@@ -316,23 +329,22 @@ SystemWindow {
         }
     }
 
+    // 设置所选文件夹路径
     function setMusicPath(path)
     {
-        folderModel.folder = path;
-        console.log(path)
+        folderModel.folder = path
     }
+    // 获取所选音乐文件URL
     function getMusicURL(idx)
     {
-        var path = "file://";
-        var filepath = folderModel.get(idx, "filePath")
-        path += filepath;
-        console.log(path)
-        return path;
+        return folderModel.get(idx, "fileUrl")
     }
+    // 获取所选文件夹路径
     function getMusicFolder()
     {
         return folderModel.folder
     }
+    // 获取所选文件夹路径可播放文件数
     function getMusicCount()
     {
         return folderModel.count

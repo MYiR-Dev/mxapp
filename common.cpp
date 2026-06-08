@@ -33,6 +33,32 @@
 #define MB (1024 * 1024)
 #define KB (1024)
 
+// 通用 ALSA 音量初始化：扫描所有匹配的输出控制名并设置音量
+void GetSystemInfo::initAlsaVolume()
+{
+    // 按优先级排列的常见音频输出控制名（多个可能都需要设置，如 PCM+Headphone）
+    static const char *candidates[] = {
+        "Master", "PCM", "Headphone", "Lineout",
+        "Speaker", "Digital", "DAC", "Front"
+    };
+
+    QProcess proc;
+    proc.start("amixer", {"scontrols"});
+    proc.waitForFinished(2000);
+    const QString scontrols = proc.readAllStandardOutput();
+
+    bool found = false;
+    for (const char *name : candidates) {
+        if (scontrols.contains(QString("'%1'").arg(name))) {
+            qDebug() << "ALSA: setting" << name << "to 80%";
+            QProcess::execute("amixer", {"sset", name, "80%", "unmute"});
+            found = true;
+        }
+    }
+    if (!found)
+        qDebug() << "ALSA: no known output control found, skip volume init";
+}
+
 GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent), totalOld(0), idleOld(0)
 {
     process = new QProcess(this);

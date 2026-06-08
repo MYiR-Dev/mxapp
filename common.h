@@ -68,6 +68,9 @@ public:
     Q_INVOKABLE void stopwifitimer();
     Q_INVOKABLE bool isWifi_avail();
     Q_INVOKABLE QVariantList get_net_ports();
+
+    // 通用 ALSA 音量初始化：扫描并设置所有匹配的输出控制
+    Q_INVOKABLE void initAlsaVolume();
     QProcess *process = nullptr;
     QProcess *wifi_process = nullptr;
     QProcess *msic_process = nullptr;

@@ -102,8 +102,8 @@ Popup {
         NumberAnimation { target: systemWindow; property: "x"; to: -640; duration: 200}
         NumberAnimation { target: systemWindow; property: "y"; to: -360; duration: 200}
         onRunningChanged: {
-            console.log("x:" + x);
-            console.log("y:"+y);
+            // console.log("x:" + x);
+            // console.log("y:"+y);
         }
         onStopped: {
 //            tickWnd.close()

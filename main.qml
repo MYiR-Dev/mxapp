@@ -145,6 +145,8 @@ ApplicationWindow {
         settings.setValue("hmiBootCount", settings.hmiBootCount);
         console.log("settings.hmiBootCount is ", settings.hmiBootCount);
         settings.sync();
+        // 通用 ALSA 音量初始化（自动适配不同板子，设置所有匹配的控制名）
+        sysInfo.initAlsaVolume();
         if(Qt.platform.pluginName === "wayland") {
             mainWnd.width = 1024
             mainWnd.height = 600
@@ -153,6 +155,10 @@ ApplicationWindow {
         }
 
         console.log("qml platform "+Qt.platform.pluginName)
+    }
+
+    GetSystemInfo {
+        id: sysInfo
     }
 
     ChargeManage{
