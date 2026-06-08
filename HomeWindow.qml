@@ -64,13 +64,13 @@ Rectangle {
         return -1
     }
 
+    // 通过 currentIndex 循环强制 PathView 重建 delegate，使其应用新的字体和翻译
     function reloadModel() {
         var oldIndex = pathView.currentIndex
-        homewinpop.popindex = (pathView.currentIndex +1)%pathView.count
-        pathView.currentIndex = (pathView.currentIndex +1)%pathView.count
+        homewinpop.popindex = (oldIndex + 1) % pathView.count
+        pathView.currentIndex = (oldIndex + 1) % pathView.count
         pathView.currentIndex = oldIndex
         homewinpop.popindex = oldIndex
-        pathView.pathItemCount = 5
     }
 
     FontMetrics {
@@ -84,8 +84,6 @@ Rectangle {
     Connections {
         target: translator
         function onLanguageChanged(lang) {
-            // console.log(lang)
-            pathView.pathItemCount = 4
             if (lang === "English")
             {
                 family_font_size = 25
@@ -96,7 +94,8 @@ Rectangle {
                 family_font_size = 30
                 app_font_size = 20
             }
-            Qt.callLater(reloadModel)
+            // 同步执行 reloadModel：字体变化和 PathView 刷新在同一帧完成，消除抖动
+            reloadModel()
         }
     }
     HomeWinPop{
