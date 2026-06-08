@@ -54,14 +54,13 @@ void iconFontInit()
 
 int main(int argc, char *argv[])
 {
-
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
     QApplication app(argc, argv);
 
 
     app.setOrganizationName("MYiR_Electronics");
     app.setApplicationName("MEasy_HMI");
-    app.setApplicationVersion("V2.5.2");
+    app.setApplicationVersion("V2.5.3");
 
     qDebug() << "platform:" << QGuiApplication::platformName();
 

@@ -42,26 +42,41 @@ SystemWindow {
     height: adaptive_height
     signal message(string msg)
     property bool wifi_avail: false
-    Component.onCompleted: {
-        wifi_avail = getSyetemInfo.isWifi_avail()
-        console.log("wifi avail "+ wifi_avail)
-        getSyetemInfo.get_net_status()
-        netports = getSyetemInfo.get_net_ports()
+    property string selectedEthPort: ""
+    // 渐进式加载标记：所有页面首访后保持常驻
+    // 日历语言刷新由 CustomCalendar 内部监听 translator.languageChanged 信号驱动
+    property bool page1Loaded: true
+    property bool page2Loaded: false
+    property bool page3Loaded: false
+
+    // 延迟初始化：先渲染 UI，再执行 I/O 检查，避免窗口打开时阻塞
+    Timer {
+        id: initTimer
+        interval: 50
+        running: true
+        repeat: false
+        onTriggered: {
+            wifi_avail = getSyetemInfo.isWifi_avail()
+            console.log("wifi avail " + wifi_avail)
+            getSyetemInfo.get_net_status()
+            netports = getSyetemInfo.get_net_ports()
+            if (netports.length > 0) selectedEthPort = netports[0]
+        }
     }
     onVisibleChanged: {
         if(visible === true){
             setting_timer.start()
         }
     }
-    property string net_ip:getSyetemInfo.read_net_ip(combox_ethport.combox_control.currentText)
-    property int connect_net:getSyetemInfo.get_net_status(combox_ethport.combox_control.currentText)
+    property string net_ip:getSyetemInfo.read_net_ip(selectedEthPort)
+    property int connect_net:getSyetemInfo.get_net_status(selectedEthPort)
     Timer{
         id:setting_timer
         interval:1000;running:false;repeat: true
 
         onTriggered: {
-            net_ip = getSyetemInfo.read_net_ip(combox_ethport.combox_control.currentText)
-            connect_net = getSyetemInfo.get_net_status(combox_ethport.combox_control.currentText)
+            net_ip = getSyetemInfo.read_net_ip(selectedEthPort)
+            connect_net = getSyetemInfo.get_net_status(selectedEthPort)
         }
     }
     // wifi连接超时时钟
@@ -164,7 +179,11 @@ SystemWindow {
                 leftMargin: adaptive_width/5.3
             }
             Item {
-                id: firstPage
+                // 时间设置页面 — Loader 懒加载，仅当前页创建内容
+                Loader {
+                    anchors.fill: parent
+                    active: page1Loaded
+                    sourceComponent: Component {
                 Rectangle{
                     width:adaptive_width/1.26
                     height:adaptive_height*2
@@ -300,14 +319,18 @@ SystemWindow {
                             id:combox_year
                             delegate_width:85
                             property date currentTime: new Date()
-                            modeldata: ["2015"+qsTr("年"),+"2016"+qsTr("年"), "2017"+qsTr("年"),"2018"+qsTr("年"), "2019"+qsTr("年"), "2020"+qsTr("年"),
-                                "2021"+qsTr("年"), "2022"+qsTr("年"), "2023"+qsTr("年"),"2024"+qsTr("年"),"2025"+qsTr("年")]
+                            function getYearModel() {
+                                var years = [];
+                                var currentYear = new Date().getFullYear();
+                                for (var y = 2015; y <= currentYear; y++) {
+                                    years.push(y + qsTr("年"));
+                                }
+                                return years;
+                            }
+                            modeldata: getYearModel()
                             Component.onCompleted: {
-                                if(currentTime.getFullYear()-2015 < 0)
-                                    combox_year.combox_control.currentIndex = 0
-                                else
-                                    combox_year.combox_control.currentIndex =currentTime.getFullYear()-2015
-
+                                var idx = currentTime.getFullYear() - 2015;
+                                combox_year.combox_control.currentIndex = (idx >= 0 && idx < modeldata.length) ? idx : 0;
                             }
 
                         }
@@ -404,10 +427,14 @@ SystemWindow {
                     }
 
                 }
-
+                }}  // end Component, Loader
             }
             Item {
-                id: secondPage
+                // 以太网设置页面 — Loader 懒加载
+                Loader {
+                    anchors.fill: parent
+                    active: page2Loaded
+                    sourceComponent: Component {
                 Rectangle{
                     width:650
                     height:800
@@ -498,12 +525,22 @@ SystemWindow {
                         combox_bg:"images/wvga/system/input-bg.png"
                         modeldata: netports
 
+                        Component.onCompleted: {
+                            if (combox_ethport.combox_control.currentText)
+                                selectedEthPort = combox_ethport.combox_control.currentText
+                        }
+
                         anchors{
                             top:eth.bottom
                             topMargin: 28
                             left: ethport.left
                             leftMargin: 250
                         }
+                    }
+                    Binding {
+                        target: settingsWindow
+                        property: "selectedEthPort"
+                        value: combox_ethport.combox_control.currentText
                     }
 
                     Text{
@@ -809,10 +846,15 @@ SystemWindow {
                     }
 
                 }
+                }}  // end Component, Loader
             }
             Item {
-                id: thirdPage
-                visible: wifi_avail
+                // WiFi 设置页面 — Loader 懒加载（含 Dialog，需 Item 包装器）
+                Loader {
+                    anchors.fill: parent
+                    active: page3Loaded && settingsWindow.wifi_avail
+                    sourceComponent: Component {
+                Item {
                 Rectangle{
                     width:adaptive_width/1.26
                     height:adaptive_height*2
@@ -833,7 +875,7 @@ SystemWindow {
                         }
 
                     }
-                    // 打开wifi 按键
+                    // 打开wifi 按键 — checked 绑定到 settingsWindow.wifi_statu，页面切换后状态不丢失
                     CustomSwitch {
                         id:wifi_switch
                         anchors{
@@ -841,12 +883,10 @@ SystemWindow {
                            bottom: wifi_set_title.bottom
                            right: parent.right
                         }
-                        property bool backend: false
 
-                        checked:   backend
+                        checked: settingsWindow.wifi_statu
 
-                        onClicked: backend = checked
-                        Component.onCompleted: clicked.connect(openwifi)
+                        onClicked: openwifi(checked)
                     }
 
                     // 扫描按键
@@ -1289,6 +1329,8 @@ ListView {
                         }
                     }
             }
+                }  // end Item
+                }}  // end Component, Loader
         }
         Rectangle{
             id:navigationbar
@@ -1396,6 +1438,7 @@ ListView {
                             ethernet_icon_bg.source='images/wvga/system/button-bg.png'
                             wifi_icon_bg.source=''
                             console.log("net setting")
+                            page2Loaded = true
                             view.currentIndex = 1
                         }
                     }
@@ -1439,6 +1482,7 @@ ListView {
                             ethernet_icon_bg.source=''
                             wifi_icon_bg.source='images/wvga/system/button-bg.png'
                             console.log("wifi setting")
+                            page3Loaded = true
                             view.currentIndex = 2;
                         }
                     }

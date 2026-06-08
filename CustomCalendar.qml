@@ -20,311 +20,190 @@
     See <https://www.gnu.org/licenses/lgpl-3.0.html> for more details.
 ***********************************************************************/
 
-import QtQuick 2.0
+import QtQuick
 import QtQuick.Controls
-import QtQuick.Layouts 1.0
+import QtQuick.Layouts
 
 Rectangle {
-    id:control
-    border.color: "black"
-    visible: false
-    property alias font: month_grid.font
-    property alias locale: month_grid.locale
-    property date selectDate: new Date()
-    //property alias calendar_control:m_calendar
+    id: control
+    color: "transparent"
 
-    //自定义按钮样式
+    property alias font: monthGrid.font
+    property alias year: monthGrid.year
+    property alias month: monthGrid.month
+    property date selectedDate: new Date()
+
+    // 从全局 translator 读取当前语言，决定日历 locale
+    // 首次创建时求值，运行时通过 onLanguageChanged 信号驱动刷新
+    property var calendarLocale: {
+        var loc = Qt.locale("zh_CN")
+        try {
+            if (typeof translator !== "undefined") {
+                loc = (translator.get_current_language() === "English")
+                    ? Qt.locale("en_US") : Qt.locale("zh_CN")
+            }
+        } catch(e) {}
+        return loc
+    }
+
+    // 监听语言切换：仅在实际切换时局部刷新日历组件，不做全量销毁重建
+    Connections {
+        target: typeof translator !== "undefined" ? translator : null
+        function onLanguageChanged() {
+            // 1. 更新 locale
+            control.calendarLocale = (translator.get_current_language() === "English")
+                ? Qt.locale("en_US") : Qt.locale("zh_CN")
+            // 2. 强制 MonthGrid 重建内部模型
+            monthGrid.locale = control.calendarLocale
+            var savedMonth = monthGrid.month
+            monthGrid.month = (savedMonth + 1) % 12
+            monthGrid.month = savedMonth
+            // 3. 通过 Loader 重建 DayOfWeekRow（Qt6 bug QTBUG-129727 规避）
+            weekRowLoader.shouldBeActive = false
+            weekRowReloadTimer.start()
+        }
+    }
+
+    Timer {
+        id: weekRowReloadTimer
+        interval: 0
+        repeat: false
+        onTriggered: { weekRowLoader.shouldBeActive = true }
+    }
+
+    // 自定义翻页按钮
     component CalendarButton : AbstractButton {
-        id: c_btn
-        implicitWidth: 30
-        implicitHeight: 30
+        implicitWidth: 28
+        implicitHeight: 28
         contentItem: Text {
             font: control.font
-            text: c_btn.text
+            text: parent.text
             color: "white"
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
-        background: Item{}
+        background: Rectangle {
+            color: parent.down ? "#059EC9" : "transparent"
+            radius: 4
+        }
     }
 
-    GridLayout {
+    ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 2
-        columns: 2
-        rows: 3
-        columnSpacing: 1
-        rowSpacing: 1
+        spacing: 2
 
+        // 标题行：年月导航
         Rectangle {
-            implicitWidth: 30
-            implicitHeight: 40
-            color: "gray"
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    //日期复位
-                    let cur_date=new Date();
-                    month_grid.year=cur_date.getUTCFullYear();
-                    month_grid.month=cur_date.getUTCMonth();
-                }
-            }
-        }
-
-        Rectangle {
-            Layout.row: 0
-            Layout.column: 1
             Layout.fillWidth: true
-            implicitHeight: 40
-            color: "gray"
+            implicitHeight: 36
+            color: "transparent"
             RowLayout {
-                anchors.fill: parent
-                anchors.leftMargin: 20
-                anchors.rightMargin: 20
+                anchors.centerIn: parent
+                spacing: 8
                 CalendarButton {
                     text: "<"
                     onClicked: {
-                        month_grid.year-=1;
-                    }
-                }
-                Text {
-                    font: control.font
-                    color: "white"
-                    text: month_grid.year
-                }
-                CalendarButton {
-                    text: ">"
-                    onClicked: {
-                        month_grid.year+=1;
-                    }
-                }
-                Item {
-                    implicitWidth: 20
-                }
-                CalendarButton {
-                    text: "<"
-                    onClicked: {
-                        if(month_grid.month===0){
-                            month_grid.year-=1;
-                            month_grid.month=11;
-                        }else{
-                            month_grid.month-=1;
+                        if (monthGrid.month === 0) {
+                            monthGrid.year -= 1
+                            monthGrid.month = 11
+                        } else {
+                            monthGrid.month -= 1
                         }
                     }
                 }
                 Text {
+                    text: monthGrid.title
                     font: control.font
                     color: "white"
-                    text: month_grid.month+1
+                    Layout.preferredWidth: 120
+                    horizontalAlignment: Text.AlignHCenter
                 }
                 CalendarButton {
                     text: ">"
                     onClicked: {
-                        if(month_grid.month===11){
-                            month_grid.year+=1;
-                            month_grid.month=0;
-                        }else{
-                            month_grid.month+=1;
+                        if (monthGrid.month === 11) {
+                            monthGrid.year += 1
+                            monthGrid.month = 0
+                        } else {
+                            monthGrid.month += 1
                         }
+                    }
+                }
+                // 回今天按钮
+                CalendarButton {
+                    text: qsTr("今天")
+                    implicitWidth: 40
+                    onClicked: {
+                        var now = new Date()
+                        monthGrid.year = now.getFullYear()
+                        monthGrid.month = now.getMonth()
                     }
                 }
             }
         }
 
-        Rectangle {
-            implicitWidth: 30
-            implicitHeight: 40
-            color: "gray"
+        // 星期头 — Loader 包裹，语言切换时销毁重建规避 QTBUG-129727
+        Loader {
+            id: weekRowLoader
+            Layout.fillWidth: true
+
+            property bool shouldBeActive: true
+            active: shouldBeActive
+            sourceComponent: weekRowComponent
         }
 
-        //星期1-7
-        DayOfWeekRow {
-            id: week_row
-            Layout.row: 1
-            Layout.column: 1
+        // 日期网格
+        MonthGrid {
+            id: monthGrid
             Layout.fillWidth: true
-            implicitHeight: 40
+            Layout.fillHeight: true
+            spacing: 1
+            font {
+                family: "Microsoft YaHei"
+                pixelSize: 13
+            }
+            locale: control.calendarLocale
+            delegate: Rectangle {
+                color: model.today ? "#059EC9"
+                     : control.selectedDate.valueOf() === model.date.valueOf() ? "#0078D7"
+                     : "transparent"
+                border.color: "transparent"
+                border.width: 1
+                Text {
+                    anchors.centerIn: parent
+                    text: model.day
+                    color: model.month === monthGrid.month ? "white" : "#555555"
+                    font: monthGrid.font
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        control.selectedDate = model.date
+                        monthGrid.clicked(model.date)
+                    }
+                }
+                required property var model
+            }
+        }
+    }
+
+    Component {
+        id: weekRowComponent
+        DayOfWeekRow {
+            implicitHeight: 28
             spacing: 1
             topPadding: 0
             bottomPadding: 0
             font: control.font
-            //locale设置会影响显示星期数中英文
-            locale: control.locale
+            locale: control.calendarLocale
             delegate: Text {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                text: shortName
-                font: week_row.font
-                color: "white"
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
+                text: shortName
+                font: control.font
+                color: "#A9A9A9"
                 required property string shortName
             }
-            contentItem: Rectangle {
-                color: "gray"
-                border.color: "black"
-                RowLayout {
-                    anchors.fill: parent
-                    spacing: week_row.spacing
-                    Repeater {
-                        model: week_row.source
-                        delegate: week_row.delegate
-                    }
-                }
-            }
-        }
-
-        //左侧周数
-        WeekNumberColumn {
-            id: week_col
-            Layout.row: 2
-            Layout.fillHeight: true
-            implicitWidth: 30
-            spacing: 1
-            leftPadding: 0
-            rightPadding: 0
-            font: control.font
-            month: month_grid.month
-            year: month_grid.year
-            locale: control.locale
-            delegate: Text {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                text: weekNumber
-                font: week_col.font
-                color: "white"
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                required property int weekNumber
-            }
-            contentItem: Rectangle {
-                color: "gray"
-                border.color: "black"
-                ColumnLayout {
-                    anchors.fill: parent
-                    spacing: week_col.spacing
-                    Repeater {
-                        model: week_col.source
-                        delegate: week_col.delegate
-                    }
-                }
-            }
-        }
-
-        //日期单元格
-        MonthGrid {
-            id: month_grid
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            //month: Calendar.December
-            //year: 2022
-            locale: Qt.locale("zh_CN")
-            spacing: 1
-            font{
-                family: "SimHei"
-                pixelSize: 14
-            }
-            delegate: Rectangle {
-                color: model.today
-                       ?"orange"
-                       :control.selectDate.valueOf()===model.date.valueOf()
-                         ?"darkCyan"
-                         :"gray"
-                border.color: "black"
-                border.width: 1
-                Rectangle {
-                    anchors.fill: parent
-                    anchors.margins: 2
-                    color: "transparent"
-                    border.color: "white"
-                    visible: item_mouse.containsMouse
-                }
-                Text {
-                    anchors.centerIn: parent
-                    text: model.day
-                    color: model.month===month_grid.month?"white":"black"
-                }
-                MouseArea {
-                    id: item_mouse
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    acceptedButtons: Qt.NoButton
-                }
-            }
-            onClicked: (date)=> {
-                           control.selectDate=date;
-                           console.log('click',month_grid.title,month_grid.year,month_grid.month,"--",
-                                       date.getUTCFullYear(),date.getUTCMonth(),date.getUTCDate(),date.getUTCDay())
-                       }
         }
     }
-    // Calendar{
-    //     id: m_calendar
-    //     //anchors.centerIn: parent
-    //     frameVisible: false
-    //     navigationBarVisible: false
-    //     weekNumbersVisible: false
-    //     minimumDate: new Date(2015, 0, 1);
-    //     maximumDate: new Date(2025, 0, 1);
-
-    //     anchors{
-    //         fill: parent
-    //     }
-    //     onClicked:
-    //     {
-    //         //m_calendar.visible = false;
-    //     }
-
-    //     style: CalendarStyle {
-    //         gridVisible: false
-
-    //         background: Image {//日历背景
-    //             id: bg
-    //             anchors.fill: parent
-    //         }
-
-    //         dayOfWeekDelegate://周的显示
-    //                           Rectangle{
-    //             id: rec1
-    //             color: "transparent"
-    //             height: 20
-
-    //             Text {
-    //                 id: weekTxt
-    //                 font.pixelSize: 15
-    //                 text:Qt.locale().dayName(styleData.dayOfWeek, control.dayOfWeekFormat)//转换为自己想要的周的内容的表达
-    //                 anchors.centerIn: rec1
-    //                 color: styleData.selected?"green":"gray"
-    //                 font.family: "Microsoft YaHei"
-    //             }
-    //         }
-
-    //         navigationBar:Rectangle {//导航控制栏，控制日期上下选择等
-    //             color: "transparent"
-    //             height: 40
-    //         }
-
-    //         dayDelegate:Rectangle{//显示日期
-    //             color: "transparent"
-    //             Image
-    //             {
-    //                 id: day_bg
-    //                 height: 28
-    //                 width: 28
-    //                 anchors.centerIn: parent
-    //                 //                                        anchors.centerIn: parent
-    //                 source: styleData.selected ? "images/wvga/system/current-dat-bg.png" : ""
-    //             }
-
-    //             Label {
-    //                 id: m_label
-    //                 text: styleData.date.getDate()
-    //                 font.pixelSize: 15
-    //                 font.family: "Microsoft YaHei"
-    //                 anchors.centerIn: parent
-    //                 color: styleData.selected ? "yellow" :  (styleData.visibleMonth && styleData.valid ? "lightblue" : "grey");
-    //             }
-    //         }
-    //     }
-    // }
 }
