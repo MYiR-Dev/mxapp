@@ -58,7 +58,7 @@ Popup {
         property var recharge_num: 0
         Connections{
             target: recharge_select.item
-            onRecharge_amount:{
+            function onRecharge_amount(value){
                 recharge_select.recharge_num=value
             }
         }
@@ -101,7 +101,7 @@ Popup {
         property var total_fee: 0
         Connections{
             target: charge_monitor.item
-            onCloseAccount:{
+            function onCloseAccount(charge_time, electricity, charge_fee, service_fee, total_fee){
                 close_account.actual_time=charge_time
                 close_account.electricity=electricity
                 close_account.charge_fee=charge_fee

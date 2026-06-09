@@ -80,7 +80,7 @@ Rectangle {
         sign_in_section_title.visible=false
         sign_in_section_image.visible=false
         sign_in_account_image.visible=true
-        label_1_text.text=qsTr("姓名:许梦燃")
+        label_1_text.text=qsTr("姓名:USER")
         label_2_text.text=qsTr("余额:¥")+String((home_screen.amount).toFixed(2))
         label_1.visible=true
         label_2.visible=true
@@ -482,7 +482,7 @@ Rectangle {
                     verticalAlignment: "AlignVCenter"
                     Text {
                         id: label_1_text
-                        text: qsTr("姓名:许梦燃")
+                        text: qsTr("姓名:USER")
                         anchors.fill: parent
                         color: "black"
                         font.family: "Microsoft YaHei"

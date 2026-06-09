@@ -223,7 +223,7 @@ Rectangle {
             anchors.left: page_top_icon.right
             verticalAlignment: "AlignVCenter"
             horizontalAlignment: "AlignLeft"
-            text: qsTr("姓名:许梦燃")+"\t"+qsTr("余额:")+String((home_screen.amount).toFixed(2))
+            text: qsTr("姓名:USER")+"\t"+qsTr("余额:")+String((home_screen.amount).toFixed(2))
             color: "white"
             font.family: "Microsoft YaHei"
             font.pointSize: 12

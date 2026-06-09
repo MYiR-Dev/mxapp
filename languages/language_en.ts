@@ -1564,8 +1564,8 @@ See &lt;https://www.gnu.org/licenses/lgpl-3.0.html&gt; for more details.</source
     </message>
     <message>
         <location filename="../WinChargeScheme.qml" line="376"/>
-        <source>姓名:许梦燃</source>
-        <translation type="unfinished">Name:xmr</translation>
+        <source>姓名:USER</source>
+        <translation type="unfinished">Name:USER</translation>
     </message>
     <message>
         <location filename="../WinChargeScheme.qml" line="376"/>
@@ -1730,8 +1730,8 @@ See &lt;https://www.gnu.org/licenses/lgpl-3.0.html&gt; for more details.</source
     <message>
         <location filename="../WinHomeScreen.qml" line="83"/>
         <location filename="../WinHomeScreen.qml" line="485"/>
-        <source>姓名:许梦燃</source>
-        <translation type="unfinished">Name:xmr</translation>
+        <source>姓名:USER</source>
+        <translation type="unfinished">Name:USER</translation>
     </message>
 </context>
 <context>
@@ -1773,8 +1773,8 @@ See &lt;https://www.gnu.org/licenses/lgpl-3.0.html&gt; for more details.</source
     </message>
     <message>
         <location filename="../WinPayInterface.qml" line="226"/>
-        <source>姓名:许梦燃</source>
-        <translation type="unfinished">Name:xmr</translation>
+        <source>姓名:USER</source>
+        <translation type="unfinished">Name:USER</translation>
     </message>
     <message>
         <location filename="../WinPayInterface.qml" line="50"/>
@@ -1806,8 +1806,8 @@ See &lt;https://www.gnu.org/licenses/lgpl-3.0.html&gt; for more details.</source
     </message>
     <message>
         <location filename="../WinRechargeSelect.qml" line="281"/>
-        <source>姓名:许梦燃</source>
-        <translation type="unfinished">Name:xmr</translation>
+        <source>姓名:USER</source>
+        <translation type="unfinished">Name:USER</translation>
     </message>
     <message>
         <location filename="../WinRechargeSelect.qml" line="281"/>
