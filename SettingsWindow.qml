@@ -21,8 +21,8 @@
 ***********************************************************************/
 
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Dialogs
+import QtQuick.Controls
 import GetSystemInfoAPI 1.0
 import QtQuick.VirtualKeyboard
 import QtQuick.VirtualKeyboard.Settings
@@ -41,6 +41,7 @@ SystemWindow {
     width: adaptive_width
     height: adaptive_height
     signal message(string msg)
+    signal wifiPoweredOff()  // 显式信号：WiFi 关闭时触发，供 Loader 内部清除列表
     property bool wifi_avail: false
     property string selectedEthPort: ""
     // 渐进式加载标记：所有页面首访后保持常驻
@@ -65,7 +66,11 @@ SystemWindow {
     }
     onVisibleChanged: {
         if(visible === true){
-            setting_timer.start()
+            // P4: setting_timer 仅在以太网页面可见时运行
+            if (view.currentIndex === 1) setting_timer.start()
+        } else {
+            setting_timer.stop()
+            if (connectDialog.opened) connectDialog.close()
         }
     }
     property string net_ip:getSyetemInfo.read_net_ip(selectedEthPort)
@@ -138,8 +143,8 @@ SystemWindow {
             getSyetemInfo.disconnect_wifi()
             getSyetemInfo.stopwifitimer()
             getSyetemInfo.wifi_close()
-            wifi_list_model.clear()
             wifi_statu = false
+            wifiPoweredOff()  // 显式信号通知 Loader 内部清除列表
         }
     }
 
@@ -160,6 +165,14 @@ SystemWindow {
         AutoScroller {}
     }
 
+    // 非模态 Dialog 的点击遮罩 — z=98 在 InputPanel(z=99) 之下，SwipeView 之上
+    MouseArea {
+        anchors.fill: parent
+        visible: connectDialog.opened
+        z: 98
+        onClicked: {}  // 消耗所有点击，阻止穿透到 SwipeView 和导航栏
+    }
+
     Rectangle{
         anchors{
             top: parent.top
@@ -177,6 +190,15 @@ SystemWindow {
                 top: parent.top
                 left: navigationbar.left
                 leftMargin: adaptive_width/5.3
+            }
+            // P4: 页面切换时管理以太网轮询
+            onCurrentIndexChanged: {
+                if (settingsWindow.visible) {
+                    if (currentIndex === 1)
+                        setting_timer.start()
+                    else
+                        setting_timer.stop()
+                }
             }
             Item {
                 // 时间设置页面 — Loader 懒加载，仅当前页创建内容
@@ -886,7 +908,8 @@ SystemWindow {
 
                         checked: settingsWindow.wifi_statu
 
-                        onClicked: openwifi(checked)
+                        // Bug3 修复: Qt6 要求显式声明 signal handler 参数
+                        onClicked: function(checked) { openwifi(checked) }
                     }
 
                     // 扫描按键
@@ -922,6 +945,7 @@ SystemWindow {
 
                         MouseArea{
                             anchors.fill: parent;
+                            enabled: !getSyetemInfo.isScanning()  // 扫描中禁用，防止重复点击
                             onClicked: {
                                serch_rec.opacity = 0.5
                                if(wifi_statu)
@@ -953,6 +977,14 @@ SystemWindow {
 //                            signal_iamge:"images/wvga/system/wifi-signal.png"
 
 //                        }
+                    }
+                    // 监听显式信号：关闭 WiFi 时清除列表
+                    // wifi_list_model 在 Loader 内部，不能从外层 openwifi() 跨作用域访问
+                    Connections {
+                        target: settingsWindow
+                        function onWifiPoweredOff() {
+                            wifi_list_model.clear()
+                        }
                     }
                     Connections {
                         target: getSyetemInfo
@@ -1138,6 +1170,8 @@ Image {
                                         listView.currentIndex = index;
                                         if(bttxt.text === qsTr("断开")){
                                             getSyetemInfo.disconnect_wifi()
+                                            // P2: 断开后恢复轮询以检测状态变化
+                                            getSyetemInfo.startwifitimer()
                                             return
                                         }
 
@@ -1185,152 +1219,151 @@ ListView {
                         delegate: listDelegate
                     }
                 }
-                    // 连接对话框
-                    Dialog {
-                        id: connectDialog
-                        title: qsTr("Connect") + " " + (selectedWifi ? selectedWifi.wifi_essid : "")
-                        parent: ApplicationWindow.contentItem
-                        modal: true
-                        closePolicy: Popup.NoAutoClose
-                        width: 360
-                        height: 220
-                        x: (parent.width - width) / 2
-                        y :  inputPanel_passwd.active
-                             ? (parent.height/2 - height) / 2
-                             : (parent.height - height) / 2
-
-                        Behavior on y {
-                            NumberAnimation { duration: 200 }
-                        }
-
-                        background: Rectangle {
-                            anchors.fill: parent
-                            opacity: 0.5
-                            Image {
-                                anchors.fill: parent
-                                source: "qrc:/images/fhd/public/pop_bg.png"
-                            }
-                        }
-
-                        ColumnLayout {
-                            spacing: 16
-                            width: parent.width
-
-                            // 密码输入
-                            TextField {
-                                id: passwordField
-                                visible: selectedWifi && selectedWifi.key_image
-                                placeholderText: qsTr("Password field")
-                                font.family: "Microsoft YaHei"
-                                inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText
-                                echoMode: TextInput.Password
-                                color: "black"
-                                Layout.fillWidth: true
-                                onActiveFocusChanged: {
-                                    if(activeFocus) {
-                                        successText.visible = false
-                                        failText.visible = false
-                                    }
-                                }
-                            }
-                            // 连接状态区域
-                            Item {
-                                id: statusArea
-                                Layout.fillWidth: true
-                                height: 40
-
-                                // 连接动画（BusyIndicator）
-                                BusyIndicator {
-                                    id: connectingSpinner
-                                    running: false
-                                    anchors.centerIn: parent
-                                    visible: connectingSpinner.running
-                                }
-
-                                // 成功提示
-                                Text {
-                                    id: successText
-                                    text: qsTr("Connected")
-                                    color: "green"
-                                    font.pixelSize: 14
-                                    anchors.centerIn: parent
-                                    visible: false
-                                }
-
-                                // 失败提示
-                                Text {
-                                    id: failText
-                                    text: qsTr("Failed")
-                                    color: "red"
-                                    font.pixelSize: 14
-                                    anchors.centerIn: parent
-                                    visible: false
-                                }
-                            }
-
-                            RowLayout {
-                                Layout.alignment: Qt.AlignHCenter
-                                spacing: 20
-                                Button {
-                                    id: connectbtn
-                                    onClicked: connectDialog.startConnecting()
-                                    background: Rectangle {
-                                        radius: 5
-                                        color: parent.pressed ? "#2196F3" : "#1976D2"
-                                    }
-                                    contentItem: Text {
-                                        text: qsTr("connect")
-                                        font.pixelSize: 14
-                                        color: "white"
-                                        horizontalAlignment: Text.AlignHCenter
-                                        verticalAlignment: Text.AlignVCenter
-                                    }
-                                }
-
-                                Button {
-                                    Layout.alignment: Qt.AlignHCenter
-                                    onClicked: {
-                                        passwordField.text = ""
-                                        passwordField.readOnly = false
-                                        successText.visible = false
-                                        failText.visible = false
-                                        connectingSpinner.running = false
-                                        outtime_timer.stop()
-                                        connectbtn.enabled = true
-                                        connectDialog.close()
-                                    }
-                                    background: Rectangle {
-                                        radius: 5
-                                        color: parent.pressed ? "#2196F3" : "#1976D2"
-                                    }
-                                    contentItem: Text {
-                                        text: qsTr("cancel")
-                                        font.pixelSize: 14
-                                        color: "white"
-                                        horizontalAlignment: Text.AlignHCenter
-                                        verticalAlignment: Text.AlignVCenter
-                                    }
-                                }
-                            }
-                        }
-
-                        function startConnecting() {
-                            var flag = selectedWifi.key_image === "" ? "false" : "true"
-                            var essid_passwd = selectedWifi.wifi_essid+"+"+passwordField.text+"+"+flag
-                            getSyetemInfo.connect_wifi(essid_passwd)
-
-                            // 隐藏之前的状态
-                            successText.visible = false
-                            failText.visible = false
-                            connectingSpinner.running = true
-                            connectbtn.enabled = false
-                            passwordField.readOnly = true
-                            outtime_timer.start()
-                        }
-                    }
             }
                 }  // end Item
                 }}  // end Component, Loader
+            // 连接对话框 — 非模态，点击遮罩由 SettingsWindow 的 MouseArea 提供
+            Dialog {
+                id: connectDialog
+                parent: mainWnd.contentItem
+                modal: false
+                closePolicy: Popup.NoAutoClose
+                title: qsTr("Connect") + " " + (selectedWifi ? selectedWifi.wifi_essid : "")
+                width: 360
+                height: 220
+                x: (mainWnd.width - width) / 2
+                y: inputPanel_passwd.active
+                     ? (mainWnd.height/2 - height) / 2
+                     : (mainWnd.height - height) / 2
+
+                Behavior on y {
+                    NumberAnimation { duration: 200 }
+                }
+
+                background: Rectangle {
+                    anchors.fill: parent
+                    opacity: 0.5
+                    Image {
+                        anchors.fill: parent
+                        source: "qrc:/images/fhd/public/pop_bg.png"
+                    }
+                }
+
+                ColumnLayout {
+                    spacing: 16
+                    width: parent.width
+
+                    // 密码输入
+                    TextField {
+                        id: passwordField
+                        visible: selectedWifi && selectedWifi.key_image
+                        placeholderText: qsTr("Password field")
+                        font.family: "Microsoft YaHei"
+                        inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText
+                        echoMode: TextInput.Password
+                        color: "black"
+                        Layout.fillWidth: true
+                        onActiveFocusChanged: {
+                            if(activeFocus) {
+                                successText.visible = false
+                                failText.visible = false
+                            }
+                        }
+                    }
+                    // 连接状态区域
+                    Item {
+                        id: statusArea
+                        Layout.fillWidth: true
+                        height: 40
+
+                        // 连接动画（BusyIndicator）
+                        BusyIndicator {
+                            id: connectingSpinner
+                            running: false
+                            anchors.centerIn: parent
+                            visible: connectingSpinner.running
+                        }
+
+                        // 成功提示
+                        Text {
+                            id: successText
+                            text: qsTr("Connected")
+                            color: "green"
+                            font.pixelSize: 14
+                            anchors.centerIn: parent
+                            visible: false
+                        }
+
+                        // 失败提示
+                        Text {
+                            id: failText
+                            text: qsTr("Failed")
+                            color: "red"
+                            font.pixelSize: 14
+                            anchors.centerIn: parent
+                            visible: false
+                        }
+                    }
+
+                    RowLayout {
+                        Layout.alignment: Qt.AlignHCenter
+                        spacing: 20
+                        Button {
+                            id: connectbtn
+                            onClicked: connectDialog.startConnecting()
+                            background: Rectangle {
+                                radius: 5
+                                color: parent.pressed ? "#2196F3" : "#1976D2"
+                            }
+                            contentItem: Text {
+                                text: qsTr("connect")
+                                font.pixelSize: 14
+                                color: "white"
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                        }
+
+                        Button {
+                            Layout.alignment: Qt.AlignHCenter
+                            onClicked: {
+                                passwordField.text = ""
+                                passwordField.readOnly = false
+                                successText.visible = false
+                                failText.visible = false
+                                connectingSpinner.running = false
+                                outtime_timer.stop()
+                                connectbtn.enabled = true
+                                connectDialog.close()
+                            }
+                            background: Rectangle {
+                                radius: 5
+                                color: parent.pressed ? "#2196F3" : "#1976D2"
+                            }
+                            contentItem: Text {
+                                text: qsTr("cancel")
+                                font.pixelSize: 14
+                                color: "white"
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                        }
+                    }
+                }
+
+                function startConnecting() {
+                    var flag = selectedWifi.key_image === "" ? "false" : "true"
+                    var essid_passwd = selectedWifi.wifi_essid+"+"+passwordField.text+"+"+flag
+                    getSyetemInfo.connect_wifi(essid_passwd)
+
+                    successText.visible = false
+                    failText.visible = false
+                    connectingSpinner.running = true
+                    connectbtn.enabled = false
+                    passwordField.readOnly = true
+                    outtime_timer.start()
+                }
+            }
         }
         Rectangle{
             id:navigationbar

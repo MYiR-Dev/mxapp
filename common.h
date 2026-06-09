@@ -25,9 +25,30 @@
 #include <QObject>
 #include <QDebug>
 #include <QProcess>
+#include <QTimer>
 #include <QtQuick>
 #include <QtCore/QFileInfo>
 #include <QtCore/QUrl>
+
+// WiFi 命令类型枚举 — 用于异步状态机分发 finished 信号
+enum WifiCmd : int {
+    Cmd_Idle,
+    Cmd_Open,            // ifconfig up
+    Cmd_Close,           // ifconfig down
+    Cmd_Disconnect,      // wpa_cli disconnect (第一阶段)
+    Cmd_DisconnectFlush  // ip addr flush (第二阶段)
+};
+
+// WiFi 状态结构体 — 统一管理连接状态
+struct WifiState {
+    bool available = false;   // WiFi 硬件是否可用
+    bool connected = false;   // 是否已连接 (获取到 IP)
+    QString ssid;             // 当前 SSID
+    QString bssid;            // 当前 BSSID (MAC)
+    QString ipAddress;        // IP 地址
+    QString wpaState;         // wpa_supplicant 状态
+};
+
 class GetSystemInfo: public QObject
 {
     Q_OBJECT
@@ -67,14 +88,17 @@ public:
     Q_INVOKABLE void startwifitimer();
     Q_INVOKABLE void stopwifitimer();
     Q_INVOKABLE bool isWifi_avail();
+    Q_INVOKABLE bool isScanning() const { return m_scanning; }  // 扫描防重入
     Q_INVOKABLE QVariantList get_net_ports();
 
     // 通用 ALSA 音量初始化：扫描并设置所有匹配的输出控制
     Q_INVOKABLE void initAlsaVolume();
     QProcess *process = nullptr;
     QProcess *wifi_process = nullptr;
-    QProcess *msic_process = nullptr;
+    QProcess *msic_process = nullptr;          // 专用于 wpa_cli status 轮询
     QProcess *wifi_process_connoct = nullptr;
+    QProcess *wifi_cmd_process = nullptr;      // 新增: ifconfig/wpa_cli 命令专用 (异步)
+    QProcess *udhcpc_process = nullptr;         // 新增: DHCP 客户端生命周期管理
     int totalNew, idleNew, totalOld, idleOld;
     int cpuPercent;
     int memoryPercent;
@@ -87,12 +111,24 @@ public:
     QString wifi_id;
     QString wifi_status;
     QString wifi_port;
-    QStringList connect_wifi_status;  // 连接wifi信息
+    QStringList connect_wifi_status;  // 连接wifi信息 [0]=status, [1]=ssid, [2]=wpa_state, [3]=ip, [4]=bssid
     QVariantList net_ports;
+
+    // WiFi 状态统一管理
+    WifiState m_wifiState;
+    // 异步命令状态机
+    WifiCmd m_pendingCmd = Cmd_Idle;
+    // DHCP 防重入
+    bool udhcpcRunning = false;
+    int m_dhcpAttempts = 0;            // DHCP 尝试次数，超限停止
 
     QTimer *timerCPU = nullptr;       //定时器获取CPU信息
     QTimer *timerMemory = nullptr;    //定时器获取内存信息
-    QTimer *timerWifi = nullptr;    //定时器获取存储信息
+    QTimer *timerWifi = nullptr;      //定时器获取WiFi信息
+    QTimer *udhcpcTimeout = nullptr;  //定时器DHCP超时检测
+    QTimer *scanTimer = nullptr;       //定时器WiFi扫描延迟
+    bool m_scanning = false;           //扫描进行中，防重复点击
+    int m_scanRetry = 0;               //扫描重试计数，超限自动停止
 public slots:
     void ReadData();
     void Wifi_ReadData();
@@ -100,6 +136,10 @@ public slots:
     void get_memory_info();
     void get_cpu_info();
     void connect_ReadData();
+    void wifiCmd_ReadData();          // 新增: 异步 WiFi 命令 finished 处理
+    void onUdchpcTimeout();           // 新增: DHCP 超时处理
+    void udhcpc_ReadData();           // 新增: DHCP 完成处理
+    void onScanTimeout();             // 新增: 扫描完成后获取结果
 //    void get_wifi_info();
 signals:
     void begin();

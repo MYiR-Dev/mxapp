@@ -72,8 +72,10 @@ GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent), totalOld(0), idl
 
     // 存在wifi节点初始化相关资源
     if(isWifi_avail()){
+        m_wifiState.available = true;
+
         wifi_process = new QProcess(this);
-        // 待优化
+        // 待优化: 仅在 WiFi 打开时才启动 wpa_supplicant
         wifi_process->start("wpa_supplicant", {"-Dnl80211", "-i"+wifi_port ,"-c/etc/wpa_supplicant.conf", "-B"});
         connect(wifi_process, SIGNAL(finished(int)), this, SLOT(Wifi_ReadData()));
 
@@ -82,6 +84,23 @@ GetSystemInfo::GetSystemInfo(QObject *parent): QObject(parent), totalOld(0), idl
 
         wifi_process_connoct = new QProcess(this);
         connect(wifi_process_connoct, SIGNAL(finished(int)), this, SLOT(connect_ReadData()));
+
+        // P1: 新增 wifi_cmd_process — 替代同步 waitForFinished 的异步状态机
+        wifi_cmd_process = new QProcess(this);
+        connect(wifi_cmd_process, SIGNAL(finished(int)), this, SLOT(wifiCmd_ReadData()));
+
+        // P0: 新增 udhcpc_process — 替代 startDetached，可管理生命周期
+        udhcpc_process = new QProcess(this);
+        connect(udhcpc_process, SIGNAL(finished(int)), this, SLOT(udhcpc_ReadData()));
+
+        // P0: DHCP 超时定时器（8 秒兜底）
+        udhcpcTimeout = new QTimer(this);
+        connect(udhcpcTimeout, SIGNAL(timeout()), this, SLOT(onUdchpcTimeout()));
+
+        // WiFi 扫描延迟定时器 — 等待 wpa_supplicant 后台扫描完成
+        scanTimer = new QTimer(this);
+        scanTimer->setSingleShot(true);
+        connect(scanTimer, SIGNAL(timeout()), this, SLOT(onScanTimeout()));
 
         timerWifi = new QTimer(this);
         connect(timerWifi, SIGNAL(timeout()), this, SLOT(get_wifi_info()));
@@ -103,6 +122,23 @@ GetSystemInfo::~GetSystemInfo()
         wifi_process->close();
         msic_process->close();
         wifi_process_connoct->close();
+        // P0: 清理 DHCP 进程
+        if (udhcpcTimeout) udhcpcTimeout->stop();
+        if (scanTimer) scanTimer->stop();
+        if (udhcpc_process) {
+            if (udhcpc_process->state() != QProcess::NotRunning) {
+                udhcpc_process->kill();
+                udhcpc_process->waitForFinished(1000);
+            }
+        }
+        // P1: 清理命令进程
+        if (wifi_cmd_process) {
+            if (wifi_cmd_process->state() != QProcess::NotRunning) {
+                wifi_cmd_process->kill();
+                wifi_cmd_process->waitForFinished(1000);
+            }
+            wifi_cmd_process->close();
+        }
     }
 }
 
@@ -198,24 +234,22 @@ void GetSystemInfo::get_wifi_info()
 }
 void GetSystemInfo::wifi_open()
 {
-    if (!msic_process) return;
-    QString command;
-    command = "ifconfig | grep " + wifi_port + " | wc -l";
-    msic_process->start("/bin/sh", {"-c", command});
-    msic_process->waitForFinished();
-    if(msic_process->readAll().toInt() == 0){
-        command = "ifconfig";
-        msic_process->start(command, {wifi_port, "up"});
-        msic_process->waitForFinished();
-    }
+    // P1: 改异步 — ifconfig up 是幂等操作，无需检查接口是否存在
+    if (!wifi_cmd_process) return;
+    m_pendingCmd = Cmd_Open;
+    wifi_cmd_process->start("ifconfig", {wifi_port, "up"});
 }
 void GetSystemInfo::wifi_close()
 {
-    if (!msic_process) return;
-    QString command;
-    command = "ifconfig";
-    msic_process->start(command, {wifi_port, "down"});
-    msic_process->waitForFinished();
+    // P1: 改异步 — 快速切换保护：重置状态机后 kill 旧命令，防止 finished 信号重入
+    if (!wifi_cmd_process) return;
+    if (wifi_cmd_process->state() != QProcess::NotRunning) {
+        m_pendingCmd = Cmd_Idle;  // ★ 必须在 kill 前重置，防止 wifiCmd_ReadData 误判
+        wifi_cmd_process->kill();
+        wifi_cmd_process->waitForFinished(1000);
+    }
+    m_pendingCmd = Cmd_Close;
+    wifi_cmd_process->start("ifconfig", {wifi_port, "down"});
 }
 void GetSystemInfo::connect_wifi(QString essid_passwd)
 {
@@ -247,20 +281,22 @@ void GetSystemInfo::connect_wifi(QString essid_passwd)
 		file.close();
         msic_process->execute("chmod", {"a+x", "/usr/share/connect_wifi.sh"});
         wifi_process_connoct->start("/bin/sh", {"-c", "/usr/share/connect_wifi.sh"});
+        // P2: 确保连接过程中轮询运行，以便检测 COMPLETED + IP 获取
+        startwifitimer();
 	}
 	}
 }
 void GetSystemInfo::disconnect_wifi()
 {
-    if (!msic_process) return;
-    QString command;
-    command = "wpa_cli";
-    msic_process->start(command, {"-i", wifi_port, "disconnect"});
-    msic_process->waitForFinished();
-    msic_process->start("ip", {"addr", "flush", "dev", wifi_port});
-    connect_wifi_status[0] = "false";
-    connect_wifi_status[1] = "";  // 清空SSID，确保connect_wifi中的比对不会跳过重连
-    emit wifiConnected(connect_wifi_status[4], "false");
+    // P1: 改异步两阶段 — 第一阶段: wpa_cli disconnect
+    if (!wifi_cmd_process) return;
+    if (wifi_cmd_process->state() != QProcess::NotRunning) {
+        m_pendingCmd = Cmd_Idle;  // ★ 必须在 kill 前重置，防止 wifiCmd_ReadData 误判
+        wifi_cmd_process->kill();
+        wifi_cmd_process->waitForFinished(1000);
+    }
+    m_pendingCmd = Cmd_Disconnect;
+    wifi_cmd_process->start("wpa_cli", {"-i", wifi_port, "disconnect"});
 }
 
 // 获取wifi连接状态[status, ssid, wpa_state, ip, bssid]
@@ -268,39 +304,59 @@ void GetSystemInfo::msic_ReadData()
 {
     QByteArray data = msic_process->readAll();
     QTextStream stream(data);
-    QString line,command;
-    QStringList tmp;
+    QString line;
 
     do {
         line = stream.readLine().trimmed();
-        // qDebug()<<line;
         if ( line.startsWith("ssid") ){
-            tmp = line.split("=");
+            QStringList tmp = line.split("=");
             connect_wifi_status[1] = tmp[1];
+            m_wifiState.ssid = tmp[1];
         }
         else if(line.startsWith("bssid")) {
-            tmp = line.split("=");
+            QStringList tmp = line.split("=");
             connect_wifi_status[4] = tmp[1];
+            m_wifiState.bssid = tmp[1];
         }
         else if( line.startsWith("wpa_state") ){
-            tmp = line.split("=");
+            QStringList tmp = line.split("=");
             connect_wifi_status[2] = tmp[1];
+            m_wifiState.wpaState = tmp[1];
             if(tmp[1] == "COMPLETED"){
-                if(connect_wifi_status[0] != "true"){
-                    command = "udhcpc";
-                    // 获取ip
-                    QProcess::startDetached(command, {"-i", wifi_port, "-t", "3", "-n", "-q", "-b"});
+                // P0: udhcpc 防重入 — bool 守卫 + 成员 QProcess 替代 startDetached
+                if(connect_wifi_status[0] != "true" && !udhcpcRunning && m_dhcpAttempts < 3){
+                    m_dhcpAttempts++;
+                    udhcpc_process->start("udhcpc",
+                        {"-i", wifi_port, "-t", "3", "-n", "-q"});
+                    udhcpcRunning = true;
+                    udhcpcTimeout->start(8000);  // 8 秒超时兜底
+                } else if (m_dhcpAttempts >= 3) {
+                    // DHCP 重试耗尽，停止轮询避免空转
+                    if (timerWifi->isActive()) timerWifi->stop();
                 }
             }else{
                 emit wifiConnected(connect_wifi_status[4], "false");
+                m_wifiState.connected = false;
             }
         }else if(line.startsWith("ip_address")){
-            tmp = line.split("=");
+            QStringList tmp = line.split("=");
             connect_wifi_status[3] = tmp[1];
+            m_wifiState.ipAddress = tmp[1];
             if(connect_wifi_status[2] == "COMPLETED"){
                 // 获取到ip并且"COMPLETED"才算连接成功
                 connect_wifi_status[0] = "true";
+                m_wifiState.connected = true;
+                m_dhcpAttempts = 0;  // 重置 DHCP 尝试计数
+                // P0: 停止 DHCP 超时定时器
+                if (udhcpcRunning) {
+                    udhcpcRunning = false;
+                    udhcpcTimeout->stop();
+                }
                 emit wifiConnected(connect_wifi_status[4], "true");
+                // P2: WiFi 已连接稳定 → 停止轮询
+                if (timerWifi->isActive()) {
+                    timerWifi->stop();
+                }
             }
         }
     } while (!line.isNull());
@@ -321,21 +377,74 @@ void GetSystemInfo::connect_ReadData()
     } while (!line.isNull());
 }
 
+// P1: 异步 WiFi 命令状态机 — 根据 m_pendingCmd 分发 finished 信号
+void GetSystemInfo::wifiCmd_ReadData()
+{
+    switch (m_pendingCmd) {
+    case Cmd_Disconnect:
+        // 第一阶段完成 → 执行第二阶段: ip addr flush
+        wifi_cmd_process->start("ip", {"addr", "flush", "dev", wifi_port});
+        m_pendingCmd = Cmd_DisconnectFlush;
+        return;  // 不设回 Idle，等第二阶段 finished
+    case Cmd_DisconnectFlush:
+        // 两阶段都完成 → 清理状态 + 通知 QML
+        connect_wifi_status[0] = "false";
+        connect_wifi_status[1] = "";  // 清空SSID，确保connect_wifi中的比对不会跳过重连
+        m_wifiState.connected = false;
+        m_wifiState.ssid.clear();
+        m_dhcpAttempts = 0;  // 重置 DHCP 尝试计数
+        emit wifiConnected(connect_wifi_status[4], "false");
+        break;
+    case Cmd_Open:
+    case Cmd_Close:
+        break;  // 无需额外处理
+    default:
+        break;
+    }
+    m_pendingCmd = Cmd_Idle;
+}
+
+// P0: DHCP 进程完成回调 — 无论成功失败都重置运行标记
+void GetSystemInfo::udhcpc_ReadData()
+{
+    udhcpcTimeout->stop();
+    udhcpcRunning = false;
+}
+
+// P0: DHCP 超时处理 — 终止进程并重置状态
+void GetSystemInfo::onUdchpcTimeout()
+{
+    if (udhcpcRunning) {
+        udhcpc_process->kill();
+        udhcpcRunning = false;
+        qDebug() << "udhcpc timeout after 8s, process killed";
+    }
+}
+
 QString GetSystemInfo::get_wifi_list()
 {
     if (!msic_process || !wifi_process) return {};
-    QString wirelessInterfaceStatus = getWirelessInterfaceStatus(wifi_port);
+    if (m_scanning) return "scanning";  // 扫描进行中，防止重复点击
 
+    QString wirelessInterfaceStatus = getWirelessInterfaceStatus(wifi_port);
     if(wirelessInterfaceStatus == "down"){
         msic_process->start("ifconfig", {wifi_port, "up"});
     }
+    // 触发后台扫描，scanTimer 延迟获取 scan_result（不阻塞 UI）
+    // scan 和 scan_result 之间需要短暂间隔让 wpa_supplicant 完成扫描
     wifi_process->start("wpa_cli", {"-i", wifi_port, "scan"});
     wifi_process->waitForFinished();
-    wifi_process->start("wpa_cli", {"-i", wifi_port, "scan_result"});
-    if(!wifi_process->waitForStarted()){
-        qDebug() << "error starting wpa_cli scan process";
-    }
+    m_scanning = true;
+    m_scanRetry = 0;
+    scanTimer->start(300);  // 事件驱动：首次轮询 300ms，无数据自动重试
     return "dd";
+}
+
+// WiFi 扫描延迟回调 — 事件驱动轮询 scan_result
+void GetSystemInfo::onScanTimeout()
+{
+    if (!wifi_process || wifi_process->state() != QProcess::NotRunning) return;
+    wifi_process->start("wpa_cli", {"-i", wifi_port, "scan_result"});
 }
 void GetSystemInfo::shootScreenWindow(QQuickWindow *rootWindow)
 {
@@ -363,6 +472,29 @@ QString GetSystemInfo::getWirelessInterfaceStatus(QString str)
 void GetSystemInfo::Wifi_ReadData()
 {
 	QByteArray data = wifi_process->readAll();
+
+    // 事件驱动扫描：只有 "bssid..." 开头才是 scan_result 输出
+    if (data.startsWith("bssid")) {
+        // 检查是否有实际数据行（不止表头一行）
+        int lineCount = data.count('\n');
+        if (lineCount <= 1) {
+            // 只有表头无数据 → 扫描未完成，300ms 后重试（最多 10 次 = 3 秒）
+            if (m_scanning && m_scanRetry < 10) {
+                m_scanRetry++;
+                scanTimer->start(300);
+            } else {
+                m_scanning = false;
+            }
+            return;
+        }
+        // 有数据 → 停止轮询，正常解析
+        m_scanning = false;
+        scanTimer->stop();
+    } else {
+        // 不是 scan_result 输出（如 "OK\n"、"FAIL-BUSY\n"）→ 忽略，不发送 wifiReady
+        return;
+    }
+
     QTextStream stream(data);
     QString buffer = "";
     QString line;
