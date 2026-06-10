@@ -29,16 +29,31 @@ SystemWindow {
     id: root
     width: parent.width
     height: parent.height
-    onVisibleChanged: {
-        if(showFlag == false){
-            showFlag = true;
-            setVideoPath(def.videoDefaultLocation)
+    // 窗口生命周期 — 管理播放启停
+    Connections {
+        target: root
+        function onAboutToShow() {
+            if (getVideoCount() > 0) {
+                video.source = getVideoURL(videoIndex)
+            } else {
+                setVideoPath(def.videoDefaultLocation)
+            }
         }
-		else if(showFlag==true){
-			showFlag=false
-			videoStop()
-			video.source=""
-		}
+        function onAboutToHide() {
+            videoStop()
+        }
+    }
+
+    // 视频渲染层 (声明在 UI 控件之前, z-order 最低)
+    VideoOutput {
+        id: videoOutput
+        anchors.top: backButton.bottom
+        anchors.topMargin: 10
+        anchors.bottom: player.top
+        anchors.bottomMargin: 10
+        anchors.left: parent.left
+        anchors.right: parent.right
+        fillMode: VideoOutput.PreserveAspectFit
     }
 
     Define {
@@ -129,37 +144,26 @@ SystemWindow {
     function videoBackward()
     {
         videoSwitchFlag = true;
-        videoStop();
         videoIndex -= 1;
         if(videoIndex < 0)
-            videoIndex = getVideoCount()-1;//-1->4
-		video.source = ""
+            videoIndex = getVideoCount()-1;
+        videoStop();
+        video.source = ""
         video.source = getVideoURL(videoIndex)
         console.log("上一曲:" + (videoIndex+1) + "/"  + getVideoCount() + ":" + video.source);
-        videoPlay();
         videoSwitchFlag = false;
     }
     function videoForward()
     {
         videoSwitchFlag = true;
         videoIndex += 1;
-        if(videoIndex === getVideoCount() && getVideoCount()>1){   //0-4, 5
-            videoIndex = 0;  //4->0
-            videoStop();
-            video.source = getVideoURL(videoIndex)
-            console.log("下一曲:" + (videoIndex+1) + "/"  + getVideoCount() + ":" + video.source);
-            videoPlay();
-            videoSwitchFlag = false;
-        }
-        else if(videoIndex === getVideoCount() && getVideoCount()===1){
-            videoIndex = 0;  //4->0
-            videoStop();
-            video.source = ""
-            video.source = getVideoURL(videoIndex)
-            console.log("下一曲:" + (videoIndex+1) + "/"  + getVideoCount() + ":" + video.source);
-            videoPlay();
-            videoSwitchFlag = false;
-        }
+        if(videoIndex >= getVideoCount())
+            videoIndex = 0;
+        videoStop();
+        video.source = ""
+        video.source = getVideoURL(videoIndex)
+        console.log("下一曲:" + (videoIndex+1) + "/"  + getVideoCount() + ":" + video.source);
+        videoSwitchFlag = false;
     }
 
     //暂停时，视频中央显示的大按钮
@@ -176,7 +180,7 @@ SystemWindow {
         height: 80
         anchors.centerIn: parent
         onClicked: videoPlay()
-        visible: player.playing ? false : true
+        visible: video.playbackState !== MediaPlayer.PlayingState
     }
     //视频区域单击暂停播放切换
     MouseArea {
@@ -185,8 +189,7 @@ SystemWindow {
         anchors.bottom: player.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.rightMargin: 50
-        onClicked: player.playing ? videoPause() : videoPlay();
+        onClicked: video.playbackState === MediaPlayer.PlayingState ? videoPause() : videoPlay();
     }
 
     //视频播放器
@@ -197,30 +200,28 @@ SystemWindow {
             volume: player.media_volume
         }
         onPositionChanged: player.media_postion = video.position
-        onPlaybackStateChanged: //1:playing, 2:pause, 0:stop
+        onPlaybackStateChanged:
         {
-            if(video.playbackState === MediaPlayer.StoppedState ) //播放完成自动停止
-            {
-                if(videoSwitchFlag === false)
-                {
+            // 同步 UI 播放状态
+            if(video.playbackState === MediaPlayer.PlayingState) {
+                player.playing = true;
+            } else {
+                player.playing = false;
+            }
+
+            // 播放完毕自动跳转下一个 (加载但不播放)
+            if(video.playbackState === MediaPlayer.StoppedState) {
+                if(videoSwitchFlag === false) {
                     if(video.error === MediaPlayer.NoError && video.position > 0) {
-                        console.log("video stop")
-                        videoForward();     //自动播放下一个
-                    } else {
+                        console.log("video stop, auto-advance to next")
+                        videoForward();
+                    } else if(video.error !== MediaPlayer.NoError) {
                         console.log("video playback failed, error:", video.error,
                                     "position:", video.position, video.errorString)
-                        // 复位UI状态
-                        player.playing = false;
                     }
                 }
             }
         }
-    }
-
-    //视频输出到背景
-    VideoOutput {
-        id:videoOutput
-        anchors.fill: parent
     }
 
     FolderListModel {
@@ -250,8 +251,7 @@ SystemWindow {
         id: fileBrowser
         backButtonText: root.title
         onRejected: {
-            if(video.hasVideo)
-                videoPlay()
+            // 取消文件选择，不自动恢复播放
         }
         onAccepted: {
             videoSwitchFlag = true;
