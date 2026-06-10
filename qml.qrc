@@ -173,6 +173,7 @@
         <file>images/wvga/smart/water.png</file>
         <file>images/wvga/smart/smart_icon_knob_nor.png</file>
         <file>shader/wobble.frag</file>
+        <file>shader/reflection.frag.qsb</file>
         <file>images/wvga/smart/door.png</file>
         <file>images/wvga/smart/lighting.png</file>
         <file>images/wvga/smart/smart_gif_progress_00000.png</file>
