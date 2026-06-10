@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 
     app.setOrganizationName("MYiR_Electronics");
     app.setApplicationName("MEasy_HMI");
-    app.setApplicationVersion("V2.5.9");
+    app.setApplicationVersion("V2.5.10");
 
     qDebug() << "platform:" << QGuiApplication::platformName();
 
@@ -74,6 +74,12 @@ int main(int argc, char *argv[])
     qmlRegisterType<Charge104>("Charge104",1,0,"Charge104");
 
     engine.rootContext()->setContextProperty("appQtVersion", QT_VERSION_STR);
+
+#ifdef ENABLE_PLAYER
+    engine.rootContext()->setContextProperty("hasPlayer", true);
+#else
+    engine.rootContext()->setContextProperty("hasPlayer", false);
+#endif
 
     Translator *translator = Translator::getInstance();
     translator->set_QQmlEngine(&engine);

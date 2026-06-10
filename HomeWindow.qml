@@ -119,6 +119,7 @@ Rectangle {
                     property int index: 0
                     model: viewModel.get(index).subNode
                     delegate: Rectangle{
+                        visible: model.aqml !== "PlayerWindow.qml" || hasPlayer
                         color: Qt.rgba(0,0,0,0)
                         Layout.alignment: Qt.AlignCenter
                         Layout.preferredWidth:parent.width/4.5
@@ -172,6 +173,10 @@ Rectangle {
                                     console.log("clicked:"+model.aqml)
                                     if(model.aqml === "CameraWindow.qml"){
                                         mainloader.source = "CameraWindow.qml"
+                                        mainloader.item.show()
+                                        mainloader.item.requestActivate()
+                                    }else if(model.aqml === "PlayerWindow.qml"){
+                                        mainloader.source = "PlayerWindow.qml"
                                         mainloader.item.show()
                                         mainloader.item.requestActivate()
                                     }else if(model.aqml === "PictureWindow.qml"){
@@ -248,14 +253,12 @@ Rectangle {
                         aqml: "CameraWindow.qml"
                         acolor: "#02b9db"
                     },
-                    /*
                     ListElement {
                         aimage:"qrc:/images/wvga/home/media_icon_video_nor.png"
                         application: qsTr("播放器")
                         aqml:"PlayerWindow.qml"
                         acolor:"#02b9db"
                     },
-                    */
                     ListElement {
                         aimage:"qrc:/images/wvga/home/icon_music.png"
                         application: qsTr("音乐")
@@ -537,6 +540,7 @@ Rectangle {
                     }
                     Rectangle{
                         id:rootrect
+                        visible: model.aqml !== "PlayerWindow.qml" || hasPlayer
                         // Layout.alignment: Qt.AlignHCenter
 			Layout.alignment: Qt.AlignCenter
                         Layout.preferredWidth:parent.width/viewModel.get(pathView.currentIndex).subNode.count
@@ -606,16 +610,11 @@ Rectangle {
                                     //                                        }
 
                                     // 第二种方式加载
-                                    /*
                                     if(model.aqml === "PlayerWindow.qml"){
-                                        //                                            playerWnd.forceActiveFocus()
-                                        //                                            playerWnd.z=4;
                                         mainloader.source = "PlayerWindow.qml"
                                         mainloader.item.show()
                                         mainloader.item.requestActivate()
-                                    }else
-                                    */
-                                    if(model.aqml === "CameraWindow.qml"){
+                                    }else if(model.aqml === "CameraWindow.qml"){
                                         //                                            cameraWnd.forceActiveFocus()
                                         //                                            cameraWnd.z=4;
                                         mainloader.source = "CameraWindow.qml"

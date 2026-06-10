@@ -39,6 +39,11 @@ find_package(Qt6 REQUIRED COMPONENTS
 qt_standard_project_setup()
 
 # =========================================================
+# 播放器功能开关（默认关闭）
+# =========================================================
+option(ENABLE_PLAYER "Enable video player (PlayerWindow)" OFF)
+
+# =========================================================
 # 编译宏
 # =========================================================
 add_compile_definitions(
@@ -130,6 +135,13 @@ qt_add_executable(${PROJECT_NAME}
     ${HEADERS}
     ${RESOURCES}
 )
+
+# =========================================================
+# 播放器条件编译
+# =========================================================
+if(ENABLE_PLAYER)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_PLAYER)
+endif()
 
 # =========================================================
 # Qt 翻译支持

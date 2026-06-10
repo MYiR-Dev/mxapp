@@ -184,6 +184,11 @@ See &lt;https://www.gnu.org/licenses/lgpl-3.0.html&gt; for more details.</source
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../HomeWindow.qml" line="258"/>
+        <source>播放器</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../HomeWindow.qml" line="262"/>
         <source>音乐</source>
         <translation type="unfinished"></translation>

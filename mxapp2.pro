@@ -8,6 +8,14 @@ CONFIG += qcamera-v4l2
 # depend on your compiler). Refer to the documentation for the
 # deprecated API to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
+
+# 播放器功能开关（默认关闭，开启用 qmake "CONFIG+=player"）
+player {
+    DEFINES += ENABLE_PLAYER
+} else {
+    message("PlayerWindow disabled")
+}
+
 # QMAKE_CXXFLAGS += -mavx2
 
 # You can also make your code fail to compile if it uses deprecated APIs.
