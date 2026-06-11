@@ -295,6 +295,16 @@ void GetSystemInfo::disconnect_wifi()
         wifi_cmd_process->kill();
         wifi_cmd_process->waitForFinished(1000);
     }
+    // 中止正在运行的 DHCP 进程，防止关闭 WiFi 后残留
+    if (udhcpcRunning) {
+        udhcpc_process->kill();
+        udhcpcRunning = false;
+        udhcpcTimeout->stop();
+    }
+    // 重置扫描状态，防止关闭 WiFi 期间扫描阻塞后续操作
+    m_scanning = false;
+    scanTimer->stop();
+
     m_pendingCmd = Cmd_Disconnect;
     wifi_cmd_process->start("wpa_cli", {"-i", wifi_port, "disconnect"});
 }
@@ -323,18 +333,20 @@ void GetSystemInfo::msic_ReadData()
             connect_wifi_status[2] = tmp[1];
             m_wifiState.wpaState = tmp[1];
             if(tmp[1] == "COMPLETED"){
-                // P0: udhcpc 防重入 — bool 守卫 + 成员 QProcess 替代 startDetached
-                if(connect_wifi_status[0] != "true" && !udhcpcRunning && m_dhcpAttempts < 3){
+                // P0: udhcpc 单次尝试 + 10s 超时，失败即停不再重试
+                if(connect_wifi_status[0] != "true" && !udhcpcRunning && m_dhcpAttempts < 1){
                     m_dhcpAttempts++;
                     udhcpc_process->start("udhcpc",
-                        {"-i", wifi_port, "-t", "3", "-n", "-q"});
+                        {"-i", wifi_port, "-t", "5", "-n", "-q"});
                     udhcpcRunning = true;
-                    udhcpcTimeout->start(8000);  // 8 秒超时兜底
-                } else if (m_dhcpAttempts >= 3) {
-                    // DHCP 重试耗尽，停止轮询避免空转
+                    udhcpcTimeout->start(10000);  // 10 秒超时
+                } else if (m_dhcpAttempts >= 1) {
+                    // DHCP 失败，停止轮询并通知 QML
                     if (timerWifi->isActive()) timerWifi->stop();
+                    emit wifiConnectedStatus("false");
                 }
             }else{
+                connect_wifi_status[0] = "";  // 离开 COMPLETED，允许下次进入时重新 DHCP
                 emit wifiConnected(connect_wifi_status[4], "false");
                 m_wifiState.connected = false;
             }

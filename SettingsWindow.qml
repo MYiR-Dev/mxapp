@@ -87,7 +87,7 @@ SystemWindow {
     // wifi连接超时时钟
     Timer{
         id:outtime_timer
-        interval:8000;running:false;repeat: false
+        interval:12000;running:false;repeat: false  // 兜底: wpa 连不上时 C++ 不会启动 DHCP，由 QML 超时
 
         onTriggered: {
             if(!wifistatus){
@@ -140,9 +140,8 @@ SystemWindow {
         }
         else
         {
-            getSyetemInfo.disconnect_wifi()
+            getSyetemInfo.disconnect_wifi()   // 异步: wpa_cli disconnect + ip addr flush
             getSyetemInfo.stopwifitimer()
-            getSyetemInfo.wifi_close()
             wifi_statu = false
             wifiPoweredOff()  // 显式信号通知 Loader 内部清除列表
         }
