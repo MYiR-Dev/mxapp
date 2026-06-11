@@ -256,35 +256,31 @@ void GetSystemInfo::connect_wifi(QString essid_passwd)
     if (!msic_process || !wifi_process_connoct) return;
     QStringList tmp= essid_passwd.split("+");
 
-    // qDebug()<<tmp[0]<<tmp[1]<<tmp[2];
-	if(tmp[0] != wifi_status){
-		QFile file("/usr/share/connect_wifi.sh");
-        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		QTextStream out(&file);
+    QFile file("/usr/share/connect_wifi.sh");
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
         if(tmp[2] == "true")
-		{
-			out << "#!/bin/sh\n";
+        {
+            out << "#!/bin/sh\n";
             out << "wpa_cli -i " +wifi_port+ " remove_network 0\n";
             out << "wpa_cli -i " +wifi_port+ " add_network\n";
             out << "wpa_cli -i " +wifi_port+ " set_network " + wifi_id + " ssid " + "\'\""+tmp[0]+"\"\'"+"\n";
             out << "wpa_cli -i " +wifi_port+ " set_network "+ wifi_id + " psk "+ "\'\""+tmp[1]+"\"\'"+"\n";
             out << "wpa_cli -i " +wifi_port+ " select_network "+wifi_id+"\n";
-		}
-		else {
-			out << "#!/bin/sh\n";
+        }
+        else {
+            out << "#!/bin/sh\n";
             out << "wpa_cli -i " +wifi_port+ " remove_network 0\n";
             out << "wpa_cli -i " +wifi_port+ " add_network\n";
             out << "wpa_cli -i " +wifi_port+ " set_network " + wifi_id + " ssid " + "\'\"" + tmp[0] + "\"\'" + "\n";
             out << "wpa_cli -i " +wifi_port+ " set_network " + wifi_id + " key_mgmt NONE" + "\n";
             out << "wpa_cli -i " +wifi_port+ " select_network " + wifi_id + "\n";
-		}
-		file.close();
+        }
+        file.close();
         msic_process->execute("chmod", {"a+x", "/usr/share/connect_wifi.sh"});
         wifi_process_connoct->start("/bin/sh", {"-c", "/usr/share/connect_wifi.sh"});
-        // P2: 确保连接过程中轮询运行，以便检测 COMPLETED + IP 获取
         startwifitimer();
-	}
-	}
+    }
 }
 void GetSystemInfo::disconnect_wifi()
 {
@@ -337,7 +333,7 @@ void GetSystemInfo::msic_ReadData()
                 if(connect_wifi_status[0] != "true" && !udhcpcRunning && m_dhcpAttempts < 1){
                     m_dhcpAttempts++;
                     udhcpc_process->start("udhcpc",
-                        {"-i", wifi_port, "-t", "5", "-n", "-q"});
+                        {"-i", wifi_port, "-n", "-q"});
                     udhcpcRunning = true;
                     udhcpcTimeout->start(10000);  // 10 秒超时
                 } else if (m_dhcpAttempts >= 1) {
@@ -346,6 +342,12 @@ void GetSystemInfo::msic_ReadData()
                     emit wifiConnectedStatus("false");
                 }
             }else{
+                // 从已连接状态断开（切换 WiFi 或 AP 掉线）→ 清除残留 IP
+                if (connect_wifi_status[0] == "true") {
+                    if (wifi_cmd_process->state() == QProcess::NotRunning) {
+                        wifi_cmd_process->start("ip", {"addr", "flush", "dev", wifi_port});
+                    }
+                }
                 connect_wifi_status[0] = "";  // 离开 COMPLETED，允许下次进入时重新 DHCP
                 emit wifiConnected(connect_wifi_status[4], "false");
                 m_wifiState.connected = false;
@@ -372,7 +374,6 @@ void GetSystemInfo::msic_ReadData()
             }
         }
     } while (!line.isNull());
-    wifi_status = connect_wifi_status[1];  // 存当前连接的SSID名，用于connect_wifi中的重复断开优化
 }
 // 检测wifi连接脚本的返回结果
 void GetSystemInfo::connect_ReadData()

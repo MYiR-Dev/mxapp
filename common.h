@@ -109,7 +109,6 @@ public:
     QString memFree;
     QString memTotal;
     QString wifi_id;
-    QString wifi_status;
     QString wifi_port;
     QStringList connect_wifi_status;  // 连接wifi信息 [0]=status, [1]=ssid, [2]=wpa_state, [3]=ip, [4]=bssid
     QVariantList net_ports;
