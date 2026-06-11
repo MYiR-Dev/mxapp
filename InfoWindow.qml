@@ -35,7 +35,7 @@ SystemWindow {
     height: adaptive_height
     onVisibleChanged: {
         if(visible === true){
-            getSyetemInfo.starttimer(500)
+            GetSystemInfo.starttimer(500)
             info_timer.start()
         }
     }
@@ -50,14 +50,11 @@ SystemWindow {
         onLeftBarClicked: {
             infoWindow.close()
             info_timer.stop()
-            getSyetemInfo.stoptimer()
+            GetSystemInfo.stoptimer()
         }
 
     }
-    GetSystemInfo{
-        id:getSyetemInfo
-//        Component.onCompleted:get_cpu_info()
-    }
+
     TitleRightBar{
         anchors{
             top: parent.top
@@ -201,7 +198,7 @@ SystemWindow {
                     }
                     Text{
                         id:op_value
-                        text:getSyetemInfo.read_system_version()
+                        text:GetSystemInfo.read_system_version()
                         font.pixelSize: 10;
                         font.family: "Microsoft YaHei"
                         color: "white"
@@ -883,15 +880,15 @@ SystemWindow {
     property int mem_percent:50
     property int mem_free:50
     property string mem_usage:""
-    property int system_run_time : getSyetemInfo.read_system_runtime()
+    property int system_run_time : GetSystemInfo.read_system_runtime()
 
     property int day: system_run_time/86400
     property int hour:system_run_time/3600 % 24
     property int min:system_run_time%3600/60
     property int timer_count:0
-    property string net_ip:getSyetemInfo.read_net_ip()
-    property string net_mac:getSyetemInfo.read_net_mac()
-    property int connect_net:getSyetemInfo.get_net_status()
+    property string net_ip:GetSystemInfo.read_net_ip()
+    property string net_mac:GetSystemInfo.read_net_mac()
+    property int connect_net:GetSystemInfo.get_net_status()
     Timer{
         id:info_timer
         interval:1000;running:false;repeat: true
@@ -900,17 +897,17 @@ SystemWindow {
             timer_count++
             if((timer_count%60) == 0 )
             {
-                system_run_time = getSyetemInfo.read_system_runtime()
+                system_run_time = GetSystemInfo.read_system_runtime()
                 day = system_run_time/86400
                 hour = system_run_time/3600 % 24
                 min = system_run_time%3600/60
             }
-            cpu_percent = getSyetemInfo.read_cpu_percent()
-            mem_percent = getSyetemInfo.read_memory_percent()
-            mem_usage = getSyetemInfo.read_memory_usage()
-            mem_free = getSyetemInfo.read_memory_free()
-            connect_net = getSyetemInfo.get_net_status()
-            net_ip = getSyetemInfo.read_net_ip()
+            cpu_percent = GetSystemInfo.read_cpu_percent()
+            mem_percent = GetSystemInfo.read_memory_percent()
+            mem_usage = GetSystemInfo.read_memory_usage()
+            mem_free = GetSystemInfo.read_memory_free()
+            connect_net = GetSystemInfo.get_net_status()
+            net_ip = GetSystemInfo.read_net_ip()
         }
 //      Component.onCompleted:info_timer.start()
     }

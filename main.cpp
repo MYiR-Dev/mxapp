@@ -60,14 +60,15 @@ int main(int argc, char *argv[])
 
     app.setOrganizationName("MYiR_Electronics");
     app.setApplicationName("MEasy_HMI");
-    app.setApplicationVersion("V2.6.0");
+    app.setApplicationVersion("V2.6.1");
 
     qDebug() << "platform:" << QGuiApplication::platformName();
 
     QQmlApplicationEngine engine;
 
     qmlRegisterType<QmlProcess>("mprocess", 1, 0, "QmlProcess");
-    qmlRegisterType<GetSystemInfo>("GetSystemInfoAPI", 1, 0, "GetSystemInfo");
+    auto *sysInfo = new GetSystemInfo(&app);
+    qmlRegisterSingletonInstance("GetSystemInfoAPI", 1, 0, "GetSystemInfo", sysInfo);
     qmlRegisterType<CustomPlotItem>("CustomPlot", 1, 0, "CustomPlotItem");
     qmlRegisterType<MyFunction>("MyFunction.module", 1, 0, "MyFunction");
     qmlRegisterType<ChargeManage>("ChargeManage",1,0,"ChargeManage");

@@ -51,10 +51,7 @@ SystemWindow {
         }
 
     }
-    GetSystemInfo{
-        id:getSyetemInfo
 
-    }
     TitleRightBar{
         anchors{
             top: parent.top
@@ -157,7 +154,7 @@ SystemWindow {
                 text: webView && webView.url
                 font.family: "Microsoft YaHei"
                 onAccepted: {
-                    webView.url = getSyetemInfo.fromUserInput(text)
+                    webView.url = GetSystemInfo.fromUserInput(text)
                 }
             }
             Rectangle{
@@ -189,7 +186,7 @@ SystemWindow {
                     onClicked: {
                         addressInput.focus= false
                         goButton.opacity = 0.5
-                        webView.url = getSyetemInfo.fromUserInput(addressInput.text)
+                        webView.url = GetSystemInfo.fromUserInput(addressInput.text)
 //                        webView.load;
                     }
                     onExited:{

@@ -57,10 +57,10 @@ SystemWindow {
         running: true
         repeat: false
         onTriggered: {
-            wifi_avail = getSyetemInfo.isWifi_avail()
+            wifi_avail = GetSystemInfo.isWifi_avail()
             console.log("wifi avail " + wifi_avail)
-            getSyetemInfo.get_net_status()
-            netports = getSyetemInfo.get_net_ports()
+            GetSystemInfo.get_net_status()
+            netports = GetSystemInfo.get_net_ports()
             if (netports.length > 0) selectedEthPort = netports[0]
         }
     }
@@ -73,15 +73,15 @@ SystemWindow {
             if (connectDialog.opened) connectDialog.close()
         }
     }
-    property string net_ip:getSyetemInfo.read_net_ip(selectedEthPort)
-    property int connect_net:getSyetemInfo.get_net_status(selectedEthPort)
+    property string net_ip:GetSystemInfo.read_net_ip(selectedEthPort)
+    property int connect_net:GetSystemInfo.get_net_status(selectedEthPort)
     Timer{
         id:setting_timer
         interval:1000;running:false;repeat: true
 
         onTriggered: {
-            net_ip = getSyetemInfo.read_net_ip(selectedEthPort)
-            connect_net = getSyetemInfo.get_net_status(selectedEthPort)
+            net_ip = GetSystemInfo.read_net_ip(selectedEthPort)
+            connect_net = GetSystemInfo.get_net_status(selectedEthPort)
         }
     }
     // wifi连接超时时钟
@@ -117,10 +117,7 @@ SystemWindow {
         }
 
     }
-    GetSystemInfo{
-        id:getSyetemInfo
 
-    }
 
     TitleRightBar{
         anchors{
@@ -134,14 +131,14 @@ SystemWindow {
 
         if(checked)
         {
-            getSyetemInfo.wifi_open()
-            getSyetemInfo.startwifitimer()
+            GetSystemInfo.wifi_open()
+            GetSystemInfo.startwifitimer()
             wifi_statu = true
         }
         else
         {
-            getSyetemInfo.disconnect_wifi()   // 异步: wpa_cli disconnect + ip addr flush
-            getSyetemInfo.stopwifitimer()
+            GetSystemInfo.disconnect_wifi()   // 异步: wpa_cli disconnect + ip addr flush
+            GetSystemInfo.stopwifitimer()
             wifi_statu = false
             wifiPoweredOff()  // 显式信号通知 Loader 内部清除列表
         }
@@ -435,7 +432,7 @@ SystemWindow {
                                 var date_string = combox_hour.combox_control.currentText + " " +combox_min.combox_control.currentText + " " +
                                         combox_sec.combox_control.currentText + " " + combox_year.combox_control.currentText + " " +
                                         combox_mon.combox_control.currentText + " " +combox_day.combox_control.currentText
-                                getSyetemInfo.set_date(date_string)
+                                GetSystemInfo.set_date(date_string)
                             }
                             onExited:{
                                save_button_rec.opacity = 1.0
@@ -854,7 +851,7 @@ SystemWindow {
                                 var net_info_string = combox_dhcp.combox_control.currentText + " " +ip_input.text + " " +
                                         netmask_input.text + " " + gw_input.text + " " +dns_input.text + " " +combox_ethport.combox_control.currentText
                                 console.log(net_info_string)
-                                getSyetemInfo.set_net_info(net_info_string)
+                                GetSystemInfo.set_net_info(net_info_string)
                             }
                             onExited:{
                                net_save_button_rec.opacity = 1.0
@@ -944,11 +941,11 @@ SystemWindow {
 
                         MouseArea{
                             anchors.fill: parent;
-                            enabled: !getSyetemInfo.isScanning()  // 扫描中禁用，防止重复点击
+                            enabled: !GetSystemInfo.isScanning()  // 扫描中禁用，防止重复点击
                             onClicked: {
                                serch_rec.opacity = 0.5
                                if(wifi_statu)
-                                    getSyetemInfo.get_wifi_list()
+                                    GetSystemInfo.get_wifi_list()
 
                             }
                             onExited:{
@@ -986,7 +983,7 @@ SystemWindow {
                         }
                     }
                     Connections {
-                        target: getSyetemInfo
+                        target: GetSystemInfo
                         function onWifiReady(wifi_data) {
                             var image
                             wifi_list_model.clear()
@@ -1168,9 +1165,9 @@ Image {
                                         content_rec.opacity = 0.5
                                         listView.currentIndex = index;
                                         if(bttxt.text === qsTr("断开")){
-                                            getSyetemInfo.disconnect_wifi()
+                                            GetSystemInfo.disconnect_wifi()
                                             // P2: 断开后恢复轮询以检测状态变化
-                                            getSyetemInfo.startwifitimer()
+                                            GetSystemInfo.startwifitimer()
                                             return
                                         }
 
@@ -1353,7 +1350,7 @@ ListView {
                 function startConnecting() {
                     var flag = selectedWifi.key_image === "" ? "false" : "true"
                     var essid_passwd = selectedWifi.wifi_essid+"+"+passwordField.text+"+"+flag
-                    getSyetemInfo.connect_wifi(essid_passwd)
+                    GetSystemInfo.connect_wifi(essid_passwd)
 
                     successText.visible = false
                     failText.visible = false
