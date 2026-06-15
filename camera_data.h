@@ -3,8 +3,11 @@
 
 #include <sys/types.h>
 #include <linux/videodev2.h>
-//默认申请4个buffer
-#define FRAMEBUFFER_COUNT 4
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(camLog)
+//默认申请3个buffer（低延迟预览，减少pipeline深度）
+#define FRAMEBUFFER_COUNT 3
 #define CLEAR(x) memset(&(x), 0, sizeof(x))
 #define v4l2_fourcc_i(a, b, c, d)\
 ((__u32)(a) | ((__u32)(b) << 8) | ((__u32)(c) << 16) | ((__u32)(d) << 24))

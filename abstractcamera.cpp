@@ -1,6 +1,5 @@
 #include "abstractcamera.h"
 
-
 AbstractCamera::AbstractCamera()
 {
 
@@ -21,12 +20,11 @@ int AbstractCamera::init_device(camera_info& in_camera)
     fmtDesc.index = 0;
     fmtDesc.type = V4L2_CAP_VIDEO_CAPTURE;
     pixformat_l.clear();
-    qDebug() << in_camera.dev_name << " supported pixelformat:";
+    qCDebug(camLog, "CAM: %s supported pixelformat:", in_camera.dev_name);
     while (ioctl(in_camera.fd, VIDIOC_ENUM_FMT, &fmtDesc) == 0) {
         fmtDesc.index++;
         p = (unsigned char *)&fmtDesc.pixelformat;
-        qDebug() << QString("%1%2%3%4").arg(QChar(p[0])).arg(QChar(p[1])).arg(QChar(p[2])).arg(QChar(p[3]));
-        // printf("pixelformat=%c%c%c%c\n\n",p[0],p[1],p[2],p[3]);
+        qCDebug(camLog, "CAM:   %c%c%c%c", p[0], p[1], p[2], p[3]);
         if(fmtDesc.pixelformat == v4l2_fourcc_i('M', 'J', 'P', 'G')) {
             pixformat_l.append("MJPG");
             continue;
@@ -45,7 +43,7 @@ int AbstractCamera::init_device(camera_info& in_camera)
     fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
     in_camera.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
     if (-1  == ioctl(in_camera.fd, VIDIOC_G_FMT, &fmt)) {
-        fprintf(stderr, "get format failed : %d\n", errno);
+        qCCritical(camLog, "CAM: G_FMT failed: %d", errno);
         return -1;
     }
 
@@ -66,14 +64,17 @@ int AbstractCamera::init_device(camera_info& in_camera)
     // fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_MJPEG;
 
     if (ioctl(in_camera.fd, VIDIOC_S_FMT, &fmt) == -1) {
-        fprintf(stderr, "set format failed : %d\n",errno);
+        qCCritical(camLog, "CAM: S_FMT failed: %d", errno);
         return -1;
     }
     in_camera.pixelformat = fmt.fmt.pix.pixelformat;
     in_camera.width = fmt.fmt.pix.width;
     in_camera.height = fmt.fmt.pix.height;
     p = (unsigned char *)&in_camera.pixelformat;
-    qDebug() << in_camera.dev_name << QString("%1%2%3%4").arg(QChar(p[0])).arg(QChar(p[1])).arg(QChar(p[2])).arg(QChar(p[3]));
+    qCInfo(camLog, "CAM: %s → %c%c%c%c", in_camera.dev_name, p[0], p[1], p[2], p[3]);
+    qCDebug(camLog, "CAM: SPL S_FMT result: %dx%d sizeimg=%u bpl=%u",
+            in_camera.width, in_camera.height,
+            fmt.fmt.pix.sizeimage, fmt.fmt.pix.bytesperline);
 
     // 获取实际的帧宽高度
     struct v4l2_requestbuffers reqbuf;
@@ -82,10 +83,10 @@ int AbstractCamera::init_device(camera_info& in_camera)
     reqbuf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
     reqbuf.memory = V4L2_MEMORY_MMAP;
     if (0 > ioctl(in_camera.fd, VIDIOC_REQBUFS, &reqbuf)) {
-        qDebug("request buffer failed\n");
+        qCCritical(camLog, "CAM: REQBUFS failed");
         return -1;
     }
-    qDebug()<<"request buffer success";
+    qCInfo(camLog, "CAM: REQBUFS success (%d buffers)", FRAMEBUFFER_COUNT);
 
     /* 建立内存映射 */
     in_camera.frame_length = 0;
@@ -96,7 +97,7 @@ int AbstractCamera::init_device(camera_info& in_camera)
         buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
         buf.memory = V4L2_MEMORY_MMAP;
         if(0 > ioctl(in_camera.fd, VIDIOC_QUERYBUF, &buf)) {
-            fprintf(stderr, "VIDIOC_QUERYBUF failed : %d\n", errno);
+            qCCritical(camLog, "CAM: QUERYBUF failed: %d", errno);
             return -1;
         }
 
@@ -106,7 +107,7 @@ int AbstractCamera::init_device(camera_info& in_camera)
                                                                      PROT_READ | PROT_WRITE,
                                                                      MAP_SHARED, in_camera.fd, buf.m.offset);
         if (MAP_FAILED == in_camera.caputure_type.simple_plane[n_buffers].start) {
-            fprintf(stderr, "mmap error : %d\n", errno);
+            qCCritical(camLog, "CAM: mmap failed: %d", errno);
             // 清理前面已映射的 buffer
             for(int k = 0; k < n_buffers; k++) {
                 if(in_camera.caputure_type.simple_plane[k].start != MAP_FAILED) {
@@ -147,14 +148,15 @@ int AbstractCamera::start_capturing(camera_info& in_camera)
         buf.memory = V4L2_MEMORY_MMAP;
         buf.index = i;
         if (0 > ioctl(in_camera.fd, VIDIOC_QBUF, &buf)) {
-            fprintf(stderr, "VIDIOC_QBUF error: %d\n", errno);
+            qCCritical(camLog, "CAM: QBUF failed: %d", errno);
             return -1;
         }
     }
     /* 开启视频流 */
     type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+    qCDebug(camLog, "CAM: SPL STREAMON type=%u fd=%d", type, in_camera.fd);
     if (0 > ioctl(in_camera.fd, VIDIOC_STREAMON, &type)) {
-        fprintf(stderr, "VIDIOC_STREAMON error: %d\n", errno);
+        qCCritical(camLog, "CAM: STREAMON failed: %d", errno);
         return -1;
     }
     return 0;
@@ -165,7 +167,7 @@ int AbstractCamera::stop_capturing(camera_info& in_camera)
     enum v4l2_buf_type type;
     type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
     if (-1 == xioctl(in_camera.fd, VIDIOC_STREAMOFF, &type)) {
-        fprintf(stderr, "VIDIOC_STREAMOFF: error - %d\n", errno);
+        qCWarning(camLog, "CAM: STREAMOFF failed: %d", errno);
         return -1;
     }
     return 0;
@@ -178,12 +180,12 @@ int AbstractCamera::framebuffer_handle(camera_info &in_camera, v4l2_buffer &buf,
     buf.memory = V4L2_MEMORY_MMAP;
     // 出队
     if(0 > ioctl(in_camera.fd,VIDIOC_DQBUF,&buf)){
-        fprintf(stderr, "VIDIOC DQBUF failed : %d\n", errno);
+        qCWarning(camLog, "CAM: DQBUF failed: %d", errno);
         return -1;
     }
     memcpy(framebuf, in_camera.caputure_type.simple_plane[buf.index].start, buf.bytesused);
     if (0 > ioctl(in_camera.fd, VIDIOC_QBUF, &buf)) {
-        fprintf(stderr, "VIDIOC QBUF failed : %d\n", errno);
+        qCWarning(camLog, "CAM: QBUF re-enqueue failed: %d", errno);
         return -1;
     }
     return 0;

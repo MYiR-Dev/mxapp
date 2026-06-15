@@ -40,17 +40,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BrowserWindow.qml" line="136"/>
+        <location filename="../BrowserWindow.qml" line="133"/>
         <source>地址:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BrowserWindow.qml" line="177"/>
+        <location filename="../BrowserWindow.qml" line="174"/>
         <source>开始</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BrowserWindow.qml" line="218"/>
+        <location filename="../BrowserWindow.qml" line="215"/>
         <source>刷新</source>
         <translation type="unfinished"></translation>
     </message>
@@ -58,17 +58,14 @@
 <context>
     <name>CameraWindow</name>
     <message>
-        <location filename="../CameraWindow.qml" line="103"/>
-        <source>所有图片</source>
-        <translation type="unfinished"></translation>
+        <location filename="../CameraWindow.qml" line="83"/>
+        <source>返回</source>
+        <translation>返回</translation>
     </message>
-</context>
-<context>
-    <name>CustomCalendar</name>
     <message>
-        <location filename="../CustomCalendar.qml" line="105"/>
-        <source>今天</source>
-        <translation>今天</translation>
+        <location filename="../CameraWindow.qml" line="100"/>
+        <source>所有图片</source>
+        <translation>所有图片</translation>
     </message>
 </context>
 <context>
@@ -109,6 +106,13 @@ See &lt;https://www.gnu.org/licenses/lgpl-3.0.html&gt; for more details.</source
         <location filename="../CopyrightNoticeDialog.qml" line="93"/>
         <source>确定</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CustomCalendar</name>
+    <message>
+        <source>今天</source>
+        <translation type="vanished">今天</translation>
     </message>
 </context>
 <context>
@@ -169,17 +173,17 @@ See &lt;https://www.gnu.org/licenses/lgpl-3.0.html&gt; for more details.</source
 <context>
     <name>HomeWindow</name>
     <message>
-        <location filename="../HomeWindow.qml" line="771"/>
+        <location filename="../HomeWindow.qml" line="757"/>
         <source>toMENU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="244"/>
+        <location filename="../HomeWindow.qml" line="248"/>
         <source>多媒体</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="248"/>
+        <location filename="../HomeWindow.qml" line="252"/>
         <source>摄像头</source>
         <translation type="unfinished"></translation>
     </message>
@@ -189,72 +193,72 @@ See &lt;https://www.gnu.org/licenses/lgpl-3.0.html&gt; for more details.</source
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="262"/>
+        <location filename="../HomeWindow.qml" line="264"/>
         <source>音乐</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="277"/>
+        <location filename="../HomeWindow.qml" line="279"/>
         <source>系统</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="281"/>
+        <location filename="../HomeWindow.qml" line="283"/>
         <source>系统信息</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="287"/>
+        <location filename="../HomeWindow.qml" line="289"/>
         <source>系统设置</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="302"/>
+        <location filename="../HomeWindow.qml" line="304"/>
         <source>智能家电</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="306"/>
+        <location filename="../HomeWindow.qml" line="308"/>
         <source>洗衣机</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="315"/>
+        <location filename="../HomeWindow.qml" line="317"/>
         <source>卫生医疗</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="319"/>
+        <location filename="../HomeWindow.qml" line="321"/>
         <source>心电仪</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="328"/>
+        <location filename="../HomeWindow.qml" line="330"/>
         <source>公共服务</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="332"/>
+        <location filename="../HomeWindow.qml" line="334"/>
         <source>取票机</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="338"/>
+        <location filename="../HomeWindow.qml" line="340"/>
         <source>充电桩</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="344"/>
+        <location filename="../HomeWindow.qml" line="346"/>
         <source>挖机仪表盘</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="293"/>
+        <location filename="../HomeWindow.qml" line="295"/>
         <source>文件管理器</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HomeWindow.qml" line="268"/>
+        <location filename="../HomeWindow.qml" line="270"/>
         <source>图片</source>
         <translation type="unfinished"></translation>
     </message>
@@ -267,153 +271,153 @@ See &lt;https://www.gnu.org/licenses/lgpl-3.0.html&gt; for more details.</source
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="96"/>
-        <location filename="../InfoWindow.qml" line="764"/>
+        <location filename="../InfoWindow.qml" line="93"/>
+        <location filename="../InfoWindow.qml" line="761"/>
         <source>基本信息</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="109"/>
+        <location filename="../InfoWindow.qml" line="106"/>
         <source>可用内存</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="136"/>
+        <location filename="../InfoWindow.qml" line="133"/>
         <source>IP 地址</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="164"/>
+        <location filename="../InfoWindow.qml" line="161"/>
         <source>屏幕分辨率</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="191"/>
+        <location filename="../InfoWindow.qml" line="188"/>
         <source>操作系统</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="218"/>
+        <location filename="../InfoWindow.qml" line="215"/>
         <source>系统运行时间</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="233"/>
-        <location filename="../InfoWindow.qml" line="260"/>
+        <location filename="../InfoWindow.qml" line="230"/>
+        <location filename="../InfoWindow.qml" line="257"/>
         <source>天</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="233"/>
-        <location filename="../InfoWindow.qml" line="260"/>
+        <location filename="../InfoWindow.qml" line="230"/>
+        <location filename="../InfoWindow.qml" line="257"/>
         <source>时</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="233"/>
-        <location filename="../InfoWindow.qml" line="260"/>
+        <location filename="../InfoWindow.qml" line="230"/>
+        <location filename="../InfoWindow.qml" line="257"/>
         <source>分</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="247"/>
+        <location filename="../InfoWindow.qml" line="244"/>
         <source>总运行时间</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="274"/>
+        <location filename="../InfoWindow.qml" line="271"/>
         <source>电池电量</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="300"/>
+        <location filename="../InfoWindow.qml" line="297"/>
         <source>创建</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="314"/>
+        <location filename="../InfoWindow.qml" line="311"/>
         <source>Yocto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="327"/>
+        <location filename="../InfoWindow.qml" line="324"/>
         <source>编译</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="380"/>
+        <location filename="../InfoWindow.qml" line="377"/>
         <source>系统CPU使用率: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="446"/>
+        <location filename="../InfoWindow.qml" line="443"/>
         <source>系统内存使用率: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="495"/>
-        <location filename="../InfoWindow.qml" line="809"/>
+        <location filename="../InfoWindow.qml" line="492"/>
+        <location filename="../InfoWindow.qml" line="806"/>
         <source>网络信息</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="509"/>
+        <location filename="../InfoWindow.qml" line="506"/>
         <source>网卡MAC地址</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="535"/>
+        <location filename="../InfoWindow.qml" line="532"/>
         <source>IP地址</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="562"/>
+        <location filename="../InfoWindow.qml" line="559"/>
         <source>速率 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="575"/>
+        <location filename="../InfoWindow.qml" line="572"/>
         <source>1000</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="588"/>
+        <location filename="../InfoWindow.qml" line="585"/>
         <source>是否联网</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="604"/>
+        <location filename="../InfoWindow.qml" line="601"/>
         <source>已联网</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="606"/>
+        <location filename="../InfoWindow.qml" line="603"/>
         <source>未联网</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="630"/>
-        <location filename="../InfoWindow.qml" line="853"/>
+        <location filename="../InfoWindow.qml" line="627"/>
+        <location filename="../InfoWindow.qml" line="850"/>
         <source>版权信息</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="643"/>
+        <location filename="../InfoWindow.qml" line="640"/>
         <source>版权声明</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="656"/>
+        <location filename="../InfoWindow.qml" line="653"/>
         <source>Copyright © 2020 MYIR Electronics Limited. All rights reserved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="669"/>
+        <location filename="../InfoWindow.qml" line="666"/>
         <source>QT版本</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InfoWindow.qml" line="695"/>
+        <location filename="../InfoWindow.qml" line="692"/>
         <source>MEasy HMI版本</source>
         <translation type="unfinished"></translation>
     </message>
@@ -571,7 +575,7 @@ See &lt;https://www.gnu.org/licenses/lgpl-3.0.html&gt; for more details.</source
 <context>
     <name>PlayerWindow</name>
     <message>
-        <location filename="../PlayerWindow.qml" line="68"/>
+        <location filename="../PlayerWindow.qml" line="83"/>
         <source>打开文件</source>
         <translation type="unfinished"></translation>
     </message>
@@ -612,162 +616,162 @@ See &lt;https://www.gnu.org/licenses/lgpl-3.0.html&gt; for more details.</source
 <context>
     <name>SettingsWindow</name>
     <message>
-        <location filename="../SettingsWindow.qml" line="108"/>
+        <location filename="../SettingsWindow.qml" line="106"/>
         <source>系统设置</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="201"/>
+        <location filename="../SettingsWindow.qml" line="212"/>
         <source>时间</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="307"/>
+        <location filename="../SettingsWindow.qml" line="318"/>
         <source>yyyy年MM月dd日,ddd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="333"/>
+        <location filename="../SettingsWindow.qml" line="344"/>
         <source>年</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="349"/>
-        <location filename="../SettingsWindow.qml" line="350"/>
+        <location filename="../SettingsWindow.qml" line="360"/>
+        <location filename="../SettingsWindow.qml" line="361"/>
         <source>月</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="362"/>
-        <location filename="../SettingsWindow.qml" line="363"/>
-        <location filename="../SettingsWindow.qml" line="364"/>
-        <location filename="../SettingsWindow.qml" line="365"/>
+        <location filename="../SettingsWindow.qml" line="373"/>
+        <location filename="../SettingsWindow.qml" line="374"/>
+        <location filename="../SettingsWindow.qml" line="375"/>
+        <location filename="../SettingsWindow.qml" line="376"/>
         <source>日</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="407"/>
-        <location filename="../SettingsWindow.qml" line="827"/>
+        <location filename="../SettingsWindow.qml" line="418"/>
+        <location filename="../SettingsWindow.qml" line="838"/>
         <source>保存</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="457"/>
-        <location filename="../SettingsWindow.qml" line="555"/>
+        <location filename="../SettingsWindow.qml" line="468"/>
+        <location filename="../SettingsWindow.qml" line="566"/>
         <source>以太网</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="568"/>
+        <location filename="../SettingsWindow.qml" line="579"/>
         <source>电缆已接入</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="568"/>
+        <location filename="../SettingsWindow.qml" line="579"/>
         <source>电缆已拔出</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="582"/>
+        <location filename="../SettingsWindow.qml" line="593"/>
         <source>配置IPv4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="610"/>
+        <location filename="../SettingsWindow.qml" line="621"/>
         <source>IP地址</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="678"/>
+        <location filename="../SettingsWindow.qml" line="689"/>
         <source>子网掩码</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="721"/>
+        <location filename="../SettingsWindow.qml" line="732"/>
         <source>网关</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="764"/>
+        <location filename="../SettingsWindow.qml" line="775"/>
         <source>DNS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="917"/>
+        <location filename="../SettingsWindow.qml" line="929"/>
         <source>扫描</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1006"/>
-        <location filename="../SettingsWindow.qml" line="1126"/>
+        <location filename="../SettingsWindow.qml" line="1027"/>
+        <location filename="../SettingsWindow.qml" line="1147"/>
         <source>已连接</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="978"/>
-        <location filename="../SettingsWindow.qml" line="1019"/>
+        <location filename="../SettingsWindow.qml" line="999"/>
+        <location filename="../SettingsWindow.qml" line="1040"/>
         <source>未启用</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1129"/>
+        <location filename="../SettingsWindow.qml" line="1150"/>
         <source>连接</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1382"/>
+        <location filename="../SettingsWindow.qml" line="1404"/>
         <source>时间设置</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1427"/>
+        <location filename="../SettingsWindow.qml" line="1449"/>
         <source>以太网设置</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="873"/>
-        <location filename="../SettingsWindow.qml" line="1472"/>
+        <location filename="../SettingsWindow.qml" line="884"/>
+        <location filename="../SettingsWindow.qml" line="1494"/>
         <source>WiFi设置</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1198"/>
+        <location filename="../SettingsWindow.qml" line="1227"/>
         <source>Connect</source>
         <translation>连接</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1230"/>
+        <location filename="../SettingsWindow.qml" line="1256"/>
         <source>Password field</source>
         <translation>密码</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1260"/>
+        <location filename="../SettingsWindow.qml" line="1286"/>
         <source>Connected</source>
         <translation>已连接</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1270"/>
+        <location filename="../SettingsWindow.qml" line="1296"/>
         <source>Failed</source>
         <translation>连接失败</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1289"/>
+        <location filename="../SettingsWindow.qml" line="1315"/>
         <source>connect</source>
         <translation>连接</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1314"/>
+        <location filename="../SettingsWindow.qml" line="1340"/>
         <source>cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="516"/>
+        <location filename="../SettingsWindow.qml" line="527"/>
         <source>网口</source>
         <translation>网口</translation>
     </message>
     <message>
-        <location filename="../SettingsWindow.qml" line="1127"/>
-        <location filename="../SettingsWindow.qml" line="1146"/>
+        <location filename="../SettingsWindow.qml" line="1148"/>
+        <location filename="../SettingsWindow.qml" line="1167"/>
         <source>断开</source>
         <translation>断开</translation>
     </message>

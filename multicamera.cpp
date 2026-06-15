@@ -21,12 +21,12 @@ int MultiCamera::init_device(camera_info& in_camera)
     fmtDesc.index = 0;
     fmtDesc.type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;
     //获取摄像头支持的编码格式
-    qDebug() << in_camera.dev_name << " supported pixelformat:";
+    qCDebug(camLog, "CAM: %s supported pixelformat:", in_camera.dev_name);
     pixformat_l.clear();
     while (xioctl(in_camera.fd, VIDIOC_ENUM_FMT, &fmtDesc) == 0){
         fmtDesc.index++;
         p = (unsigned char *)&fmtDesc.pixelformat;
-        qDebug() << QString("%1%2%3%4").arg(QChar(p[0])).arg(QChar(p[1])).arg(QChar(p[2])).arg(QChar(p[3]));
+        qCDebug(camLog, "CAM:   %c%c%c%c", p[0], p[1], p[2], p[3]);
         // printf("pixelformat=%c%c%c%c\n\n",p[0],p[1],p[2],p[3]);
         if(fmtDesc.pixelformat == v4l2_fourcc_i('N', 'V', '1', '2')) {
             pixformat_l.append("NV12");
@@ -46,27 +46,35 @@ int MultiCamera::init_device(camera_info& in_camera)
     fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;
     in_camera.type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;
     if (-1  == xioctl(in_camera.fd, VIDIOC_G_FMT, &fmt)) {
-        fprintf(stderr,"get format failed\n");
+        qCCritical(camLog, "CAM: G_FMT failed");
         return -1;
     }
 
-    // 像素格式优先级选择
-    if(pixformat_l.contains(QString("NV12")))
-        in_camera.pixelformat = V4L2_PIX_FMT_NV12;
-    else if(pixformat_l.contains(QString("RGB3")))
+    // 像素格式优先级选择 — ISI SOURCE pad 输出 RGB888_1X24
+    // RGB3: 零 CPU 转换，DQBUF 直接就是 RGB 数据
+    // YUYV: ISI 回退到 YUV8_1X24 时使用，整数转换
+    // NV12: 半平面格式，转换最慢
+    if(pixformat_l.contains(QString("RGB3")))
         in_camera.pixelformat = V4L2_PIX_FMT_RGB24;
     else if(pixformat_l.contains(QString("YUYV")))
         in_camera.pixelformat = V4L2_PIX_FMT_YUYV;
+    else if(pixformat_l.contains(QString("NV12")))
+        in_camera.pixelformat = V4L2_PIX_FMT_NV12;
     else return -1;
 
+    // ★ 清除 G_FMT 残留的 plane_fmt，避免驱动使用旧缓冲区尺寸
+    CLEAR(fmt);
     fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;
-    fmt.fmt.pix_mp.width = in_camera.width; //replace
-    fmt.fmt.pix_mp.height = in_camera.height; //replace
+    fmt.fmt.pix_mp.width = in_camera.width;
+    fmt.fmt.pix_mp.height = in_camera.height;
     fmt.fmt.pix_mp.pixelformat = in_camera.pixelformat;
-    fmt.fmt.pix_mp.field = V4L2_FIELD_ANY;
+    fmt.fmt.pix_mp.num_planes = 1;
+    fmt.fmt.pix_mp.field = V4L2_FIELD_NONE;
+    // colorspace 由驱动根据 ISI SOURCE pad 输出格式自动确定
+    // RGB888_1X24 → SRGB, YUV8_1X24 → JPEG/Rec.601
 
     if (-1 == xioctl(in_camera.fd, VIDIOC_S_FMT, &fmt)) {
-        fprintf(stderr, "VIDIOC_S_FMT1: error: %d\n", errno);
+        qCCritical(camLog, "CAM: S_FMT failed: %d", errno);
         return -1;
     }
     //获取驱动实际设置的参数
@@ -75,7 +83,17 @@ int MultiCamera::init_device(camera_info& in_camera)
     in_camera.width = fmt.fmt.pix_mp.width;
     in_camera.height = fmt.fmt.pix_mp.height;
     p = (unsigned char *)&in_camera.pixelformat;
-    qDebug() << in_camera.dev_name <<QString("%1%2%3%4").arg(QChar(p[0])).arg(QChar(p[1])).arg(QChar(p[2])).arg(QChar(p[3]));
+    qCInfo(camLog, "CAM: %s → %c%c%c%c", in_camera.dev_name, p[0], p[1], p[2], p[3]);
+
+    qCDebug(camLog, "CAM: MPL S_FMT result: %dx%d planes=%d sizeimg=%u bpl=%u csc=%d/%d/%d/%d fl=0x%x",
+            in_camera.width, in_camera.height,
+            in_camera.NUM_PLANES,
+            fmt.fmt.pix_mp.plane_fmt[0].sizeimage,
+            fmt.fmt.pix_mp.plane_fmt[0].bytesperline,
+            fmt.fmt.pix_mp.colorspace, fmt.fmt.pix_mp.ycbcr_enc,
+            fmt.fmt.pix_mp.quantization, fmt.fmt.pix_mp.xfer_func,
+            fmt.fmt.pix_mp.flags);
+
     if(init_mmap(in_camera) == -1)
         return -1;
     return 0;
@@ -110,6 +128,9 @@ int MultiCamera::start_capturing(camera_info& in_camera)
     unsigned int i;
     enum v4l2_buf_type type;
 
+    // MMAP 模式: 必须先 QBUF 再 STREAMON
+    // 驱动在 STREAMON 时立即开始 DMA，如果队列为空会丢弃帧导致卡顿
+    // libcamera 的 importBuffers→streamOn→QBUF 顺序仅适用于 DMABUF 模式
     for (i = 0; i < FRAMEBUFFER_COUNT; ++i) {
         struct v4l2_buffer buf;
         struct v4l2_plane mplanes[in_camera.NUM_PLANES];
@@ -122,16 +143,18 @@ int MultiCamera::start_capturing(camera_info& in_camera)
         buf.length	= in_camera.NUM_PLANES;
 
         if (-1 == xioctl(in_camera.fd, VIDIOC_QBUF, &buf)) {
-            fprintf(stderr, "VIDIOC_QBUF error: %d\n", errno);
+            qCCritical(camLog, "CAM: QBUF failed: %d", errno);
             return -1;
         }
     }
 
     type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;
+    qCDebug(camLog, "CAM: MPL STREAMON type=%u fd=%d", type, in_camera.fd);
     if (-1 == xioctl(in_camera.fd, VIDIOC_STREAMON, &type)) {
-        fprintf(stderr, "VIDIOC_STREAMON error: %d\n", errno);
+        qCCritical(camLog, "CAM: STREAMON failed: %d", errno);
         return -1;
     }
+
     return 0;
 }
 
@@ -140,7 +163,7 @@ int MultiCamera::stop_capturing(camera_info& in_camera)
     enum v4l2_buf_type type;
     type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;
     if (-1 == xioctl(in_camera.fd, VIDIOC_STREAMOFF, &type)) {
-        fprintf(stderr, "VIDIOC_STREAMOFF: error - %d\n", errno);
+        qCWarning(camLog, "CAM: STREAMOFF failed: %d", errno);
         return -1;
     }
     return 0;
@@ -156,7 +179,7 @@ int MultiCamera::framebuffer_handle(camera_info &in_camera, v4l2_buffer &buf, un
     buf.length=in_camera.NUM_PLANES;
     /* 出队 */
     if(0 > xioctl(in_camera.fd,VIDIOC_DQBUF,&buf)){
-        fprintf(stderr, "VIDIOC DQBUF failed : %d\n", errno);
+        qCWarning(camLog, "CAM: DQBUF failed: %d", errno);
         return -1;
     }
     //数据处理
@@ -168,7 +191,7 @@ int MultiCamera::framebuffer_handle(camera_info &in_camera, v4l2_buffer &buf, un
     }
     /* 入队 */
     if(0 > xioctl(in_camera.fd, VIDIOC_QBUF, &buf)) {
-        fprintf(stderr,"VIDIOC QBUF failed : %d\n", errno);
+        qCWarning(camLog, "CAM: QBUF re-enqueue failed: %d", errno);
         return -1;
     }
     return 0;
@@ -185,17 +208,16 @@ int MultiCamera::init_mmap(camera_info& in_camera)
     req.memory = V4L2_MEMORY_MMAP;
 
     if (-1 == xioctl(in_camera.fd, VIDIOC_REQBUFS, &req)) {
-        fprintf(stderr, "VIDIOC_REQBUFS: error - %d\n", errno);
+        qCCritical(camLog, "CAM: REQBUFS failed: %d", errno);
         return -1;
     }
 
     if (req.count < 2) {
-        fprintf(stderr, "Insufficient buffer memory on %s\n",
-                in_camera.dev_name);
+        qCCritical(camLog, "CAM: insufficient buffer memory on %s", in_camera.dev_name);
         return -1;
     }
 
-    qDebug()<<"request buffer success";
+    qCInfo(camLog, "CAM: REQBUFS success (%d buffers)", FRAMEBUFFER_COUNT);
 
     in_camera.frame_length = 0;
     for (n_buffers = 0; n_buffers < FRAMEBUFFER_COUNT; ++n_buffers) {
@@ -207,14 +229,14 @@ int MultiCamera::init_mmap(camera_info& in_camera)
         // 分配内存并检查
         size_t* len_ptr = (size_t*)calloc(in_camera.NUM_PLANES, sizeof(size_t));
         if(len_ptr == nullptr) {
-            fprintf(stderr, "calloc length failed\n");
+            qCCritical(camLog, "CAM: calloc length failed");
             goto cleanup_and_exit;
         }
         in_camera.caputure_type.multi_plane[n_buffers].length = len_ptr;
 
         void** start_ptr = (void **)calloc(in_camera.NUM_PLANES, sizeof(void *));
         if(start_ptr == nullptr) {
-            fprintf(stderr, "calloc start failed\n");
+            qCCritical(camLog, "CAM: calloc start failed");
             free(len_ptr);
             in_camera.caputure_type.multi_plane[n_buffers].length = nullptr;
             goto cleanup_and_exit;
@@ -230,7 +252,7 @@ int MultiCamera::init_mmap(camera_info& in_camera)
         buf.length	= in_camera.NUM_PLANES;
 
         if (-1 == xioctl(in_camera.fd, VIDIOC_QUERYBUF, &buf)) {
-            fprintf(stderr, "VIDIOC_QUERYBUF: error - %d\n", errno);
+            qCCritical(camLog, "CAM: QUERYBUF failed: %d", errno);
             goto cleanup_and_exit;
         }
         //每一个buffer的多个平面地址映射
@@ -243,7 +265,7 @@ int MultiCamera::init_mmap(camera_info& in_camera)
                                                                           MAP_SHARED,             /* recommended */
                                                                           in_camera.fd, buf.m.planes[j].m.mem_offset);
             if (MAP_FAILED == in_camera.caputure_type.multi_plane[n_buffers].start[j]) {
-                fprintf(stderr, "mmap: error - %d\n", errno);
+                qCCritical(camLog, "CAM: mmap failed: %d", errno);
                 // 清理当前 buffer 已映射的部分
                 for(int k=0; k<j; k++) {
                     if(in_camera.caputure_type.multi_plane[n_buffers].start[k] != MAP_FAILED) {

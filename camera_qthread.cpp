@@ -1,6 +1,10 @@
 #include "camera_qthread.h"
 #include "mediapipeline.h"
+#include <QLoggingCategory>
 #include <QtEndian>
+#include <QElapsedTimer>
+
+Q_LOGGING_CATEGORY(camLog, "camera", QtInfoMsg)
 
 Camera_qthread *Camera_qthread::CameraHandleSingle = nullptr;
 pthread_mutex_t Camera_qthread::camera_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -14,7 +18,7 @@ bool Camera_qthread::set_device(QString device, int in_width, int in_height) {
 
   // 参数验证
   if (in_width <= 0 || in_height <= 0) {
-    fprintf(stderr, "Invalid camera dimensions: %d x %d\n", in_width,
+    qCCritical(camLog, "CAM: invalid dimensions: %d x %d", in_width,
             in_height);
     return false;
   }
@@ -43,19 +47,22 @@ bool Camera_qthread::set_device(QString device, int in_width, int in_height) {
   if (MediaPipeline::getActualResolution(device, actual_w, actual_h)) {
     m_camera.width = actual_w;
     m_camera.height = actual_h;
-    qDebug() << "Using CSI actual resolution:" << actual_w << "x" << actual_h;
+    qCInfo(camLog, "CAM: using CSI actual resolution: %dx%d", actual_w, actual_h);
   }
 
   // 初始化摄像头、申请buffer并映射
   ret = camera_handle->init_device(m_camera);
   if (ret < 0) {
-    printf("init_device failed\n");
+    qCCritical(camLog, "CAM: init_device failed");
     goto err_handle_scan;
   }
+  qCDebug(camLog, "CAM: before STREAMON: %s fd=%d %dx%d fmt=%.4s planes=%d len=%zu",
+          m_camera.dev_name, m_camera.fd, m_camera.width, m_camera.height,
+          (char*)&m_camera.pixelformat, m_camera.NUM_PLANES, m_camera.frame_length);
   // 开启摄像头流
   ret = camera_handle->start_capturing(m_camera);
   if (ret < 0) {
-    printf("start_capturing failed\n");
+    qCCritical(camLog, "CAM: start_capturing failed");
     goto err_handle_scan;
   }
 
@@ -72,26 +79,25 @@ bool Camera_qthread::isMultiCamera(int fd) {
   struct v4l2_capability cap;
   CLEAR(cap);
   if (-1 == xioctl(fd, VIDIOC_QUERYCAP, &cap)) {
-    fprintf(stderr, "VIDIOC_QUERYCAP: error - %d\n", errno);
+    qCWarning(camLog, "CAM: VIDIOC_QUERYCAP error: %d", errno);
     return false;
   }
   if ((cap.capabilities & V4L2_CAP_VIDEO_CAPTURE_MPLANE)) {
     m_camera.capabilities = 0x0 | V4L2_CAP_VIDEO_CAPTURE_MPLANE;
     camera_handle = new MultiCamera;
-    fprintf(stdout, "%s set V4L2_CAP_VIDEO_CAPTURE_MPLANE\n",
-            m_camera.dev_name);
+    qCInfo(camLog, "CAM: %s → MPLANE (CSI)", m_camera.dev_name);
   } else if ((cap.capabilities & V4L2_CAP_VIDEO_CAPTURE)) {
     m_camera.capabilities = 0x0 | V4L2_CAP_VIDEO_CAPTURE;
     camera_handle = new AbstractCamera;
-    fprintf(stdout, "%s set V4L2_CAP_VIDEO_CAPTURE\n", m_camera.dev_name);
+    qCInfo(camLog, "CAM: %s → CAPTURE (USB)", m_camera.dev_name);
   } else {
-    fprintf(stdout, "%s don't support CAPTURE\n", m_camera.dev_name);
+    qCWarning(camLog, "CAM: %s doesn't support CAPTURE", m_camera.dev_name);
     return false;
   }
   if ((cap.capabilities & V4L2_CAP_STREAMING)) {
-    fprintf(stdout, "%s support V4L2_CAP_STREAMING\n", m_camera.dev_name);
+    qCDebug(camLog, "CAM: %s supports STREAMING", m_camera.dev_name);
   } else {
-    fprintf(stdout, "%s don't support STREAMING I/O\n", m_camera.dev_name);
+    qCWarning(camLog, "CAM: %s doesn't support STREAMING", m_camera.dev_name);
     delete camera_handle;
     camera_handle = nullptr;
     return false;
@@ -119,7 +125,7 @@ int Camera_qthread::open_device(char *dev_name) {
   ret = open(dev_name, O_RDWR /* required */ /* | O_NONBLOCK*/, 0);
 
   if (ret == -1) {
-    fprintf(stderr, "Cannot open '%s': %d\n", dev_name, errno);
+    qCWarning(camLog, "CAM: cannot open '%s': %d", dev_name, errno);
     return -1;
   }
   return ret;
@@ -140,12 +146,15 @@ void Camera_qthread::run() {
   struct v4l2_buffer buf;
   int ret;
   QImage img;
+  int frameCount = 0;
+  QElapsedTimer fpsTimer;
   struct pollfd Fds[1];
   Fds[0].fd = m_camera.fd;
   Fds[0].events = POLLIN;
 
   frameLoop.store(true);
-  qDebug() << "frame_length: " << m_camera.frame_length;
+  fpsTimer.start();
+  qCDebug(camLog, "CAM: frame_length=%zu", (size_t)m_camera.frame_length);
   onebuf = (unsigned char *)calloc(m_camera.frame_length, sizeof(unsigned char));
   // 预分配 RGB 转换缓冲区，避免每帧栈分配 VLA
   unsigned char *rgbbuf = (unsigned char *)calloc(m_camera.width * m_camera.height * 3, 1);
@@ -157,8 +166,8 @@ void Camera_qthread::run() {
   while (frameLoop.load()) {
     ret = poll(Fds, 1, 1000);
     if (ret == 0) {
-      fprintf(stderr, "poll I/O timeout\n");
-      fprintf(stderr, "%s reset again\n", m_camera.dev_name);
+      qCWarning(camLog, "CAM: poll I/O timeout");
+      qCInfo(camLog, "CAM: %s reset on timeout", m_camera.dev_name);
       size_t oldFrameLen = m_camera.frame_length;
       size_t oldRgbLen   = (size_t)m_camera.width * m_camera.height * 3;
       camera_handle->stop_capturing(m_camera);
@@ -178,21 +187,25 @@ void Camera_qthread::run() {
           goto streamoff_handle;
         Fds[0].fd = m_camera.fd;
         Fds[0].events = POLLIN;
+        frameCount = 0;
+        fpsTimer.restart();
         continue;
       } else {
-        fprintf(stderr, "%s reset again err\n", m_camera.dev_name);
+        qCCritical(camLog, "CAM: %s reset failed", m_camera.dev_name);
         goto streamoff_handle;
       }
     } else if (ret < 0) {
-      fprintf(stderr, "poll I/O err: %d\n", errno);
+      qCWarning(camLog, "CAM: poll I/O err: %d", errno);
       goto streamoff_handle;
     }
 
     ret = camera_handle->framebuffer_handle(m_camera, buf, onebuf);
     if (ret < 0) {
-      fprintf(stderr, "camera handle failed \n");
+      qCWarning(camLog, "CAM: camera handle failed");
       goto streamoff_handle;
     }
+
+    frameCount++;
 
     if (m_camera.pixelformat == v4l2_fourcc_i('Y', 'U', 'Y', 'V')) {
       yuv_to_rgb(onebuf, rgbbuf);
@@ -217,8 +230,16 @@ void Camera_qthread::run() {
     }
     if (!img.isNull())
       emit sign_img(img);
+
+    if (fpsTimer.elapsed() >= 5000) {
+        double fps = frameCount * 1000.0 / fpsTimer.elapsed();
+        qCDebug(camLog, "FPS: %.1f (frames=%d, duration=%lldms)",
+                fps, frameCount, fpsTimer.elapsed());
+        frameCount = 0;
+        fpsTimer.restart();
+    }
   }
-  qDebug() << "camera loop end";
+  qCInfo(camLog, "CAM: camera loop end");
   free(onebuf); onebuf = nullptr;
   free(rgbbuf); rgbbuf = nullptr;
   return;
@@ -244,84 +265,35 @@ int Camera_qthread::xioctl(int fh, int request, void *arg) {
 }
 
 void Camera_qthread::yuv_to_rgb(unsigned char *yuv, unsigned char *rgb) {
-  int i;
-  unsigned char *y0 = yuv + 0;
-  unsigned char *u0 = yuv + 1;
-  unsigned char *y1 = yuv + 2;
-  unsigned char *v0 = yuv + 3;
+  // YUYV 4:2:2 → RGB888 整数转换（ITU-R BT.601 fixed-point）
+  // YUYV 打包: [Y0 U Y1 V] [Y2 U Y3 V] ...
+  // 每 4 字节产生 2 个 RGB 像素 (6 字节)
+  const int npixels = m_camera.width * m_camera.height;
+  int yIdx = 0, rgbIdx = 0;
 
-  unsigned char *r0 = rgb + 0;
-  unsigned char *g0 = rgb + 1;
-  unsigned char *b0 = rgb + 2;
-  unsigned char *r1 = rgb + 3;
-  unsigned char *g1 = rgb + 4;
-  unsigned char *b1 = rgb + 5;
+  for (int i = 0; i < npixels; i += 2) {
+    int Y0 = yuv[yIdx++] - 16;
+    int U  = yuv[yIdx++] - 128;
+    int Y1 = yuv[yIdx++] - 16;
+    int V  = yuv[yIdx++] - 128;
 
-  float rt0 = 0, gt0 = 0, bt0 = 0, rt1 = 0, gt1 = 0, bt1 = 0;
+    // Pixel 0
+    int R0 = (298 * Y0 + 409 * V + 128) >> 8;
+    int G0 = (298 * Y0 - 100 * U - 208 * V + 128) >> 8;
+    int B0 = (298 * Y0 + 516 * U + 128) >> 8;
 
-  for (i = 0; i <= (m_camera.width * m_camera.height) / 2; i++) {
-    bt0 = 1.164 * (*y0 - 16) + 2.018 * (*u0 - 128);
-    gt0 = 1.164 * (*y0 - 16) - 0.813 * (*v0 - 128) - 0.394 * (*u0 - 128);
-    rt0 = 1.164 * (*y0 - 16) + 1.596 * (*v0 - 128);
+    rgb[rgbIdx++] = qBound(0, R0, 255);
+    rgb[rgbIdx++] = qBound(0, G0, 255);
+    rgb[rgbIdx++] = qBound(0, B0, 255);
 
-    bt1 = 1.164 * (*y1 - 16) + 2.018 * (*u0 - 128);
-    gt1 = 1.164 * (*y1 - 16) - 0.813 * (*v0 - 128) - 0.394 * (*u0 - 128);
-    rt1 = 1.164 * (*y1 - 16) + 1.596 * (*v0 - 128);
+    // Pixel 1
+    int R1 = (298 * Y1 + 409 * V + 128) >> 8;
+    int G1 = (298 * Y1 - 100 * U - 208 * V + 128) >> 8;
+    int B1 = (298 * Y1 + 516 * U + 128) >> 8;
 
-    if (rt0 > 255)
-      rt0 = 255;
-    if (rt0 < 0)
-      rt0 = 0;
-
-    if (gt0 > 255)
-      gt0 = 255;
-    if (gt0 < 0)
-      gt0 = 0;
-
-    if (bt0 > 255)
-      bt0 = 255;
-    if (bt0 < 0)
-      bt0 = 0;
-
-    if (rt1 > 255)
-      rt1 = 255;
-    if (rt1 < 0)
-      rt1 = 0;
-
-    if (gt1 > 255)
-      gt1 = 255;
-    if (gt1 < 0)
-      gt1 = 0;
-
-    if (bt1 > 255)
-      bt1 = 255;
-    if (bt1 < 0)
-      bt1 = 0;
-
-    *r0 = (unsigned char)rt0;
-    *g0 = (unsigned char)gt0;
-    *b0 = (unsigned char)bt0;
-
-    *r1 = (unsigned char)rt1;
-    *g1 = (unsigned char)gt1;
-    *b1 = (unsigned char)bt1;
-
-    yuv = yuv + 4;
-    rgb = rgb + 6;
-    if (yuv == nullptr)
-      break;
-
-    y0 = yuv;
-    u0 = yuv + 1;
-    y1 = yuv + 2;
-    v0 = yuv + 3;
-
-    r0 = rgb + 0;
-    g0 = rgb + 1;
-    b0 = rgb + 2;
-    r1 = rgb + 3;
-    g1 = rgb + 4;
-    b1 = rgb + 5;
+    rgb[rgbIdx++] = qBound(0, R1, 255);
+    rgb[rgbIdx++] = qBound(0, G1, 255);
+    rgb[rgbIdx++] = qBound(0, B1, 255);
   }
 }
 

@@ -21,7 +21,6 @@
 ***********************************************************************/
 
 import QtQuick
-import QtMultimedia
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
@@ -44,16 +43,15 @@ SystemWindow {
         first_flag = true
         showFlag = false
         //解决再次进入黑屏问题
-        counter = !counter
-        image.source = ""+ counter
+        counter = (counter + 1) % 1000
+        image.source = "image://cameraImageProvider?id=" + counter
     }
 
-    MediaDevices {id: mediaDevices}
     Define {id: def}
     Album {id: w_album}
-    property bool counter: false
+    property int counter: 0
     function reload() {
-        counter = !counter
+        counter = (counter + 1) % 1000
         image.source = "image://cameraImageProvider?id=" + counter
     }
     Image {
@@ -82,8 +80,7 @@ SystemWindow {
     MyIconButton {
         id: backButton
         icon_code: def.iconCode_back
-        // 如果获取不到摄像头信息将导致画面卡死
-        button_text: mediaDevices.defaultVideoInput.description
+        button_text: qsTr("返回")
         button_color: "white"
         anchors.left: parent.left
         anchors.top: parent.top
