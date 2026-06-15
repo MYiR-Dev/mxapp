@@ -44,11 +44,15 @@ qt_standard_project_setup()
 option(ENABLE_PLAYER "Enable video player (PlayerWindow)" OFF)
 
 # =========================================================
+# Qt Quick 软件渲染后端（无 GPU 平台开启，有 GPU 平台关闭）
+# =========================================================
+option(ENABLE_SOFTWARE_QUICK_BACKEND "Use software Qt Quick backend (QT_QUICK_BACKEND=software)" OFF)
+
+# =========================================================
 # 编译宏
 # =========================================================
 add_compile_definitions(
     QT_DEPRECATED_WARNINGS
-    QT_QCAMERA_V4L2
 )
 
 # Qt6 推荐：启用更严格的警告
@@ -141,6 +145,13 @@ qt_add_executable(${PROJECT_NAME}
 # =========================================================
 if(ENABLE_PLAYER)
     target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_PLAYER)
+endif()
+
+# =========================================================
+# 软件渲染后端条件编译
+# =========================================================
+if(ENABLE_SOFTWARE_QUICK_BACKEND)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE SOFTWARE_QUICK_BACKEND)
 endif()
 
 # =========================================================
