@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 
     app.setOrganizationName("MYiR_Electronics");
     app.setApplicationName("MEasy_HMI");
-    app.setApplicationVersion("V2.6.4");
+    app.setApplicationVersion("V2.6.5");
 
     qDebug() << "platform:" << QGuiApplication::platformName();
 

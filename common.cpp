@@ -25,7 +25,6 @@
 #include <QObject>
 #include <QSysInfo>
 #include <QThread>
-#include <QTest>
 #include <QStringView>
 #include <QDir>
 #include <QSet>

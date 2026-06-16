@@ -27,11 +27,8 @@ find_package(Qt6 REQUIRED COMPONENTS
     Qml
     QuickControls2
     Multimedia
-    MultimediaWidgets
     Network
     PrintSupport
-    Svg
-    Test
     LinguistTools
 )
 
@@ -179,11 +176,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Qml
     Qt6::QuickControls2
     Qt6::Multimedia
-    Qt6::MultimediaWidgets
     Qt6::Network
     Qt6::PrintSupport
-    Qt6::Svg
-    Qt6::Test
 )
 
 # =========================================================
